@@ -28,6 +28,8 @@ public class CharacterController : MonoBehaviour
 	bool wallLeftPushing = false;
 	bool wallRightPushing = false;
 
+	public float wallJumpForce = 700f;
+
 	// override methods
 	void Start ()
 	{
@@ -37,6 +39,30 @@ public class CharacterController : MonoBehaviour
 
 	void Update ()
 	{
+		if (Input.GetKeyDown(KeyCode.C))
+		{
+			anim.SetBool("Ground", false);
+
+			Vector2 velocity = Vector2.zero;
+			Vector2 force = Vector2.zero;
+
+			if (grounded)
+			{
+				velocity = new Vector2(this.rigidbody2D.velocity.x, 0);
+				force = new Vector2(0, jumpForce);
+			}
+			else if (wallLeftPushing || wallRightPushing)
+			{
+				velocity = new Vector2(0, 0);
+				force = new Vector2(-wallJumpForce, jumpForce);
+			}
+
+			this.rigidbody2D.velocity = velocity;
+			this.rigidbody2D.AddForce(force);
+		}
+		return;
+
+		/*
 		if ((grounded || !doubleJump) && Input.GetKeyDown (KeyCode.Space)) 
 		{
 			anim.SetBool("Ground", false);
@@ -47,6 +73,7 @@ public class CharacterController : MonoBehaviour
 			if (!doubleJump && !grounded)
 				doubleJump = true;
 		}
+		*/
 	}
 
 	void FixedUpdate ()
