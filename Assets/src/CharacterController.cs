@@ -15,11 +15,18 @@ public class CharacterController : MonoBehaviour
 	// jump & not on the ground state
 	bool grounded = false;
 	public Transform groundCheck;
-	float groundRadius = 0.2f;
+	public float groundRadius = 0.2f;
 	public LayerMask whatIsGround;
 	public float jumpForce = 700f;
 
 	bool doubleJump = false;
+
+	public Transform wallLeftCheck;
+	public Transform wallRightCheck;
+	public float wallRadius = 0.2f;
+	public LayerMask whatIsWall;
+	bool wallLeftPushing = false;
+	bool wallRightPushing = false;
 
 	// override methods
 	void Start ()
@@ -66,6 +73,11 @@ public class CharacterController : MonoBehaviour
 
 		bool isLeftKeyDown = Input.GetKey (KeyCode.LeftArrow);
 		bool isRightKeyDown = Input.GetKey (KeyCode.RightArrow);
+
+		wallLeftPushing = (Physics2D.OverlapCircle (wallLeftCheck.position, wallRadius, whatIsWall) && isLeftKeyDown);
+		wallRightPushing = (Physics2D.OverlapCircle (wallRightCheck.position, wallRadius, whatIsWall) && isRightKeyDown);
+		anim.SetBool("WallLeftPushing", wallLeftPushing);
+		anim.SetBool("WallRightPushing", wallRightPushing);
 
 		if (isLeftKeyDown) {
 			anim.SetFloat ("Speed", 0.011f);
