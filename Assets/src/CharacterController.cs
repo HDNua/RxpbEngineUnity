@@ -19,22 +19,27 @@ public class CharacterController : MonoBehaviour
 	public LayerMask whatIsGround;
 	public float jumpForce = 700f;
 
-	bool doubleJump = false;
-
+	// wallJump
 	public Transform wallLeftCheck;
 	public Transform wallRightCheck;
 	public float wallRadius = 0.2f;
 	public LayerMask whatIsWall;
 	bool wallLeftPushing = false;
 	bool wallRightPushing = false;
-
 	public float wallJumpForce = 700f;
+
+	// shot
+	public Transform shotPosition;
+	public float shotSpeed = 20f;
+	public bool shotTriggered = false;
 
 	// override methods
 	void Start ()
 	{
 		rigidbody2D = GetComponent<Rigidbody2D> ();
 		anim = GetComponent<Animator> ();
+
+		shotSpeed = maxSpeed * 2;
 	}
 
 	void Update ()
@@ -46,57 +51,42 @@ public class CharacterController : MonoBehaviour
 			Vector2 velocity = Vector2.zero;
 			Vector2 force = Vector2.zero;
 
+			bool hasToUpdate = false;
 			if (grounded)
 			{
 				velocity = new Vector2(this.rigidbody2D.velocity.x, 0);
 				force = new Vector2(0, jumpForce);
+
+				hasToUpdate = true;
 			}
 			else if (wallLeftPushing || wallRightPushing)
 			{
 				velocity = new Vector2(0, 0);
 				force = new Vector2(-wallJumpForce, jumpForce);
+
+				hasToUpdate = true;
 			}
 
-			this.rigidbody2D.velocity = velocity;
-			this.rigidbody2D.AddForce(force);
+			if (hasToUpdate == true)
+			{
+				this.rigidbody2D.velocity = velocity;
+				this.rigidbody2D.AddForce(force);
+			}
 		}
-		return;
-
-		/*
-		if ((grounded || !doubleJump) && Input.GetKeyDown (KeyCode.Space)) 
+		
+		if (Input.GetKeyDown(KeyCode.X))
 		{
-			anim.SetBool("Ground", false);
-
-			this.rigidbody2D.velocity = new Vector2(this.rigidbody2D.velocity.x, 0);
-			this.rigidbody2D.AddForce(new Vector2(0, jumpForce));
-
-			if (!doubleJump && !grounded)
-				doubleJump = true;
+			/* ... */
 		}
-		*/
 	}
 
 	void FixedUpdate ()
 	{
+		// get state
 		grounded = Physics2D.OverlapCircle (groundCheck.position, groundRadius, whatIsGround);
 		anim.SetBool ("Ground", grounded);
 
-		if (grounded)
-			doubleJump = false;
-
 		anim.SetFloat ("vSpeed", this.rigidbody2D.velocity.y);
-
-		/*
-		float move = Input.GetAxis ("Horizontal");
-		anim.SetFloat ("Speed", Mathf.Abs (move));
-		
-		rigidbody2D.velocity = new Vector2 (move * maxSpeed, rigidbody2D.velocity.y);
-		
-		if (move > 0 && !facingRight)
-			Flip ();
-		else if (move < 0 && facingRight)
-			Flip ();
-			*/
 
 		bool isLeftKeyDown = Input.GetKey (KeyCode.LeftArrow);
 		bool isRightKeyDown = Input.GetKey (KeyCode.RightArrow);
@@ -106,6 +96,10 @@ public class CharacterController : MonoBehaviour
 		anim.SetBool("WallLeftPushing", wallLeftPushing);
 		anim.SetBool("WallRightPushing", wallRightPushing);
 
+		bool shotTriggered = Input.GetKeyDown(KeyCode.X);
+		anim.SetBool("ShotTriggered", shotTriggered);
+
+		// handle by state
 		if (isLeftKeyDown) {
 			anim.SetFloat ("Speed", 0.011f);
 

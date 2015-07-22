@@ -16,10 +16,6 @@ Platform assembly: D:\handy\work\dev\unity\CharacterController\test_Data\Managed
 Loading D:\handy\work\dev\unity\CharacterController\test_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: D:\handy\work\dev\unity\CharacterController\test_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading D:\handy\work\dev\unity\CharacterController\test_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-Platform assembly: D:\handy\work\dev\unity\CharacterController\test_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
-Loading D:\handy\work\dev\unity\CharacterController\test_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
-Platform assembly: D:\handy\work\dev\unity\CharacterController\test_Data\Managed\UnityEngine.UI.dll (this message is harmless)
-Loading D:\handy\work\dev\unity\CharacterController\test_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
 - Completed reload, in  0.041 seconds
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
