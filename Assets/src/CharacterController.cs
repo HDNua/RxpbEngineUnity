@@ -37,6 +37,8 @@ public class CharacterController : MonoBehaviour
     // 이동 속성입니다.
     public float walkSpeed = 8;
     public float jumpSpeed = 16;
+    public float jumpDecSize = 0.5f;
+
     public float dashSpeed = 16;
     public float dashForce = 800;
 
@@ -59,9 +61,32 @@ public class CharacterController : MonoBehaviour
     #region 필드를 정의합니다.
     bool facingRight;           // 우측을 보고 있다면 true입니다.
     bool grounded;              // 땅에 닿아있다면 true입니다.
-    bool walking;               // 걷고 있다면 true입니다.
-    bool jumping;               // 점프 상태라면 true입니다.
-    bool dashing;               // 대쉬 상태라면 true입니다.
+
+    // 걷는 상태를 결정합니다.
+    bool walking = false;
+    bool walk_beg = false;
+    bool walk_run = false;
+
+    // 점프 상태를 결정합니다.
+    bool jumping = false;
+    bool jump_beg = false;
+    bool jump_run = false;
+
+    // 대쉬 상태를 결정합니다.
+    bool dashing = false;
+    bool dash_beg = false;
+    bool dash_run = false;
+    bool dash_end = false;
+
+    // 자유 낙하 상태를 결정합니다.
+    bool falling = false;
+    bool fall_beg = false;
+    bool fall_run = false;
+    bool fall_end = false;
+
+    // 공격 상태를 결정합니다.
+    bool shooting = false;
+    bool chargeShooting = false;
 
     #endregion 필드 정의
 
@@ -77,9 +102,6 @@ public class CharacterController : MonoBehaviour
         // 필드를 초기화합니다.
         facingRight = true;
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
-        walking = false;
-        jumping = false;
-        dashing = false;
 
         // 키 설정을 초기화합니다.
         keySetting = new Dictionary<GameKey, KeyCode>();
@@ -95,151 +117,226 @@ public class CharacterController : MonoBehaviour
         {
             if (grounded == true)
             {
-                jumping = true;
-                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpSpeed);
+                _animator.SetBool("Jumping", jumping = true);
             }
         }
         if (IsKeyDown(GameKey.Dash))
         {
-            dashing = true;
-            _animator.SetBool("Dashing", true);
-            _animator.SetBool("DashKeyPressed", true);
-
-            float vx = facingRight ? dashSpeed : -dashSpeed;
-            _rigidbody.velocity = new Vector2(vx, _rigidbody.velocity.y);
+            _animator.SetBool("Dashing", dashing = true);
         }
         if (IsKeyDown(GameKey.Left) || IsKeyDown(GameKey.Right))
         {
-            walking = true;
-            _animator.SetBool("Walking", true);
+            _animator.SetBool("Walking", walking = true);
         }
-
-
-        /*
-        if (Input.GetKeyDown(KeyCode.C))
+        if (IsKeyDown(GameKey.Attack))
         {
-            anim.SetBool("Ground", false);
-
-            Vector2 velocity = Vector2.zero;
-            Vector2 force = Vector2.zero;
-
-            //            bool hasToUpdate = false;
-            if (grounded)
-            {
-                //				velocity = new Vector2(this.rigidbody2D.velocity.x, 0);
-                force = new Vector2(0, jumpForce);
-                //                rigidbody2D.velocity = velocity;
-                _rigidbody2D.AddForce(force);
-            }
+            _animator.SetBool("Shooting", shooting = true);
         }
-
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.S))
         {
-            print("TEST");
+            _animator.SetBool("ChargeShooting", chargeShooting = true);
         }
-        */
     }
     void FixedUpdate()
     {
-        // 캐릭터 상태에 대한 부울 값을 나열합니다.
+        // 캐릭터 상태에 대한 값을 나열합니다.
         grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
         _animator.SetBool("Ground", grounded);
 
-        // 키 반응에 대한 부울 값을 나열합니다.
+        float verSpeed = _rigidbody.velocity.y;
+        _animator.SetFloat("VerSpeed", verSpeed);
+
+        // 키 상태에 대한 부울 값을 나열합니다.
         bool isLeftPressed = IsKeyPressed(GameKey.Left);
         bool isRightPressed = IsKeyPressed(GameKey.Right);
         bool isJumpPressed = IsKeyPressed(GameKey.Jump);
         bool isDashPressed = IsKeyPressed(GameKey.Dash);
 
         // 상태에 대한 반응을 나열합니다.
-        if (dashing) // 대시 중
-        {
-
-
-            
-
-            if (isDashPressed == false)
-            {
-                _animator.SetBool("DashKeyPressed", false);
-                _animator.SetBool("Dashing", false);
-                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x / 4, _rigidbody.velocity.y);
-                dashing = false;
-            }
-        }
-        if (jumping) // 점프 중
-        {
-
-
-            if (isJumpPressed == false)
-            {
-                _animator.SetBool("JumpKeyPressed", false);
-            }
-        }
-
-
-        // 키에 대한 반응을 나열합니다.
         if (walking)
         {
-            if (dashing == false)
+            if (isLeftPressed)
             {
-                if (isLeftPressed)
+                if (facingRight == true)
+                    Flip();
+                _rigidbody.velocity = new Vector2(-walkSpeed, _rigidbody.velocity.y);
+            }
+            else if (isRightPressed)
+            {
+                if (facingRight == false)
+                    Flip();
+                _rigidbody.velocity = new Vector2(walkSpeed, _rigidbody.velocity.y);
+            }
+            else if (isJumpPressed)
+            {
+
+            }
+            else if (isDashPressed)
+            {
+
+            }
+            else
+            {
+                _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+                _animator.SetBool("WalkBeg", walk_beg = false);
+                _animator.SetBool("WalkRun", walk_run = false);
+                _animator.SetBool("Walking", walking = false);
+            }
+        }
+        if (jumping)
+        {
+            if (jump_run)
+            {
+                if (_rigidbody.velocity.y > 0)
                 {
-                    if (facingRight == true)
-                        Flip();
-                    _rigidbody.velocity = new Vector2(-walkSpeed, _rigidbody.velocity.y);
-                }
-                else if (isRightPressed)
-                {
-                    if (facingRight == false)
-                        Flip();
-                    _rigidbody.velocity = new Vector2(walkSpeed, _rigidbody.velocity.y);
+                    _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y - jumpDecSize);
                 }
                 else
                 {
-                    _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-                    walking = false;
-                    _animator.SetBool("Walking", false);
+                    _animator.SetBool("Jumping", jumping = false);
+                    _animator.SetBool("Falling", falling = true);
                 }
             }
         }
-
-        /*
-        // get state
-        grounded = Physics2D.OverlapCircle(groundCheck.position, groundRadius, whatIsGround);
-        anim.SetBool("Ground", grounded);
-
-        anim.SetFloat("vSpeed", _rigidbody2D.velocity.y);
-
-        bool isLeftKeyDown = Input.GetKey(KeyCode.LeftArrow);
-        bool isRightKeyDown = Input.GetKey(KeyCode.RightArrow);
-
-        bool shotTriggered = Input.GetKeyDown(KeyCode.X);
-        anim.SetBool("ShotTriggered", shotTriggered);
-
-        // handle by state
-        if (isLeftKeyDown)
+        if (dashing)
         {
-            anim.SetFloat("Speed", 0.011f);
-            _rigidbody2D.velocity = new Vector2(-maxSpeed, _rigidbody2D.velocity.y);
-            if (facingRight == true)
-                Flip();
+
+
+            if (isDashPressed == false)
+            {
+                _animator.SetBool("DashEnd", dash_end = true);
+            }
         }
-        else if (isRightKeyDown)
+        if (falling)
         {
-            anim.SetFloat("Speed", 0.011f);
-            _rigidbody2D.velocity = new Vector2(maxSpeed, _rigidbody2D.velocity.y);
-            if (facingRight == false)
-                Flip();
+
+            if (Mathf.Abs(_rigidbody.velocity.y) > jumpSpeed)
+            {
+                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, -jumpSpeed);
+            }
+            else
+            {
+                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y - jumpDecSize);
+            }
         }
-        else
+        if (shooting)
         {
-            anim.SetFloat("Speed", 0.0f);
-            _rigidbody2D.velocity = new Vector2(0, _rigidbody2D.velocity.y);
+
+
+
         }
-        */
     }
 
     #endregion MonoBehaviour 메서드 재정의
+
+
+
+    #region 애니메이션 이벤트 핸들러를 정의합니다.
+    void ReadyToIdle()
+    {
+
+    }
+    void WalkBegToRun_beg()
+    {
+        _animator.SetBool("WalkBeg", walk_beg = true);
+    }
+    void WalkBegToRun_end()
+    {
+        _animator.SetBool("WalkBeg", walk_beg = false);
+        _animator.SetBool("WalkRun", walk_run = true);
+    }
+    void DashBegToRun_beg()
+    {
+        _animator.SetBool("DashBeg", dash_beg = true);
+        float vx = facingRight ? dashSpeed : -dashSpeed;
+        _rigidbody.velocity = new Vector2(vx, _rigidbody.velocity.y);
+    }
+    void DashBegToRun_end()
+    {
+        _animator.SetBool("DashBeg", dash_beg = false);
+        _animator.SetBool("DashRun", dash_run = true);
+    }
+    void DashEndFromRun_beg()
+    {
+        _animator.SetBool("DashRun", dash_run = false);
+        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+    }
+    void DashEndFromRun_end()
+    {
+        _animator.SetBool("DashBeg", dash_beg = false);
+        _animator.SetBool("DashRun", dash_run = false);
+        _animator.SetBool("DashEnd", dash_end = false);
+        _animator.SetBool("Dashing", dashing = false);
+        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+    }
+    void JumpRunning_beg()
+    {
+        _animator.SetBool("JumpBeg", jump_beg = true);
+    }
+    void JumpRunning_run()
+    {
+        _animator.SetBool("JumpBeg", jump_beg = false);
+        _animator.SetBool("JumpRun", jump_run = true);
+
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpSpeed);
+    }
+    void JumpRunning_end()
+    {
+        _animator.SetBool("JumpRun", jump_run = false);
+        _animator.SetBool("Jumping", jumping = false);
+        _animator.SetBool("Falling", falling = true);
+    }
+    void FallBegToRun_beg()
+    {
+        _animator.SetBool("FallBeg", fall_beg = true);
+    }
+    void FallBegToRun_end()
+    {
+        _animator.SetBool("FallBeg", fall_beg = false);
+        _animator.SetBool("FallRun", fall_run = true);
+    }
+    void FallRunning()
+    {
+
+    }
+    void FallEndOfRun_beg()
+    {
+        _animator.SetBool("FallRun", fall_run = false);
+        _animator.SetBool("FallEnd", fall_end = true);
+
+        _animator.SetBool("DashBeg", dash_beg = false);
+        _animator.SetBool("DashRun", dash_run = false);
+        _animator.SetBool("DashEnd", dash_end = false);
+        _animator.SetBool("Dashing", dashing = false);
+    }
+    void FallEndOfRun_end()
+    {
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
+        _animator.SetBool("FallBeg", fall_beg = false);
+        _animator.SetBool("FallRun", fall_run = false);
+        _animator.SetBool("Falling", falling = false);
+    }
+    // 공격 상태
+    void ShotRunning_beg()
+    {
+        _animator.SetBool("Shooting", shooting = true);
+    }
+    void ShotRunnig_end()
+    {
+        _animator.SetBool("Shooting", shooting = false);
+    }
+    void ChargeShotRunning_beg()
+    {
+        _animator.SetBool("ChargeShooting", chargeShooting = true);
+    }
+    void ChargeShotRunning_end()
+    {
+        _animator.SetBool("ChargeShooting", chargeShooting = false);
+    }
+
+    #endregion 애니메이션 이벤트 핸들러
+
+
 
     #region 사용자 정의 메서드를 정의합니다.
     void Flip()
