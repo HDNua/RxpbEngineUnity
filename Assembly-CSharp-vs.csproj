@@ -46,7 +46,10 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\src\AController.cs" />
      <Compile Include="Assets\src\CharacterController.cs" />
+     <Compile Include="Assets\src\XController.cs" />
+     <Compile Include="Assets\src\ZController.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

@@ -88,7 +88,37 @@ public class CharacterController : MonoBehaviour
     bool shooting = false;
     bool chargeShooting = false;
 
+    // 키 입력 방지 상태를 결정합니다.
+    bool keyBlockEnabled = false;
+
+
     #endregion 필드 정의
+
+
+
+    #region MyRegion
+    void RequestJump(bool state)
+    {
+
+    }
+    void RequestDash(bool state)
+    {
+
+    }
+    void RequestWalk(bool state)
+    {
+
+    }
+    void RequestShot(bool state)
+    {
+
+    }
+    void RequestKeyBlock(bool state)
+    {
+
+    }
+
+    #endregion
 
 
 

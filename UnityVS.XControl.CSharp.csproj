@@ -68,7 +68,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\src\AController.cs" />
     <Compile Include="Assets\src\CharacterController.cs" />
+    <Compile Include="Assets\src\XController.cs" />
+    <Compile Include="Assets\src\ZController.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
