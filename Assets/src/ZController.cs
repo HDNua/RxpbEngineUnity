@@ -23,7 +23,7 @@ public class ZController : MonoBehaviour
     public AudioClip[] audioClips;
 
     public Transform groundCheck;
-    public float groundCheckRadius = 0.1f;
+    public float groundCheckRadius = 0.5f;
     public LayerMask whatIsGround;
 
     public float walkSpeed = 8;
@@ -77,6 +77,8 @@ public class ZController : MonoBehaviour
         _animator.SetBool("Grounded", grounded);
 
         _animator.SetBool("JumpRequestExist", Input.GetKey(KeyCode.C));
+        _animator.SetBool("Jumping", jumping);
+        _animator.SetBool("Falling", falling);
 
         if (grounded == false)
         {
@@ -174,8 +176,12 @@ public class ZController : MonoBehaviour
         {
             _animator.SetBool("ShotRequested", true);
             _animator.SetBool("ShotBlocked", true);
-            _animator.SetBool("WalkBlocked", true);
-            RequestWalkEnd();
+
+            if (_animator.GetBool("Grounded"))
+            {
+                _animator.SetBool("WalkBlocked", true);
+                RequestWalkEnd();
+            }
         }
     }
     void RequestJump()
@@ -194,7 +200,7 @@ public class ZController : MonoBehaviour
     }
     void RequestFallEnd()
     {
-        _animator.SetBool("FallEnd", true);
+        _animator.SetBool("FallEndRequested", true);
     }
     void RequestWalk()
     {
@@ -211,9 +217,17 @@ public class ZController : MonoBehaviour
 
 
     #region 프레임 이벤트 핸들러를 정의합니다.
-    public void Walk_beg()
+    public void RemainIdle()
     {
-
+        _animator.SetBool("ShotBlocked", false);
+        _animator.SetBool("JumpBlocked", false);
+        _animator.SetBool("WalkBlocked", false);
+    }
+    public void WalkBeg_beg()
+    {
+    }
+    public void WalkBeg_end()
+    {
     }
     public void Jump_beg()
     {
@@ -232,14 +246,22 @@ public class ZController : MonoBehaviour
     }
     public void FallEndFromRun_beg()
     {
+        if (_animator.GetBool("ShotBlocked"))
+        {
+            _animator.SetBool("WalkBlocked", true);
+            RequestWalkEnd();
+        }
+
+        _animator.SetBool("FallEndRequested", false);
         _animator.SetBool("FallEnd", true);
         _animator.SetBool("JumpBlocked", false);
-        _animator.SetBool("FallEnd", false);
         falling = false;
         audioSources[5].Play();
     }
     public void FallEndFromRun_end()
     {
+        _animator.SetBool("FallEnd", false);
+        _animator.SetBool("ShotBlocked", false);
     }
     public void Attack_saber1()
     {
@@ -274,6 +296,20 @@ public class ZController : MonoBehaviour
     public void AttackEndFromRun_end()
     {
         _animator.SetBool("WalkBlocked", false);
+    }
+    public void JumpShot_beg()
+    {
+        if (_animator.GetBool("JumpRequestExist") == false || _animator.GetFloat("VerSpeed") == 0.0f)
+        {
+            RequestFall();
+        }
+        _animator.SetBool("ShotRequested", false);
+        _animator.SetBool("ShotBlocked", true);
+        audioSources[3].Play();
+    }
+    public void JumpShot_end()
+    {
+        _animator.SetBool("ShotBlocked", false);
     }
 
     #endregion 프레임 이벤트 핸들러
