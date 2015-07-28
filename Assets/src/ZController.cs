@@ -31,6 +31,8 @@ public class ZController : MonoBehaviour
     public float jumpSpeed = 16;
     public float jumpDecSize = 0.8f;
 
+    public BoxCollider2D groundCheck2;
+
     #endregion Unity 공용 필드
 
 
@@ -58,22 +60,32 @@ public class ZController : MonoBehaviour
             audioSources[i].clip = audioClips[i];
         }
 
-        _animator.SetBool("WalkBlocked", true);
+        RequestWalkBlock();
+//        _animator.SetBool("WalkBlocked", true);
 	}
 	void Update()
     {
 	    if (Input.GetKeyDown(KeyCode.X))
         {
-            RequestShot();
+            if (_animator.GetBool("ShotBlocked") == false)
+            {
+                RequestShot();
+            }
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
-            RequestJump();
+            if (_animator.GetBool("JumpBlocked") == false)
+            {
+                RequestJump();
+            }
         }
 	}
     void FixedUpdate()
     {
+        BoxCollider2D collider = GetComponent<BoxCollider2D>();
+
         bool grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
+        // Physics2D.OverlapArea(groundCheck2.bounds.min, groundCheck2.bounds.max, whatIsGround);
         _animator.SetBool("Grounded", grounded);
 
         _animator.SetBool("JumpRequestExist", Input.GetKey(KeyCode.C));
@@ -168,6 +180,10 @@ public class ZController : MonoBehaviour
     #region 요청 메서드를 정의합니다.
     void RequestIdle()
     {
+        _animator.SetBool("FallRequested", false);
+        _animator.SetBool("JumpBlocked", false);
+        _animator.SetBool("FallEnd", false);
+        _animator.SetBool("ShotBlocked", false);
         _animator.SetBool("WalkBlocked", false);
     }
     void RequestShot()
@@ -176,10 +192,12 @@ public class ZController : MonoBehaviour
         {
             _animator.SetBool("ShotRequested", true);
             _animator.SetBool("ShotBlocked", true);
+            _animator.SetBool("JumpBlocked", true);
 
-            if (_animator.GetBool("Grounded"))
+            // 지상에 있을 경우
+            if (jumping == false && falling == false)
             {
-                _animator.SetBool("WalkBlocked", true);
+                RequestWalkBlock();
                 RequestWalkEnd();
             }
         }
@@ -192,24 +210,55 @@ public class ZController : MonoBehaviour
             _animator.SetBool("JumpRequested", true);
             _animator.SetBool("JumpBlocked", true);
             _animator.SetBool("WalkBlocked", false);
+            jumping = true;
+            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpSpeed);
         }
     }
     void RequestFall()
     {
+        jumping = false;
+        falling = true;
+
+        _animator.SetBool("JumpBlocked", true);
         _animator.SetBool("FallRequested", true);
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, -jumpDecSize);
     }
     void RequestFallEnd()
     {
         _animator.SetBool("FallEndRequested", true);
+        falling = false;
+
+        // 공중 공격 중이었다면
+        if (_animator.GetBool("ShotBlocked"))
+        {
+            RequestWalkBlock();
+            RequestWalkEnd();
+        }
+
+        var curState = _animator.GetCurrentAnimatorStateInfo(0);
+        if (curState.IsName("Z_jumpShot_1inAir"))
+        {
+            var nTime = curState.normalizedTime;
+            var fTime = nTime - Mathf.Floor(nTime);
+            _animator.Play("Z_jumpShot_2ground", 0, fTime);
+            RequestWalkEnd();
+            RequestWalkBlock();
+            _animator.SetBool("FallEndRequested", false);
+        }
     }
     void RequestWalk()
     {
+        _animator.SetBool("FallEnd", false);
         _animator.SetBool("WalkRequestExist", true);
     }
     void RequestWalkEnd()
     {
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
         _animator.SetBool("WalkRequestExist", false);
+    }
+    void RequestWalkBlock()
+    {
+        _animator.SetBool("WalkBlocked", true);
     }
 
     #endregion
@@ -231,61 +280,55 @@ public class ZController : MonoBehaviour
     }
     public void Jump_beg()
     {
-        jumping = true;
         _animator.SetBool("JumpRequested", false);
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpSpeed);
         audioSources[4].Play();
         audioSources[6].Play();
     }
     public void Fall_beg()
     {
-        jumping = false;
-        falling = true;
         _animator.SetBool("FallRequested", false);
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, -jumpDecSize);
     }
     public void FallEndFromRun_beg()
     {
-        if (_animator.GetBool("ShotBlocked"))
-        {
-            _animator.SetBool("WalkBlocked", true);
-            RequestWalkEnd();
-        }
-
+        RequestWalkBlock();
+        _animator.SetBool("FallRequested", false);
         _animator.SetBool("FallEndRequested", false);
         _animator.SetBool("FallEnd", true);
         _animator.SetBool("JumpBlocked", false);
-        falling = false;
         audioSources[5].Play();
     }
     public void FallEndFromRun_end()
     {
-        _animator.SetBool("FallEnd", false);
-        _animator.SetBool("ShotBlocked", false);
+        RequestIdle();
     }
     public void Attack_saber1()
     {
         _animator.SetBool("ShotRequested", false);
+        _animator.SetBool("JumpBlocked", true);
         audioSources[0].Play();
         audioSources[3].Play();
     }
     public void Attack_saber1_end()
     {
         _animator.SetBool("ShotBlocked", false);
+        _animator.SetBool("JumpBlocked", false);
     }
     public void Attack_saber2()
     {
         _animator.SetBool("ShotRequested", false);
+        _animator.SetBool("JumpBlocked", true);
         audioSources[1].Play();
         audioSources[3].Play();
     }
     public void Attack_saber2_end()
     {
         _animator.SetBool("ShotBlocked", false);
+        _animator.SetBool("JumpBlocked", false);
     }
     public void Attack_saber3()
     {
         _animator.SetBool("ShotRequested", false);
+        _animator.SetBool("JumpBlocked", true);
         audioSources[2].Play();
         audioSources[3].Play();
     }
@@ -295,14 +338,11 @@ public class ZController : MonoBehaviour
     }
     public void AttackEndFromRun_end()
     {
+        _animator.SetBool("JumpBlocked", false);
         _animator.SetBool("WalkBlocked", false);
     }
     public void JumpShot_beg()
     {
-        if (_animator.GetBool("JumpRequestExist") == false || _animator.GetFloat("VerSpeed") == 0.0f)
-        {
-            RequestFall();
-        }
         _animator.SetBool("ShotRequested", false);
         _animator.SetBool("ShotBlocked", true);
         audioSources[3].Play();
