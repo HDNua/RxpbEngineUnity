@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\src\AController.cs" />
      <Compile Include="Assets\src\CharacterController.cs" />
+     <Compile Include="Assets\src\GroundCheckScript.cs" />
      <Compile Include="Assets\src\XController.cs" />
      <Compile Include="Assets\src\ZController.cs" />
  <Reference Include="UnityEngine.UI">

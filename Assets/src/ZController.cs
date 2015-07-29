@@ -33,6 +33,10 @@ public class ZController : MonoBehaviour
 
     public BoxCollider2D groundCheck2;
 
+    public Transform pushCheck;
+    public LayerMask whatIsWall;
+    public float wallCheckRadius = 0.1f;
+
     #endregion Unity 공용 필드
 
 
@@ -82,15 +86,35 @@ public class ZController : MonoBehaviour
 	}
     void FixedUpdate()
     {
+        /*
         BoxCollider2D collider = GetComponent<BoxCollider2D>();
 
         bool grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
         // Physics2D.OverlapArea(groundCheck2.bounds.min, groundCheck2.bounds.max, whatIsGround);
         _animator.SetBool("Grounded", grounded);
+        bool grounded = _animator.GetBool("Grounded");
+        */
+        bool grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
+        _animator.SetBool("Grounded", grounded);
 
         _animator.SetBool("JumpRequestExist", Input.GetKey(KeyCode.C));
         _animator.SetBool("Jumping", jumping);
         _animator.SetBool("Falling", falling);
+
+        bool wallTouched = Physics2D.OverlapCircle(pushCheck.position, wallCheckRadius, whatIsWall);
+        bool walkRequested = _animator.GetBool("WalkRequestExist");
+        bool pushing = wallTouched && walkRequested;
+        _animator.SetBool("Pushing", pushing);
+
+
+        if (pushing)
+        {
+            RequestPush();
+        }
+        else if (_animator.GetBool("PushRequestExist"))
+        {
+            RequestPushEnd();
+        }
 
         if (grounded == false)
         {
@@ -195,10 +219,11 @@ public class ZController : MonoBehaviour
             _animator.SetBool("JumpBlocked", true);
 
             // 지상에 있을 경우
-            if (jumping == false && falling == false)
+            if (_animator.GetBool("Grounded"))
             {
                 RequestWalkBlock();
                 RequestWalkEnd();
+                print("JumpShot Requested");
             }
         }
     }
@@ -244,6 +269,7 @@ public class ZController : MonoBehaviour
             RequestWalkEnd();
             RequestWalkBlock();
             _animator.SetBool("FallEndRequested", false);
+            audioSources[5].Play();
         }
     }
     void RequestWalk()
@@ -255,10 +281,21 @@ public class ZController : MonoBehaviour
     {
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
         _animator.SetBool("WalkRequestExist", false);
+        _animator.SetBool("PushRequestExist", false);
+        _animator.SetBool("PushRequested", false);
     }
     void RequestWalkBlock()
     {
         _animator.SetBool("WalkBlocked", true);
+    }
+    void RequestPush()
+    {
+        _animator.SetBool("PushRequested", true);
+        _animator.SetBool("PushRequestExist", true);
+    }
+    void RequestPushEnd()
+    {
+        _animator.SetBool("PushRequestExist", false);
     }
 
     #endregion
@@ -350,6 +387,16 @@ public class ZController : MonoBehaviour
     public void JumpShot_end()
     {
         _animator.SetBool("ShotBlocked", false);
+    }
+    public void SlideWall_beg()
+    {
+        _animator.SetBool("PushRequested", false);
+        audioSources[7].Play();
+
+    }
+    public void SlideWall_end()
+    {
+
     }
 
     #endregion 프레임 이벤트 핸들러
