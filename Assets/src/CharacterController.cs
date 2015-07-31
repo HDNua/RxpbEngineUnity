@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class CharacterController : MonoBehaviour
 {
+    /*
     #region 공용 GameObject 객체에 접근합니다.
     Rigidbody2D _rigidbody;
     Animator _animator;
@@ -386,4 +387,5 @@ public class CharacterController : MonoBehaviour
     }
 
     #endregion 사용자 정의 메서드
+    */
 }

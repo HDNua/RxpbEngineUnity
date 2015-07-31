@@ -33,7 +33,7 @@ public class ZController : MonoBehaviour
 
     public BoxCollider2D groundCheck2;
 
-    public Transform pushCheck;
+    public Transform wallCheck;
     public LayerMask whatIsWall;
     public float wallCheckRadius = 0.1f;
 
@@ -42,21 +42,22 @@ public class ZController : MonoBehaviour
     public Transform groundCheckLeft;
     public Transform groundCheckRight;
 
+    public Transform pushCheck;
+    public float pushCheckRadius = 0.1f;
+
+    public float slideSpeed = 8;
+
+    public float spawnSpeed = 16;
+
     #endregion Unity 공용 필드
 
 
 
-    #region 주인공의 상태 필드를 정의합니다. (deprecated)
+    #region 주인공의 상태 필드를 정의합니다.
     bool facingRight = true;
 
-    bool jumping = false;
-    bool falling = false;
+    bool _landed = true;
 
-    #endregion
-
-
-
-    #region 주인공의 상태 필드를 정의합니다.
     bool _moving = false;
     bool _moveBlocked = false;
 
@@ -72,7 +73,12 @@ public class ZController : MonoBehaviour
     bool _attackRequested = false;
 
     bool _sliding = false;
+    bool _slideBlocked = false;
+    bool _wallJumping = false;
+
     bool _riding = false;
+
+    bool _spawning = true;
 
     #endregion
 
@@ -91,121 +97,8 @@ public class ZController : MonoBehaviour
             audioSources[i].clip = audioClips[i];
         }
 
-        /*
-        var collider = GetComponent<BoxCollider2D>();
-        groundCheckLeft.position = new Vector2(collider.bounds.min.x, collider.bounds.min.y);
-        groundCheckRight.position = new Vector2(collider.bounds.max.x, collider.bounds.max.y);
-
-        print("TEST");
-        */
-    }
-    void _Update()
-    {
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            if (_animator.GetBool("ShotBlocked") == false)
-            {
-                RequestShot();
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            if (_animator.GetBool("JumpBlocked") == false)
-            {
-                RequestJump();
-            }
-        }
-    }
-    void _FixedUpdate()
-    {
-        bool grounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
-        _animator.SetBool("Grounded", grounded);
-
-        _animator.SetBool("JumpRequestExist", Input.GetKey(KeyCode.C));
-        _animator.SetBool("Jumping", jumping);
-        _animator.SetBool("Falling", falling);
-
-        bool wallTouched = Physics2D.OverlapCircle(pushCheck.position, wallCheckRadius, whatIsWall);
-        bool walkRequested = _animator.GetBool("WalkRequestExist");
-        bool pushing = wallTouched && walkRequested;
-        _animator.SetBool("Pushing", pushing);
-
-
-        if (pushing)
-        {
-            RequestPush();
-        }
-        else if (_animator.GetBool("PushRequestExist"))
-        {
-            RequestPushEnd();
-        }
-
-        if (grounded == false)
-        {
-            if (jumping)
-            {
-                if (_animator.GetBool("JumpRequestExist") == false)
-                {
-                    RequestFall();
-                }
-                else
-                {
-                    float verSpeed = _rigidbody.velocity.y; // _animator.GetFloat("VerSpeed");
-                    if (verSpeed > 0)
-                    {
-                        float vy = _rigidbody.velocity.y - jumpDecSize;
-                        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, vy > 0 ? vy : 0);
-                    }
-                    else
-                    {
-                        RequestFall();
-                    }
-                }
-            }
-            else if (falling)
-            {
-                float verSpeed = _rigidbody.velocity.y; // _animator.GetFloat("VerSpeed");
-                if (verSpeed > -jumpSpeed)
-                {
-                    float vy = _rigidbody.velocity.y - jumpDecSize;
-                    _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, vy > -jumpSpeed ? vy : -jumpSpeed);
-                }
-            }
-            else
-            {
-                RequestFall();
-            }
-            _animator.SetFloat("VerSpeed", _rigidbody.velocity.y);
-        }
-        else
-        {
-            if (falling)
-            {
-                RequestFallEnd();
-            }
-        }
-
-        if (_animator.GetBool("WalkBlocked") == false)
-        {
-            if (Input.GetKey(KeyCode.LeftArrow))
-            {
-                if (facingRight == true)
-                    Flip();
-                _rigidbody.velocity = new Vector2(-walkSpeed, _rigidbody.velocity.y);
-                RequestWalk();
-            }
-            else if (Input.GetKey(KeyCode.RightArrow))
-            {
-                if (facingRight == false)
-                    Flip();
-                _rigidbody.velocity = new Vector2(walkSpeed, _rigidbody.velocity.y);
-                RequestWalk();
-            }
-            else if (_animator.GetBool("WalkRequestExist"))
-            {
-                RequestWalkEnd();
-            }
-        }
+        // 준비 상태가 완료될 때까지 사용자 입력을 막습니다.
+        BlockUserInput();
     }
 
     void Update()
@@ -216,7 +109,27 @@ public class ZController : MonoBehaviour
             {
                 DashJump();
             }
+            else if (_sliding)
+            {
+                if (_slideBlocked)
+                {
+
+                }
+                else
+                {
+                    WallJump();
+                }
+            }
+            else if (_attacking)
+            {
+//                StopAttacking();
+//                Jump();
+            }
             else if (_jumping)
+            {
+
+            }
+            else if (_jumpBlocked)
             {
 
             }
@@ -250,6 +163,11 @@ public class ZController : MonoBehaviour
             {
                 AirDash();
             }
+            else if (_attacking)
+            {
+                StopAttacking();
+                Dash();
+            }
             else if (_dashing)
             {
 
@@ -263,6 +181,23 @@ public class ZController : MonoBehaviour
     }
     void FixedUpdate()
     {
+        _landed = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
+        _animator.SetBool("Landed", _landed);
+
+        if (_spawning)
+        {
+            if (_landed)
+            {
+                Ready();
+                _spawning = false;
+            }
+            else
+            {
+
+            }
+            return;
+        }
+
         bool upPressed = Input.GetKey(KeyCode.UpArrow);
         bool leftPressed = Input.GetKey(KeyCode.LeftArrow);
         bool rightPressed = Input.GetKey(KeyCode.RightArrow);
@@ -270,20 +205,27 @@ public class ZController : MonoBehaviour
         bool dashPressed = Input.GetKey(KeyCode.Z);
         bool attackPressed = Input.GetKey(KeyCode.X);
 
-        bool landed = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
-        /*
-        bool leftLanded = Physics2D.OverlapCircle(groundCheckLeft.position, groundCheckRadius, whatIsGround);
-        bool rightLanded = Physics2D.OverlapCircle(groundCheckRight.position, groundCheckRadius, whatIsGround);
-        bool landed = leftLanded || rightLanded;
-        print(landed);
-        */
+        bool sideTouched = Physics2D.OverlapCircle(pushCheck.position, pushCheckRadius, whatIsWall);
+        bool leftMoving = leftPressed && (facingRight == false);
+        bool rightMoving = rightPressed && facingRight;
+        bool pushing = sideTouched && (leftMoving || rightMoving);
+        _animator.SetBool("Pushing", pushing);
 
         // 점프 중이라면
         if (_jumping)
         {
-            if (jumpPressed == false || _rigidbody.velocity.y <= 0)
+            if (_slideBlocked)
             {
-                StopJumping();
+                print("TEST");
+            }
+            else if (pushing)
+            {
+//                StopJumping();
+                Slide();
+            }
+            else if (jumpPressed == false || _rigidbody.velocity.y <= 0)
+            {
+//                StopJumping();
                 Fall();
             }
             else
@@ -294,9 +236,15 @@ public class ZController : MonoBehaviour
         // 떨어지는 중이라면
         else if (_falling)
         {
-            if (landed)
+            if (_landed)
             {
                 StopFalling();
+                Land();
+            }
+            else if (pushing)
+            {
+//                StopFalling();
+                Slide();
             }
             else
             {
@@ -343,21 +291,52 @@ public class ZController : MonoBehaviour
         // 벽을 타고 있다면
         else if (_sliding)
         {
-
+            if (pushing == false)
+            {
+//                StopSliding();
+                Fall();
+            }
+            else if (_landed)
+            {
+                StopSliding();
+            }
         }
         // 그 외의 경우
         else
         {
             // 공중에 있다면 떨어지게 합니다.
-            if (landed == false)
+            if (_landed == false)
             {
+//                StopSliding();
                 Fall();
             }
         }
 
-        // 이동이 막혀있다면
+        // 이동 요청이 막혀있다면
         if (_moveBlocked)
         {
+
+        }
+        // 이동이 막혀있다면
+        else if (pushing)
+        {
+            if (_landed)
+            {
+                StopMoving();
+            }
+            else if (_slideBlocked)
+            {
+
+            }
+            else
+            {
+                Slide();
+            }
+        }
+        // 벽 점프 상태라면
+        else if (_slideBlocked)
+        {
+            print("SLIDE BLOCKED");
         }
         // 이동 가능한 상태라면
         else
@@ -401,12 +380,89 @@ public class ZController : MonoBehaviour
 
 
 
+    #region 외부에서 요청 가능한 행동 메서드를 정의합니다.
+    /// <summary>
+    /// 플레이어를 소환합니다.
+    /// </summary>
+    public void SpawnPlayer()
+    {
+        this.enabled = true;
+        Spawn();
+    }
+
+    #endregion 공용 행동 메서드
+
+
+
     #region 행동 메서드를 정의합니다.
+    ///////////////////////////////////////////////////////////////////
+    // 기본
+    /// <summary>
+    /// 플레이어를 소환합니다.
+    /// </summary>
+    void Spawn()
+    {
+        _spawning = true;
+        _rigidbody.velocity = new Vector2(0, -spawnSpeed);
+        audioSources[9].Play();
+    }
+    /// <summary>
+    /// 플레이어가 준비하게 합니다.
+    /// </summary>
+    void Ready()
+    {
+        _spawning = false;
+        _rigidbody.velocity = Vector2.zero;
+    }
+    /// <summary>
+    /// 준비 상태를 중지합니다.
+    /// </summary>
+    void StopReady()
+    {
+        UnblockUserInput();
+    }
+    /// <summary>
+    /// 플레이어가 대기하게 합니다.
+    /// </summary>
     void Idle()
     {
-        _jumping = false;
-        _falling = false;
-        _animator.SetBool("Moving", false);
+        StopMoving();
+        StopJumping();
+        StopSliding();
+        StopAttacking();
+
+        UnblockMoving();
+        UnblockJumping();
+        UnblockDashing();
+        UnblockAttacking();
+        UnblockSliding();
+    }
+    /// <summary>
+    /// 사용자 입력을 방지합니다.
+    /// </summary>
+    void BlockUserInput()
+    {
+        BlockMoving();
+        BlockJumping();
+        BlockDashing();
+        BlockAttacking();
+    }
+    /// <summary>
+    /// 사용자가 입력할 수 있도록 합니다.
+    /// </summary>
+    void UnblockUserInput()
+    {
+        UnblockMoving();
+        UnblockJumping();
+        UnblockDashing();
+        UnblockAttacking();
+    }
+    /// <summary>
+    /// 플레이어가 지상에 착륙할 때의 상태를 설정합니다.
+    /// </summary>
+    void Land()
+    {
+        UnblockJumping();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -419,7 +475,7 @@ public class ZController : MonoBehaviour
         if (facingRight)
             Flip();
         _rigidbody.velocity = new Vector2(-walkSpeed, _rigidbody.velocity.y);
-        _animator.SetBool("Moving", true);
+        _animator.SetBool("Moving", _moving = true);
     }
     /// <summary>
     /// 플레이어를 오른쪽으로 이동합니다.
@@ -429,7 +485,7 @@ public class ZController : MonoBehaviour
         if (facingRight == false)
             Flip();
         _rigidbody.velocity = new Vector2(walkSpeed, _rigidbody.velocity.y);
-        _animator.SetBool("Moving", true);
+        _animator.SetBool("Moving", _moving = true);
     }
     /// <summary>
     /// 플레이어의 이동을 중지합니다.
@@ -437,7 +493,7 @@ public class ZController : MonoBehaviour
     void StopMoving()
     {
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-        _animator.SetBool("Moving", false);
+        _animator.SetBool("Moving", _moving = false);
     }
     /// <summary>
     /// 플레이어의 이동 요청을 막습니다.
@@ -461,16 +517,16 @@ public class ZController : MonoBehaviour
     /// </summary>
     void Jump()
     {
-        _jumping = true;
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 16);
-        _animator.SetBool("Jumping", true);
+        BlockJumping();
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpSpeed);
+        _animator.SetBool("Jumping", _jumping = true);
     }
     /// <summary>
     /// 플레이어의 점프를 중지합니다.
     /// </summary>
     void StopJumping()
     {
-        _animator.SetBool("Jumping", false);
+        _animator.SetBool("Jumping", _jumping = false);
     }
     /// <summary>
     /// 플레이어의 점프 요청을 막습니다.
@@ -491,19 +547,19 @@ public class ZController : MonoBehaviour
     /// </summary>
     void Fall()
     {
-        _jumping = false;
-        _falling = true;
+        StopJumping();
+        StopSliding();
+
+        BlockJumping();
+
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
-        _animator.SetBool("Falling", true);
+        _animator.SetBool("Falling", _falling = true);
     }
     /// <summary>
     /// 플레이어의 낙하를 중지합니다.
     /// </summary>
     void StopFalling()
     {
-        _animator.SetBool("Falling", false);
-        _falling = false;
-
         if (_attacking)
         {
             var curState = _animator.GetCurrentAnimatorStateInfo(0);
@@ -518,6 +574,7 @@ public class ZController : MonoBehaviour
                 audioSources[5].Play();
             }
         }
+        _animator.SetBool("Falling", _falling = false);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -604,7 +661,13 @@ public class ZController : MonoBehaviour
     /// </summary>
     void Slide()
     {
+        StopMoving();
+        StopJumping();
+        StopFalling();
+        UnblockJumping();
+
         _animator.SetBool("Sliding", _sliding = true);
+        _rigidbody.velocity = new Vector2(0, -slideSpeed);
     }
     /// <summary>
     /// 플레이어의 벽 타기를 중지합니다.
@@ -612,6 +675,35 @@ public class ZController : MonoBehaviour
     void StopSliding()
     {
         _animator.SetBool("Sliding", _sliding = false);
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
+    }
+    /// <summary>
+    /// 플레이어의 벽 타기 요청을 막습니다.
+    /// </summary>
+    void BlockSliding()
+    {
+        _slideBlocked = true;
+        _animator.SetBool("SlideBlocked", _slideBlocked);
+    }
+    /// <summary>
+    /// 플레이어가 벽 타기할 수 있도록 합니다.
+    /// </summary>
+    void UnblockSliding()
+    {
+        _slideBlocked = false;
+        _animator.SetBool("SlideBlocked", _slideBlocked);
+    }
+    /// <summary>
+    /// 플레이어가 벽 점프를 합니다.
+    /// </summary>
+    void WallJump()
+    {
+        StopSliding();
+        BlockSliding();
+        BlockJumping();
+
+        _rigidbody.velocity = new Vector2(facingRight ? -0.5f : 0.5f, 1) * (jumpSpeed / Mathf.Sqrt(2));
+        _animator.SetBool("Jumping", _jumping = true);
     }
     /// <summary>
     /// 플레이어가 사다리를 타도록 합니다.
@@ -643,101 +735,7 @@ public class ZController : MonoBehaviour
 
 
     #region 요청 메서드를 정의합니다.
-    void RequestIdle()
-    {
-        _animator.SetBool("FallRequested", false);
-        _animator.SetBool("JumpBlocked", false);
-        _animator.SetBool("FallEnd", false);
-        _animator.SetBool("ShotBlocked", false);
-        _animator.SetBool("WalkBlocked", false);
-    }
-    void RequestShot()
-    {
-        if (_animator.GetBool("ShotBlocked") == false)
-        {
-            _animator.SetBool("ShotRequested", true);
-            _animator.SetBool("ShotBlocked", true);
-            _animator.SetBool("JumpBlocked", true);
 
-            // 지상에 있을 경우
-            if (_animator.GetBool("Grounded"))
-            {
-                RequestWalkBlock();
-                RequestWalkEnd();
-                print("JumpShot Requested");
-            }
-        }
-    }
-    void RequestJump()
-    {
-        if (_animator.GetBool("JumpBlocked") == false)
-        {
-            _animator.SetBool("JumpRequestExist", true);
-            _animator.SetBool("JumpRequested", true);
-            _animator.SetBool("JumpBlocked", true);
-            _animator.SetBool("WalkBlocked", false);
-            jumping = true;
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpSpeed);
-        }
-    }
-    void RequestFall()
-    {
-        jumping = false;
-        falling = true;
-
-        _animator.SetBool("JumpBlocked", true);
-        _animator.SetBool("FallRequested", true);
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, -jumpDecSize);
-    }
-    void RequestFallEnd()
-    {
-        _animator.SetBool("FallEndRequested", true);
-        falling = false;
-
-        // 공중 공격 중이었다면
-        if (_animator.GetBool("ShotBlocked"))
-        {
-            RequestWalkBlock();
-            RequestWalkEnd();
-        }
-
-        var curState = _animator.GetCurrentAnimatorStateInfo(0);
-        if (curState.IsName("Z_jumpShot_1inAir"))
-        {
-            var nTime = curState.normalizedTime;
-            var fTime = nTime - Mathf.Floor(nTime);
-            _animator.Play("Z_jumpShot_2ground", 0, fTime);
-            RequestWalkEnd();
-            RequestWalkBlock();
-            _animator.SetBool("FallEndRequested", false);
-            audioSources[5].Play();
-        }
-    }
-    void RequestWalk()
-    {
-        _animator.SetBool("FallEnd", false);
-        _animator.SetBool("WalkRequestExist", true);
-    }
-    void RequestWalkEnd()
-    {
-        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-        _animator.SetBool("WalkRequestExist", false);
-        _animator.SetBool("PushRequestExist", false);
-        _animator.SetBool("PushRequested", false);
-    }
-    void RequestWalkBlock()
-    {
-        _animator.SetBool("WalkBlocked", true);
-    }
-    void RequestPush()
-    {
-        _animator.SetBool("PushRequested", true);
-        _animator.SetBool("PushRequestExist", true);
-    }
-    void RequestPushEnd()
-    {
-        _animator.SetBool("PushRequestExist", false);
-    }
 
     #endregion
 
@@ -746,9 +744,7 @@ public class ZController : MonoBehaviour
     #region 프레임 이벤트 핸들러를 정의합니다.
     public void RemainIdle()
     {
-        _animator.SetBool("ShotBlocked", false);
-        _animator.SetBool("JumpBlocked", false);
-        _animator.SetBool("WalkBlocked", false);
+        // UnblockUserInput();
     }
     public void WalkBeg_beg()
     {
@@ -768,16 +764,15 @@ public class ZController : MonoBehaviour
     }
     public void FallEndFromRun_beg()
     {
-        RequestWalkBlock();
-        _animator.SetBool("FallRequested", false);
-        _animator.SetBool("FallEndRequested", false);
-        _animator.SetBool("FallEnd", true);
-        _animator.SetBool("JumpBlocked", false);
+        StopMoving();
+        BlockMoving();
+        BlockJumping();
         audioSources[5].Play();
     }
     public void FallEndFromRun_end()
     {
-        RequestIdle();
+        UnblockMoving();
+        UnblockJumping();
     }
 
     // 지상 공격 시에 발생하는 이벤트에 대한 핸들러입니다.
@@ -857,7 +852,10 @@ public class ZController : MonoBehaviour
     /// </summary>
     public void AttackEndFromRun_beg()
     {
+        // 막은 행동을 가능하게 합니다.
         UnblockAttacking();
+        UnblockJumping();
+        UnblockDashing();
     }
     /// <summary>
     /// 지상 공격 모션이 완전히 종료되어 대기 상태로 바뀔 때 발생합니다.
@@ -888,21 +886,41 @@ public class ZController : MonoBehaviour
 
     ///////////////////////////////////////////////////////////////////
     // 벽 타기
-    /// <summary>
-    /// 벽 타기 시에 발생합니다.
-    /// </summary>
+    /*
     public void SlideWall_beg()
     {
         _animator.SetBool("PushRequested", false);
         audioSources[7].Play();
-
+        audioSources[8].Play();
     }
-    /// <summary>
-    /// 벽 타기가 종료할 때 발생합니다.
-    /// </summary>
     public void SlideWall_end()
     {
 
+    }
+    */
+    /// <summary>
+    /// 벽 타기 시에 발생합니다.
+    /// </summary>
+    public void Slide_beg()
+    {
+        audioSources[7].Play();
+    }
+    /// <summary>
+    /// 벽 점프 시에 발생합니다.
+    /// </summary>
+    public void WallJump_beg()
+    {
+        BlockSliding();
+        audioSources[7].Play();
+        audioSources[8].Play();
+    }
+    /// <summary>
+    /// 벽 점프가 종료할 때 발생합니다.
+    /// </summary>
+    public void WallJump_end()
+    {
+        UnblockSliding();
+        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
     }
 
     #endregion 프레임 이벤트 핸들러
