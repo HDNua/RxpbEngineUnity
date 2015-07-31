@@ -7,6 +7,9 @@ public class UIController : MonoBehaviour
     Animator _animator;
     AudioSource _audioSource;
 
+    BoxCollider2D _collider;
+    Camera _camera;
+
     #endregion 컨트롤러용 Unity 객체
 
 
@@ -14,6 +17,9 @@ public class UIController : MonoBehaviour
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     public AudioClip[] bgmClips;
     public AudioClip[] seClips;
+    public ZController _ZController;
+
+    public GameObject map;
 
     #endregion Unity 공용 필드
 
@@ -32,9 +38,14 @@ public class UIController : MonoBehaviour
     #region MonoBehaviour가 정의하는 기본 메서드를 재정의합니다.
     void Start()
     {
+        // 컨트롤러 사용 Unity 객체를 먼저 초기화합니다.
         _animator = GetComponent<Animator>();
         _audioSource = GetComponent<AudioSource>();
+        _collider = GetComponent<BoxCollider2D>();
+        _camera = GetComponentInChildren<Camera>();
 
+        // 컨트롤러 사용 Unity 객체가 정의된 후
+        // 원하는 값으로 필드를 초기화합니다.
         _bgm = new AudioSource[bgmClips.Length];
         for (int i = 0, len = bgmClips.Length; i < len; ++i)
         {
@@ -60,7 +71,7 @@ public class UIController : MonoBehaviour
     }
     void FixedUpdate()
     {
-
+        
     }
 
     #endregion MonoBehaviour 기본 메서드 재정의

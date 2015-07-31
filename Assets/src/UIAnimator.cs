@@ -32,7 +32,7 @@ public class UIAnimator : MonoBehaviour
     }
     void Update()
     {
-
+        
     }
     void FixedUpdate()
     {

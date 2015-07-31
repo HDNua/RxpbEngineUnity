@@ -462,6 +462,7 @@ public class ZController : MonoBehaviour
     /// </summary>
     void Land()
     {
+        audioSources[5].Play();
         UnblockJumping();
     }
 
@@ -702,7 +703,7 @@ public class ZController : MonoBehaviour
         BlockSliding();
         BlockJumping();
 
-        _rigidbody.velocity = new Vector2(facingRight ? -0.5f : 0.5f, 1) * (jumpSpeed / Mathf.Sqrt(2));
+        _rigidbody.velocity = new Vector2(facingRight ? -0.6f : 0.6f, 1) * (jumpSpeed / Mathf.Sqrt(2));
         _animator.SetBool("Jumping", _jumping = true);
     }
     /// <summary>
@@ -764,15 +765,15 @@ public class ZController : MonoBehaviour
     }
     public void FallEndFromRun_beg()
     {
-        StopMoving();
-        BlockMoving();
-        BlockJumping();
-        audioSources[5].Play();
+//        StopMoving();
+//        BlockMoving();
+//        BlockJumping();
+//        audioSources[5].Play();
     }
     public void FallEndFromRun_end()
     {
-        UnblockMoving();
-        UnblockJumping();
+//        UnblockMoving();
+//        UnblockJumping();
     }
 
     // 지상 공격 시에 발생하는 이벤트에 대한 핸들러입니다.
