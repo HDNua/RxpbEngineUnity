@@ -14,7 +14,6 @@ public class ZController : MonoBehaviour
     #region 필드를 정의합니다.
     AudioSource[] audioSources;
 
-
     #endregion 필드
 
 
@@ -26,28 +25,20 @@ public class ZController : MonoBehaviour
     public float groundCheckRadius = 0.5f;
     public LayerMask whatIsGround;
 
-    public float walkSpeed = 8;
-
-    public float jumpSpeed = 16;
-    public float jumpDecSize = 0.8f;
-
-    public BoxCollider2D groundCheck2;
-
-    public Transform wallCheck;
-    public LayerMask whatIsWall;
-    public float wallCheckRadius = 0.1f;
-
-
-
+    public RectTransform groundCheckRect;
     public Transform groundCheckLeft;
     public Transform groundCheckRight;
 
     public Transform pushCheck;
     public float pushCheckRadius = 0.1f;
+    public LayerMask whatIsWall;
 
+    public float walkSpeed = 8;
+    public float jumpSpeed = 16;
+    public float jumpDecSize = 0.8f;
     public float slideSpeed = 8;
-
     public float spawnSpeed = 16;
+    public float dashSpeed = 16;
 
     #endregion Unity 공용 필드
 
@@ -74,6 +65,7 @@ public class ZController : MonoBehaviour
 
     bool _sliding = false;
     bool _slideBlocked = false;
+    bool _slideRequested = false;
     bool _wallJumping = false;
 
     bool _riding = false;
@@ -115,6 +107,14 @@ public class ZController : MonoBehaviour
                 {
 
                 }
+                else if (_falling)
+                {
+
+                }
+                else if (_jumping)
+                {
+
+                }
                 else
                 {
                     WallJump();
@@ -122,8 +122,6 @@ public class ZController : MonoBehaviour
             }
             else if (_attacking)
             {
-//                StopAttacking();
-//                Jump();
             }
             else if (_jumping)
             {
@@ -181,7 +179,14 @@ public class ZController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        _landed = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
+        bool centerLanded = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckRadius, whatIsGround);
+        bool leftLanded = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, groundCheckRadius, whatIsGround);
+        bool rightLanded = Physics2D.Raycast(groundCheckRight.position, Vector2.down, groundCheckRadius, whatIsGround);
+        _landed = leftLanded || centerLanded || rightLanded;
+
+        // _landed = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckRadius, whatIsGround);
+        // print(string.Format("{0} / {1}", landedMin, landedMax));
+        // _landed = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
         _animator.SetBool("Landed", _landed);
 
         if (_spawning)
@@ -220,12 +225,10 @@ public class ZController : MonoBehaviour
             }
             else if (pushing)
             {
-//                StopJumping();
                 Slide();
             }
             else if (jumpPressed == false || _rigidbody.velocity.y <= 0)
             {
-//                StopJumping();
                 Fall();
             }
             else
@@ -243,7 +246,6 @@ public class ZController : MonoBehaviour
             }
             else if (pushing)
             {
-//                StopFalling();
                 Slide();
             }
             else
@@ -272,7 +274,16 @@ public class ZController : MonoBehaviour
         else if (_dashing)
         {
             // 대쉬를 취소하는 조건을 나열합니다.
-            if (leftPressed && facingRight)
+            if (_landed == false)
+            {
+                StopDashing();
+                Fall();
+            }
+            else if (dashPressed == false)
+            {
+                StopDashing();
+            }
+            else if (leftPressed && facingRight)
             {
                 StopDashing();
                 MoveLeft();
@@ -293,7 +304,6 @@ public class ZController : MonoBehaviour
         {
             if (pushing == false)
             {
-//                StopSliding();
                 Fall();
             }
             else if (_landed)
@@ -307,7 +317,6 @@ public class ZController : MonoBehaviour
             // 공중에 있다면 떨어지게 합니다.
             if (_landed == false)
             {
-//                StopSliding();
                 Fall();
             }
         }
@@ -338,6 +347,13 @@ public class ZController : MonoBehaviour
         {
             print("SLIDE BLOCKED");
         }
+        /*
+        // 대쉬 상태라면
+        else if (_dashing)
+        {
+
+        }
+        */
         // 이동 가능한 상태라면
         else
         {
@@ -436,6 +452,12 @@ public class ZController : MonoBehaviour
         UnblockDashing();
         UnblockAttacking();
         UnblockSliding();
+
+        /*
+        Vector3 newPos = transform.position;
+        newPos.x = Mathf.Round(newPos.x);
+        transform.position = newPos;
+        */
     }
     /// <summary>
     /// 사용자 입력을 방지합니다.
@@ -631,14 +653,28 @@ public class ZController : MonoBehaviour
     {
         BlockMoving();
         BlockDashing();
+
+        float vx = facingRight ? dashSpeed : -dashSpeed;
+        _rigidbody.velocity = new Vector2(vx, _rigidbody.velocity.y);
+        _animator.SetBool("Dashing", _dashing = true);
     }
     /// <summary>
-    /// 플레이어의 대쉬를 중지합니다.
+    /// 플레이어의 대쉬 상태를 종료하도록 요청합니다.
+    /// </summary>
+    void EndDash()
+    {
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x / 10, _rigidbody.velocity.y);
+    }
+    /// <summary>
+    /// 플레이어의 대쉬를 중지합니다. (사용자의 입력에 의함)
     /// </summary>
     void StopDashing()
     {
         UnblockMoving();
         UnblockDashing();
+
+        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+        _animator.SetBool("Dashing", _dashing = false);
     }
     /// <summary>
     /// 플레이어의 대쉬 요청을 막습니다.
@@ -662,12 +698,11 @@ public class ZController : MonoBehaviour
     /// </summary>
     void Slide()
     {
+        _animator.SetBool("Sliding", _sliding = true);
         StopMoving();
         StopJumping();
         StopFalling();
         UnblockJumping();
-
-        _animator.SetBool("Sliding", _sliding = true);
         _rigidbody.velocity = new Vector2(0, -slideSpeed);
     }
     /// <summary>
@@ -699,12 +734,14 @@ public class ZController : MonoBehaviour
     /// </summary>
     void WallJump()
     {
+        StopJumping();
+        StopFalling();
         StopSliding();
-        BlockSliding();
-        BlockJumping();
-
-        _rigidbody.velocity = new Vector2(facingRight ? -0.6f : 0.6f, 1) * (jumpSpeed / Mathf.Sqrt(2));
         _animator.SetBool("Jumping", _jumping = true);
+        _rigidbody.velocity = new Vector2(facingRight ? -0.6f : 0.6f, 1) * (jumpSpeed / Mathf.Sqrt(2));
+
+        BlockJumping();
+//        BlockSliding();
     }
     /// <summary>
     /// 플레이어가 사다리를 타도록 합니다.
@@ -743,37 +780,10 @@ public class ZController : MonoBehaviour
 
 
     #region 프레임 이벤트 핸들러를 정의합니다.
-    public void RemainIdle()
-    {
-        // UnblockUserInput();
-    }
-    public void WalkBeg_beg()
-    {
-    }
-    public void WalkBeg_end()
-    {
-    }
     public void Jump_beg()
     {
-        _animator.SetBool("JumpRequested", false);
         audioSources[4].Play();
         audioSources[6].Play();
-    }
-    public void Fall_beg()
-    {
-        _animator.SetBool("FallRequested", false);
-    }
-    public void FallEndFromRun_beg()
-    {
-//        StopMoving();
-//        BlockMoving();
-//        BlockJumping();
-//        audioSources[5].Play();
-    }
-    public void FallEndFromRun_end()
-    {
-//        UnblockMoving();
-//        UnblockJumping();
     }
 
     // 지상 공격 시에 발생하는 이벤트에 대한 핸들러입니다.
@@ -873,7 +883,9 @@ public class ZController : MonoBehaviour
     /// </summary>
     public void JumpShot_beg()
     {
+        _animator.SetBool("AttackRequested", _attackRequested = false);
         BlockAttacking();
+
         audioSources[3].Play();
     }
     /// <summary>
@@ -887,24 +899,14 @@ public class ZController : MonoBehaviour
 
     ///////////////////////////////////////////////////////////////////
     // 벽 타기
-    /*
-    public void SlideWall_beg()
-    {
-        _animator.SetBool("PushRequested", false);
-        audioSources[7].Play();
-        audioSources[8].Play();
-    }
-    public void SlideWall_end()
-    {
-
-    }
-    */
     /// <summary>
     /// 벽 타기 시에 발생합니다.
     /// </summary>
     public void Slide_beg()
     {
         audioSources[7].Play();
+//        _animator.SetBool("Sliding", _sliding = true);
+//        _animator.SetBool("SlideRequested", _slideRequested = false);
     }
     /// <summary>
     /// 벽 점프 시에 발생합니다.
@@ -922,6 +924,33 @@ public class ZController : MonoBehaviour
     {
         UnblockSliding();
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    // 대쉬
+    /// <summary>
+    /// 대쉬가 종료할 때 발생합니다.
+    /// </summary>
+    public void DashEnd()
+    {
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x / 10, _rigidbody.velocity.y);
+    }
+    /// <summary>
+    /// 대쉬가 사용자에 의해 중지될 때 발생합니다.
+    /// </summary>
+    public void DashEndFromRun_beg()
+    {
+        StopMoving();
+        BlockMoving();
+    }
+    /// <summary>
+    /// 대쉬 점프 모션이 사용자에 의해 완전히 중지되어 대기 상태로 바뀔 때 발생합니다.
+    /// </summary>
+    public void DashEndFromRun_end()
+    {
+        UnblockMoving();
+        UnblockDashing();
+        StopDashing();
     }
 
     #endregion 프레임 이벤트 핸들러

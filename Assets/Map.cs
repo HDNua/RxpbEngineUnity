@@ -46,13 +46,9 @@ public class Map : MonoBehaviour
     {
         // 뷰 포트를 맞춥니다.
         SetViewportCenter();
-
-        
-
     }
     void FixedUpdate()
     {
-
     }
 
     #endregion MonoBehaviour 기본 메서드 재정의
@@ -60,38 +56,20 @@ public class Map : MonoBehaviour
 
 
     #region 요청을 수행하기 위한 보조 메서드를 정의합니다.
+    /// <summary>
+    /// 뷰 포트를 가운데로 맞춥니다.
+    /// </summary>
     void SetViewportCenter()
     {
         float czLeft = cameraZone.bounds.min.x;
         float czRight = cameraZone.bounds.max.x;
         float playerX = _ZController.transform.position.x;
-
-        print("============================");
-        print(string.Format("{0} < {1} < {2}", czLeft, playerX, czRight));
-//        print(string.Format("{0} - {1} > {2}", playerX, czLeft, czMinX));
-//        print(string.Format("{0} - {1} < {2}", czRight, playerX, czMinX));
-
         if (czHorMin < playerX && playerX < czHorMax )
         {
             var newPos = mainCamera.transform.position;
             newPos.x = playerX;
             mainCamera.transform.position = newPos;
         }
-
-        /*
-        if (Mathf.Abs(playerX - czLeft) > czMinX)
-        {
-            var newPos = mainCamera.transform.position;
-            newPos.x = playerX;
-            mainCamera.transform.position = newPos;
-        }
-        else if (Mathf.Abs(czRight - playerX) > czMinX)
-        {
-            var newPos = mainCamera.transform.position;
-            newPos.x = playerX;
-            mainCamera.transform.position = newPos;
-        }
-        */
     }
 
     #endregion 보조 메서드 정의
