@@ -7,6 +7,10 @@ public class EffectScript : MonoBehaviour
     {
 
     }
+    public void RequestEnd()
+    {
+        GetComponent<Animator>().SetBool("EndRequested", true);
+    }
     public void EndEffect()
     {
         Destroy(gameObject);

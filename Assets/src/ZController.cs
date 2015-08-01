@@ -43,6 +43,9 @@ public class ZController : MonoBehaviour
     public GameObject[] effects;
     public Transform dashFogPosition;
     public Transform dashBoostPosition;
+    public Transform slideFogPosition;
+
+    public GameObject slideFogEffect;
 
     #endregion Unity 공용 필드
 
@@ -717,6 +720,11 @@ public class ZController : MonoBehaviour
     /// </summary>
     void StopSliding()
     {
+        if (slideFogEffect != null)
+        {
+            slideFogEffect.GetComponent<EffectScript>().RequestEnd();
+            slideFogEffect = null;
+        }
         _animator.SetBool("Sliding", _sliding = false);
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
     }
@@ -744,6 +752,8 @@ public class ZController : MonoBehaviour
         StopJumping();
         StopFalling();
         StopSliding();
+
+        GameObject wallKick = Instantiate(effects[3], slideFogPosition.position, slideFogPosition.rotation) as GameObject;
         _animator.SetBool("Jumping", _jumping = true);
         _rigidbody.velocity = new Vector2(facingRight ? -0.6f : 0.6f, 1) * (jumpSpeed / Mathf.Sqrt(2));
 
@@ -911,9 +921,17 @@ public class ZController : MonoBehaviour
     /// </summary>
     public void Slide_beg()
     {
+        GameObject slideFog = Instantiate(effects[2], slideFogPosition.position, slideFogPosition.rotation) as GameObject;
+        slideFog.transform.SetParent(groundCheck.transform);
+        if (facingRight == false)
+        {
+            var newScale = slideFog.transform.localScale;
+            newScale.x = facingRight ? newScale.x : -newScale.x;
+            slideFog.transform.localScale = newScale;
+        }
+        slideFogEffect = slideFog;
+
         audioSources[7].Play();
-//        _animator.SetBool("Sliding", _sliding = true);
-//        _animator.SetBool("SlideRequested", _slideRequested = false);
     }
     /// <summary>
     /// 벽 점프 시에 발생합니다.
