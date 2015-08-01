@@ -2,12 +2,12 @@ Mono path[0] = 'D:/handy/work/project/rockman/dev/XControl/test_Data/Managed'
 Mono path[1] = 'D:/handy/work/project/rockman/dev/XControl/test_Data/Mono'
 Mono config path = 'D:/handy/work/project/rockman/dev/XControl/test_Data/Mono/etc'
 PlayerConnection initialized from D:/handy/work/project/rockman/dev/XControl/test_Data (debug = 0)
-PlayerConnection initialized network socket : 0.0.0.0 55072
-Multi-casting "[IP] 192.168.1.2 [Port] 55072 [Flags] 3 [Guid] 681837630 [EditorId] 777812506 [Version] 1048832 [Id] WindowsPlayer(HandyMain-PC) [Debug] 1" to [225.0.0.222:54997]...
-Waiting for connection from host on [192.168.1.2:55072]...
+PlayerConnection initialized network socket : 0.0.0.0 55150
+Multi-casting "[IP] 192.168.1.2 [Port] 55150 [Flags] 3 [Guid] 1818260159 [EditorId] 24999801 [Version] 1048832 [Id] WindowsPlayer(HandyMain-PC) [Debug] 1" to [225.0.0.222:54997]...
+Waiting for connection from host on [192.168.1.2:55150]...
 PlayerConnection accepted from [192.168.1.2] handle:0x1b4
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,defer=y,address=0.0.0.0:56630
-PlayerConnection already initialized - listening to [192.168.1.2:55072]
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,defer=y,address=0.0.0.0:56159
+PlayerConnection already initialized - listening to [192.168.1.2:55150]
 Initialize engine version: 5.1.2f1 (afd2369b692a)
 GfxDevice: creating device client; threaded=1
 Direct3D:
@@ -37,7 +37,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -45,7 +45,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -53,7 +53,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -61,7 +61,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -69,7 +69,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -77,7 +77,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -85,7 +85,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -93,7 +93,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -101,7 +101,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -109,7 +109,15 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -117,7 +125,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -125,15 +133,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-TEST
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -141,7 +141,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -149,7 +149,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -157,7 +157,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -165,7 +165,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -173,7 +173,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -181,7 +181,15 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -189,7 +197,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -197,7 +205,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -205,7 +213,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -213,23 +221,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-TEST
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-TEST
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -237,7 +229,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -245,7 +237,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -253,7 +245,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -261,7 +253,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -269,7 +261,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -277,7 +269,15 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -285,7 +285,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -293,15 +293,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-TEST
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -309,7 +301,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -317,7 +309,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -325,7 +317,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -333,7 +325,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -341,7 +333,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -349,7 +341,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -357,7 +349,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -365,7 +357,15 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -373,7 +373,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -381,15 +381,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-TEST
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -397,7 +389,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -405,7 +397,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -413,7 +405,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -421,7 +413,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -429,7 +421,7 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -437,7 +429,7 @@ TEST
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:228)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -445,7 +437,783 @@ SLIDE BLOCKED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:352)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+TEST
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:231)
+ 
+(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+
+SLIDE BLOCKED
+UnityEngine.Debug:Internal_Log(Int32, String, Object)
+UnityEngine.Debug:Log(Object)
+UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
+ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\src\ZController.cs:355)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 

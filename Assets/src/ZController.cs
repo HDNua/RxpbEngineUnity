@@ -33,12 +33,14 @@ public class ZController : MonoBehaviour
     public float pushCheckRadius = 0.1f;
     public LayerMask whatIsWall;
 
-    public float walkSpeed = 8;
+    float movingSpeed = 5;
+
+    public float walkSpeed = 5;
     public float jumpSpeed = 16;
     public float jumpDecSize = 0.8f;
-    public float slideSpeed = 8;
+    public float slideSpeed = 4f;
     public float spawnSpeed = 16;
-    public float dashSpeed = 16;
+    public float dashSpeed = 10;
 
     public GameObject[] effects;
     public Transform dashFogPosition;
@@ -65,6 +67,7 @@ public class ZController : MonoBehaviour
 
     bool _dashing = false;
     bool _dashBlocked = false;
+    bool _dashRequested = false;
 
     bool _attacking = false;
     bool _attackBlocked = false;
@@ -104,9 +107,24 @@ public class ZController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.C))
         {
-            if (_dashing)
+            if (_jumpBlocked)
+            {
+
+            }
+            else if (_dashing)
             {
                 DashJump();
+            }
+            else if (_dashRequested)
+            {
+                if (_sliding)
+                {
+                    WallDashJump();
+                }
+                else
+                {
+                    DashJump();
+                }
             }
             else if (_sliding)
             {
@@ -134,10 +152,6 @@ public class ZController : MonoBehaviour
             {
 
             }
-            else if (_jumpBlocked)
-            {
-
-            }
             else
             {
                 Jump();
@@ -145,17 +159,17 @@ public class ZController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
-            if (_jumping)
+            if (_attackBlocked)
+            {
+
+            }
+            else if (_jumping)
             {
                 JumpAttack();
             }
             else if (_falling)
             {
                 JumpAttack();
-            }
-            else if (_attackBlocked)
-            {
-
             }
             else
             {
@@ -164,7 +178,11 @@ public class ZController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            if (_jumping)
+            if (_dashBlocked)
+            {
+
+            }
+            else if (_jumping)
             {
                 AirDash();
             }
@@ -178,6 +196,10 @@ public class ZController : MonoBehaviour
                 Dash();
             }
             else if (_dashing)
+            {
+
+            }
+            else if (_sliding)
             {
 
             }
@@ -217,6 +239,8 @@ public class ZController : MonoBehaviour
         bool dashPressed = Input.GetKey(KeyCode.Z);
         bool attackPressed = Input.GetKey(KeyCode.X);
 
+        _dashRequested = dashPressed;
+
         bool sideTouched = Physics2D.OverlapCircle(pushCheck.position, pushCheckRadius, whatIsWall);
         bool leftMoving = leftPressed && (facingRight == false);
         bool rightMoving = rightPressed && facingRight;
@@ -228,7 +252,7 @@ public class ZController : MonoBehaviour
         {
             if (_slideBlocked)
             {
-                print("TEST");
+//                print("TEST");
             }
             else if (pushing)
             {
@@ -238,6 +262,12 @@ public class ZController : MonoBehaviour
             {
                 Fall();
             }
+            /*
+            else if (_dashing)
+            {
+
+            }
+            */
             else
             {
                 _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y - 0.8f);
@@ -290,6 +320,7 @@ public class ZController : MonoBehaviour
             {
                 StopDashing();
             }
+            /*
             else if (leftPressed && facingRight)
             {
                 StopDashing();
@@ -300,6 +331,7 @@ public class ZController : MonoBehaviour
                 StopDashing();
                 MoveRight();
             }
+            */
         }
         // 사다리를 타는 중이라면
         else if (_riding)
@@ -311,11 +343,13 @@ public class ZController : MonoBehaviour
         {
             if (pushing == false)
             {
+                StopSliding();
                 Fall();
             }
             else if (_landed)
             {
                 StopSliding();
+                Fall();
             }
         }
         // 그 외의 경우
@@ -331,7 +365,31 @@ public class ZController : MonoBehaviour
         // 이동 요청이 막혀있다면
         if (_moveBlocked)
         {
+            // 대쉬 상태라면
+            if (_dashing)
+            {
+                // 점프 또는 낙하 상태라면
+                if (_landed == false)
+                {
+                    if (leftPressed)
+                    {
+                        MoveLeft();
+                    }
+                    else if (rightPressed)
+                    {
+                        MoveRight();
+                    }
+                    else
+                    {
+                        StopMoving();
+                    }
+                }
+                // 그 외의 경우
+                else
+                {
 
+                }
+            }
         }
         // 이동이 막혀있다면
         else if (pushing)
@@ -354,43 +412,16 @@ public class ZController : MonoBehaviour
         {
             print("SLIDE BLOCKED");
         }
-        /*
-        // 대쉬 상태라면
-        else if (_dashing)
-        {
-
-        }
-        */
         // 이동 가능한 상태라면
         else
         {
             if (leftPressed)
             {
-                if (_dashing)
-                {
-                    if (facingRight)
-                    {
-                        MoveLeft();
-                    }
-                }
-                else
-                {
-                    MoveLeft();
-                }
+                MoveLeft();
             }
             else if (rightPressed)
             {
-                if (_dashing)
-                {
-                    if (facingRight == false)
-                    {
-                        MoveRight();
-                    }
-                }
-                else
-                {
-                    MoveRight();
-                }
+                MoveRight();
             }
             else
             {
@@ -486,7 +517,15 @@ public class ZController : MonoBehaviour
     void Land()
     {
         audioSources[5].Play();
+
+        StopDashing();
+        StopJumping();
+        StopFalling();
+        StopSliding();
         UnblockJumping();
+        UnblockDashing();
+        UnblockAttacking();
+        UnblockSliding();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -498,7 +537,7 @@ public class ZController : MonoBehaviour
     {
         if (facingRight)
             Flip();
-        _rigidbody.velocity = new Vector2(-walkSpeed, _rigidbody.velocity.y);
+        _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
         _animator.SetBool("Moving", _moving = true);
     }
     /// <summary>
@@ -508,7 +547,7 @@ public class ZController : MonoBehaviour
     {
         if (facingRight == false)
             Flip();
-        _rigidbody.velocity = new Vector2(walkSpeed, _rigidbody.velocity.y);
+        _rigidbody.velocity = new Vector2(movingSpeed, _rigidbody.velocity.y);
         _animator.SetBool("Moving", _moving = true);
     }
     /// <summary>
@@ -664,8 +703,10 @@ public class ZController : MonoBehaviour
             dashFog.transform.localScale = newScale;
         }
 
+        movingSpeed = dashSpeed;
         float vx = facingRight ? dashSpeed : -dashSpeed;
         _rigidbody.velocity = new Vector2(vx, _rigidbody.velocity.y);
+        audioSources[11].Play();
         _animator.SetBool("Dashing", _dashing = true);
     }
     /// <summary>
@@ -683,6 +724,7 @@ public class ZController : MonoBehaviour
         UnblockMoving();
         UnblockDashing();
 
+        movingSpeed = walkSpeed;
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
         _animator.SetBool("Dashing", _dashing = false);
     }
@@ -702,7 +744,7 @@ public class ZController : MonoBehaviour
     }
 
     ///////////////////////////////////////////////////////////////////
-    // 기타
+    // 벽 타기
     /// <summary>
     /// 플레이어가 벽을 타도록 합니다.
     /// </summary>
@@ -712,6 +754,9 @@ public class ZController : MonoBehaviour
         StopMoving();
         StopJumping();
         StopFalling();
+        StopDashing();
+
+        BlockDashing();
         UnblockJumping();
         _rigidbody.velocity = new Vector2(0, -slideSpeed);
     }
@@ -725,6 +770,8 @@ public class ZController : MonoBehaviour
             slideFogEffect.GetComponent<EffectScript>().RequestEnd();
             slideFogEffect = null;
         }
+
+        UnblockDashing();
         _animator.SetBool("Sliding", _sliding = false);
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
     }
@@ -744,22 +791,9 @@ public class ZController : MonoBehaviour
         _slideBlocked = false;
         _animator.SetBool("SlideBlocked", _slideBlocked);
     }
-    /// <summary>
-    /// 플레이어가 벽 점프를 합니다.
-    /// </summary>
-    void WallJump()
-    {
-        StopJumping();
-        StopFalling();
-        StopSliding();
 
-        GameObject wallKick = Instantiate(effects[3], slideFogPosition.position, slideFogPosition.rotation) as GameObject;
-        _animator.SetBool("Jumping", _jumping = true);
-        _rigidbody.velocity = new Vector2(facingRight ? -0.6f : 0.6f, 1) * (jumpSpeed / Mathf.Sqrt(2));
-
-        BlockJumping();
-//        BlockSliding();
-    }
+    ///////////////////////////////////////////////////////////////////
+    // 사다리 타기
     /// <summary>
     /// 플레이어가 사다리를 타도록 합니다.
     /// </summary>
@@ -771,16 +805,58 @@ public class ZController : MonoBehaviour
     ///////////////////////////////////////////////////////////////////
     // 조합
     /// <summary>
-    /// 플레이어가 에어 대쉬하게 합니다.
+    /// 플레이어가 벽 점프를 합니다.
     /// </summary>
-    void AirDash()
+    void WallJump()
     {
+        StopJumping();
+        StopFalling();
+        StopSliding();
 
+        GameObject wallKick = Instantiate(effects[3], slideFogPosition.position, slideFogPosition.rotation) as GameObject;
+
+        _rigidbody.velocity = new Vector2(facingRight ? - 1.5f * movingSpeed : 1.5f * movingSpeed, jumpSpeed / Mathf.Sqrt(2));
+        _animator.SetBool("Jumping", _jumping = true);
+        BlockJumping();
     }
     /// <summary>
     /// 플레이어가 대쉬 점프하게 합니다.
     /// </summary>
     void DashJump()
+    {
+        StopJumping();
+        StopFalling();
+        StopSliding();
+
+//        BlockMoving();
+        BlockDashing();
+        BlockJumping();
+
+        movingSpeed = dashSpeed;
+        _rigidbody.velocity = new Vector2(facingRight ? movingSpeed : -movingSpeed, jumpSpeed);
+        _animator.SetBool("Jumping", _jumping = true);
+        _animator.SetBool("Dashing", _dashing = true);
+    }
+    /// <summary>
+    /// 플레이어가 벽에서 대쉬 점프하게 합니다.
+    /// </summary>
+    void WallDashJump()
+    {
+        StopJumping();
+        StopFalling();
+        StopSliding();
+
+        GameObject wallKick = Instantiate(effects[3], slideFogPosition.position, slideFogPosition.rotation) as GameObject;
+
+        movingSpeed = dashSpeed;
+        _rigidbody.velocity = new Vector2(facingRight ? -1.5f * movingSpeed : 1.5f * movingSpeed, jumpSpeed / Mathf.Sqrt(2));
+        _animator.SetBool("Jumping", _jumping = true);
+        BlockJumping();
+    }
+    /// <summary>
+    /// 플레이어가 에어 대쉬하게 합니다.
+    /// </summary>
+    void AirDash()
     {
 
     }
@@ -966,7 +1042,6 @@ public class ZController : MonoBehaviour
             newScale.x = facingRight ? newScale.x : -newScale.x;
             dashBoost.transform.localScale = newScale;
         }
-        audioSources[11].Play();
     }
     /// <summary>
     /// 대쉬가 종료할 때 발생합니다.
