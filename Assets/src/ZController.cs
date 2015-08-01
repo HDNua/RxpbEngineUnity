@@ -40,6 +40,10 @@ public class ZController : MonoBehaviour
     public float spawnSpeed = 16;
     public float dashSpeed = 16;
 
+    public GameObject[] effects;
+    public Transform dashFogPosition;
+    public Transform dashBoostPosition;
+
     #endregion Unity 공용 필드
 
 
@@ -161,6 +165,10 @@ public class ZController : MonoBehaviour
             {
                 AirDash();
             }
+            else if (_falling)
+            {
+                AirDash();
+            }
             else if (_attacking)
             {
                 StopAttacking();
@@ -183,10 +191,6 @@ public class ZController : MonoBehaviour
         bool leftLanded = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, groundCheckRadius, whatIsGround);
         bool rightLanded = Physics2D.Raycast(groundCheckRight.position, Vector2.down, groundCheckRadius, whatIsGround);
         _landed = leftLanded || centerLanded || rightLanded;
-
-        // _landed = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckRadius, whatIsGround);
-        // print(string.Format("{0} / {1}", landedMin, landedMax));
-        // _landed = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
         _animator.SetBool("Landed", _landed);
 
         if (_spawning)
@@ -452,12 +456,6 @@ public class ZController : MonoBehaviour
         UnblockDashing();
         UnblockAttacking();
         UnblockSliding();
-
-        /*
-        Vector3 newPos = transform.position;
-        newPos.x = Mathf.Round(newPos.x);
-        transform.position = newPos;
-        */
     }
     /// <summary>
     /// 사용자 입력을 방지합니다.
@@ -653,6 +651,15 @@ public class ZController : MonoBehaviour
     {
         BlockMoving();
         BlockDashing();
+
+        // 대쉬 효과 애니메이션을 추가합니다.
+        GameObject dashFog = Instantiate(effects[0], dashFogPosition.position, dashFogPosition.rotation) as GameObject;
+        if (facingRight == false)
+        {
+            var newScale = dashFog.transform.localScale;
+            newScale.x = facingRight ? newScale.x : -newScale.x;
+            dashFog.transform.localScale = newScale;
+        }
 
         float vx = facingRight ? dashSpeed : -dashSpeed;
         _rigidbody.velocity = new Vector2(vx, _rigidbody.velocity.y);
@@ -929,11 +936,27 @@ public class ZController : MonoBehaviour
     ///////////////////////////////////////////////////////////////////
     // 대쉬
     /// <summary>
+    /// 대쉬 부스트가 시작할 때 발생합니다.
+    /// </summary>
+    public void DashRun()
+    {
+        GameObject dashBoost = Instantiate(effects[1], dashBoostPosition.position, dashBoostPosition.rotation) as GameObject;
+        dashBoost.transform.SetParent(groundCheck.transform);
+        if (facingRight == false)
+        {
+            var newScale = dashBoost.transform.localScale;
+            newScale.x = facingRight ? newScale.x : -newScale.x;
+            dashBoost.transform.localScale = newScale;
+        }
+        audioSources[11].Play();
+    }
+    /// <summary>
     /// 대쉬가 종료할 때 발생합니다.
     /// </summary>
     public void DashEnd()
     {
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x / 10, _rigidbody.velocity.y);
+        audioSources[12].Play();
     }
     /// <summary>
     /// 대쉬가 사용자에 의해 중지될 때 발생합니다.
@@ -942,6 +965,7 @@ public class ZController : MonoBehaviour
     {
         StopMoving();
         BlockMoving();
+        audioSources[13].Play();
     }
     /// <summary>
     /// 대쉬 점프 모션이 사용자에 의해 완전히 중지되어 대기 상태로 바뀔 때 발생합니다.

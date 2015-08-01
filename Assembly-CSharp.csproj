@@ -46,9 +46,10 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Map.cs" />
      <Compile Include="Assets\src\AController.cs" />
      <Compile Include="Assets\src\CharacterController.cs" />
+     <Compile Include="Assets\src\EffectScript.cs" />
+     <Compile Include="Assets\src\Map.cs" />
      <Compile Include="Assets\src\UIAnimator.cs" />
      <Compile Include="Assets\src\UIController.cs" />
      <Compile Include="Assets\src\XController.cs" />
