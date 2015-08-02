@@ -68,14 +68,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\src\AController.cs" />
-    <Compile Include="Assets\src\CharacterController.cs" />
-    <Compile Include="Assets\src\EffectScript.cs" />
-    <Compile Include="Assets\src\Map.cs" />
-    <Compile Include="Assets\src\UIAnimator.cs" />
-    <Compile Include="Assets\src\UIController.cs" />
-    <Compile Include="Assets\src\XController.cs" />
-    <Compile Include="Assets\src\ZController.cs" />
+    <Compile Include="Assets\Common\ScreenFader.cs" />
+    <Compile Include="Assets\LoadingSceneManager.cs" />
+    <Compile Include="Assets\Main\src\AController.cs" />
+    <Compile Include="Assets\Main\src\CharacterController.cs" />
+    <Compile Include="Assets\Main\src\EffectScript.cs" />
+    <Compile Include="Assets\Main\src\Map.cs" />
+    <Compile Include="Assets\Main\src\UIAnimator.cs" />
+    <Compile Include="Assets\Main\src\UIController.cs" />
+    <Compile Include="Assets\Main\src\XController.cs" />
+    <Compile Include="Assets\Main\src\ZController.cs" />
+    <Compile Include="Assets\Title\TitleSceneManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
