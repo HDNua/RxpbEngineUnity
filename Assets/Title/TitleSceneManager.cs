@@ -28,7 +28,10 @@ public class TitleSceneManager : MonoBehaviour
         if (gameStartRequested)
         {
             if (fader.FadeOutEnded)
-                Application.LoadLevel(1);
+            {
+                LoadingSceneManager.LoadLevel(2);
+//                Application.LoadLevel(1);
+            }
             return;
         }
 
