@@ -49,17 +49,18 @@
      <Compile Include="Assets\Common\ScreenFader.cs" />
      <Compile Include="Assets\Cutscene\CutsceneManager.cs" />
      <Compile Include="Assets\Loading\LoadingSceneManager.cs" />
-     <Compile Include="Assets\Test\Main\src\AController.cs" />
-     <Compile Include="Assets\Test\Main\src\CharacterController.cs" />
-     <Compile Include="Assets\Test\Main\src\EffectScript.cs" />
-     <Compile Include="Assets\Test\Main\src\Map.cs" />
-     <Compile Include="Assets\Test\Main\src\UIAnimator.cs" />
-     <Compile Include="Assets\Test\Main\src\UIController.cs" />
-     <Compile Include="Assets\Test\Main\src\XController.cs" />
-     <Compile Include="Assets\Test\Main\src\ZController.cs" />
      <Compile Include="Assets\Test\Speech\SpeechManager.cs" />
+     <Compile Include="Assets\Test\Test\src\AController.cs" />
+     <Compile Include="Assets\Test\Test\src\CharacterController.cs" />
+     <Compile Include="Assets\Test\Test\src\EffectScript.cs" />
+     <Compile Include="Assets\Test\Test\src\Map.cs" />
+     <Compile Include="Assets\Test\Test\src\UIAnimator.cs" />
+     <Compile Include="Assets\Test\Test\src\UIController.cs" />
+     <Compile Include="Assets\Test\Test\src\XController.cs" />
+     <Compile Include="Assets\Test\Test\src\ZController.cs" />
      <Compile Include="Assets\Title\TitleSceneManager.cs" />
      <None Include="Assets\Cutscene\CS01_Intro.txt" />
+     <None Include="Assets\Resources\CS01_Intro.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

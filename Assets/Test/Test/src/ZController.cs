@@ -82,6 +82,13 @@ public class ZController : MonoBehaviour
 
     bool _spawning = true;
 
+    bool _dashJumping = false;
+    bool _airDashing = false;
+    bool _airDashBlocked = false;
+
+    int _airDashCount = 0;
+//    bool _canAirDash = false;
+
     #endregion
 
 
@@ -163,6 +170,11 @@ public class ZController : MonoBehaviour
             {
 
             }
+            else if (_airDashing)
+            {
+                StopAirDashing();
+                JumpAttack();
+            }
             else if (_jumping)
             {
                 JumpAttack();
@@ -182,24 +194,42 @@ public class ZController : MonoBehaviour
             {
 
             }
+            /*
+            else if (_airDashBlocked)
+            {
+
+            }
+            else if (_airDashing)
+            {
+
+            }
+            */
             else if (_jumping)
             {
-                AirDash();
+                if (_airDashCount == 0)
+                {
+                    StopJumping();
+                    AirDash();
+                }
             }
             else if (_falling)
             {
-                AirDash();
+                if (_airDashCount == 0)
+                {
+                    StopFalling();
+                    AirDash();
+                }
             }
             else if (_attacking)
             {
                 StopAttacking();
                 Dash();
             }
-            else if (_dashing)
+            else if (_sliding)
             {
 
             }
-            else if (_sliding)
+            else if (_dashing)
             {
 
             }
@@ -252,7 +282,7 @@ public class ZController : MonoBehaviour
         {
             if (_slideBlocked)
             {
-//                print("TEST");
+
             }
             else if (pushing)
             {
@@ -262,12 +292,6 @@ public class ZController : MonoBehaviour
             {
                 Fall();
             }
-            /*
-            else if (_dashing)
-            {
-
-            }
-            */
             else
             {
                 _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _rigidbody.velocity.y - 0.8f);
@@ -284,6 +308,18 @@ public class ZController : MonoBehaviour
             else if (pushing)
             {
                 Slide();
+            }
+            else if (_airDashing)
+            {
+                if (dashPressed)
+                {
+
+                }
+                else
+                {
+                    StopAirDashing();
+                    Fall();
+                }
             }
             else
             {
@@ -402,6 +438,11 @@ public class ZController : MonoBehaviour
             {
 
             }
+            else if (_airDashing)
+            {
+                StopAirDashing();
+                Slide();
+            }
             else
             {
                 Slide();
@@ -410,7 +451,6 @@ public class ZController : MonoBehaviour
         // 벽 점프 상태라면
         else if (_slideBlocked)
         {
-            print("SLIDE BLOCKED");
         }
         // 이동 가능한 상태라면
         else
@@ -526,6 +566,8 @@ public class ZController : MonoBehaviour
         UnblockDashing();
         UnblockAttacking();
         UnblockSliding();
+        ClearAirDashCount();
+//        _airDashCount = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -583,6 +625,7 @@ public class ZController : MonoBehaviour
         BlockJumping();
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpSpeed);
         _animator.SetBool("Jumping", _jumping = true);
+//        _canAirDash = true;
     }
     /// <summary>
     /// 플레이어의 점프를 중지합니다.
@@ -682,6 +725,7 @@ public class ZController : MonoBehaviour
     {
         _animator.SetBool("Attacking", _attacking = true);
         _animator.SetBool("AttackRequested", _attackRequested = true);
+        BlockAirDashing();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -693,6 +737,7 @@ public class ZController : MonoBehaviour
     {
         BlockMoving();
         BlockDashing();
+        BlockAirDashing();
 
         // 대쉬 효과 애니메이션을 추가합니다.
         GameObject dashFog = Instantiate(effects[0], dashFogPosition.position, dashFogPosition.rotation) as GameObject;
@@ -715,6 +760,7 @@ public class ZController : MonoBehaviour
     void EndDash()
     {
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x / 10, _rigidbody.velocity.y);
+//        UnblockAirDashing();
     }
     /// <summary>
     /// 플레이어의 대쉬를 중지합니다. (사용자의 입력에 의함)
@@ -723,6 +769,7 @@ public class ZController : MonoBehaviour
     {
         UnblockMoving();
         UnblockDashing();
+        UnblockAirDashing();
 
         movingSpeed = walkSpeed;
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
@@ -755,6 +802,7 @@ public class ZController : MonoBehaviour
         StopJumping();
         StopFalling();
         StopDashing();
+        ClearAirDashCount();
 
         BlockDashing();
         UnblockJumping();
@@ -799,6 +847,7 @@ public class ZController : MonoBehaviour
     /// </summary>
     void RideLadder()
     {
+        ClearAirDashCount();
 
     }
 
@@ -836,6 +885,8 @@ public class ZController : MonoBehaviour
         _rigidbody.velocity = new Vector2(facingRight ? movingSpeed : -movingSpeed, jumpSpeed);
         _animator.SetBool("Jumping", _jumping = true);
         _animator.SetBool("Dashing", _dashing = true);
+
+        _dashJumping = true;
     }
     /// <summary>
     /// 플레이어가 벽에서 대쉬 점프하게 합니다.
@@ -851,14 +902,50 @@ public class ZController : MonoBehaviour
         movingSpeed = dashSpeed;
         _rigidbody.velocity = new Vector2(facingRight ? -1.5f * movingSpeed : 1.5f * movingSpeed, jumpSpeed / Mathf.Sqrt(2));
         _animator.SetBool("Jumping", _jumping = true);
+
+        ++_airDashCount;
+        _dashJumping = true;
         BlockJumping();
+        BlockDashing();
     }
     /// <summary>
     /// 플레이어가 에어 대쉬하게 합니다.
     /// </summary>
     void AirDash()
     {
+        StopJumping();
+        StopFalling();
+        StopSliding();
 
+        _rigidbody.velocity = new Vector2(facingRight ? dashSpeed : -dashSpeed, 0);
+        _animator.SetBool("AirDashing", _airDashing = true);
+        audioSources[11].Play();
+
+        BlockMoving();
+        ++_airDashCount;
+//        _canAirDash = false;
+    }
+    /// <summary>
+    /// 플레이어의 에어 대쉬를 중지합니다.
+    /// </summary>
+    void StopAirDashing()
+    {
+        UnblockMoving();
+        _animator.SetBool("AirDashing", _airDashing = false);
+    }
+    /// <summary>
+    /// 플레이어의 에어 대쉬 요청을 막습니다.
+    /// </summary>
+    void BlockAirDashing()
+    {
+        _airDashBlocked = true;
+    }
+    /// <summary>
+    /// 플레이어가 에어 대쉬할 수 있도록 합니다.
+    /// </summary>
+    void UnblockAirDashing()
+    {
+        _airDashBlocked = false;
     }
 
     #endregion
@@ -986,6 +1073,7 @@ public class ZController : MonoBehaviour
     /// </summary>
     public void JumpShot_end()
     {
+        UnblockAirDashing();
         UnblockAttacking();
         StopAttacking();
     }
@@ -1069,6 +1157,28 @@ public class ZController : MonoBehaviour
         UnblockDashing();
         StopDashing();
     }
+    /// <summary>
+    /// 에어 대쉬 부스트가 시작할 때 발생합니다.
+    /// </summary>
+    public void AirDashRun()
+    {
+        GameObject dashBoost = Instantiate(effects[1], dashBoostPosition.position, dashBoostPosition.rotation) as GameObject;
+        dashBoost.transform.SetParent(groundCheck.transform);
+        if (facingRight == false)
+        {
+            var newScale = dashBoost.transform.localScale;
+            newScale.x = facingRight ? newScale.x : -newScale.x;
+            dashBoost.transform.localScale = newScale;
+        }
+    }
+    /// <summary>
+    /// 에어 대쉬가 중지될 때 발생합니다.
+    /// </summary>
+    public void AirDashEnd()
+    {
+        StopAirDashing();
+        Fall();
+    }
 
     #endregion 프레임 이벤트 핸들러
 
@@ -1081,6 +1191,10 @@ public class ZController : MonoBehaviour
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
+    }
+    void ClearAirDashCount()
+    {
+        _airDashCount = 0;
     }
 
     #endregion 보조 메서드 정의

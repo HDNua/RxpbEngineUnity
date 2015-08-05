@@ -2,12 +2,12 @@ Mono path[0] = 'D:/handy/work/project/rockman/dev/XControl/test_Data/Managed'
 Mono path[1] = 'D:/handy/work/project/rockman/dev/XControl/test_Data/Mono'
 Mono config path = 'D:/handy/work/project/rockman/dev/XControl/test_Data/Mono/etc'
 PlayerConnection initialized from D:/handy/work/project/rockman/dev/XControl/test_Data (debug = 0)
-PlayerConnection initialized network socket : 0.0.0.0 55086
-Multi-casting "[IP] 192.168.1.2 [Port] 55086 [Flags] 3 [Guid] 146535424 [EditorId] 49388431 [Version] 1048832 [Id] WindowsPlayer(HandyMain-PC) [Debug] 1" to [225.0.0.222:54997]...
-Waiting for connection from host on [192.168.1.2:55086]...
+PlayerConnection initialized network socket : 0.0.0.0 55135
+Multi-casting "[IP] 192.168.1.2 [Port] 55135 [Flags] 3 [Guid] 326610091 [EditorId] 2806346353 [Version] 1048832 [Id] WindowsPlayer(HandyMain-PC) [Debug] 1" to [225.0.0.222:54997]...
+Waiting for connection from host on [192.168.1.2:55135]...
 PlayerConnection accepted from [192.168.1.2] handle:0x1b4
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,defer=y,address=0.0.0.0:56424
-PlayerConnection already initialized - listening to [192.168.1.2:55086]
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,defer=y,address=0.0.0.0:56091
+PlayerConnection already initialized - listening to [192.168.1.2:55135]
 Initialize engine version: 5.1.2f1 (afd2369b692a)
 GfxDevice: creating device client; threaded=1
 Direct3D:
@@ -26,7 +26,7 @@ Platform assembly: D:\handy\work\project\rockman\dev\XControl\test_Data\Managed\
 Loading D:\handy\work\project\rockman\dev\XControl\test_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: D:\handy\work\project\rockman\dev\XControl\test_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading D:\handy\work\project\rockman\dev\XControl\test_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-- Completed reload, in  0.041 seconds
+- Completed reload, in  0.171 seconds
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
@@ -34,20 +34,20 @@ desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 Platform assembly: D:\handy\work\project\rockman\dev\XControl\test_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: D:\handy\work\project\rockman\dev\XControl\test_Data\Managed\System.dll (this message is harmless)
 Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.376999 ms
+UnloadTime: 0.413016 ms
 System memory in use before: 12.7 MB.
 System memory in use after: 12.7 MB.
 
 Unloading 22 unused Assets to reduce memory usage. Loaded Objects now: 161.
-Total: 0.142407 ms (FindLiveObjects: 0.010573 ms CreateObjectMapping: 0.008590 ms MarkObjects: 0.089541 ms  DeleteObjects: 0.029406 ms)
+Total: 0.173136 ms (FindLiveObjects: 0.010903 ms CreateObjectMapping: 0.008260 ms MarkObjects: 0.120600 ms  DeleteObjects: 0.029076 ms)
 
 Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.360808 ms
+UnloadTime: 0.267304 ms
 ROCKMAN X 팬 에피소드|판도라의 상자|
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -55,7 +55,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -63,7 +63,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -71,7 +71,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -79,7 +79,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -87,7 +87,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -95,7 +95,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -103,7 +103,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -111,7 +111,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -119,7 +119,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -127,7 +127,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -135,7 +135,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -143,7 +143,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -151,7 +151,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -159,7 +159,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -167,7 +167,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -175,7 +175,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -183,7 +183,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -191,7 +191,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -199,7 +199,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -207,7 +207,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -215,7 +215,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -223,7 +223,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -231,7 +231,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -239,7 +239,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -247,7 +247,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -255,7 +255,7 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -263,21 +263,21 @@ CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cu
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:72)
+CutsceneManager:Start() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:75)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
 System memory in use before: 25.1 MB.
 System memory in use after: 25.1 MB.
 
-Unloading 6 unused Assets to reduce memory usage. Loaded Objects now: 164.
-Total: 0.090202 ms (FindLiveObjects: 0.008921 ms CreateObjectMapping: 0.004956 ms MarkObjects: 0.067403 ms  DeleteObjects: 0.007929 ms)
+Unloading 6 unused Assets to reduce memory usage. Loaded Objects now: 165.
+Total: 0.138773 ms (FindLiveObjects: 0.008921 ms CreateObjectMapping: 0.013877 ms MarkObjects: 0.097802 ms  DeleteObjects: 0.017511 ms)
 
 1/43
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -285,7 +285,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -293,7 +293,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -301,7 +301,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -309,7 +309,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -317,7 +317,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -325,7 +325,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -333,7 +333,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -341,7 +341,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -349,7 +349,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -357,7 +357,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -365,7 +365,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -373,7 +373,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -381,7 +381,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -389,7 +389,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -397,7 +397,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -405,7 +405,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -413,7 +413,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -421,7 +421,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -429,7 +429,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -437,7 +437,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -445,7 +445,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -453,7 +453,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -461,7 +461,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -469,7 +469,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -477,7 +477,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -485,7 +485,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -493,7 +493,7 @@ CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\C
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:112)
+CutsceneManager:Update() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:115)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
@@ -501,414 +501,30 @@ SCRIPT ENDED
 UnityEngine.Debug:Internal_Log(Int32, String, Object)
 UnityEngine.Debug:Log(Object)
 UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-CutsceneManager:DoNextScript() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:122)
-<ActWithCoroutine>c__Iterator0:MoveNext() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:176)
+CutsceneManager:DoNextScript() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:125)
+<ActWithCoroutine>c__Iterator0:MoveNext() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:179)
 UnityEngine.MonoBehaviour:StartCoroutine_Auto(IEnumerator)
 UnityEngine.MonoBehaviour:StartCoroutine(IEnumerator) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:62)
-CutsceneManager:Act() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:153)
-CutsceneManager:DoNextScript() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:132)
-<ActWithCoroutine>c__Iterator0:MoveNext() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:176)
+CutsceneManager:Act() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:156)
+CutsceneManager:DoNextScript() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:135)
+<ActWithCoroutine>c__Iterator0:MoveNext() (at D:\handy\work\project\rockman\dev\XControl\Assets\Cutscene\CutsceneManager.cs:179)
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
 
 Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.310586 ms
+UnloadTime: 0.249792 ms
 System memory in use before: 25.3 MB.
 System memory in use after: 25.3 MB.
 
-Unloading 12 unused Assets to reduce memory usage. Loaded Objects now: 162.
-Total: 0.190647 ms (FindLiveObjects: 0.011564 ms CreateObjectMapping: 0.005616 ms MarkObjects: 0.159588 ms  DeleteObjects: 0.013216 ms)
+Unloading 13 unused Assets to reduce memory usage. Loaded Objects now: 162.
+Total: 0.163224 ms (FindLiveObjects: 0.006277 ms CreateObjectMapping: 0.004625 ms MarkObjects: 0.086568 ms  DeleteObjects: 0.065091 ms)
 
 Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.343297 ms
-System memory in use before: 165.1 MB.
-System memory in use after: 165.2 MB.
+UnloadTime: 0.746073 ms
+System memory in use before: 165.2 MB.
+System memory in use after: 165.3 MB.
 
-Unloading 6 unused Assets to reduce memory usage. Loaded Objects now: 1455.
-Total: 0.472818 ms (FindLiveObjects: 0.113000 ms CreateObjectMapping: 0.094167 ms MarkObjects: 0.248799 ms  DeleteObjects: 0.015859 ms)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
-
-SLIDE BLOCKED
-UnityEngine.Debug:Internal_Log(Int32, String, Object)
-UnityEngine.Debug:Log(Object)
-UnityEngine.MonoBehaviour:print(Object) (at C:\buildslave\unity\build\artifacts\generated\common\runtime\UnityEngineMonoBehaviourBindings.gen.cs:108)
-ZController:FixedUpdate() (at D:\handy\work\project\rockman\dev\XControl\Assets\Test\Main\src\ZController.cs:413)
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineMonoBehaviourBindings.gen.cs Line: 108)
+Unloading 6 unused Assets to reduce memory usage. Loaded Objects now: 1496.
+Total: 0.363454 ms (FindLiveObjects: 0.053196 ms CreateObjectMapping: 0.034032 ms MarkObjects: 0.234593 ms  DeleteObjects: 0.041301 ms)
 
 Waiting for finish

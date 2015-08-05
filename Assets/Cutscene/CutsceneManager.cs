@@ -9,6 +9,7 @@ public class CutsceneManager : MonoBehaviour
 
     public GameObject textObject;
     public AudioClip[] audioClips;
+    public TextAsset textAsset;
 
     AudioSource[] _audioSources;
     GUIText _guiText;
@@ -41,8 +42,10 @@ public class CutsceneManager : MonoBehaviour
         #endregion
 
         #region 텍스트 파일로부터 대사를 획득하고 분석합니다.
-        string path = System.Environment.CurrentDirectory + "\\Assets\\Cutscene\\CS01_Intro.txt";
-        string text = System.IO.File.ReadAllText(path, System.Text.Encoding.UTF8);
+        //        string path = System.Environment.CurrentDirectory + "\\Assets\\Cutscene\\CS01_Intro.txt";
+        //        string text = System.IO.File.ReadAllText(path, System.Text.Encoding.UTF8);
+
+        string text = textAsset.text;
         string[] subscriptArray = text.Replace(NEWLINE, "|").Split('|');
 
         string newSub = null;
@@ -238,7 +241,6 @@ public class CutsceneManager : MonoBehaviour
             }
             yield return new WaitForSeconds(0.1f);
         }
-
         scriptPlaying = false;
         inputBlocked = false;
     }
