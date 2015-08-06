@@ -46,21 +46,25 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Common\ScreenFader.cs" />
-     <Compile Include="Assets\Cutscene\CutsceneManager.cs" />
-     <Compile Include="Assets\Loading\LoadingSceneManager.cs" />
-     <Compile Include="Assets\Test\Speech\SpeechManager.cs" />
-     <Compile Include="Assets\Test\Test\src\AController.cs" />
-     <Compile Include="Assets\Test\Test\src\CharacterController.cs" />
-     <Compile Include="Assets\Test\Test\src\EffectScript.cs" />
-     <Compile Include="Assets\Test\Test\src\Map.cs" />
-     <Compile Include="Assets\Test\Test\src\UIAnimator.cs" />
-     <Compile Include="Assets\Test\Test\src\UIController.cs" />
-     <Compile Include="Assets\Test\Test\src\XController.cs" />
-     <Compile Include="Assets\Test\Test\src\ZController.cs" />
-     <Compile Include="Assets\Title\TitleSceneManager.cs" />
-     <None Include="Assets\Cutscene\CS01_Intro.txt" />
-     <None Include="Assets\Resources\CS01_Intro.txt" />
+     <Compile Include="Assets\src\CutsceneManager.cs" />
+     <Compile Include="Assets\src\LoadingSceneManager.cs" />
+     <Compile Include="Assets\src\PlayerSelectSceneManager.cs" />
+     <Compile Include="Assets\src\SaberAttackScript.cs" />
+     <Compile Include="Assets\src\ScreenFader.cs" />
+     <Compile Include="Assets\src\SpeechManager.cs" />
+     <Compile Include="Assets\src\TitleSceneManager.cs" />
+     <Compile Include="Assets\src\enemy\MettoController.cs" />
+     <Compile Include="Assets\src\stage\AController.cs" />
+     <Compile Include="Assets\src\stage\CharacterController.cs" />
+     <Compile Include="Assets\src\stage\EffectScript.cs" />
+     <Compile Include="Assets\src\stage\Map.cs" />
+     <Compile Include="Assets\src\stage\UIAnimator.cs" />
+     <Compile Include="Assets\src\stage\UIController.cs" />
+     <Compile Include="Assets\src\stage\XController.cs" />
+     <Compile Include="Assets\src\stage\ZController.cs" />
+     <None Include="Assets\_Trashbin\Cutscene\CS01_Intro.txt" />
+     <None Include="Assets\Resources\cutscene\ZCS_Intro.txt" />
+     <None Include="Assets\Resources\cutscene\XCS_Intro.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
