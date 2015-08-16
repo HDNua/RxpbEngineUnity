@@ -1,0 +1,37 @@
+Initialize engine version: 5.1.2f1 (afd2369b692a)
+GfxDevice: creating device client; threaded=1
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.0]
+    Renderer: NVIDIA GeForce GTX 970 (ID=0x13c2)
+    Vendor:   NVIDIA
+    VRAM:     4010 MB
+Begin MonoManager ReloadAssembly
+Platform assembly: D:\handy\work\project\rockman\dev\XControl\rxpb_win64_Data\Managed\UnityEngine.dll (this message is harmless)
+Loading D:\handy\work\project\rockman\dev\XControl\rxpb_win64_Data\Managed\UnityEngine.dll into Unity Child Domain
+Platform assembly: D:\handy\work\project\rockman\dev\XControl\rxpb_win64_Data\Managed\Assembly-CSharp.dll (this message is harmless)
+Loading D:\handy\work\project\rockman\dev\XControl\rxpb_win64_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
+Platform assembly: D:\handy\work\project\rockman\dev\XControl\rxpb_win64_Data\Managed\UnityEngine.UI.dll (this message is harmless)
+Loading D:\handy\work\project\rockman\dev\XControl\rxpb_win64_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
+Platform assembly: D:\handy\work\project\rockman\dev\XControl\rxpb_win64_Data\Managed\UnityEngine.Networking.dll (this message is harmless)
+Loading D:\handy\work\project\rockman\dev\XControl\rxpb_win64_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
+Platform assembly: D:\handy\work\project\rockman\dev\XControl\rxpb_win64_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
+Loading D:\handy\work\project\rockman\dev\XControl\rxpb_win64_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
+- Completed reload, in  0.035 seconds
+desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
+<RI> Initializing input.
+<RI> Input initialized.
+<RI> Initialized touch support.
+Platform assembly: D:\handy\work\project\rockman\dev\XControl\rxpb_win64_Data\Managed\System.Core.dll (this message is harmless)
+Platform assembly: D:\handy\work\project\rockman\dev\XControl\rxpb_win64_Data\Managed\System.dll (this message is harmless)
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.284156 ms
+
+Unloading 22 unused Assets to reduce memory usage. Loaded Objects now: 163.
+Total: 0.137452 ms (FindLiveObjects: 0.018172 ms CreateObjectMapping: 0.005617 ms MarkObjects: 0.076656 ms  DeleteObjects: 0.024781 ms)
+
+Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
+UnloadTime: 0.658515 ms
+
+Unloading 5 unused Assets to reduce memory usage. Loaded Objects now: 270.
+Total: 0.150338 ms (FindLiveObjects: 0.012555 ms CreateObjectMapping: 0.015199 ms MarkObjects: 0.099785 ms  DeleteObjects: 0.022137 ms)
+
