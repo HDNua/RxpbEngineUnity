@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\StageSceneManager.cs" />
      <Compile Include="Assets\sources\CutsceneManager.cs" />
      <Compile Include="Assets\sources\LoadingSceneManager.cs" />
      <Compile Include="Assets\sources\PlayerSelectSceneManager.cs" />
@@ -57,13 +58,16 @@
      <Compile Include="Assets\sources\stage\AController.cs" />
      <Compile Include="Assets\sources\stage\CharacterController.cs" />
      <Compile Include="Assets\sources\stage\EffectScript.cs" />
+     <Compile Include="Assets\sources\stage\IPlayerController.cs" />
      <Compile Include="Assets\sources\stage\Map.cs" />
+     <Compile Include="Assets\sources\stage\PlayerController.cs" />
      <Compile Include="Assets\sources\stage\UIAnimator.cs" />
      <Compile Include="Assets\sources\stage\UIController.cs" />
      <Compile Include="Assets\sources\stage\XController.cs" />
      <Compile Include="Assets\sources\stage\ZController.cs" />
      <None Include="Assets\_Trashbin\Cutscene\CS01_Intro.txt" />
      <None Include="Assets\scenes\cutscene\CS01_Prologue.txt" />
+     <None Include="Assets\scenes\cutscene\CS02_GaiaFound.txt" />
      <None Include="Assets\_Trashbin\cutscene_text\ZCS_Intro.txt" />
      <None Include="Assets\scenes\cutscene\CS00_PreviousStory.txt" />
  <Reference Include="UnityEngine.UI">

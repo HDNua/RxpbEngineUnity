@@ -11,8 +11,10 @@ public class UIAnimator : MonoBehaviour
 
 
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
-    public UIController _UIController;
-    public ZController _ZController;
+    // public UIController _UIController;
+
+    public StageSceneManager stageManager;
+    public PlayerController player;
 
     #endregion Unity 공용 필드
 
@@ -60,11 +62,13 @@ public class UIAnimator : MonoBehaviour
     #region 프레임 이벤트 핸들러를 정의합니다.
     public void PlayReadyVoice()
     {
-        _UIController.se[0].Play();
+        // _UIController.se[0].Play();
+        stageManager.SoundEffects[0].Play();
     }
     public void RequestSpawn()
     {
-        _ZController.SpawnPlayer();
+        player.RequestSpawn();
+        //        _ZController.RequestSpawn();
     }
     public void StopReadyAnimation()
     {

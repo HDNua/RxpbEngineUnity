@@ -118,6 +118,7 @@ public class CutsceneManager : MonoBehaviour
     }
     void Update()
     {
+        print(scriptPlaying);
         if (Input.anyKeyDown)
         {
             if (inputBlocked)
@@ -234,7 +235,7 @@ public class CutsceneManager : MonoBehaviour
                 fader.FadeIn(fadeSpeed);
                 break;
 
-            case "SceneFadeout":
+            case "SceneFadeOut":
                 fadeSpeed = float.Parse(action[1]);
                 fader.FadeOut(fadeSpeed);
                 break;

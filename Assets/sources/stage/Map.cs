@@ -12,7 +12,10 @@ public class Map : MonoBehaviour
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     public Camera mainCamera;
     public BoxCollider2D[] cameraZones;
-    public ZController _ZController;
+
+
+    // public ZController _ZController;
+    public PlayerController player;
 
     #endregion Unity 공용 필드
 
@@ -63,8 +66,8 @@ public class Map : MonoBehaviour
     {
         float czLeft = cameraZone.bounds.min.x;
         float czRight = cameraZone.bounds.max.x;
-        float playerX = _ZController.transform.position.x;
-        if (czHorMin < playerX && playerX < czHorMax )
+        float playerX = player.transform.position.x;
+        if (czHorMin < playerX && playerX < czHorMax)
         {
             var newPos = mainCamera.transform.position;
             newPos.x = playerX;

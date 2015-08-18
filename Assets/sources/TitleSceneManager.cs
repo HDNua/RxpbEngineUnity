@@ -44,7 +44,7 @@ public class TitleSceneManager : MonoBehaviour
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            if (menuIndex < menuItems.Length)
+            if (menuIndex < menuItems.Length - 1)
             {
                 ChangeMenuItem(menuIndex + 1);
             }

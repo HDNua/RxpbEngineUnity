@@ -500,7 +500,7 @@ public class ZController : MonoBehaviour
     /// <summary>
     /// 플레이어를 소환합니다.
     /// </summary>
-    public void SpawnPlayer()
+    public void RequestSpawn()
     {
         this.enabled = true;
         Spawn();
