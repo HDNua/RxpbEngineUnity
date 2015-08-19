@@ -1,0 +1,68 @@
+﻿[
+…….
+]
+[
+………….
+]
+[
+:엑스
+
+으음.
+]
+[
+:엑스
+
+‘아침이구나.’
+]
+(PlaySound 2 0.6)
+(PlaySound 2 0.6)
+(PlaySound 2 0.6)
+(PlaySound 2 0.6)
+(PlaySound 2 0.6)
+(PlaySound 2 0.6)
+(PlaySound 2 0.6)
+(PlaySound 2 0.6)
+(PlayMusic 1)
+(SceneFadeIn 1)
+(WaitForSeconds 1.5)
+[
+:에이리아
+
+안녕, 엑스!
+]
+[
+:엑스
+
+아, 에이리아.
+]
+[
+:에이리아
+
+오늘은 포인트 1788로 가줘. 숲 지역이래. 별 거 없겠지만.
+]
+[
+:엑스
+
+알았어. 다녀올게.
+]
+(PlaySound 3 0.8)
+(PlaySound 3 0.8)
+(PlaySound 3 0.8)
+(PlaySound 3 0.8)
+[
+--- 긴급 상황 발생! 긴급 상황 발생! 포인트 1788에서 작업 인원이 공격당했다!
+출동 가능한 헌터는 바로 포인트 1788로 출동하라! ---
+]
+[
+:에이리아
+
+…마침 그 지점이네. 다녀와 줘. 조심하고.
+]
+[
+:엑스
+
+공격이라니……. 빨리 가야겠어. 출동한다!
+]
+(SceneFadeOut 1)
+(WaitForSeconds 1.5)
+(Load 01_Intro)

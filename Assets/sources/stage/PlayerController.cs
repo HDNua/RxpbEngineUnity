@@ -1,9 +1,19 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 
 public abstract class PlayerController : MonoBehaviour
 {
+    /// <summary>
+    /// 문자열을 출력합니다.
+    /// </summary>
+    /// <param name="s">출력할 문자열입니다.</param>
+    public void Log(string s)
+    {
+//        print(s);
+    }
+
+
     #region 컨트롤러가 사용할 공용 형식 또는 값을 정의합니다.
     protected enum GameKey
     {
@@ -120,6 +130,7 @@ public abstract class PlayerController : MonoBehaviour
     bool _falling = false;
     bool _dashing = false;
     bool _sliding = false;
+    bool _airDashing = false;
 
     /*
     bool _moveBlocked = false;
@@ -138,15 +149,27 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어가 오른쪽을 향하고 있다면 true입니다.
     /// </summary>
-    public bool FacingRight { get { return _facingRight; } }
+    public bool FacingRight
+    {
+        get { return _facingRight; }
+        private set { _facingRight = value; }
+    }
     /// <summary>
     /// 플레이어가 소환중이라면 true입니다.
     /// </summary>
-    protected bool Spawning { get { return _spawning; } }
+    protected bool Spawning
+    {
+        get { return _spawning; }
+        private set { _animator.SetBool("Spawning", _spawning = value); }
+    }
     /// <summary>
     /// 플레이어가 준비중이라면 true입니다.
     /// </summary>
-    protected bool Readying { get { return _readying; } }
+    protected bool Readying
+    {
+        get { return _readying; }
+        private set { _readying = value; }
+    }
     /// <summary>
     /// 지상에 있다면 true입니다.
     /// </summary>
@@ -213,7 +236,11 @@ public abstract class PlayerController : MonoBehaviour
     protected bool DashJumping { get; set; }
     protected bool WallJumping { get; set; }
     protected bool WallDashJumping { get; set; }
-    protected bool AirDashing { get; set; }
+    protected bool AirDashing
+    {
+        get { return _airDashing; }
+        set { _animator.SetBool("AirDashing", _airDashing = value); }
+    }
 
     /// <summary>
     /// 플레이어가 죽었는지 확인합니다.
@@ -296,23 +323,29 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void Spawn()
     {
-        _spawning = true;
+        Spawning = true;
         _rigidbody.velocity = new Vector2(0, -spawnSpeed);
+
+        Log("Spawn");
     }
     /// <summary>
     /// 플레이어를 소환 상태에서 준비 상태로 전환합니다.
     /// </summary>
     protected void Ready()
     {
-        _readying = true;
+        Readying = true;
+
+        Log("Ready");
     }
     /// <summary>
     /// 소환 및 준비를 완료합니다.
     /// </summary>
     protected void EndReady()
     {
-        _readying = false;
-        _spawning = false;
+        Readying = false;
+        Spawning = false;
+
+        Log("EndReady");
     }
 
     #endregion
@@ -329,6 +362,11 @@ public abstract class PlayerController : MonoBehaviour
     {
         StopJumping();
         StopFalling();
+        StopDashing();
+        StopDashJumping();
+        UnblockAirDashing();
+
+        Log("Land");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -342,6 +380,8 @@ public abstract class PlayerController : MonoBehaviour
             Flip();
         _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
         Moving = true;
+
+        Log("MoveLeft");
     }
     /// <summary>
     /// 플레이어를 오른쪽으로 이동합니다.
@@ -352,6 +392,8 @@ public abstract class PlayerController : MonoBehaviour
             Flip();
         _rigidbody.velocity = new Vector2(movingSpeed, _rigidbody.velocity.y);
         Moving = true;
+
+        Log("MoveRight");
     }
     /// <summary>
     /// 플레이어의 이동을 중지합니다.
@@ -360,6 +402,8 @@ public abstract class PlayerController : MonoBehaviour
     {
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
         Moving = false;
+
+        Log("StopMoving");
     }
     /// <summary>
     /// 플레이어의 이동 요청을 막습니다.
@@ -382,10 +426,13 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void Jump()
     {
+        // 개체의 운동 상태를 갱신합니다.
         BlockJumping();
         BlockDashing();
-
+        UnblockAirDashing();
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpSpeed);
+
+        // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = true;
     }
     /// <summary>
@@ -393,8 +440,11 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected void StopJumping()
     {
+        // 개체의 운동 상태를 갱신합니다.
         UnblockJumping();
         UnblockDashing();
+
+        // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = false;
     }
     /// <summary>
@@ -416,10 +466,12 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected void Fall()
     {
+        // 개체의 운동 상태를 갱신합니다.
         BlockJumping();
         BlockDashing();
-
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
+
+        // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = false;
         Falling = true;
     }
@@ -428,9 +480,11 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected void StopFalling()
     {
+        // 개체의 운동 상태를 갱신합니다.
         UnblockJumping();
         UnblockDashing();
 
+        // 개체의 운동 상태가 갱신되었음을 알립니다.
         Falling = false;
     }
 
@@ -441,28 +495,32 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void Dash()
     {
+        // 개체의 운동 상태를 갱신합니다.
         BlockMoving();
         BlockDashing();
-//        BlockAirDashing();
-
+        BlockAirDashing();
         movingSpeed = dashSpeed;
-        float vx = _facingRight ? dashSpeed : -dashSpeed;
-        _rigidbody.velocity = new Vector2(vx, _rigidbody.velocity.y);
-//        SoundEffects[3].Play();
+        _rigidbody.velocity = new Vector2
+            (_facingRight ? dashSpeed : -dashSpeed, _rigidbody.velocity.y);
+
+        // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = true;
+        Log("Dash");
     }
     /// <summary>
     /// 플레이어의 대쉬를 중지합니다. (사용자의 입력에 의함)
     /// </summary>
     protected virtual void StopDashing()
     {
+        // 개체의 운동 상태를 갱신합니다.
         UnblockMoving();
         UnblockDashing();
-//        UnblockAirDashing();
-
         movingSpeed = walkSpeed;
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+
+        // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = false;
+        Log("StopDashing");
     }
     /// <summary>
     /// 플레이어의 대쉬 요청을 막습니다.
@@ -486,14 +544,18 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected void Slide()
     {
-        Sliding = true;
-
+        // 개체의 운동 상태를 갱신합니다.
         StopMoving();
         StopJumping();
         StopFalling();
         StopDashing();
-        ClearAirDashCount();
+        StopAirDashing();
+        BlockDashing();
+        UnblockJumping();
+        UnblockAirDashing();
+        _rigidbody.velocity = new Vector2(0, -slideSpeed);
 
+        // 개체의 운동에 따른 효과를 처리합니다.
         GameObject slideFog = Instantiate(effects[2], slideFogPosition.position, slideFogPosition.rotation) as GameObject;
         slideFog.transform.SetParent(groundCheck.transform);
         if (FacingRight == false)
@@ -504,24 +566,30 @@ public abstract class PlayerController : MonoBehaviour
         }
         slideFogEffect = slideFog;
 
-        BlockDashing();
-        UnblockJumping();
-        _rigidbody.velocity = new Vector2(0, -slideSpeed);
+        // 개체의 운동 상태가 갱신되었음을 알립니다.
+        Sliding = true;
+        Log("Slide");
     }
     /// <summary>
     /// 플레이어의 벽 타기를 중지합니다.
     /// </summary>
     protected void StopSliding()
     {
+        // 개체의 운동 상태를 갱신합니다.
+        UnblockDashing();
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
+
+        // 개체의 운동에 따른 효과를 처리합니다.
         if (slideFogEffect != null)
         {
+            slideFogEffect.transform.SetParent(null);
             slideFogEffect.GetComponent<EffectScript>().RequestEnd();
             slideFogEffect = null;
         }
 
-        UnblockDashing();
+        // 개체의 운동 상태가 갱신되었음을 알립니다.
         Sliding = false;
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
+        Log("StopSliding");
     }
     /// <summary>
     /// 플레이어의 벽 타기 요청을 막습니다.
@@ -545,8 +613,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected void RideLadder()
     {
-        ClearAirDashCount();
-
+        UnblockAirDashing(); // ClearAirDashCount();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -556,95 +623,127 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected void WallJump()
     {
+        // 개체의 운동 상태를 갱신합니다.
         StopJumping();
         StopFalling();
         StopSliding();
-
-        GameObject wallKick = Instantiate(effects[3], slideFogPosition.position, slideFogPosition.rotation) as GameObject;
-        _rigidbody.velocity = new Vector2(FacingRight ? -1.5f * movingSpeed : 1.5f * movingSpeed, jumpSpeed /* Mathf.Sqrt(2) */);
-
-        Jumping = true;
         BlockJumping();
         BlockSliding();
         BlockDashing();
-        BlockAirDashing();
+        UnblockAirDashing();
+        _rigidbody.velocity = new Vector2
+            (FacingRight ? -1.5f * movingSpeed : 1.5f * movingSpeed,
+            jumpSpeed /* Mathf.Sqrt(2) */);
+
+        // 개체의 운동에 따른 효과를 처리합니다.
+        GameObject wallKick = Instantiate
+            (effects[3], slideFogPosition.position, slideFogPosition.rotation)
+            as GameObject;
+
+        // 개체의 운동 상태가 갱신되었음을 알립니다.
+        Jumping = true;
     }
     /// <summary>
     /// 플레이어가 대쉬 점프하게 합니다.
     /// </summary>
     protected virtual void DashJump()
     {
+        // 개체의 운동 상태를 갱신합니다.
         StopJumping();
         StopFalling();
         StopSliding();
-
-        //        BlockMoving();
         BlockDashing();
         BlockJumping();
-
         movingSpeed = dashSpeed;
-        _rigidbody.velocity = new Vector2(FacingRight ? movingSpeed : -movingSpeed, jumpSpeed);
+        _rigidbody.velocity = new Vector2(0, jumpSpeed);
 
+        // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = true;
         Dashing = true;
         DashJumping = true;
+        Log("DashJump");
     }
+    protected void StopDashJumping()
+    {
+        Jumping = false;
+        Dashing = false;
+        DashJumping = false;
+    }
+
+
     /// <summary>
     /// 플레이어가 벽에서 대쉬 점프하게 합니다.
     /// </summary>
     protected void WallDashJump()
     {
-        StopJumping();
-        StopFalling();
+        // 개체의 운동 상태를 갱신합니다.
+        // StopJumping();
+        // StopFalling();
+        // StopDashing();
+        // BlockDashing();
         StopSliding();
-
-        GameObject wallKick = Instantiate(effects[3], slideFogPosition.position, slideFogPosition.rotation) as GameObject;
-
-        movingSpeed = dashSpeed;
-        _rigidbody.velocity = new Vector2(FacingRight ? -1.5f * movingSpeed : 1.5f * movingSpeed, jumpSpeed / Mathf.Sqrt(2));
-        Jumping = true;
-
-//        ++_airDashCount;
-        DashJumping = true;
         BlockJumping();
-        BlockDashing();
+        BlockSliding();
+        BlockAirDashing();
+        movingSpeed = dashSpeed;
+        _rigidbody.velocity = new Vector2
+            (FacingRight ? -1.5f * movingSpeed : 1.5f * movingSpeed, jumpSpeed);
+
+        // 개체의 운동에 따른 효과를 처리합니다.
+        GameObject wallKick = Instantiate
+            (effects[3], slideFogPosition.position, slideFogPosition.rotation)
+            as GameObject;
+
+        // 개체의 운동 상태가 갱신되었음을 알립니다.
+        Jumping = true;
+        Dashing = true;
+        DashJumping = true;
+        Log("WallDashJump");
     }
     /// <summary>
     /// 플레이어가 에어 대쉬하게 합니다.
     /// </summary>
-    protected void AirDash()
+    protected virtual void AirDash()
     {
+        // 개체의 운동 상태를 갱신합니다.
         StopJumping();
         StopFalling();
         StopSliding();
-
-        _rigidbody.velocity = new Vector2(FacingRight ? dashSpeed : -dashSpeed, 0);
-        AirDashing = true;
-
         BlockMoving();
-        ++airDashCount;
+        BlockAirDashing();
+        _rigidbody.velocity = new Vector2
+            (FacingRight ? dashSpeed : -dashSpeed, 0);
+
+        // 개체의 운동 상태가 갱신되었음을 알립니다.
+        Dashing = true;
+        AirDashing = true;
+        Log("AirDash");
     }
     /// <summary>
     /// 플레이어의 에어 대쉬를 중지합니다.
     /// </summary>
-    protected void StopAirDashing()
+    protected virtual void StopAirDashing()
     {
+        // 개체의 운동 상태를 갱신합니다.
         UnblockMoving();
+
+        // 개체의 운동 상태가 갱신되었음을 알립니다.
         AirDashing = false;
+        Log("StopAirDashing");
     }
     /// <summary>
     /// 플레이어의 에어 대쉬 요청을 막습니다.
     /// </summary>
     protected void BlockAirDashing()
     {
-        AirDashBlocked = true;
+        AirDashBlocked = true; // airDashCount = 1;
     }
     /// <summary>
     /// 플레이어가 에어 대쉬할 수 있도록 합니다.
     /// </summary>
     protected void UnblockAirDashing()
     {
-        AirDashBlocked = false;
+        AirDashBlocked = false; // ClearAirDashCount();
     }
 
 
@@ -679,6 +778,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 에어 대쉬 카운트를 초기화 합니다.
     /// </summary>
+    [Obsolete("UnblockAirDashing()을 사용하십시오.", true)]
     protected void ClearAirDashCount()
     {
 //        _airDashCount = 0;

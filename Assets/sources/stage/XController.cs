@@ -39,14 +39,27 @@ public class XController : PlayerController
             return;
         }
 
+        /*
+        if (Landed == false && 
+            (IsAnimationPlaying("Idle") || IsAnimationPlaying("MoveBeg")))
+        {
+            print("TES");
+        }
+        */
+        if (IsAnimationPlaying("Idle") && Sliding)
+        {
+            print("TES");
+        }
+
         // 새로운 사용자 입력을 확인합니다.
+        // 점프 키가 눌린 경우
         if (IsKeyDown(GameKey.Jump))
         {
             if (JumpBlocked)
             {
-
+                print("TEST");
             }
-            else if (Pushing)
+            else if (Sliding)
             {
                 if (IsKeyPressed(GameKey.Dash))
                 {
@@ -57,6 +70,30 @@ public class XController : PlayerController
                     WallJump();
                 }
             }
+            /*
+            else if (Pushing)
+            {
+                if (Landed)
+                {
+                    Jump();
+                }
+                else if (IsKeyPressed(GameKey.Dash))
+                {
+                    if (Landed)
+                    {
+                        DashJump();
+                    }
+                    else
+                    {
+                        WallDashJump();
+                    }
+                }
+                else
+                {
+                    WallJump();
+                }
+            }
+            */
             else if (Dashing)
             {
                 DashJump();
@@ -70,20 +107,31 @@ public class XController : PlayerController
                 Jump();
             }
         }
+        // 대쉬 키가 눌린 경우
         else if (IsKeyDown(GameKey.Dash))
         {
-            if (DashBlocked)
+            if (Sliding)
             {
 
             }
             else if (Landed == false)
             {
-                AirDash();
+                if (AirDashBlocked)
+                {
+
+                }
+                else
+                {
+                    AirDash();
+                }
+            }
+            else if (DashBlocked)
+            {
+
             }
             else
             {
                 Dash();
-
             }
         }
 
@@ -130,7 +178,14 @@ public class XController : PlayerController
             }
             else if (Pushing)
             {
-                Slide();
+                if (SlideBlocked)
+                {
+
+                }
+                else
+                {
+                    Slide();
+                }
             }
             else
             {
@@ -142,7 +197,15 @@ public class XController : PlayerController
         // 대쉬 중이라면
         else if (Dashing)
         {
-            if (Landed == false)
+            if (AirDashing)
+            {
+                if (IsKeyPressed(GameKey.Dash) == false)
+                {
+                    StopAirDashing();
+                    Fall();
+                }
+            }
+            else if (Landed == false)
             {
                 StopDashing();
                 Fall();
@@ -164,19 +227,18 @@ public class XController : PlayerController
             {
                 StopSliding();
                 Fall();
-//                Land();
             }
         }
         // 벽을 밀고 있다면
         else if (Pushing)
         {
-            if (SlideBlocked)
+            if (Landed)
             {
 
             }
             else
             {
-
+                Slide();
             }
         }
         // 그 외의 경우
@@ -186,15 +248,26 @@ public class XController : PlayerController
             {
                 Fall();
             }
+
+            UnblockSliding();
         }
 
         // 방향 키 입력에 대해 처리합니다.
         // 대쉬 중이라면
         if (Dashing)
         {
-            if (Landed == false)
+            if (AirDashing)
             {
-                if (IsKeyPressed(GameKey.Left))
+                
+            }
+            // 대쉬 중에 공중에 뜬 경우
+            else if (Landed == false)
+            {
+                if (SlideBlocked)
+                {
+
+                }
+                else if (IsKeyPressed(GameKey.Left))
                 {
                     MoveLeft();
                 }
@@ -206,6 +279,10 @@ public class XController : PlayerController
                 {
                     StopMoving();
                 }
+            }
+            else
+            {
+                
             }
         }
         // 움직임이 막힌 상태라면
@@ -229,6 +306,10 @@ public class XController : PlayerController
                 }
                 else
                 {
+                    if (Sliding)
+                    {
+                        StopSliding();
+                    }
                     MoveLeft();
                 }
             }
@@ -240,6 +321,10 @@ public class XController : PlayerController
                 }
                 else
                 {
+                    if (Sliding)
+                    {
+                        StopSliding();
+                    }
                     MoveRight();
                 }
             }
@@ -260,23 +345,16 @@ public class XController : PlayerController
     /// <summary>
     /// 플레이어를 소환합니다.
     /// </summary>
-    protected override void Spawn()
+    void XSpawn()
     {
         base.Spawn();
-        SoundEffects[0].Play();
     }
     /// <summary>
     /// 플레이어가 지상에 착륙할 때의 상태를 설정합니다.
     /// </summary>
-    protected override void Land()
+    void XLand()
     {
         base.Land();
-
-        if (Dashing)
-        {
-            StopDashing();
-        }
-        SoundEffects[2].Play();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -300,7 +378,9 @@ public class XController : PlayerController
         base.Dash();
 
         // 대쉬 효과 애니메이션을 추가합니다.
-        GameObject dashFog = Instantiate(effects[0], dashFogPosition.position, dashFogPosition.rotation) as GameObject;
+        GameObject dashFog = Instantiate
+            (effects[0], dashFogPosition.position, dashFogPosition.rotation)
+            as GameObject;
         if (FacingRight == false)
         {
             var newScale = dashFog.transform.localScale;
@@ -317,11 +397,14 @@ public class XController : PlayerController
         base.StopDashing();
         if (dashBoostEffect != null)
         {
-            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
+            dashBoostEffect.GetComponent<EffectScript>().EndEffect();
+//            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
             dashBoostEffect = null;
         }
     }
-
+    /// <summary>
+    /// 플레이어가 대쉬 점프하게 합니다.
+    /// </summary>
     protected override void DashJump()
     {
         base.DashJump();
@@ -330,7 +413,30 @@ public class XController : PlayerController
         SoundEffects[1].Play();
         if (dashBoostEffect != null)
         {
-            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
+            dashBoostEffect.GetComponent<EffectScript>().EndEffect();
+//            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
+            dashBoostEffect = null;
+        }
+    }
+    /// <summary>
+    /// 플레이어가 에어 대쉬하게 합니다.
+    /// </summary>
+    protected override void AirDash()
+    {
+        base.AirDash();
+
+        SoundEffects[3].Play();
+    }
+    /// <summary>
+    /// 플레이어의 에어 대쉬를 중지합니다.
+    /// </summary>
+    protected override void StopAirDashing()
+    {
+        base.StopAirDashing();
+
+        if (dashBoostEffect != null)
+        {
+            dashBoostEffect.GetComponent<EffectScript>().EndEffect();
             dashBoostEffect = null;
         }
     }
@@ -340,25 +446,53 @@ public class XController : PlayerController
 
 
     #region 프레임 이벤트 핸들러를 정의합니다.
+    ///////////////////////////////////////////////////////////////////
+    // 기본
     /// <summary>
-    /// 
+    /// 플레이어를 소환할 때 발생합니다.
     /// </summary>
-    protected void FE_WallJumpBeg()
+    void FE_Spawn()
     {
-//        BlockSliding();
+        SoundEffects[0].Play();
     }
     /// <summary>
     /// 
     /// </summary>
-    protected void FE_WallJumpEnd()
+    void FE_SpawnEnd()
     {
-        UnblockSliding();
-        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+        _animator.Play("Spawn", 0, 0.5f);
     }
     /// <summary>
     /// 
     /// </summary>
-    protected void FE_DashRunBeg()
+    void FE_Land()
+    {
+        SoundEffects[2].Play();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    // 점프 및 낙하
+    /// <summary>
+    /// 점프 시작 시에 발생합니다.
+    /// </summary>
+    void FE_JumpBeg()
+    {
+//        SoundEffects[1].Play();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    // 대쉬
+    /// <summary>
+    /// 대쉬 준비 애니메이션이 시작할 때 발생합니다.
+    /// </summary>
+    void FE_DashBegBeg()
+    {
+
+    }
+    /// <summary>
+    /// 대쉬 부스트 애니메이션이 시작할 때 발생합니다.
+    /// </summary>
+    void FE_DashRunBeg()
     {
         GameObject dashBoost = Instantiate(effects[1], dashBoostPosition.position, dashBoostPosition.rotation) as GameObject;
         dashBoost.transform.SetParent(groundCheck.transform);
@@ -368,7 +502,6 @@ public class XController : PlayerController
             newScale.x = FacingRight ? newScale.x : -newScale.x;
             dashBoost.transform.localScale = newScale;
         }
-
         dashBoostEffect = dashBoost;
     }
     /// <summary>
@@ -377,6 +510,7 @@ public class XController : PlayerController
     protected void FE_DashRunEnd()
     {
         StopDashing();
+        StopAirDashing();
     }
     /// <summary>
     /// 대쉬가 사용자에 의해 중지될 때 발생합니다.
@@ -384,9 +518,9 @@ public class XController : PlayerController
     public void FE_DashEndBeg()
     {
         StopMoving();
-        BlockMoving();
-        BlockJumping();
-        BlockDashing();
+//        BlockMoving();
+//        BlockJumping();
+//        BlockDashing();
 
         SoundEffects[3].Stop();
         SoundEffects[4].Play();
@@ -396,10 +530,35 @@ public class XController : PlayerController
     /// </summary>
     public void FE_DashEndEnd()
     {
-        UnblockMoving();
-        UnblockJumping();
-        UnblockDashing();
+//        UnblockMoving();
+//        UnblockJumping();
+//        UnblockDashing();
         //        StopDashing();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    // 벽 타기
+    /// <summary>
+    /// 벽 타기 시에 발생합니다.
+    /// </summary>
+    void FE_SlideBeg()
+    {
+        SoundEffects[6].Play();
+    }
+    /// <summary>
+    /// 벽 점프 시에 발생합니다.
+    /// </summary>
+    void FE_WallJumpBeg()
+    {
+        SoundEffects[5].Play();
+    }
+    /// <summary>
+    /// 벽 점프가 종료할 때 발생합니다.
+    /// </summary>
+    void FE_WallJumpEnd()
+    {
+        UnblockSliding();
+        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
     }
 
     #endregion

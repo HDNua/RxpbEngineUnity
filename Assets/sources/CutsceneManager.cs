@@ -25,6 +25,7 @@ public class CutsceneManager : MonoBehaviour
 
 
     #region 필드를 정의합니다.
+    AudioSource bgmSource;
     AudioSource[] _audioSources;
     GUIText _guiText;
 
@@ -51,6 +52,8 @@ public class CutsceneManager : MonoBehaviour
         subIndex = 0;
         actionIndex = 0;
 
+        // 배경음 및 효과음을 초기화 합니다.
+        bgmSource = GetComponent<AudioSource>();
         _audioSources = new AudioSource[audioClips.Length];
         for (int i = 0, len = audioClips.Length; i < len; ++i)
         {
@@ -181,23 +184,17 @@ public class CutsceneManager : MonoBehaviour
         string[] action = actionList[actionIndex++];
         string command = action[0];
 
-        float sec;
-        string levelName;
-        int imageIndex;
-        float time;
-        Vector2 position;
+        int index;      // int seIndex, imageIndex;
+        float _time;    // float sec, time;
         float fadeSpeed;
+        string levelName;
+        Vector2 position;
 
         switch (command)
         {
             case "WaitForSeconds":
-                sec = float.Parse(action[1]);
-                yield return new WaitForSeconds(sec);
-                break;
-
-            case "Warning":
-                _audioSources[1].Play();
-                yield return new WaitForSeconds(1);
+                _time = float.Parse(action[1]);
+                yield return new WaitForSeconds(_time);
                 break;
 
             case "Load":
@@ -206,28 +203,28 @@ public class CutsceneManager : MonoBehaviour
                 break;
 
             case "SlideImage":
-                imageIndex = int.Parse(action[1]);
-                time = float.Parse(action[2]);
+                index = int.Parse(action[1]);
+                _time = float.Parse(action[2]);
                 position = new Vector2(float.Parse(action[3]), float.Parse(action[4]));
                 {
-                    SpriteRenderer image = cutsceneImages[imageIndex];
+                    SpriteRenderer image = cutsceneImages[index];
                     Rigidbody2D image_rbody = image.GetComponent<Rigidbody2D>();
                     Vector2 diff = position - new Vector2(image.transform.position.x, image.transform.position.y);
-                    image_rbody.velocity = diff / time;
-                    yield return new WaitForSeconds(time);
+                    image_rbody.velocity = diff / _time;
+                    yield return new WaitForSeconds(_time);
                     image_rbody.velocity = Vector2.zero;
                 }
 
                 break;
 
             case "EnableImage":
-                imageIndex = int.Parse(action[1]);
-                cutsceneImages[imageIndex].enabled = true;
+                index = int.Parse(action[1]);
+                cutsceneImages[index].enabled = true;
                 break;
 
             case "DisableImage":
-                imageIndex = int.Parse(action[1]);
-                cutsceneImages[imageIndex].enabled = false;
+                index = int.Parse(action[1]);
+                cutsceneImages[index].enabled = false;
                 break;
 
             case "SceneFadeIn":
@@ -238,6 +235,23 @@ public class CutsceneManager : MonoBehaviour
             case "SceneFadeOut":
                 fadeSpeed = float.Parse(action[1]);
                 fader.FadeOut(fadeSpeed);
+                break;
+
+            case "PlayMusic":
+                index = int.Parse(action[1]);
+                bgmSource.clip = _audioSources[index].clip;
+                bgmSource.Play();
+                break;
+
+            case "StopMusic":
+                bgmSource.Stop();
+                break;
+
+            case "PlaySound":
+                index = int.Parse(action[1]);
+                _time = float.Parse(action[2]);
+                _audioSources[index].Play();
+                yield return new WaitForSeconds(_time);
                 break;
         }
         DoNextScript();

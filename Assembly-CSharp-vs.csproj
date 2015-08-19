@@ -65,6 +65,7 @@
      <Compile Include="Assets\sources\stage\UIController.cs" />
      <Compile Include="Assets\sources\stage\XController.cs" />
      <Compile Include="Assets\sources\stage\ZController.cs" />
+     <None Include="Assets\scenes\cutscene\CS03_HunterBase.txt" />
      <None Include="Assets\_Trashbin\Cutscene\CS01_Intro.txt" />
      <None Include="Assets\scenes\cutscene\CS01_Prologue.txt" />
      <None Include="Assets\scenes\cutscene\CS02_GaiaFound.txt" />
