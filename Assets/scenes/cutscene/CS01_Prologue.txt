@@ -240,4 +240,4 @@ ROCKMAN X 팬 에피소드
 ]
 (SceneFadeOut 1)
 (WaitForSeconds 1.5)
-(Load CS02_GaiaFound)
+(Load CS02_HunterBase)

@@ -93,8 +93,8 @@
     <None Include="Assets\_Trashbin\cutscene_text\ZCS_Intro.txt" />
     <None Include="Assets\scenes\cutscene\CS00_PreviousStory.txt" />
     <None Include="Assets\scenes\cutscene\CS01_Prologue.txt" />
-    <None Include="Assets\scenes\cutscene\CS02_GaiaFound.txt" />
-    <None Include="Assets\scenes\cutscene\CS03_HunterBase.txt" />
+    <None Include="Assets\scenes\cutscene\CS02_HunterBase.txt" />
+    <None Include="Assets\scenes\cutscene\CS03_GaiaFound.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

@@ -107,7 +107,7 @@ public class PlayerSelectSceneManager : MonoBehaviour
                 loadingLevelName = "Z_introCutscene";
             }
             audioSources[1].Play();
-            fader.RequestSceneEnd();
+            fader.FadeOut(); // fader.RequestSceneEnd();
             fadeOutRequested = true;
         }
     }
