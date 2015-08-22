@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
+using System;
 
-public class CharacterController : MonoBehaviour
+[Obsolete("더 이상 사용되지 않습니다.", true)]
+public class _CharacterController_deprecated : MonoBehaviour
 {
     /*
     #region 공용 GameObject 객체에 접근합니다.

@@ -4,16 +4,6 @@ using System.Collections.Generic;
 
 public abstract class PlayerController : MonoBehaviour
 {
-    /// <summary>
-    /// 문자열을 출력합니다.
-    /// </summary>
-    /// <param name="s">출력할 문자열입니다.</param>
-    public void Log(string s)
-    {
-//        print(s);
-    }
-
-
     #region 컨트롤러가 사용할 공용 형식 또는 값을 정의합니다.
     protected enum GameKey
     {
@@ -25,9 +15,12 @@ public abstract class PlayerController : MonoBehaviour
 
     #endregion
 
+
+
     #region 컨트롤러가 사용할 Unity 객체에 대한 접근자를 정의합니다.
     protected Rigidbody2D _rigidbody { get { return GetComponent<Rigidbody2D>(); } }
     protected Animator _animator { get { return GetComponent<Animator>(); } }
+    protected Collider2D _collider { get { return GetComponent<Collider2D>(); } }
 
     #endregion
 
@@ -59,17 +52,20 @@ public abstract class PlayerController : MonoBehaviour
     public Transform slideFogPosition;
     public GameObject slideFogEffect;
 
+    public EdgeCollider2D groundCheckEdge;
+    public EdgeCollider2D pushCheckEdge;
+
     #endregion
 
 
 
     #region Unity를 통해 초기화한 속성을 사용 가능한 형태로 보관합니다.
     /// <summary>
-    /// 효과음의 리스트입니다.
+    /// 효과음의 리스트 필드입니다.
     /// </summary>
     AudioSource[] soundEffects;
     /// <summary>
-    /// 효과음의 리스트를 반환합니다.
+    /// 효과음의 리스트입니다.
     /// </summary>
     public AudioSource[] SoundEffects { get { return soundEffects; } }
 
@@ -132,14 +128,14 @@ public abstract class PlayerController : MonoBehaviour
     bool _sliding = false;
     bool _airDashing = false;
 
-    /*
-    bool _moveBlocked = false;
-    bool _jumpBlocked = false;
-    bool _dashBlocked = false;
-    bool _airDashBlocked = false;
-    */
+    EdgeCollider2D landingGround;
+    public EdgeCollider2D LandingGround
+    {
+        get { return landingGround; }
+        set { landingGround = value; }
+    }
 
-    int airDashCount = 0;
+    public float Angle { get; private set; }
 
     #endregion
 
@@ -300,17 +296,238 @@ public abstract class PlayerController : MonoBehaviour
 
 
     #region 플레이어의 상태를 갱신합니다.
-    /// <summary>
-    /// 플레이어의 물리 상태를 갱신합니다.
-    /// </summary>
-    protected void UpdateState()
+    [Obsolete("버린 코드 집합입니다. 사용하지 마십시오.", true)]
+    void deprecated_code()
     {
+        /*
         bool leftLanded = Physics2D.Raycast(groundCheckLeft.position, Vector2.down, groundCheckRadius, whatIsGround);
         bool rightLanded = Physics2D.Raycast(groundCheckRight.position, Vector2.down, groundCheckRadius, whatIsGround);
         Landed = leftLanded || rightLanded;
 
         bool pushing = Physics2D.Raycast(pushCheck.position, _facingRight ? Vector2.right : Vector2.left, pushCheckRadius, whatIsWall);
         Pushing = pushing && (_facingRight ? IsKeyPressed(GameKey.Right) : IsKeyPressed(GameKey.Left));
+
+        //////////////////////////////////////////////////////////
+
+        if (_collider.IsTouchingLayers(whatIsGround)
+            && _collider.IsTouchingLayers(whatIsWall))
+        {
+            Landed = true;
+            Pushing = _collider.IsTouchingLayers(whatIsWall)
+                && (_facingRight ? IsKeyPressed(GameKey.Right) : IsKeyPressed(GameKey.Left));
+            return;
+        }
+
+        Landed = _collider.IsTouchingLayers(whatIsWall) == false
+            && _collider.IsTouchingLayers(whatIsGround);
+        Pushing = _collider.IsTouchingLayers(whatIsWall)
+            && (_facingRight ? IsKeyPressed(GameKey.Right) : IsKeyPressed(GameKey.Left));
+        */
+
+        /*
+        // 땅과 벽 동시에 닿아있는 경우의 처리입니다.
+        if (touchingGround && touchingWall)
+        {
+            LayerMask layerMask = 1 << collision.collider.gameObject.layer;
+            if ((layerMask & whatIsGround) != 0)
+            {
+                Landed = false;
+                Pushing = _facingRight ?
+                    IsKeyPressed(GameKey.Right) : IsKeyPressed(GameKey.Left);
+            }
+            else if ((layerMask & whatIsWall) != 0)
+            {
+                Landed = true;
+                Pushing = false;
+            }
+        }
+        // 땅만 닿은 경우입니다.
+        else if (touchingGround)
+        {
+            Landed = true;
+            Pushing = false;
+        }
+        // 벽만 닿은 경우입니다.
+        else if (touchingWall)
+        {
+            Pushing = _facingRight ?
+                IsKeyPressed(GameKey.Right) : IsKeyPressed(GameKey.Left);
+        }
+        // 아무 것도 닿지 않은 경우입니다.
+        else
+        {
+            Landed = false;
+            Pushing = false;
+        }
+        */
+
+        /*
+        // 땅과 충돌한 경우의 처리입니다.
+        if (touchingGround)
+        {
+            if (touchingWall)
+            {
+                // 
+                if (collision.collider.gameObject.layer == whatIsGround)
+                {
+
+                }
+
+
+
+                if (transform.position.y <= collision.transform.position.y)
+                {
+                    Landed = true;
+                }
+                else
+                {
+                    Landed = false;
+                }
+            }
+            else
+            {
+                Landed = true;
+            }
+        }
+        // 벽을 미는 경우의 처리입니다.
+        else if (_collider.IsTouchingLayers(whatIsWall))
+        {
+        }
+        // 둘 다 아닌 경우
+        else
+        {
+            Landed = false;
+            Pushing = false;
+        }
+        */
+    }
+
+    /// <summary>
+    /// 레이어가 어떤 레이어 마스크에 포함되는지 확인합니다.
+    /// </summary>
+    /// <param name="layer">확인할 레이어입니다.</param>
+    /// <param name="layerMask">레이어 마스크입니다.</param>
+    /// <returns>레이어가 인자로 넘어온 레이어 마스크에 포함된다면 true입니다.</returns>
+    bool IsSameLayer(int layer, LayerMask layerMask)
+    {
+        return ((1 << layer) & layerMask) != 0;
+    }
+
+    /// <summary>
+    /// 땅에 닿았는지 확인합니다. 측면에서 닿은 것은 포함하지 않습니다.
+    /// </summary>
+    /// <param name="collision">충돌 정보를 갖고 있는 객체입니다.</param>
+    /// <returns>땅과 닿아있다면 true입니다.</returns>
+    bool IsTouchingGround(Collision2D collision)
+    {
+        // 땅과 닿아있는 경우 몇 가지 더 검사합니다.
+        if (_collider.IsTouchingLayers(whatIsGround))
+        {
+            float playerBot = _collider.bounds.min.y;
+            float groundTop = collision.collider.bounds.max.y;
+            if (playerBot >= groundTop)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        // 땅과 닿아있지 않다면 거짓입니다.
+        return false;
+    }
+    /// <summary>
+    /// 벽에 닿았는지 확인합니다.
+    /// </summary>
+    /// <param name="collision">충돌 정보를 갖고 있는 객체입니다.</param>
+    /// <returns>벽과 닿아있다면 true입니다.</returns>
+    bool IsTouchingWall(Collision2D collision)
+    {
+        // 벽과 닿아있는 경우 몇 가지 더 검사합니다.
+        if (_collider.IsTouchingLayers(whatIsWall))
+        {
+            float playerBottom = _collider.bounds.min.y;
+            float wallTop = collision.collider.bounds.max.y;
+
+            // 땅을 밟고 있지 않다면 참입니다.
+            if (Landed == false)
+            {
+                return true;
+            }
+            // 
+            else if (playerBottom >= wallTop)
+            {
+                return false;
+            }
+            // 
+            else
+            {
+                return true;
+            }
+        }
+        // 벽과 닿아있지 않으면 거짓입니다.
+        return false;
+    }
+
+    /// <summary>
+    /// 플레이어의 물리 상태를 갱신합니다.
+    /// </summary>
+    protected void UpdateState()
+    {
+
+    }
+    /// <summary>
+    /// 플레이어의 물리 상태를 갱신합니다.
+    /// </summary>
+    /// <param name="collision"></param>
+    void UpdatePhysicsState(Collision2D collision)
+    {
+        int layer = collision.collider.gameObject.layer;
+
+        // 땅과 접촉한 경우의 처리입니다.
+        if (IsSameLayer(layer, whatIsGround))
+        {
+            Landed = IsTouchingGround(collision);
+            if (Landed)
+            {
+                landingGround = collision.collider as EdgeCollider2D;
+
+                // 빗면인 경우의 처리입니다.
+                float angle = 0;
+                if (collision.contacts.Length == 1)
+                {
+                    angle = Vector2.Angle
+                        (landingGround.points[0], landingGround.points[1]);
+                }
+                Angle = angle;
+                print(angle);
+            }
+            else
+            {
+                landingGround = null;
+            }
+        }
+
+        // 벽과 접촉한 경우의 처리입니다.
+        if (IsSameLayer(layer, whatIsWall))
+        {
+            Pushing = IsTouchingWall(collision) && (FacingRight ?
+                IsKeyPressed(GameKey.Right) : IsKeyPressed(GameKey.Left));
+        }
+    }
+
+    protected void OnCollisionEnter2D(Collision2D collision)
+    {
+        UpdatePhysicsState(collision);
+    }
+    protected void OnCollisionStay2D(Collision2D collision)
+    {
+        UpdatePhysicsState(collision);
+    }
+    protected void OnCollisionExit2D(Collision2D collision)
+    {
+        UpdatePhysicsState(collision);
     }
 
     #endregion
@@ -325,8 +542,6 @@ public abstract class PlayerController : MonoBehaviour
     {
         Spawning = true;
         _rigidbody.velocity = new Vector2(0, -spawnSpeed);
-
-        Log("Spawn");
     }
     /// <summary>
     /// 플레이어를 소환 상태에서 준비 상태로 전환합니다.
@@ -334,8 +549,6 @@ public abstract class PlayerController : MonoBehaviour
     protected void Ready()
     {
         Readying = true;
-
-        Log("Ready");
     }
     /// <summary>
     /// 소환 및 준비를 완료합니다.
@@ -344,8 +557,6 @@ public abstract class PlayerController : MonoBehaviour
     {
         Readying = false;
         Spawning = false;
-
-        Log("EndReady");
     }
 
     #endregion
@@ -365,8 +576,6 @@ public abstract class PlayerController : MonoBehaviour
         StopDashing();
         StopDashJumping();
         UnblockAirDashing();
-
-        Log("Land");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -378,10 +587,10 @@ public abstract class PlayerController : MonoBehaviour
     {
         if (_facingRight)
             Flip();
-        _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
-        Moving = true;
 
-        Log("MoveLeft");
+        _rigidbody.velocity = new Vector2
+            (-movingSpeed, _rigidbody.velocity.y);
+        Moving = true;
     }
     /// <summary>
     /// 플레이어를 오른쪽으로 이동합니다.
@@ -390,10 +599,10 @@ public abstract class PlayerController : MonoBehaviour
     {
         if (_facingRight == false)
             Flip();
-        _rigidbody.velocity = new Vector2(movingSpeed, _rigidbody.velocity.y);
-        Moving = true;
 
-        Log("MoveRight");
+        _rigidbody.velocity = new Vector2
+            (movingSpeed, _rigidbody.velocity.y);
+        Moving = true;
     }
     /// <summary>
     /// 플레이어의 이동을 중지합니다.
@@ -402,8 +611,6 @@ public abstract class PlayerController : MonoBehaviour
     {
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
         Moving = false;
-
-        Log("StopMoving");
     }
     /// <summary>
     /// 플레이어의 이동 요청을 막습니다.
@@ -505,7 +712,6 @@ public abstract class PlayerController : MonoBehaviour
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = true;
-        Log("Dash");
     }
     /// <summary>
     /// 플레이어의 대쉬를 중지합니다. (사용자의 입력에 의함)
@@ -520,7 +726,6 @@ public abstract class PlayerController : MonoBehaviour
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = false;
-        Log("StopDashing");
     }
     /// <summary>
     /// 플레이어의 대쉬 요청을 막습니다.
@@ -568,7 +773,6 @@ public abstract class PlayerController : MonoBehaviour
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Sliding = true;
-        Log("Slide");
     }
     /// <summary>
     /// 플레이어의 벽 타기를 중지합니다.
@@ -589,7 +793,6 @@ public abstract class PlayerController : MonoBehaviour
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Sliding = false;
-        Log("StopSliding");
     }
     /// <summary>
     /// 플레이어의 벽 타기 요청을 막습니다.
@@ -661,7 +864,6 @@ public abstract class PlayerController : MonoBehaviour
         Jumping = true;
         Dashing = true;
         DashJumping = true;
-        Log("DashJump");
     }
     protected void StopDashJumping()
     {
@@ -698,7 +900,6 @@ public abstract class PlayerController : MonoBehaviour
         Jumping = true;
         Dashing = true;
         DashJumping = true;
-        Log("WallDashJump");
     }
     /// <summary>
     /// 플레이어가 에어 대쉬하게 합니다.
@@ -717,7 +918,6 @@ public abstract class PlayerController : MonoBehaviour
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = true;
         AirDashing = true;
-        Log("AirDash");
     }
     /// <summary>
     /// 플레이어의 에어 대쉬를 중지합니다.
@@ -729,7 +929,6 @@ public abstract class PlayerController : MonoBehaviour
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         AirDashing = false;
-        Log("StopAirDashing");
     }
     /// <summary>
     /// 플레이어의 에어 대쉬 요청을 막습니다.
@@ -760,6 +959,10 @@ public abstract class PlayerController : MonoBehaviour
         this.enabled = true;
         Spawn();
     }
+    public void SetLand(bool value)
+    {
+        Landed = value;
+    }
 
     #endregion
 
@@ -775,14 +978,24 @@ public abstract class PlayerController : MonoBehaviour
         theScale.x *= -1;
         transform.localScale = theScale;
     }
+
+    #endregion 보조 메서드 정의
+
+
+
+    #region 더 이상 사용되지 않는 요소를 나열합니다.
+    [Obsolete("UnblockAirDashing 메서드로 대체되었습니다.", true)]
+    int _airDashCount = 0;
+
     /// <summary>
     /// 에어 대쉬 카운트를 초기화 합니다.
     /// </summary>
     [Obsolete("UnblockAirDashing()을 사용하십시오.", true)]
     protected void ClearAirDashCount()
     {
-//        _airDashCount = 0;
+        _airDashCount = 0;
     }
 
-    #endregion 보조 메서드 정의
+
+    #endregion
 }
