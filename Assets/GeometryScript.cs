@@ -80,16 +80,14 @@ public class GeometryScript : MonoBehaviour
                 lowers[2 * i + 1] = points[3];
             }
 
-            /*
             for (int i = 0, len = groundEdges.Length; i < len; ++i)
             {
                 groundEdges[i].transform.position = Vector3.zero;
                 groundEdges[i].points = new Vector2[] 
                 { uppers[i], uppers[i + 1] };
             }
-            */
-            groundCollider.transform.position = Vector3.zero;
-            groundCollider.points = uppers;
+//            groundCollider.transform.position = Vector3.zero;
+//            groundCollider.points = uppers;
             bottomCollider.transform.position = Vector3.zero;
             bottomCollider.points = lowers;
             leftCollider.transform.position = Vector3.zero;
