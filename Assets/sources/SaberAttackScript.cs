@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System;
 
+[Obsolete("일단 사용하지 마십시오.", true)]
 public class SaberAttackScript : MonoBehaviour
 {
-    public ZController zero;
+    public ZController_deprecated zero;
     public GameObject effectSlice;
 
     public int attackDamage;
@@ -38,6 +39,7 @@ public class SaberAttackScript : MonoBehaviour
 
     void AttackEnemy(GameObject enemy)
     {
+        /*
         MettoController metto = enemy.GetComponent<MettoController>();
         float scaleX = Mathf.Abs(effectSlice.transform.localScale.x);
         effectSlice.transform.localScale = new Vector3(zero.FacingRight ? scaleX : -scaleX, effectSlice.transform.localScale.y);
@@ -47,6 +49,7 @@ public class SaberAttackScript : MonoBehaviour
 
         BlockAttack();
         Invoke("UnblockAttack", 0.5f);
+        */
     }
     void BlockAttack()
     {

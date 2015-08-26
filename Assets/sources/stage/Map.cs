@@ -4,6 +4,8 @@ using System.Collections;
 public class Map : MonoBehaviour
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
+    PlayerController player;
+    public PlayerController Player { set { player = value; } }
 
     #endregion 컨트롤러용 Unity 객체
 
@@ -12,10 +14,6 @@ public class Map : MonoBehaviour
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     public Camera mainCamera;
     public BoxCollider2D[] cameraZones;
-
-
-    // public ZController _ZController;
-    public PlayerController player;
 
     #endregion Unity 공용 필드
 
@@ -47,8 +45,11 @@ public class Map : MonoBehaviour
     }
     void Update()
     {
-        // 뷰 포트를 맞춥니다.
-        SetViewportCenter();
+        if (player != null)
+        {
+            // 뷰 포트를 맞춥니다.
+            SetViewportCenter();
+        }
     }
     void FixedUpdate()
     {

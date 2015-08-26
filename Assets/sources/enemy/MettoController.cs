@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
+[Obsolete("EnemyMettoScript로 대체되었습니다.", true)]
 public class MettoController : MonoBehaviour
 {
     #region Component
@@ -96,7 +98,7 @@ public class MettoController : MonoBehaviour
     {
         while (hitPoint != 0)
         {
-            int random = Random.Range(0, 2);
+            int random = UnityEngine.Random.Range(0, 2);
             if (random == 1)
             {
                 MoveLeft();

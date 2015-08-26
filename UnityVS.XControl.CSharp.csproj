@@ -68,12 +68,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\BusterScript.cs" />
     <Compile Include="Assets\GeometryScript.cs" />
     <Compile Include="Assets\GroundScript.cs" />
+    <Compile Include="Assets\ReadyAnimator.cs" />
     <Compile Include="Assets\StageSceneManager.cs" />
     <Compile Include="Assets\WallScript.cs" />
+    <Compile Include="Assets\ZController.cs" />
+    <Compile Include="Assets\_Trashbin\AController.cs" />
+    <Compile Include="Assets\_Trashbin\IPlayerController.cs" />
+    <Compile Include="Assets\_Trashbin\UIController.cs" />
+    <Compile Include="Assets\_Trashbin\ZController_deprecated.cs" />
     <Compile Include="Assets\_Trashbin\_CharacterController.cs" />
+    <Compile Include="Assets\sources\AttackScript.cs" />
+    <Compile Include="Assets\sources\BusterAttackScript.cs" />
     <Compile Include="Assets\sources\CutsceneManager.cs" />
+    <Compile Include="Assets\sources\EnemyMettoScript.cs" />
+    <Compile Include="Assets\sources\EnemyScript.cs" />
     <Compile Include="Assets\sources\LoadingSceneManager.cs" />
     <Compile Include="Assets\sources\PlayerSelectSceneManager.cs" />
     <Compile Include="Assets\sources\SaberAttackScript.cs" />
@@ -81,19 +92,15 @@
     <Compile Include="Assets\sources\SpeechManager.cs" />
     <Compile Include="Assets\sources\TitleSceneManager.cs" />
     <Compile Include="Assets\sources\enemy\MettoController.cs" />
-    <Compile Include="Assets\sources\stage\AController.cs" />
     <Compile Include="Assets\sources\stage\EffectScript.cs" />
-    <Compile Include="Assets\sources\stage\IPlayerController.cs" />
     <Compile Include="Assets\sources\stage\Map.cs" />
     <Compile Include="Assets\sources\stage\PlayerController.cs" />
     <Compile Include="Assets\sources\stage\UIAnimator.cs" />
-    <Compile Include="Assets\sources\stage\UIController.cs" />
     <Compile Include="Assets\sources\stage\XController.cs" />
-    <Compile Include="Assets\sources\stage\ZController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\_Trashbin\Cutscene\CS01_Intro.txt" />
-    <None Include="Assets\_Trashbin\cutscene_text\ZCS_Intro.txt" />
+    <None Include="Assets\_Trashbin\CS01_Intro.txt" />
+    <None Include="Assets\_Trashbin\ZCS_Intro.txt" />
     <None Include="Assets\scenes\cutscene\CS00_PreviousStory.txt" />
     <None Include="Assets\scenes\cutscene\CS01_Prologue.txt" />
     <None Include="Assets\scenes\cutscene\CS02_HunterBase.txt" />

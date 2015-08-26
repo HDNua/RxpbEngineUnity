@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System;
 
+[Obsolete("ReadyAnimator로 대체되었습니다.", true)]
 public class UIAnimator : MonoBehaviour
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
@@ -11,8 +12,6 @@ public class UIAnimator : MonoBehaviour
 
 
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
-    // public UIController _UIController;
-
     public StageSceneManager stageManager;
     public PlayerController player;
 
