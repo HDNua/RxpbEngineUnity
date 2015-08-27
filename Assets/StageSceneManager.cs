@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
+[Obsolete("StageManager로 대체되었습니다.", true)]
 /// <summary>
 /// 스테이지 장면 관리자입니다.
 /// </summary>

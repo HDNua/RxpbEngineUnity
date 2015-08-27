@@ -4,7 +4,7 @@ using System.Collections;
 /// <summary>
 /// 버스터 공격 스크립트입니다.
 /// </summary>
-public class BusterAttackScript : AttackScript
+public class XBusterScript : AttackScript
 {
     Camera mainCamera;
     public Camera MainCamera { set { mainCamera = value; } }

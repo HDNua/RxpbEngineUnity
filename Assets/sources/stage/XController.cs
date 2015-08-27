@@ -5,6 +5,11 @@
 /// </summary>
 public class XController : PlayerController
 {
+    #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
+
+    #endregion
+
+
     #region 효과 객체를 보관합니다.
     GameObject dashBoostEffect = null;
 
@@ -19,7 +24,6 @@ public class XController : PlayerController
         get { return _shooting; }
         set { _animator.SetBool("Shooting", _shooting = value); }
     }
-
     bool shotPressed = false;
     float chargeTime = 0;
     public float maxChargeTime = 3;
@@ -31,43 +35,67 @@ public class XController : PlayerController
     public GameObject[] bullets;
     public Transform shotPosition;
     public float shotSpeed = 10;
-
-    // bool endShotRequested = false;
     float shotTime = 0;
     public float endShotTime = 0.5416667f; // 0.4f;
-
     public float[] chargeLevel = { 0, 0.3f, 2f };
 
-    // public Animation[] animations;
-
     #endregion
-    
-    
-    
+
+
+
     #region MonoBehavior 기본 메서드를 재정의합니다.
+    protected override void Awake()
+    {
+        base.Awake(); // Initialize();
+        // _renderer = GetComponent<SpriteRenderer>();
+    }
     void Start()
     {
-        Initialize();
+        // Initialize();
     }
-    void Update()
+    protected override void Update()
     {
         // 소환 중이라면
         if (Spawning)
         {
             return;
         }
+        // 화면 갱신에 따른 변화를 추적합니다.
+        if (Dashing) // 대쉬 상태에서 잔상을 만듭니다.
+        {
+            // 대쉬 잔상을 일정 간격으로 만들기 위한 조건 분기입니다.
+            if (DashAfterImageTime < DashAfterImageInterval)
+            {
+                DashAfterImageTime += Time.deltaTime;
+            }
+            // 실제로 잔상을 생성합니다.
+            else
+            {
+                GameObject dashAfterImage = Instantiate
+                    (effects[4], transform.position, transform.rotation)
+                    as GameObject;
+                Vector3 daiScale = dashAfterImage.transform.localScale;
+                if (FacingRight == false)
+                    daiScale.x *= -1;
+                dashAfterImage.transform.localScale = daiScale;
+                dashAfterImage.SetActive(false);
+                var daiRenderer = dashAfterImage.GetComponent<SpriteRenderer>();
+                daiRenderer.sprite = _renderer.sprite;
+                dashAfterImage.SetActive(true);
+                DashAfterImageTime = 0;
+            }
+        }
 
         // 새로운 사용자 입력을 확인합니다.
         // 점프 키가 눌린 경우
-        if (IsKeyDown(GameKey.Jump))
+        if (IsKeyDown("Jump")) // if (IsKeyDown(GameKey.Jump))
         {
             if (JumpBlocked)
             {
-                // print("TEST");
             }
             else if (Sliding)
             {
-                if (IsKeyPressed(GameKey.Dash))
+                if (IsKeyPressed("Dash")) // if (IsKeyPressed(GameKey.Dash))
                 {
                     WallDashJump();
                 }
@@ -80,7 +108,7 @@ public class XController : PlayerController
             {
                 DashJump();
             }
-            else if (Landed && IsKeyPressed(GameKey.Dash))
+            else if (Landed && IsKeyPressed("Dash"))
             {
                 DashJump();
             }
@@ -90,11 +118,10 @@ public class XController : PlayerController
             }
         }
         // 대쉬 키가 눌린 경우
-        else if (IsKeyDown(GameKey.Dash))
+        else if (IsKeyDown("Dash"))
         {
             if (Sliding)
             {
-
             }
             else if (Landed == false)
             {
@@ -117,9 +144,10 @@ public class XController : PlayerController
             }
         }
         // 캐릭터 변경 키가 눌린 경우
-        else if (Input.GetKeyDown(KeyCode.F))
+        else if (IsKeyDown("ChangeCharacter")) // else if (IsInput.GetKeyDown(KeyCode.F))
         {
-            sceneManager.ChangePlayer(sceneManager.PlayerZ);
+            // sceneManager.ChangePlayer(sceneManager.PlayerZ);
+            stageManager.ChangePlayer(stageManager.PlayerZ);
         }
     }
     void FixedUpdate()
@@ -154,14 +182,13 @@ public class XController : PlayerController
             {
                 if (SlideBlocked)
                 {
-
                 }
                 else
                 {
                     Slide();
                 }
             }
-            else if (IsKeyPressed(GameKey.Jump) == false
+            else if (IsKeyPressed("Jump") == false
                 || _rigidbody.velocity.y <= 0)
             {
                 Fall();
@@ -184,7 +211,6 @@ public class XController : PlayerController
             {
                 if (SlideBlocked)
                 {
-
                 }
                 else
                 {
@@ -203,7 +229,7 @@ public class XController : PlayerController
         {
             if (AirDashing)
             {
-                if (IsKeyPressed(GameKey.Dash) == false)
+                if (IsKeyPressed("Dash") == false)
                 {
                     StopAirDashing();
                     Fall();
@@ -224,7 +250,7 @@ public class XController : PlayerController
                 StopDashing();
                 Fall();
             }
-            else if (IsKeyPressed(GameKey.Dash) == false)
+            else if (IsKeyPressed("Dash") == false)
             {
                 StopDashing();
             }
@@ -281,11 +307,11 @@ public class XController : PlayerController
                 {
 
                 }
-                else if (IsKeyPressed(GameKey.Left))
+                else if (IsLeftKeyPressed()) // else if (IsKeyPressed(GameKey.Left))
                 {
                     MoveLeft();
                 }
-                else if (IsKeyPressed(GameKey.Right))
+                else if (IsRightKeyPressed()) // else if (IsKeyPressed(GameKey.Right))
                 {
                     MoveRight();
                 }
@@ -312,7 +338,7 @@ public class XController : PlayerController
         // 그 외의 경우
         else
         {
-            if (IsKeyPressed(GameKey.Left))
+            if (IsLeftKeyPressed()) // if (IsKeyPressed(GameKey.Left))
             {
                 if (FacingRight == false && Pushing)
                 {
@@ -327,7 +353,7 @@ public class XController : PlayerController
                     MoveLeft();
                 }
             }
-            else if (IsKeyPressed(GameKey.Right))
+            else if (IsRightKeyPressed()) // else if (IsKeyPressed(GameKey.Right))
             {
                 if (FacingRight && Pushing)
                 {
@@ -349,7 +375,7 @@ public class XController : PlayerController
         }
 
         // 공격 키가 눌린 경우를 처리합니다.
-        if (IsKeyPressed(GameKey.Attack))
+        if (IsKeyPressed("Attack")) // if (IsKeyPressed(GameKey.Attack))
         {
             if (shotPressed == false)
             {
@@ -373,7 +399,7 @@ public class XController : PlayerController
                 }
                 chargeTime = (chargeTime >= maxChargeTime)
                     ? maxChargeTime : (chargeTime + Time.deltaTime);
-                print(chargeTime);
+                // print(chargeTime);
             }
         }
         else if (shotPressed)
@@ -381,18 +407,15 @@ public class XController : PlayerController
             int index = -1;
             if (chargeTime < chargeLevel[1])
             {
-                index = 0;
-                // _animator.Play("Shot", 0, 0);
+                index = 0; // _animator.Play("Shot", 0, 0);
             }
             else if (chargeTime < chargeLevel[2])
             {
-                index = 1;
-                // _animator.Play("Shot", 0, 0);
+                index = 1; // _animator.Play("Shot", 0, 0);
             }
             else
             {
-                index = 2;
-                // _animator.Play("ChargeShot", 0, 0);
+                index = 2; // _animator.Play("ChargeShot", 0, 0);
             }
 
             Shooting = true;
@@ -407,6 +430,7 @@ public class XController : PlayerController
                 _animator.Play(0, 0, 0);
             }
 
+            // 버스터 탄환을 생성하고 초기화합니다.
             GameObject _bullet = Instantiate
                 (bullets[index], shotPosition.position, shotPosition.rotation)
                 as GameObject;
@@ -415,31 +439,37 @@ public class XController : PlayerController
             _bullet.transform.localScale = bulletScale;
             _bullet.GetComponent<Rigidbody2D>().velocity
                 = (FacingRight ? Vector3.right : Vector3.left) * shotSpeed;
+            XBusterScript buster = _bullet.GetComponent<XBusterScript>();
+            buster.MainCamera = stageManager.MainCamera;
 
-            // BusterScript busterScript = _bullet.GetComponent<BusterScript>();
-            // busterScript.MainCamera = sceneManager.MainCamera;
-            BusterAttackScript buster = _bullet.GetComponent<BusterAttackScript>();
-            buster.MainCamera = sceneManager.mainCam;
-
+            // 효과음을 재생하고 상태를 업데이트 합니다.
             SoundEffects[8 + index].Play();
             SoundEffects[7].Stop();
-
             shotPressed = false;
             ShotTriggered = true;
-            // ShotBlocked = true;
-            // Invoke("UnblockCharging", 0.8f);
-
             shotTime = 0;
+
+            // 일정 시간 후에 샷 상태를 해제합니다.
             Invoke("EndShot", endShotTime);
         }
 
         shotTime += Time.fixedDeltaTime;
-        if (IsAnimationPlaying("Shot"))
+
+        if (Invencible)
         {
-            float time = GetCurrentAnimationPlaytime();
-            float length = GetCurrentAnimationLength();
-            // _animator.GetCurrentAnimatorStateInfo(0).
-            print(string.Format("{0}/{1}", time, length));
+            Color color = GetComponent<SpriteRenderer>().color;
+
+            if (color == Color.white)
+            {
+                // new Color(1 - color.r, 1 - color.g, 1 - color.b);s
+                color = Color.red;
+            }
+            else
+            {
+                color = Color.white;
+            }
+            color = Color.red;
+            GetComponent<SpriteRenderer>().color = color;
         }
     }
 
@@ -608,6 +638,38 @@ public class XController : PlayerController
 
 
 
+    #region PlayerController 상태 메서드를 재정의 합니다.
+    /// <summary>
+    /// 플레이어가 대미지를 입습니다.
+    /// </summary>
+    /// <param name="damage">플레이어가 입을 대미지입니다.</param>
+    public override void Hurt(int damage)
+    {
+        base.Hurt(damage);
+        Invoke("EndHurt", GetCurrentAnimationLength());
+    }
+
+    float invencibleTime = 0;
+    void EndHurt()
+    {
+        Damaged = false;
+        StartCoroutine(CoroutineInvencible());
+    }
+    System.Collections.IEnumerator CoroutineInvencible()
+    {
+        invencibleTime = 0;
+        while (invencibleTime < 1)
+        {
+            invencibleTime += Time.deltaTime;
+            yield return false;
+        }
+        Invencible = false;
+        yield return true;
+    }
+
+    #endregion
+
+
     #region 프레임 이벤트 핸들러를 정의합니다.
     ///////////////////////////////////////////////////////////////////
     // 점프 및 낙하
@@ -690,6 +752,13 @@ public class XController : PlayerController
     {
         UnblockSliding();
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    // 기타
+    void FE_Flash()
+    {
+        
     }
 
     #endregion

@@ -40,21 +40,50 @@ public class ZController : PlayerController
 
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
+    protected override void Awake()
+    {
+        base.Awake(); // Initialize();
+    }
     void Start()
     {
-        Initialize();
+        // Initialize();
     }
-    void Update()
+    protected override void Update()
     {
         // 소환 중이라면
         if (Spawning)
         {
             return;
         }
+        // 화면 갱신에 따른 변화를 추적합니다.
+        if (Dashing) // 대쉬 상태에서 잔상을 만듭니다.
+        {
+            // 대쉬 잔상을 일정 간격으로 만들기 위한 조건 분기입니다.
+            if (DashAfterImageTime < DashAfterImageInterval)
+            {
+                DashAfterImageTime += Time.deltaTime;
+            }
+            // 실제로 잔상을 생성합니다.
+            else
+            {
+                GameObject dashAfterImage = Instantiate
+                    (effects[4], transform.position, transform.rotation)
+                    as GameObject;
+                Vector3 daiScale = dashAfterImage.transform.localScale;
+                if (FacingRight == false)
+                    daiScale.x *= -1;
+                dashAfterImage.transform.localScale = daiScale;
+                dashAfterImage.SetActive(false);
+                var daiRenderer = dashAfterImage.GetComponent<SpriteRenderer>();
+                daiRenderer.sprite = _renderer.sprite;
+                dashAfterImage.SetActive(true);
+                DashAfterImageTime = 0;
+            }
+        }
 
         // 새로운 사용자 입력을 확인합니다.
         // 점프 키가 눌린 경우
-        if (IsKeyDown(GameKey.Jump))
+        if (IsKeyDown("Jump")) // IsKeyDown(GameKey.Jump))
         {
             if (JumpBlocked)
             {
@@ -62,7 +91,8 @@ public class ZController : PlayerController
             }
             else if (Sliding)
             {
-                if (IsKeyPressed(GameKey.Dash))
+                // if (IsKeyPressed(GameKey.Dash))
+                if (IsKeyPressed("Dash"))
                 {
                     WallDashJump();
                 }
@@ -75,7 +105,7 @@ public class ZController : PlayerController
             {
                 DashJump();
             }
-            else if (Landed && IsKeyPressed(GameKey.Dash))
+            else if (Landed && IsKeyPressed("Dash")) // else if (Landed && IsKeyPressed(GameKey.Dash))
             {
                 DashJump();
             }
@@ -85,7 +115,7 @@ public class ZController : PlayerController
             }
         }
         // 대쉬 키가 눌린 경우
-        else if (IsKeyDown(GameKey.Dash))
+        else if (IsKeyDown("Dash")) // else if (IsKeyDown(GameKey.Dash))
         {
             if (Sliding)
             {
@@ -112,9 +142,10 @@ public class ZController : PlayerController
             }
         }
         // 캐릭터 변경 키가 눌린 경우
-        else if (Input.GetKeyDown(KeyCode.F))
+        else if (IsKeyDown("ChangeCharacter")) // else if (Input.GetKeyDown(KeyCode.F))
         {
-            sceneManager.ChangePlayer(sceneManager.PlayerX);
+            // sceneManager.ChangePlayer(sceneManager.PlayerX);
+            stageManager.ChangePlayer(stageManager.PlayerX);
         }
     }
     void FixedUpdate()
@@ -156,7 +187,7 @@ public class ZController : PlayerController
                     Slide();
                 }
             }
-            else if (IsKeyPressed(GameKey.Jump) == false
+            else if (IsKeyPressed("Jump") == false
                 || _rigidbody.velocity.y <= 0)
             {
                 Fall();
@@ -198,7 +229,7 @@ public class ZController : PlayerController
         {
             if (AirDashing)
             {
-                if (IsKeyPressed(GameKey.Dash) == false)
+                if (IsKeyPressed("Dash") == false)
                 {
                     StopAirDashing();
                     Fall();
@@ -219,7 +250,7 @@ public class ZController : PlayerController
                 StopDashing();
                 Fall();
             }
-            else if (IsKeyPressed(GameKey.Dash) == false)
+            else if (IsKeyPressed("Dash") == false)
             {
                 StopDashing();
             }
@@ -276,11 +307,11 @@ public class ZController : PlayerController
                 {
 
                 }
-                else if (IsKeyPressed(GameKey.Left))
+                else if (IsLeftKeyPressed()) // else if (IsKeyPressed(GameKey.Left))
                 {
                     MoveLeft();
                 }
-                else if (IsKeyPressed(GameKey.Right))
+                else if (IsRightKeyPressed()) // else if (IsKeyPressed(GameKey.Right)
                 {
                     MoveRight();
                 }
@@ -307,7 +338,7 @@ public class ZController : PlayerController
         // 그 외의 경우
         else
         {
-            if (IsKeyPressed(GameKey.Left))
+            if (IsLeftKeyPressed())
             {
                 if (FacingRight == false && Pushing)
                 {
@@ -322,7 +353,7 @@ public class ZController : PlayerController
                     MoveLeft();
                 }
             }
-            else if (IsKeyPressed(GameKey.Right))
+            else if (IsRightKeyPressed())
             {
                 if (FacingRight && Pushing)
                 {
@@ -344,7 +375,7 @@ public class ZController : PlayerController
         }
 
         // 공격 키가 눌린 경우를 처리합니다.
-        if (IsKeyDown(GameKey.Attack))
+        if (IsKeyDown("Attack"))
         {
             if (AttackBlocked)
             {

@@ -28,7 +28,7 @@ public class EnemyMettoScript : EnemyScript
 
 
 
-    #region MyRegion
+    #region MonoBehaviour 기본 메서드를 재정의 합니다.
     protected override void Start()
     {
         base.Start();
@@ -39,12 +39,27 @@ public class EnemyMettoScript : EnemyScript
     {
         base.Update();
     }
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            GameObject pObject = other.gameObject;
+            PlayerController player = pObject.GetComponent<PlayerController>();
+            if (player.Invencible == false)
+            {
+                player.Hurt(Damage);
+            }
+        }
+    }
 
     #endregion
 
 
 
     #region EnemyScript의 메서드를 오버라이드 합니다.
+    /// <summary>
+    /// 캐릭터가 사망합니다.
+    /// </summary>
     public override void Dead()
     {
         SoundEffects[0].Play();
@@ -57,18 +72,27 @@ public class EnemyMettoScript : EnemyScript
 
 
     #region 보조 메서드를 정의합니다.
+    /// <summary>
+    /// 왼쪽으로 이동합니다.
+    /// </summary>
     void MoveLeft()
     {
         if (facingRight)
             Flip();
         _rigidbody.velocity = new Vector2(-movingSpeed, 0);
     }
+    /// <summary>
+    /// 오른쪽으로 이동합니다.
+    /// </summary>
     void MoveRight()
     {
         if (facingRight == false)
             Flip();
         _rigidbody.velocity = new Vector2(movingSpeed, 0);
     }
+    /// <summary>
+    /// 방향을 바꿉니다.
+    /// </summary>
     void Flip()
     {
         if (facingRight)
@@ -83,9 +107,13 @@ public class EnemyMettoScript : EnemyScript
         }
         facingRight = !facingRight;
     }
+    /// <summary>
+    /// 주변을 방황합니다.
+    /// </summary>
+    /// <returns>StartCoroutine 호출에 적합한 값을 반환합니다.</returns>
     IEnumerator WalkAround()
     {
-        while (hitPoint != 0)
+        while (_health != 0)
         {
             int random = Random.Range(0, 2);
             if (random == 1)

@@ -28,7 +28,7 @@ public class BusterScript : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag == "Enemy")
+        if (other.CompareTag("Enemy"))
         {
             MettoController metto
                 = other.gameObject.GetComponent<MettoController>();

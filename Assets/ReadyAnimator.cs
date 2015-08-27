@@ -2,15 +2,15 @@
 
 public class ReadyAnimator : MonoBehaviour
 {
-    StageSceneManager stageManager;
+    StageManager stageManager;
 
     void Start()
     {
-        stageManager = GetComponentInParent<StageSceneManager>();
+        stageManager = GetComponentInParent<StageManager>();
     }
     void FE_PlayReadyVoice()
     {
-        stageManager.SoundEffects[0].Play();
+        stageManager.AudioSources[0].Play();
     }
     void FE_SpawnPlayer()
     {

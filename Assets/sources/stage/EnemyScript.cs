@@ -8,6 +8,7 @@ public class EnemyScript : MonoBehaviour
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
     Collider2D _collider;
+    public Collider2D Collider { get { return _collider; } }
 
     #endregion
 
@@ -30,7 +31,18 @@ public class EnemyScript : MonoBehaviour
 
 
     #region 캐릭터의 상태 필드 및 프로퍼티를 정의합니다.
-    public int hitPoint;
+    public int _health;
+    public int Health
+    {
+        get { return _health; }
+        protected set { _health = value; }
+    }
+
+    public int _damage;
+    public int Damage
+    {
+        get { return _damage; }
+    }
 
     /// <summary>
     /// 캐릭터가 죽었는지를 확인합니다.
@@ -38,7 +50,7 @@ public class EnemyScript : MonoBehaviour
     /// <returns></returns>
     bool IsDead()
     {
-        return hitPoint == 0;
+        return _health == 0;
     }
 
     #endregion
@@ -75,7 +87,7 @@ public class EnemyScript : MonoBehaviour
     /// <param name="damage"></param>
     public void Hurt(int damage)
     {
-        hitPoint -= damage;
+        _health -= damage;
     }
 
     #endregion
@@ -88,8 +100,7 @@ public class EnemyScript : MonoBehaviour
     /// </summary>
     public virtual void Dead()
     {
-        gameObject.SetActive(false);
-        // Destroy(gameObject);
+        gameObject.SetActive(false); // Destroy(gameObject);
     }
 
     #endregion
