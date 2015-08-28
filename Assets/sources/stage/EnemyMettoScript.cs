@@ -14,6 +14,9 @@ public class EnemyMettoScript : EnemyScript
 
 
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
+    public Transform groundCheck;
+    public Transform pushCheck;
+    public LayerMask whatIsWall;
 
     #endregion
 
@@ -38,6 +41,21 @@ public class EnemyMettoScript : EnemyScript
     protected override void Update()
     {
         base.Update();
+
+        Vector3 direction = facingRight ? Vector3.right : Vector3.left;
+        RaycastHit2D pushRay = Physics2D.Raycast
+            (pushCheck.position, direction, 0.1f, whatIsWall);
+        if (pushRay)
+        {
+            if (facingRight)
+            {
+                MoveLeft();
+            }
+            else
+            {
+                MoveRight();
+            }
+        }
     }
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -45,7 +63,12 @@ public class EnemyMettoScript : EnemyScript
         {
             GameObject pObject = other.gameObject;
             PlayerController player = pObject.GetComponent<PlayerController>();
-            if (player.Invencible == false)
+
+            if (player.Invencible || player.IsDead)
+            {
+
+            }
+            else
             {
                 player.Hurt(Damage);
             }

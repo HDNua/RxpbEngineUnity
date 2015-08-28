@@ -68,15 +68,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\BusterScript.cs" />
-    <Compile Include="Assets\GeometryScript.cs" />
-    <Compile Include="Assets\GroundScript.cs" />
-    <Compile Include="Assets\ReadyAnimator.cs" />
-    <Compile Include="Assets\SceneSystemManager.cs" />
-    <Compile Include="Assets\StageManager.cs" />
-    <Compile Include="Assets\StageSceneManager.cs" />
-    <Compile Include="Assets\WallScript.cs" />
-    <Compile Include="Assets\ZController.cs" />
     <Compile Include="Assets\_Trashbin\AController.cs" />
     <Compile Include="Assets\_Trashbin\IPlayerController.cs" />
     <Compile Include="Assets\_Trashbin\SaberAttackScript.cs" />
@@ -84,24 +75,34 @@
     <Compile Include="Assets\_Trashbin\UIController.cs" />
     <Compile Include="Assets\_Trashbin\ZController_deprecated.cs" />
     <Compile Include="Assets\_Trashbin\_CharacterController.cs" />
-    <Compile Include="Assets\sources\CutsceneManager.cs" />
-    <Compile Include="Assets\sources\LoadingSceneManager.cs" />
-    <Compile Include="Assets\sources\PlayerSelectSceneManager.cs" />
-    <Compile Include="Assets\sources\SceneManager.cs" />
-    <Compile Include="Assets\sources\ScreenFader.cs" />
-    <Compile Include="Assets\sources\SpeechManager.cs" />
-    <Compile Include="Assets\sources\TitleSceneManager.cs" />
     <Compile Include="Assets\sources\enemy\MettoController.cs" />
     <Compile Include="Assets\sources\stage\AttackScript.cs" />
+    <Compile Include="Assets\sources\stage\BusterScript.cs" />
+    <Compile Include="Assets\sources\stage\CutsceneManager.cs" />
+    <Compile Include="Assets\sources\stage\DeadEffectScript.cs" />
     <Compile Include="Assets\sources\stage\EffectScript.cs" />
     <Compile Include="Assets\sources\stage\EnemyMettoScript.cs" />
     <Compile Include="Assets\sources\stage\EnemyScript.cs" />
+    <Compile Include="Assets\sources\stage\GeometryScript.cs" />
+    <Compile Include="Assets\sources\stage\GroundScript.cs" />
+    <Compile Include="Assets\sources\stage\LoadingSceneManager.cs" />
     <Compile Include="Assets\sources\stage\Map.cs" />
     <Compile Include="Assets\sources\stage\PlayerController.cs" />
+    <Compile Include="Assets\sources\stage\PlayerSelectSceneManager.cs" />
+    <Compile Include="Assets\sources\stage\ReadyAnimator.cs" />
+    <Compile Include="Assets\sources\stage\SceneManager.cs" />
+    <Compile Include="Assets\sources\stage\SceneSystemManager.cs" />
+    <Compile Include="Assets\sources\stage\ScreenFader.cs" />
+    <Compile Include="Assets\sources\stage\SpeechManager.cs" />
+    <Compile Include="Assets\sources\stage\StageManager.cs" />
+    <Compile Include="Assets\sources\stage\StageSceneManager.cs" />
+    <Compile Include="Assets\sources\stage\TitleSceneManager.cs" />
     <Compile Include="Assets\sources\stage\UI\HUDScript.cs" />
     <Compile Include="Assets\sources\stage\UI\PauseMenu.cs" />
+    <Compile Include="Assets\sources\stage\WallScript.cs" />
     <Compile Include="Assets\sources\stage\XBusterScript.cs" />
     <Compile Include="Assets\sources\stage\XController.cs" />
+    <Compile Include="Assets\sources\stage\ZController.cs" />
     <Compile Include="Assets\sources\stage\ZSaberScript.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -150,8 +150,9 @@ public abstract class PlayerController : MonoBehaviour
 
 
     #region 주인공의 게임 상태 필드를 정의합니다.
-    int health = 10;
-    int maxHealth = 10;
+    int health = 20;
+    int maxHealth = 20;
+    int dangerHealth = 6;
 
     /// <summary>
     /// 플레이어의 현재 체력을 확인합니다.
@@ -169,6 +170,10 @@ public abstract class PlayerController : MonoBehaviour
         get { return maxHealth; }
         private set { maxHealth = value; }
     }
+    /// <summary>
+    /// 위험 상태로 바뀌는 체력의 값입니다.
+    /// </summary>
+    public int DangerHealth { get { return dangerHealth; } }
 
     #endregion
 
@@ -190,6 +195,10 @@ public abstract class PlayerController : MonoBehaviour
 
     bool _damaged = false;
     bool _invencible = false;
+    float _invencibleTime;
+
+    bool _danger = false;
+    bool _isDead = false;
 
     float _dashAfterImageTime = 0;
     float _dashAfterImageInterval = 0.05f;
@@ -295,11 +304,30 @@ public abstract class PlayerController : MonoBehaviour
         set { _animator.SetBool("Sliding", _sliding = value); }
     }
 
+    /// <summary>
+    /// 이동이 막혀있다면 true입니다.
+    /// </summary>
     protected bool MoveBlocked { get; set; }
+    /// <summary>
+    /// 점프가 막혀있다면 true입니다.
+    /// </summary>
     protected bool JumpBlocked { get; set; }
+    /// <summary>
+    /// 대쉬가 막혀있다면 true입니다.
+    /// </summary>
     protected bool DashBlocked { get; set; }
+    /// <summary>
+    /// 벽 타기가 막혀있다면 true입니다.
+    /// </summary>
     protected bool SlideBlocked { get; set; }
+    /// <summary>
+    /// 에어 대쉬가 막혀있다면 true입니다.
+    /// </summary>
     protected bool AirDashBlocked { get; set; }
+    /// <summary>
+    /// 플레이어의 입력이 막혀있다면 true입니다.
+    /// </summary>
+    protected bool InputBlocked { get; set; }
 
     protected bool DashJumping { get; set; }
     protected bool WallJumping { get; set; }
@@ -327,25 +355,37 @@ public abstract class PlayerController : MonoBehaviour
         protected set { _animator.SetBool("Invencible", _invencible = value); }
     }
     /// <summary>
-    /// 플레이어의 입력이 막혀있다면 true입니다.
+    /// 진행된 무적 시간을 반환합니다.
     /// </summary>
-    protected bool InputBlocked { get; set; }
-
-    /// <summary>
-    /// 플레이어가 죽었는지 확인합니다.
-    /// </summary>
-    /// <returns>체력이 0 이하라면 true입니다.</returns>
-    public bool IsDead()
+    public float InvencibleTime
     {
-        return (health <= 0);
+        get { return _invencibleTime; }
+        protected set { _invencibleTime = value; }
     }
+    /// <summary>
+    /// 위험 상태라면 true입니다.
+    /// </summary>
+    public bool Danger
+    {
+        get { return _danger; }
+        protected set { _animator.SetBool("Danger", _danger = value); }
+    }
+    /// <summary>
+    /// 플레이어가 죽었다면 true입니다.
+    /// </summary>
+    public bool IsDead
+    {
+        get { return _isDead; }
+        private set { _isDead = value; }
+    }
+
     /// <summary>
     /// 플레이어가 생존해있는지 확인합니다.
     /// </summary>
     /// <returns>체력이 정상 범위에 있다면 true입니다.</returns>
     public bool IsAlive()
     {
-        return (0 < health && health <= maxHealth);
+        return (0 < health);
     }
     /// <summary>
     /// 플레이어의 체력이 가득 찼는지 확인합니다.
@@ -394,6 +434,52 @@ public abstract class PlayerController : MonoBehaviour
     protected void OnCollisionExit2D(Collision2D collision)
     {
         UpdatePhysicsState(collision);
+    }
+    protected virtual bool UpdateController()
+    {
+        // 소환 중이라면
+        if (Spawning)
+        {
+            return false;
+        }
+        // 사망했다면
+        else if (IsDead)
+        {
+            if (stageManager.fader.FadeOutEnded)
+            {
+                Application.LoadLevel(Application.loadedLevel);
+            }
+            return false;
+        }
+        return true;
+    }
+    protected virtual bool FixedUpdateController()
+    {
+        // 소환 중이라면
+        if (Spawning)
+        {
+            // 준비 중이라면
+            if (Readying)
+            {
+                // 준비가 끝나서 대기 상태로 전환되었다면
+                if (IsAnimationPlaying("Idle"))
+                    // 준비를 완전히 종료합니다.
+                    EndReady();
+            }
+            // 준비 중이 아닌데 지상에 착륙했다면
+            else if (Landed)
+            {
+                // 준비 상태로 전환합니다.
+                Ready();
+            }
+            return false;
+        }
+        // 사망했다면
+        else if (IsDead)
+        {
+            return false;
+        }
+        return true;
     }
 
     #endregion
@@ -621,6 +707,38 @@ public abstract class PlayerController : MonoBehaviour
     {
         Readying = false;
         Spawning = false;
+    }
+    /// <summary>
+    /// 플레이어가 사망합니다.
+    /// </summary>
+    protected virtual void Dead()
+    {
+        IsDead = true;
+        Invoke("RequestFadeOut", 1);
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    void RequestFadeOut()
+    {
+        stageManager.fader.FadeOut(1);
+        Invoke("RequestRestart", 1);
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    void RequestRestart()
+    {
+
+    }
+
+    public void RequestDead()
+    {
+        Health = 0;
+        StopMoving();
+        BlockMoving();
+        _animator.speed = 0;
+        Invoke("Dead", 0.5f);
     }
 
     #endregion
@@ -1035,11 +1153,38 @@ public abstract class PlayerController : MonoBehaviour
     public virtual void Hurt(int damage)
     {
         Health -= damage;
+        if (IsAlive() == false)
+        {
+            RequestDead();
+        }
+        else if (health <= dangerHealth)
+        {
+            Danger = true;
+        }
 
         Damaged = true;
         Invencible = true;
         InputBlocked = true;
         Invoke("UnblockInput", 1f);
+    }
+    /// <summary>
+    /// 대미지 상태를 해제합니다.
+    /// </summary>
+    protected virtual void EndHurt()
+    {
+        Damaged = false;
+        StartCoroutine(CoroutineInvencible());
+    }
+    System.Collections.IEnumerator CoroutineInvencible()
+    {
+        InvencibleTime = 0;
+        while (InvencibleTime < 1)
+        {
+            InvencibleTime += Time.deltaTime;
+            yield return false;
+        }
+        Invencible = false;
+        yield return true;
     }
 
     #endregion
@@ -1173,6 +1318,15 @@ public abstract class PlayerController : MonoBehaviour
         GameKeySet[GameKey.Dash] = KeyCode.Z;
         GameKeySet[GameKey.Weapon] = KeyCode.V;
         */
+    }
+    [Obsolete("IsDead로 대체되었습니다.", true)]
+    /// <summary>
+    /// 플레이어가 죽었는지 확인합니다.
+    /// </summary>
+    /// <returns>체력이 0 이하라면 true입니다.</returns>
+    public bool IsPlayerDead()
+    {
+        return (health <= 0);
     }
 
     #endregion

@@ -39,6 +39,9 @@ public class XController : PlayerController
     public float endShotTime = 0.5416667f; // 0.4f;
     public float[] chargeLevel = { 0, 0.3f, 2f };
 
+    bool dangerVoicePlayed = false;
+    const float endHurtLength = 0.361112f;
+
     #endregion
 
 
@@ -55,11 +58,11 @@ public class XController : PlayerController
     }
     protected override void Update()
     {
-        // 소환 중이라면
-        if (Spawning)
+        if (UpdateController() == false)
         {
             return;
         }
+
         // 화면 갱신에 따른 변화를 추적합니다.
         if (Dashing) // 대쉬 상태에서 잔상을 만듭니다.
         {
@@ -88,14 +91,14 @@ public class XController : PlayerController
 
         // 새로운 사용자 입력을 확인합니다.
         // 점프 키가 눌린 경우
-        if (IsKeyDown("Jump")) // if (IsKeyDown(GameKey.Jump))
+        if (IsKeyDown("Jump"))
         {
             if (JumpBlocked)
             {
             }
             else if (Sliding)
             {
-                if (IsKeyPressed("Dash")) // if (IsKeyPressed(GameKey.Dash))
+                if (IsKeyPressed("Dash"))
                 {
                     WallDashJump();
                 }
@@ -144,33 +147,22 @@ public class XController : PlayerController
             }
         }
         // 캐릭터 변경 키가 눌린 경우
-        else if (IsKeyDown("ChangeCharacter")) // else if (IsInput.GetKeyDown(KeyCode.F))
+        else if (IsKeyDown("ChangeCharacter"))
         {
-            // sceneManager.ChangePlayer(sceneManager.PlayerZ);
             stageManager.ChangePlayer(stageManager.PlayerZ);
+        }
+
+        if (IsAnimationPlaying("Hurt"))
+        {
+            print(GetCurrentAnimationLength());
         }
     }
     void FixedUpdate()
     {
         UpdateState();
 
-        // 소환 중이라면
-        if (Spawning)
+        if (FixedUpdateController() == false)
         {
-            // 준비 중이라면
-            if (Readying)
-            {
-                // 준비가 끝나서 대기 상태로 전환되었다면
-                if (IsAnimationPlaying("Idle"))
-                    // 준비를 완전히 종료합니다.
-                    EndReady();
-            }
-            // 준비 중이 아닌데 지상에 착륙했다면
-            else if (Landed)
-            {
-                // 준비 상태로 전환합니다.
-                Ready();
-            }
             return;
         }
 
@@ -307,11 +299,11 @@ public class XController : PlayerController
                 {
 
                 }
-                else if (IsLeftKeyPressed()) // else if (IsKeyPressed(GameKey.Left))
+                else if (IsLeftKeyPressed())
                 {
                     MoveLeft();
                 }
-                else if (IsRightKeyPressed()) // else if (IsKeyPressed(GameKey.Right))
+                else if (IsRightKeyPressed())
                 {
                     MoveRight();
                 }
@@ -640,31 +632,45 @@ public class XController : PlayerController
 
     #region PlayerController 상태 메서드를 재정의 합니다.
     /// <summary>
+    /// 플레이어가 사망합니다.
+    /// </summary>
+    protected override void Dead()
+    {
+        base.Dead();
+
+        stageManager.deadEffect.RequestRun(stageManager.player);
+        Voices[9].Play();
+        SoundEffects[12].Play();
+    }
+    /// <summary>
     /// 플레이어가 대미지를 입습니다.
     /// </summary>
     /// <param name="damage">플레이어가 입을 대미지입니다.</param>
     public override void Hurt(int damage)
     {
         base.Hurt(damage);
-        Invoke("EndHurt", GetCurrentAnimationLength());
-    }
-
-    float invencibleTime = 0;
-    void EndHurt()
-    {
-        Damaged = false;
-        StartCoroutine(CoroutineInvencible());
-    }
-    System.Collections.IEnumerator CoroutineInvencible()
-    {
-        invencibleTime = 0;
-        while (invencibleTime < 1)
+        if (IsAlive())
         {
-            invencibleTime += Time.deltaTime;
-            yield return false;
+            Voices[4].Play();
+            SoundEffects[11].Play();
         }
-        Invencible = false;
-        yield return true;
+        Invoke("EndHurt", endHurtLength);
+    }
+    /// <summary>
+    /// 대미지 상태를 해제합니다.
+    /// </summary>
+    protected override void EndHurt()
+    {
+        base.EndHurt();
+        if (Danger && dangerVoicePlayed == false)
+        {
+            Voices[6].Play();
+            dangerVoicePlayed = true;
+        }
+        else if (Health > DangerHealth)
+        {
+            dangerVoicePlayed = false;
+        }
     }
 
     #endregion

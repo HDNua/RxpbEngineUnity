@@ -19,6 +19,8 @@ public class ZController : PlayerController
     bool _attacking;
     bool _attackRequested;
 
+    bool dangerVoicePlayed = false;
+
     bool AttackBlocked
     {
         get { return _attackBlocked; }
@@ -50,11 +52,11 @@ public class ZController : PlayerController
     }
     protected override void Update()
     {
-        // 소환 중이라면
-        if (Spawning)
+        if (UpdateController() == false)
         {
             return;
         }
+
         // 화면 갱신에 따른 변화를 추적합니다.
         if (Dashing) // 대쉬 상태에서 잔상을 만듭니다.
         {
@@ -152,6 +154,12 @@ public class ZController : PlayerController
     {
         UpdateState();
 
+        if (FixedUpdateController() == false)
+        {
+            return;
+        }
+
+        /*
         // 소환 중이라면
         if (Spawning)
         {
@@ -171,6 +179,7 @@ public class ZController : PlayerController
             }
             return;
         }
+        */
 
         // 기존 사용자 입력을 확인합니다.
         // 점프 중이라면
@@ -581,6 +590,50 @@ public class ZController : PlayerController
 
 
 
+    #region PlayerController 상태 메서드를 재정의 합니다.
+    /// <summary>
+    /// 플레이어가 사망합니다.
+    /// </summary>
+    protected override void Dead()
+    {
+        base.Dead();
+
+        stageManager.deadEffect.RequestRun(stageManager.player);
+        Voices[8].Play();
+        SoundEffects[9].Play();
+    }
+    /// <summary>
+    /// 플레이어가 대미지를 입습니다.
+    /// </summary>
+    /// <param name="damage">플레이어가 입을 대미지입니다.</param>
+    public override void Hurt(int damage)
+    {
+        base.Hurt(damage);
+        if (IsAlive())
+        {
+            Voices[5].Play();
+            SoundEffects[8].Play();
+        }
+        Invoke("EndHurt", GetCurrentAnimationLength());
+    }
+    protected override void EndHurt()
+    {
+        base.EndHurt();
+        if (Danger && dangerVoicePlayed == false)
+        {
+            Voices[7].Play();
+            dangerVoicePlayed = true;
+        }
+        else
+        {
+            dangerVoicePlayed = false;
+        }
+    }
+
+    #endregion
+
+
+
     #region 프레임 이벤트 핸들러를 정의합니다.
     ///////////////////////////////////////////////////////////////////
     // 지상 공격
@@ -588,19 +641,19 @@ public class ZController : PlayerController
     /// 첫 번째 일반 지상 공격 시에 발생합니다.
     /// </summary>
     public void FE_Attack1()
-    {
-        // 받은 요청은 삭제합니다.
-        AttackRequested = false;
+        {
+            // 받은 요청은 삭제합니다.
+            AttackRequested = false;
 
-        // 공격 시 불가능한 행동을 막습니다.
-        BlockAttacking();
-        BlockJumping();
-        BlockDashing();
+            // 공격 시 불가능한 행동을 막습니다.
+            BlockAttacking();
+            BlockJumping();
+            BlockDashing();
 
-        // 효과음을 재생합니다.
-        Voices[1].Play();
-        SoundEffects[7].Play();
-    }
+            // 효과음을 재생합니다.
+            Voices[1].Play();
+            SoundEffects[7].Play();
+        }
     /// <summary>
     /// 첫 번째 일반 지상 공격이 공격으로 인정되는 때에 발생합니다.
     /// </summary>
