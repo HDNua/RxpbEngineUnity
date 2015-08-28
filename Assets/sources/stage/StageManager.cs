@@ -15,6 +15,7 @@ public class StageManager : SceneManager
     public PlayerController PlayerZ;
 
     public DeadEffectScript deadEffect;
+    public HUDScript hud;
 
     #endregion
 

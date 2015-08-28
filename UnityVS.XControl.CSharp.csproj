@@ -68,21 +68,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\_Trashbin\AController.cs" />
-    <Compile Include="Assets\_Trashbin\IPlayerController.cs" />
-    <Compile Include="Assets\_Trashbin\SaberAttackScript.cs" />
-    <Compile Include="Assets\_Trashbin\UIAnimator.cs" />
-    <Compile Include="Assets\_Trashbin\UIController.cs" />
-    <Compile Include="Assets\_Trashbin\ZController_deprecated.cs" />
-    <Compile Include="Assets\_Trashbin\_CharacterController.cs" />
-    <Compile Include="Assets\sources\enemy\MettoController.cs" />
     <Compile Include="Assets\sources\stage\AttackScript.cs" />
-    <Compile Include="Assets\sources\stage\BusterScript.cs" />
     <Compile Include="Assets\sources\stage\CutsceneManager.cs" />
     <Compile Include="Assets\sources\stage\DeadEffectScript.cs" />
     <Compile Include="Assets\sources\stage\EffectScript.cs" />
-    <Compile Include="Assets\sources\stage\EnemyMettoScript.cs" />
-    <Compile Include="Assets\sources\stage\EnemyScript.cs" />
     <Compile Include="Assets\sources\stage\GeometryScript.cs" />
     <Compile Include="Assets\sources\stage\GroundScript.cs" />
     <Compile Include="Assets\sources\stage\LoadingSceneManager.cs" />
@@ -104,10 +93,10 @@
     <Compile Include="Assets\sources\stage\XController.cs" />
     <Compile Include="Assets\sources\stage\ZController.cs" />
     <Compile Include="Assets\sources\stage\ZSaberScript.cs" />
+    <Compile Include="Assets\sources\stage\enemy\EnemyMettoScript.cs" />
+    <Compile Include="Assets\sources\stage\enemy\EnemyScript.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\_Trashbin\CS01_Intro.txt" />
-    <None Include="Assets\_Trashbin\ZCS_Intro.txt" />
     <None Include="Assets\scenes\cutscene\CS00_PreviousStory.txt" />
     <None Include="Assets\scenes\cutscene\CS01_Prologue.txt" />
     <None Include="Assets\scenes\cutscene\CS02_HunterBase.txt" />

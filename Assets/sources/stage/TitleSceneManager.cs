@@ -79,7 +79,8 @@ public class TitleSceneManager : MonoBehaviour
                     break;
 
                 case 1:
-                    nextLevelName = "01_Intro"; //"CS01_Prologue";
+                    // "01_Intro"; // "CS01_Prologue";
+                    nextLevelName = "01_Intro"; // "CS02_HunterBase";
                     changeSceneRequested = true;
                     fader.FadeOut(1);
                     break;

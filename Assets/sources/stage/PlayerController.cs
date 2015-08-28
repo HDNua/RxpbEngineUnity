@@ -451,6 +451,12 @@ public abstract class PlayerController : MonoBehaviour
             }
             return false;
         }
+        // 사망 직전이라면
+        else if (IsAlive() == false)
+        {
+            _rigidbody.velocity = Vector2.zero;
+            return false;
+        }
         return true;
     }
     protected virtual bool FixedUpdateController()
@@ -477,6 +483,12 @@ public abstract class PlayerController : MonoBehaviour
         // 사망했다면
         else if (IsDead)
         {
+            return false;
+        }
+        // 사망 직전이라면
+        else if (IsAlive() == false)
+        {
+            _rigidbody.velocity = Vector2.zero;
             return false;
         }
         return true;
@@ -732,9 +744,13 @@ public abstract class PlayerController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 플레이어 사망을 요청합니다.
+    /// </summary>
     public void RequestDead()
     {
         Health = 0;
+
         StopMoving();
         BlockMoving();
         _animator.speed = 0;
@@ -1124,6 +1140,7 @@ public abstract class PlayerController : MonoBehaviour
         UnblockMoving();
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
+        Dashing = false;
         AirDashing = false;
     }
     /// <summary>
@@ -1165,7 +1182,6 @@ public abstract class PlayerController : MonoBehaviour
         Damaged = true;
         Invencible = true;
         InputBlocked = true;
-        Invoke("UnblockInput", 1f);
     }
     /// <summary>
     /// 대미지 상태를 해제합니다.
@@ -1173,8 +1189,13 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void EndHurt()
     {
         Damaged = false;
+        InputBlocked = false;
         StartCoroutine(CoroutineInvencible());
     }
+    /// <summary>
+    /// 무적 상태에 대한 코루틴입니다.
+    /// </summary>
+    /// <returns>코루틴 열거자입니다.</returns>
     System.Collections.IEnumerator CoroutineInvencible()
     {
         InvencibleTime = 0;
@@ -1252,82 +1273,7 @@ public abstract class PlayerController : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("StageManager로 대체되었습니다.", true)]
-    public StageSceneManager sceneManager;
 
-    [Obsolete("Input을 이용하십시오.", true)]
-    protected enum GameKey
-    {
-        Up, Left, Right, Down,
-        Jump, Dash, Attack, Weapon, GigaAttack,
-        ChangeWeaponLeft, ChangeWeaponRight
-    }
-    [Obsolete("Input을 이용하십시오.", true)]
-    protected static Dictionary<GameKey, KeyCode> GameKeySet;
-
-    [Obsolete("IsKeyDown(string)을 사용하십시오.", true)]
-    /// <summary>
-    /// 키가 눌렸는지 확인합니다.
-    /// </summary>
-    /// <param name="key">상태를 확인할 키입니다.</param>
-    /// <returns>키가 눌렸다면 true를 반환합니다.</returns>
-    protected bool IsKeyDown(GameKey key)
-    {
-        return Input.GetKeyDown(GameKeySet[key]);
-    }
-    [Obsolete("IsKeyPressed(string)을 사용하십시오.", true)]
-    /// <summary>
-    /// 키가 계속 눌린 상태인지 확인합니다.
-    /// </summary>
-    /// <param name="key">눌린 상태인지 확인할 키입니다.</param>
-    /// <returns>키가 눌린 상태라면 true를 반환합니다.</returns>
-    protected bool IsKeyPressed(GameKey key)
-    {
-        return Input.GetKey(GameKeySet[key]);
-    }
-
-    [Obsolete("Awake 메서드로 대체되었습니다.", true)]
-    /// <summary>
-    /// PlayerController 클래스의 필드를 초기화합니다.
-    /// </summary>
-    protected void Initialize()
-    {
-        // 목소리를 포함한 효과음의 리스트를 초기화 합니다.
-        voices = new AudioSource[voiceClips.Length];
-        for (int i = 0, len = voiceClips.Length; i < len; ++i)
-        {
-            voices[i] = gameObject.AddComponent<AudioSource>();
-            voices[i].clip = voiceClips[i];
-            voices[i].playOnAwake = false;
-        }
-        soundEffects = new AudioSource[audioClips.Length];
-        for (int i = 0, len = audioClips.Length; i < len; ++i)
-        {
-            soundEffects[i] = gameObject.AddComponent<AudioSource>();
-            soundEffects[i].clip = audioClips[i];
-            soundEffects[i].playOnAwake = false;
-        }
-
-        /*
-        // 키 딕셔너리를 초기화 합니다.
-        GameKeySet = new Dictionary<GameKey, KeyCode>();
-        GameKeySet[GameKey.Left] = KeyCode.LeftArrow;
-        GameKeySet[GameKey.Right] = KeyCode.RightArrow;
-        GameKeySet[GameKey.Jump] = KeyCode.C;
-        GameKeySet[GameKey.Attack] = KeyCode.X;
-        GameKeySet[GameKey.Dash] = KeyCode.Z;
-        GameKeySet[GameKey.Weapon] = KeyCode.V;
-        */
-    }
-    [Obsolete("IsDead로 대체되었습니다.", true)]
-    /// <summary>
-    /// 플레이어가 죽었는지 확인합니다.
-    /// </summary>
-    /// <returns>체력이 0 이하라면 true입니다.</returns>
-    public bool IsPlayerDead()
-    {
-        return (health <= 0);
-    }
 
     #endregion
 }

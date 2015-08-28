@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 /// <summary>
 /// HUD(Head Up Display) 스크립트입니다.
@@ -7,10 +6,12 @@ using System.Collections;
 public class HUDScript : MonoBehaviour
 {
     public GameObject Health;
+    public GameObject HealthBar;
 
     void Start()
     {
-
+        Health.SetActive(false);
+        HealthBar.SetActive(false);
     }
     void Update()
     {

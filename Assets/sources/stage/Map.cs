@@ -24,6 +24,9 @@ public class Map : MonoBehaviour
     float czWidth;
     float czHorMin;
     float czHorMax;
+    float czHeight;
+    float czVerMin;
+    float czVerMax;
 
     #endregion 필드
 
@@ -37,11 +40,18 @@ public class Map : MonoBehaviour
         float czLeft = cameraZone.bounds.min.x;
         float czRight = cameraZone.bounds.max.x;
         float viewCenterX = mainCamera.transform.position.x;
+
+        float czTop = cameraZone.bounds.max.y;
+        float czBottom = cameraZone.bounds.min.y;
         float viewCenterY = mainCamera.transform.position.y;
 
         czWidth = viewCenterX - czLeft;
         czHorMin = czLeft + czWidth;
         czHorMax = czRight - czWidth;
+
+        czHeight = viewCenterY - czBottom;
+        czVerMin = czBottom + czHeight;
+        czVerMax = czTop - czHeight;
     }
     void Update()
     {
@@ -68,10 +78,25 @@ public class Map : MonoBehaviour
         float czLeft = cameraZone.bounds.min.x;
         float czRight = cameraZone.bounds.max.x;
         float playerX = player.transform.position.x;
+        float czTop = cameraZone.bounds.max.y;
+        float czBottom = cameraZone.bounds.min.y;
+        float playerY = player.transform.position.y;
+
+        bool movePos = false;
+        var newPos = mainCamera.transform.position;
         if (czHorMin < playerX && playerX < czHorMax)
         {
-            var newPos = mainCamera.transform.position;
             newPos.x = playerX;
+            movePos = true;
+        }
+        if (czVerMin < playerY && playerY < czVerMax)
+        {
+            newPos.y = playerY;
+            movePos = true;
+        }
+
+        if (movePos)
+        {
             mainCamera.transform.position = newPos;
         }
     }

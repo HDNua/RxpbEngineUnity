@@ -30,9 +30,26 @@ public class XBusterScript : AttackScript
     {
         if (other.gameObject.tag == "Enemy")
         {
+            EnemyScript enemy = other.gameObject.GetComponent<EnemyScript>();
+
+            if (enemy.Invencible)
+            {
+
+            }
+            else
+            {
+                enemy.Hurt(damage);
+                AudioSource seHit = enemy.gameObject.AddComponent<AudioSource>();
+                seHit.clip = SoundEffects[0].clip;
+                seHit.Play();
+            }
+
+            Destroy(gameObject);
+            /*
             EnemyMettoScript metto =
                 other.gameObject.GetComponent<EnemyMettoScript>();
             metto.Hurt(damage);
+            */
         }
     }
 }
