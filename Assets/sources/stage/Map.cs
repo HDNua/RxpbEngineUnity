@@ -75,11 +75,11 @@ public class Map : MonoBehaviour
     /// </summary>
     void SetViewportCenter()
     {
-        float czLeft = cameraZone.bounds.min.x;
-        float czRight = cameraZone.bounds.max.x;
+//        float czLeft = cameraZone.bounds.min.x;
+//        float czRight = cameraZone.bounds.max.x;
         float playerX = player.transform.position.x;
-        float czTop = cameraZone.bounds.max.y;
-        float czBottom = cameraZone.bounds.min.y;
+//        float czTop = cameraZone.bounds.max.y;
+//        float czBottom = cameraZone.bounds.min.y;
         float playerY = player.transform.position.y;
 
         bool movePos = false;

@@ -76,6 +76,7 @@
      <None Include="Assets\scenes\cutscene\CS02_HunterBase.txt" />
      <None Include="Assets\scenes\cutscene\CS01_Prologue.txt" />
      <None Include="Assets\scenes\cutscene\CS03_GaiaFound.txt" />
+     <None Include="Assets\resources\materials\NewShader.shader" />
      <None Include="Assets\scenes\cutscene\CS00_PreviousStory.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

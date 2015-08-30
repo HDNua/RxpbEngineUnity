@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 public abstract class PlayerController : MonoBehaviour
@@ -57,15 +58,6 @@ public abstract class PlayerController : MonoBehaviour
     public Transform dashBoostPosition;
     public Transform slideFogPosition;
     public GameObject slideFogEffect;
-
-    [Obsolete("", true)]
-    public Transform pushCheck;
-    [Obsolete("", true)]
-    public float pushCheckRadius = 0.1f;
-    [Obsolete("", true)]
-    public EdgeCollider2D groundCheckEdge;
-    [Obsolete("", true)]
-    public EdgeCollider2D pushCheckEdge;
 
     #endregion
 
@@ -196,6 +188,7 @@ public abstract class PlayerController : MonoBehaviour
     bool _damaged = false;
     bool _invencible = false;
     float _invencibleTime;
+    Color _playerColor = Color.white;
 
     bool _danger = false;
     bool _isDead = false;
@@ -379,6 +372,12 @@ public abstract class PlayerController : MonoBehaviour
         private set { _isDead = value; }
     }
 
+    public Color PlayerColor
+    {
+        get { return _playerColor; }
+        protected set { _playerColor = value; }
+    }
+
     /// <summary>
     /// 플레이어가 생존해있는지 확인합니다.
     /// </summary>
@@ -457,6 +456,11 @@ public abstract class PlayerController : MonoBehaviour
             _rigidbody.velocity = Vector2.zero;
             return false;
         }
+        // 대미지를 입은 상태라면
+        else if (Damaged)
+        {
+            return false;
+        }
         return true;
     }
     protected virtual bool FixedUpdateController()
@@ -491,7 +495,23 @@ public abstract class PlayerController : MonoBehaviour
             _rigidbody.velocity = Vector2.zero;
             return false;
         }
+        // 대미지를 입은 상태라면
+        else if (Damaged)
+        {
+            return false;
+        }
         return true;
+    }
+    protected virtual void LateUpdate()
+    {
+        if (IsAlive() && Invencible && Damaged == false)
+        {
+            _renderer.color = _playerColor;
+        }
+        else
+        {
+            _renderer.color = Color.white;
+        }
     }
 
     #endregion
@@ -513,7 +533,7 @@ public abstract class PlayerController : MonoBehaviour
     bool UpdateLanding()
     {
         RaycastHit2D rayB = Physics2D.Raycast(groundCheckBack.position, Vector2.down, groundCheckRadius, whatIsGround);
-        RaycastHit2D rayM = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckRadius, whatIsGround);
+        // RaycastHit2D rayM = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckRadius, whatIsGround);
         RaycastHit2D rayF = Physics2D.Raycast(groundCheckFront.position, Vector2.down, groundCheckRadius, whatIsGround);
 
         if (OnGround())
@@ -644,7 +664,7 @@ public abstract class PlayerController : MonoBehaviour
             else
             {
                 float playerBot = _collider.bounds.min.y;
-                float groundTop = groundBounds.max.y;
+                // float groundTop = groundBounds.max.y;
                 float groundBottom = groundBounds.min.y;
                 if (groundBottom <= playerBot) // && playerBot <= groundTop)
                 {
@@ -747,7 +767,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어 사망을 요청합니다.
     /// </summary>
-    public void RequestDead()
+    public virtual void RequestDead()
     {
         Health = 0;
 
@@ -972,7 +992,8 @@ public abstract class PlayerController : MonoBehaviour
         _rigidbody.velocity = new Vector2(0, -slideSpeed);
 
         // 개체의 운동에 따른 효과를 처리합니다.
-        GameObject slideFog = Instantiate(effects[2], slideFogPosition.position, slideFogPosition.rotation) as GameObject;
+        // GameObject slideFog = I_nstantiate(effects[2], slideFogPosition.position, slideFogPosition.rotation) as GameObject;
+        GameObject slideFog = CloneObject(effects[2], slideFogPosition);
         slideFog.transform.SetParent(groundCheck.transform);
         if (FacingRight == false)
         {
@@ -1050,9 +1071,13 @@ public abstract class PlayerController : MonoBehaviour
             jumpSpeed /* Mathf.Sqrt(2) */);
 
         // 개체의 운동에 따른 효과를 처리합니다.
-        GameObject wallKick = Instantiate
+        /*
+        GameObject wallKick = I_nstantiate
             (effects[3], slideFogPosition.position, slideFogPosition.rotation)
             as GameObject;
+        */
+        // I_nstantiate(effects[3], slideFogPosition.position, slideFogPosition.rotation);
+        CloneObject(effects[3], slideFogPosition);
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = true;
@@ -1104,9 +1129,13 @@ public abstract class PlayerController : MonoBehaviour
             (FacingRight ? -1.5f * movingSpeed : 1.5f * movingSpeed, jumpSpeed);
 
         // 개체의 운동에 따른 효과를 처리합니다.
-        GameObject wallKick = Instantiate
+        /*
+        GameObject wallKick = I_nstantiate
             (effects[3], slideFogPosition.position, slideFogPosition.rotation)
             as GameObject;
+        */
+        // I_nstantiate(effects[3], slideFogPosition.position, slideFogPosition.rotation);
+        CloneObject(effects[3], slideFogPosition);
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = true;
@@ -1182,6 +1211,16 @@ public abstract class PlayerController : MonoBehaviour
         Damaged = true;
         Invencible = true;
         InputBlocked = true;
+
+        StopMoving();
+        StopDashing();
+        StopJumping();
+        StopFalling();
+
+        float speed = 100;
+        Vector2 force = (FacingRight ? Vector2.left : Vector2.right);
+        _rigidbody.velocity = Vector2.zero;
+        _rigidbody.AddForce(force * speed);
     }
     /// <summary>
     /// 대미지 상태를 해제합니다.
@@ -1196,15 +1235,24 @@ public abstract class PlayerController : MonoBehaviour
     /// 무적 상태에 대한 코루틴입니다.
     /// </summary>
     /// <returns>코루틴 열거자입니다.</returns>
-    System.Collections.IEnumerator CoroutineInvencible()
+    IEnumerator CoroutineInvencible()
     {
         InvencibleTime = 0;
         while (InvencibleTime < 1)
         {
             InvencibleTime += Time.deltaTime;
+            if ((int)(InvencibleTime * 10) % 2 == 0)
+            {
+                _playerColor = Color.clear;
+            }
+            else
+            {
+                _playerColor = Color.white;
+            }
             yield return false;
         }
         Invencible = false;
+        _playerColor = Color.white;
         yield return true;
     }
 
@@ -1267,13 +1315,32 @@ public abstract class PlayerController : MonoBehaviour
     {
         return _animator.GetCurrentAnimatorStateInfo(0).IsName(stateName);
     }
+    /// <summary>
+    /// 객체를 복제합니다.
+    /// </summary>
+    /// <param name="gObject">복제할 객체의 원본입니다.</param>
+    /// <param name="transform">복제된 객체가 위치할 곳입니다.</param>
+    /// <returns>Instantiate로 복제한 객체를 GameObject 형식으로 반환합니다.</returns>
+    public static GameObject CloneObject(GameObject gObject, Transform transform)
+    {
+        return Instantiate
+            (gObject, transform.position, transform.rotation) as GameObject;
+        // return clone;
+    }
 
     #endregion 보조 메서드 정의
 
 
 
     #region 구형 정의를 보관합니다.
-
+    [Obsolete("", true)]
+    public Transform pushCheck;
+    [Obsolete("", true)]
+    public float pushCheckRadius = 0.1f;
+    [Obsolete("", true)]
+    public EdgeCollider2D groundCheckEdge;
+    [Obsolete("", true)]
+    public EdgeCollider2D pushCheckEdge;
 
     #endregion
 }

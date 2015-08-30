@@ -97,6 +97,7 @@
     <Compile Include="Assets\sources\stage\enemy\EnemyScript.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\resources\materials\NewShader.shader" />
     <None Include="Assets\scenes\cutscene\CS00_PreviousStory.txt" />
     <None Include="Assets\scenes\cutscene\CS01_Prologue.txt" />
     <None Include="Assets\scenes\cutscene\CS02_HunterBase.txt" />

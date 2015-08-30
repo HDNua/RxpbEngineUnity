@@ -15,6 +15,7 @@ public class DeadEffectScript : MonoBehaviour
     float runTime = 0;
 
     const float firstParticleSpeed = 5;
+    const float secondParticleSpeed = 2;
 
     void Awake()
     {
@@ -42,6 +43,16 @@ public class DeadEffectScript : MonoBehaviour
             MakeParticle(p1, new Vector2(-1, -1), speed);
             MakeParticle(p1, new Vector2(0, -1), speed);
             MakeParticle(p1, new Vector2(1, -1), speed);
+
+            speed = secondParticleSpeed;
+            MakeParticle(p2, new Vector2(1, 0.5f), speed);
+            MakeParticle(p2, new Vector2(1, 2f), speed);
+            MakeParticle(p2, new Vector2(-1, 2f), speed);
+            MakeParticle(p2, new Vector2(-1, 0.5f), speed);
+            MakeParticle(p2, new Vector2(-1, -0.5f), speed);
+            MakeParticle(p2, new Vector2(-1, -2f), speed);
+            MakeParticle(p2, new Vector2(1, -2f), speed);
+            MakeParticle(p2, new Vector2(1, -0.5f), speed);
         }
         runTime += Time.deltaTime;
     }

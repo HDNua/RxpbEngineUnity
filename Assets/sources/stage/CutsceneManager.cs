@@ -94,7 +94,7 @@ public class CutsceneManager : MonoBehaviour
             }
             else if (subscriptElem == "]")
             {
-//                print(newSub);
+//                p_rint(newSub);
                 subList.Add(newSub);
                 newSub = null;
             }
@@ -121,7 +121,7 @@ public class CutsceneManager : MonoBehaviour
     }
     void Update()
     {
-        print(scriptPlaying);
+        // p_rint(scriptPlaying);
         if (Input.anyKeyDown)
         {
             if (inputBlocked)

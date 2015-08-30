@@ -18,12 +18,12 @@ public class GroundScript : MonoBehaviour
         }
 
         _touched = true;
-        print("Landed");
+        p_rint("Landed");
     }
     void OnCollisionExit2D(Collision2D other)
     {
         _touched = false;
-        print("Floating");
+        p_rint("Floating");
     }
 
     #endregion

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 /// <summary>
@@ -57,7 +58,7 @@ public class EnemyMettoScript : EnemyScript
             }
         }
     }
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
@@ -138,7 +139,7 @@ public class EnemyMettoScript : EnemyScript
     {
         while (_health != 0)
         {
-            int random = Random.Range(0, 2);
+            int random = UnityEngine.Random.Range(0, 2);
             if (random == 1)
             {
                 MoveLeft();
@@ -148,6 +149,30 @@ public class EnemyMettoScript : EnemyScript
                 MoveRight();
             }
             yield return new WaitForSeconds(1);
+        }
+    }
+
+    #endregion
+
+
+
+    #region 구형 정의를 보관합니다.
+    [Obsolete("OnTriggerStay2D로 이동했습니다.", true)]
+    void _OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            GameObject pObject = other.gameObject;
+            PlayerController player = pObject.GetComponent<PlayerController>();
+
+            if (player.Invencible || player.IsDead)
+            {
+
+            }
+            else
+            {
+                player.Hurt(Damage);
+            }
         }
     }
 

@@ -21,6 +21,18 @@ public class StageManager : SceneManager
 
 
 
+    #region 필드를 정의합니다.
+    bool _isFrozen;
+    public bool IsFrozen
+    {
+        get { return _isFrozen; }
+        protected set { _isFrozen = value; }
+    }
+
+    #endregion
+
+
+
     #region MonoBehaviour 기본 메서드를 재정의 합니다.
     protected override void Start()
     {
@@ -43,6 +55,11 @@ public class StageManager : SceneManager
         if (fader.FadeInEnded)
         {
             ready.gameObject.SetActive(true); // = true;
+        }
+
+        if (IsFrozen)
+        {
+
         }
     }
 
@@ -70,6 +87,15 @@ public class StageManager : SceneManager
 
         // 관리자 객체의 필드가 새 플레이어를 가리키도록 합니다.
         map.Player = player = newPlayer;
+    }
+
+    public void Freeze()
+    {
+        IsFrozen = true;
+    }
+    public void UnFreeze()
+    {
+        IsFrozen = false;
     }
 
     #endregion

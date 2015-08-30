@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System;
+using System.Collections;
 
 /// <summary>
 /// 엑스에 대한 컨트롤러입니다.
@@ -37,7 +39,18 @@ public class XController : PlayerController
     public float shotSpeed = 10;
     float shotTime = 0;
     public float endShotTime = 0.5416667f; // 0.4f;
-    public float[] chargeLevel = { 0, 0.3f, 2f };
+    readonly float[] chargeLevel = { 0.2f, 0.3f, 1.7f };
+
+    bool _shotBlocked = false;
+    public bool ShotBlocked
+    {
+        get { return _shotBlocked; }
+        private set { _shotBlocked = value; }
+    }
+
+    GameObject _chargeEffect1 = null;
+    GameObject _chargeEffect2 = null;
+    public Transform chargeEffectPosition;
 
     bool dangerVoicePlayed = false;
     const float endHurtLength = 0.361112f;
@@ -74,9 +87,8 @@ public class XController : PlayerController
             // 실제로 잔상을 생성합니다.
             else
             {
-                GameObject dashAfterImage = Instantiate
-                    (effects[4], transform.position, transform.rotation)
-                    as GameObject;
+                // GameObject dashAfterImage = I_nstantiate(effects[4], transform.position, transform.rotation) as GameObject;
+                GameObject dashAfterImage = CloneObject(effects[4], transform);
                 Vector3 daiScale = dashAfterImage.transform.localScale;
                 if (FacingRight == false)
                     daiScale.x *= -1;
@@ -152,10 +164,12 @@ public class XController : PlayerController
             stageManager.ChangePlayer(stageManager.PlayerZ);
         }
 
+        /*
         if (IsAnimationPlaying("Hurt"))
         {
-            print(GetCurrentAnimationLength());
+            p_rint(GetCurrentAnimationLength());
         }
+        */
     }
     void FixedUpdate()
     {
@@ -366,6 +380,7 @@ public class XController : PlayerController
             }
         }
 
+        /*
         // 공격 키가 눌린 경우를 처리합니다.
         if (IsKeyPressed("Attack")) // if (IsKeyPressed(GameKey.Attack))
         {
@@ -376,6 +391,7 @@ public class XController : PlayerController
             }
             else
             {
+                StartCoroutine(CoroutineCharge());
                 if (chargeTime < chargeLevel[1] - 0.1f)
                 {
 
@@ -391,7 +407,7 @@ public class XController : PlayerController
                 }
                 chargeTime = (chargeTime >= maxChargeTime)
                     ? maxChargeTime : (chargeTime + Time.deltaTime);
-                // print(chargeTime);
+                // p_rint(chargeTime);
             }
         }
         else if (shotPressed)
@@ -423,7 +439,7 @@ public class XController : PlayerController
             }
 
             // 버스터 탄환을 생성하고 초기화합니다.
-            GameObject _bullet = Instantiate
+            GameObject _bullet = I_nstantiate
                 (bullets[index], shotPosition.position, shotPosition.rotation)
                 as GameObject;
             Vector3 bulletScale = _bullet.transform.localScale;
@@ -440,29 +456,69 @@ public class XController : PlayerController
             shotPressed = false;
             ShotTriggered = true;
             shotTime = 0;
+            StopCoroutine("CoroutineCharge");
+            // StartCoroutine(CoroutineCharge());
 
             // 일정 시간 후에 샷 상태를 해제합니다.
             Invoke("EndShot", endShotTime);
         }
 
         shotTime += Time.fixedDeltaTime;
+        */
 
-        if (Invencible)
+        // 공격 키가 눌린 경우를 처리합니다.
+        if (IsKeyPressed("Attack")) // if (IsKeyPressed(GameKey.Attack))
         {
-            Color color = GetComponent<SpriteRenderer>().color;
-
-            if (color == Color.white)
+            if (shotPressed)
             {
-                // new Color(1 - color.r, 1 - color.g, 1 - color.b);s
-                color = Color.red;
+                if (chargeTime > 0)
+                {
+                    // _chargeEffect2 = CloneObject(effects[6], transform);
+                    Charge();
+                }
+                else
+                {
+                    // _chargeEffect1 = CloneObject(effects[5], transform);
+                    BeginCharge();
+                }
+                chargeTime = (chargeTime >= maxChargeTime)
+                    ? maxChargeTime : (chargeTime + Time.fixedDeltaTime);
             }
             else
             {
-                color = Color.white;
+                // Fire();
+                shotPressed = true;
             }
-            color = Color.red;
-            GetComponent<SpriteRenderer>().color = color;
+            print(chargeTime);
         }
+        else if (shotPressed)
+        {
+            Fire();
+        }
+        shotTime += Time.fixedDeltaTime;
+    }
+    protected override void LateUpdate()
+    {
+        base.LateUpdate();
+
+        if (chargeTime > 0)
+        {
+            /*
+            if (IsSameColor(PlayerColor, Color.white) == false)
+            {
+                print("TETS");
+            }
+            */
+            _renderer.color = PlayerColor;
+        }
+    }
+
+    bool IsSameColor(Color color1, Color color2)
+    {
+        return (color1.r == color2.r
+            && color1.g == color2.g
+            && color1.b == color2.b
+            && color1.a == color2.a);
     }
 
     #endregion
@@ -473,55 +529,158 @@ public class XController : PlayerController
     ///////////////////////////////////////////////////////////////////
     // 공격
     /// <summary>
-    /// 버스터 공격합니다.
+    /// 버스터를 발사합니다.
     /// </summary>
-    void Shot()
+    void Fire()
     {
-        if (Shooting)
+        int index = -1;
+        if (chargeTime < chargeLevel[1])
         {
-            _animator.Play("Shot", 0, 0);
+            index = 0; // _animator.Play("Shot", 0, 0);
+            ShotBlocked = true;
+        }
+        else if (chargeTime < chargeLevel[2])
+        {
+            index = 1; // _animator.Play("Shot", 0, 0);
+            ShotBlocked = true;
+        }
+        else
+        {
+            index = 2; // _animator.Play("ChargeShot", 0, 0);
+            ShotBlocked = true;
         }
 
+        // 상태를 업데이트 합니다.
+        if (_chargeEffect1 != null)
+        {
+            if (_chargeEffect2 != null)
+            {
+                _chargeEffect2.GetComponent<EffectScript>().RequestDestroy();
+                _chargeEffect2 = null;
+            }
+            _chargeEffect1.GetComponent<EffectScript>().RequestDestroy();
+            _chargeEffect1 = null;
+        }
+
+        ShotTriggered = true;
+        shotPressed = false;
+        chargeTime = 0;
+        shotTime = 0;
+        StopCoroutine("CoroutineCharge");
         Shooting = true;
-        Invoke("StopShot", 1);
-    }
-    /// <summary>
-    /// 버스터 공격을 중지합니다.
-    /// </summary>
-    void StopShot()
-    {
-        Shooting = false;
-    }
-    /// <summary>
-    /// 버스터 공격을 종료합니다.
-    /// </summary>
-    void EndShot()
-    {
-        if (shotTime >= endShotTime)
+        if (Moving)
         {
             float nTime = GetCurrentAnimationPlaytime();
             float fTime = nTime - Mathf.Floor(nTime);
-            ShotTriggered = false;
+            _animator.Play("MoveShotRun", 0, fTime);
+        }
+        else
+        {
+            _animator.Play(0, 0, 0);
+        }
+        _renderer.color = PlayerColor = Color.white;
 
-            string nextStateName = null;
-            if (Landed)
+        // 버스터 탄환을 생성하고 초기화합니다.
+        // GameObject _bullet = I_nstantiate(bullets[index], shotPosition.position, shotPosition.rotation) as GameObject;
+        GameObject _bullet = CloneObject(bullets[index], shotPosition);
+        Vector3 bulletScale = _bullet.transform.localScale;
+        bulletScale.x *= FacingRight ? 1 : -1;
+        _bullet.transform.localScale = bulletScale;
+        _bullet.GetComponent<Rigidbody2D>().velocity
+            = (FacingRight ? Vector3.right : Vector3.left) * shotSpeed;
+        XBusterScript buster = _bullet.GetComponent<XBusterScript>();
+        buster.MainCamera = stageManager.MainCamera;
+
+        // 효과음을 재생합니다.
+        SoundEffects[8 + index].Play();
+        SoundEffects[7].Stop();
+
+        // 일정 시간 후에 샷 상태를 해제합니다.
+        Invoke("EndShot", endShotTime);
+    }
+    /// <summary>
+    /// 차지를 시작합니다.
+    /// </summary>
+    void BeginCharge()
+    {
+        // I_nstantiate(effects[5], transform.position, transform.rotation);
+        // _chargeEffect1 = CloneObject(effects[5], transform);
+        StartCoroutine(CoroutineCharge());
+    }
+    /// <summary>
+    /// 차지 상태를 갱신합니다.
+    /// </summary>
+    void Charge()
+    {
+        // 차지 효과음 재생에 관한 코드입니다.
+        if (chargeTime < chargeLevel[0]) // chargeLevel[1] - 0.1f
+        {
+
+        }
+        else if (SoundEffects[7].isPlaying == false)
+        {
+            SoundEffects[7].time = 0;
+            SoundEffects[7].Play();
+        }
+        else if (SoundEffects[7].time >= 2.9f)
+        {
+            SoundEffects[7].time = 2.1f;
+        }
+
+        // 차지 애니메이션 재생에 관한 코드입니다.
+        if (chargeTime < chargeLevel[0])
+        {
+
+        }
+        else if (_chargeEffect1 == null)
+        {
+            _chargeEffect1 = CloneObject(effects[5], chargeEffectPosition);
+            _chargeEffect1.transform.SetParent(chargeEffectPosition);
+        }
+        else if (chargeTime < chargeLevel[2])
+        {
+
+        }
+        else if (_chargeEffect2 == null)
+        {
+            _chargeEffect2 = CloneObject(effects[6], chargeEffectPosition);
+            _chargeEffect2.transform.SetParent(chargeEffectPosition);
+        }
+    }
+    /// <summary>
+    /// 차지 코루틴입니다.
+    /// </summary>
+    /// <returns>코루틴 열거자입니다.</returns>
+    IEnumerator CoroutineCharge()
+    {
+        float startTime = 0;
+        while (chargeTime >= 0)
+        {
+            if (chargeTime < chargeLevel[1])
             {
-                if (Moving)
-                {
-                    nextStateName = "MoveRun";
-                }
-                else
-                {
-                    nextStateName = "Idle";
-                }
+
             }
             else
             {
+                int cTime = (int)(startTime * 10) % 3;
+                if (cTime != 0)
+                {
+                    PlayerColor = (chargeTime < chargeLevel[2]) ?
+                        Color.cyan : Color.green;
+                }
+                else
+                {
+                    PlayerColor = Color.white;
+                }
 
+                startTime += Time.fixedDeltaTime;
             }
-            _animator.Play(nextStateName, 0, fTime);
+            yield return false;
         }
+
+        yield return true;
     }
+
     #endregion
 
 
@@ -567,9 +726,8 @@ public class XController : PlayerController
         base.Dash();
 
         // 대쉬 효과 애니메이션을 추가합니다.
-        GameObject dashFog = Instantiate
-            (effects[0], dashFogPosition.position, dashFogPosition.rotation)
-            as GameObject;
+        // GameObject dashFog = I_nstantiate(effects[0], dashFogPosition.position, dashFogPosition.rotation) as GameObject;
+        GameObject dashFog = CloneObject(effects[0], dashFogPosition);
         if (FacingRight == false)
         {
             var newScale = dashFog.transform.localScale;
@@ -586,7 +744,7 @@ public class XController : PlayerController
         base.StopDashing();
         if (dashBoostEffect != null)
         {
-            dashBoostEffect.GetComponent<EffectScript>().EndEffect();
+            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
             dashBoostEffect = null;
         }
     }
@@ -601,7 +759,7 @@ public class XController : PlayerController
         SoundEffects[1].Play();
         if (dashBoostEffect != null)
         {
-            dashBoostEffect.GetComponent<EffectScript>().EndEffect();
+            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
             dashBoostEffect = null;
         }
     }
@@ -621,7 +779,7 @@ public class XController : PlayerController
         base.StopAirDashing();
         if (dashBoostEffect != null)
         {
-            dashBoostEffect.GetComponent<EffectScript>().EndEffect();
+            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
             dashBoostEffect = null;
         }
     }
@@ -632,12 +790,31 @@ public class XController : PlayerController
 
     #region PlayerController 상태 메서드를 재정의 합니다.
     /// <summary>
+    /// 플레이어 사망을 요청합니다.
+    /// </summary>
+    public override void RequestDead()
+    {
+        base.RequestDead();
+
+        if (_chargeEffect1 != null)
+        {
+            if (_chargeEffect2 != null)
+            {
+                _chargeEffect2.GetComponent<EffectScript>().RequestDestroy();
+                _chargeEffect2 = null;
+            }
+            _chargeEffect1.GetComponent<EffectScript>().RequestDestroy();
+            _chargeEffect1 = null;
+            SoundEffects[7].Stop();
+            chargeTime = 0;
+        }
+    }
+    /// <summary>
     /// 플레이어가 사망합니다.
     /// </summary>
     protected override void Dead()
     {
         base.Dead();
-
         stageManager.deadEffect.RequestRun(stageManager.player);
         Voices[9].Play();
         SoundEffects[12].Play();
@@ -684,7 +861,7 @@ public class XController : PlayerController
     /// </summary>
     void FE_JumpBeg()
     {
-//        SoundEffects[1].Play();
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -701,7 +878,8 @@ public class XController : PlayerController
     /// </summary>
     void FE_DashRunBeg()
     {
-        GameObject dashBoost = Instantiate(effects[1], dashBoostPosition.position, dashBoostPosition.rotation) as GameObject;
+        // GameObject dashBoost = I_nstantiate(effects[1], dashBoostPosition.position, dashBoostPosition.rotation) as GameObject;
+        GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
         dashBoost.transform.SetParent(groundCheck.transform);
         if (FacingRight == false)
         {
@@ -778,6 +956,60 @@ public class XController : PlayerController
 
 
     #region 구형 정의를 보관합니다.
+    [Obsolete("Fire로 대체되었습니다.", true)]
+    /// <summary>
+    /// 버스터 공격합니다.
+    /// </summary>
+    void Shot()
+    {
+        if (Shooting)
+        {
+            _animator.Play("Shot", 0, 0);
+        }
+
+        Shooting = true;
+        Invoke("StopShot", 1);
+    }
+    [Obsolete("Fire로 대체되었습니다.", true)]
+    /// <summary>
+    /// 버스터 공격을 중지합니다.
+    /// </summary>
+    void StopShot()
+    {
+        Shooting = false;
+    }
+    [Obsolete("Fire로 대체되었습니다.", true)]
+    /// <summary>
+    /// 버스터 공격을 종료합니다.
+    /// </summary>
+    void EndShot()
+    {
+        if (shotTime >= endShotTime)
+        {
+            float nTime = GetCurrentAnimationPlaytime();
+            float fTime = nTime - Mathf.Floor(nTime);
+            ShotTriggered = false;
+
+            string nextStateName = null;
+            if (Landed)
+            {
+                if (Moving)
+                {
+                    nextStateName = "MoveRun";
+                }
+                else
+                {
+                    nextStateName = "Idle";
+                }
+            }
+            else
+            {
+
+            }
+            _animator.Play(nextStateName, 0, fTime);
+        }
+        ShotBlocked = false;
+    }
 
     #endregion
 }

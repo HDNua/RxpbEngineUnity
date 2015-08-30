@@ -6,16 +6,19 @@ using System.Collections;
 /// </summary>
 public class ZSaberScript : AttackScript
 {
-
-    // Use this for initialization
-    void Start()
+    #region MonoBehaviour 기본 메서드를 재정의 합니다.
+    protected override void Awake()
     {
-
+        base.Awake();
+    }
+    protected override void Start()
+    {
+        base.Start();
+    }
+    protected override void Update()
+    {
+        base.Update();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    #endregion
 }

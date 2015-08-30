@@ -68,9 +68,8 @@ public class ZController : PlayerController
             // 실제로 잔상을 생성합니다.
             else
             {
-                GameObject dashAfterImage = Instantiate
-                    (effects[4], transform.position, transform.rotation)
-                    as GameObject;
+                // GameObject dashAfterImage = I_nstantiate(effects[4], transform.position, transform.rotation) as GameObject;
+                GameObject dashAfterImage = CloneObject(effects[4], transform);
                 Vector3 daiScale = dashAfterImage.transform.localScale;
                 if (FacingRight == false)
                     daiScale.x *= -1;
@@ -89,7 +88,7 @@ public class ZController : PlayerController
         {
             if (JumpBlocked)
             {
-                // print("TEST");
+                // p_rint("TEST");
             }
             else if (Sliding)
             {
@@ -527,9 +526,8 @@ public class ZController : PlayerController
         base.Dash();
 
         // 대쉬 효과 애니메이션을 추가합니다.
-        GameObject dashFog = Instantiate
-            (effects[0], dashFogPosition.position, dashFogPosition.rotation)
-            as GameObject;
+        // GameObject dashFog = I_nstantiate(effects[0], dashFogPosition.position, dashFogPosition.rotation) as GameObject;
+        GameObject dashFog = CloneObject(effects[0], dashFogPosition);
         if (FacingRight == false)
         {
             var newScale = dashFog.transform.localScale;
@@ -546,7 +544,7 @@ public class ZController : PlayerController
         base.StopDashing();
         if (dashBoostEffect != null)
         {
-            dashBoostEffect.GetComponent<EffectScript>().EndEffect();
+            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
             dashBoostEffect = null;
         }
     }
@@ -561,7 +559,7 @@ public class ZController : PlayerController
         SoundEffects[1].Play();
         if (dashBoostEffect != null)
         {
-            dashBoostEffect.GetComponent<EffectScript>().EndEffect();
+            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
             dashBoostEffect = null;
         }
     }
@@ -581,7 +579,7 @@ public class ZController : PlayerController
         base.StopAirDashing();
         if (dashBoostEffect != null)
         {
-            dashBoostEffect.GetComponent<EffectScript>().EndEffect();
+            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
             dashBoostEffect = null;
         }
     }
@@ -819,7 +817,8 @@ public class ZController : PlayerController
     /// </summary>
     void FE_DashRunBeg()
     {
-        GameObject dashBoost = Instantiate(effects[1], dashBoostPosition.position, dashBoostPosition.rotation) as GameObject;
+        // GameObject dashBoost = I_nstantiate(effects[1], dashBoostPosition.position, dashBoostPosition.rotation) as GameObject;
+        GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
         dashBoost.transform.SetParent(groundCheck.transform);
         if (FacingRight == false)
         {
