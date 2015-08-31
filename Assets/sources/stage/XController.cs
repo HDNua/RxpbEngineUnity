@@ -496,6 +496,11 @@ public class XController : PlayerController
             Fire();
         }
         shotTime += Time.fixedDeltaTime;
+
+        if (IsAnimationPlaying("X_WallJump"))
+        {
+            print(GetCurrentAnimationLength());
+        }
     }
     protected override void LateUpdate()
     {
@@ -503,16 +508,15 @@ public class XController : PlayerController
 
         if (chargeTime > 0)
         {
-            /*
-            if (IsSameColor(PlayerColor, Color.white) == false)
-            {
-                print("TETS");
-            }
-            */
             _renderer.color = PlayerColor;
         }
     }
-
+    /// <summary>
+    /// 두 색상이 서로 같은 색인지 확인합니다.
+    /// </summary>
+    /// <param name="color1">비교할 색입니다.</param>
+    /// <param name="color2">비교할 색입니다.</param>
+    /// <returns>두 색의 rgba 값이 서로 같으면 참입니다.</returns>
     bool IsSameColor(Color color1, Color color2)
     {
         return (color1.r == color2.r
@@ -679,6 +683,37 @@ public class XController : PlayerController
         }
 
         yield return true;
+    }
+    /// <summary>
+    /// 버스터 공격을 종료합니다.
+    /// </summary>
+    void EndShot()
+    {
+        if (shotTime >= endShotTime)
+        {
+            float nTime = GetCurrentAnimationPlaytime();
+            float fTime = nTime - Mathf.Floor(nTime);
+            ShotTriggered = false;
+
+            string nextStateName = null;
+            if (Landed)
+            {
+                if (Moving)
+                {
+                    nextStateName = "MoveRun";
+                }
+                else
+                {
+                    nextStateName = "Idle";
+                }
+            }
+            else
+            {
+
+            }
+            _animator.Play(nextStateName, 0, fTime);
+        }
+        ShotBlocked = false;
     }
 
     #endregion
@@ -934,8 +969,8 @@ public class XController : PlayerController
     /// </summary>
     void FE_WallJumpEnd()
     {
-        UnblockSliding();
-        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+        // UnblockSliding();
+        // _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -977,38 +1012,6 @@ public class XController : PlayerController
     void StopShot()
     {
         Shooting = false;
-    }
-    [Obsolete("Fire로 대체되었습니다.", true)]
-    /// <summary>
-    /// 버스터 공격을 종료합니다.
-    /// </summary>
-    void EndShot()
-    {
-        if (shotTime >= endShotTime)
-        {
-            float nTime = GetCurrentAnimationPlaytime();
-            float fTime = nTime - Mathf.Floor(nTime);
-            ShotTriggered = false;
-
-            string nextStateName = null;
-            if (Landed)
-            {
-                if (Moving)
-                {
-                    nextStateName = "MoveRun";
-                }
-                else
-                {
-                    nextStateName = "Idle";
-                }
-            }
-            else
-            {
-
-            }
-            _animator.Play(nextStateName, 0, fTime);
-        }
-        ShotBlocked = false;
     }
 
     #endregion

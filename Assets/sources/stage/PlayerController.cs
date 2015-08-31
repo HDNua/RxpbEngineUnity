@@ -211,6 +211,12 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     HashSet<EdgeCollider2D> groundEdgeSet = new HashSet<EdgeCollider2D>();
 
+    const float wallJumpingEndTime = 0.138888f;
+    public float WallJumpingEndTime
+    {
+        get { return wallJumpingEndTime; }
+    }
+
     #endregion
 
 
@@ -372,6 +378,9 @@ public abstract class PlayerController : MonoBehaviour
         private set { _isDead = value; }
     }
 
+    /// <summary>
+    /// 플레이어의 색상을 반환합니다.
+    /// </summary>
     public Color PlayerColor
     {
         get { return _playerColor; }
@@ -533,7 +542,6 @@ public abstract class PlayerController : MonoBehaviour
     bool UpdateLanding()
     {
         RaycastHit2D rayB = Physics2D.Raycast(groundCheckBack.position, Vector2.down, groundCheckRadius, whatIsGround);
-        // RaycastHit2D rayM = Physics2D.Raycast(groundCheck.position, Vector2.down, groundCheckRadius, whatIsGround);
         RaycastHit2D rayF = Physics2D.Raycast(groundCheckFront.position, Vector2.down, groundCheckRadius, whatIsGround);
 
         if (OnGround())
@@ -1071,16 +1079,13 @@ public abstract class PlayerController : MonoBehaviour
             jumpSpeed /* Mathf.Sqrt(2) */);
 
         // 개체의 운동에 따른 효과를 처리합니다.
-        /*
-        GameObject wallKick = I_nstantiate
-            (effects[3], slideFogPosition.position, slideFogPosition.rotation)
-            as GameObject;
-        */
-        // I_nstantiate(effects[3], slideFogPosition.position, slideFogPosition.rotation);
         CloneObject(effects[3], slideFogPosition);
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = true;
+
+        // 일정 시간 후에 개체의 운동 중단을 요청하는 메서드를 호출합니다.
+        Invoke("StopWallJumping", WallJumpingEndTime);
     }
     /// <summary>
     /// 플레이어가 대쉬 점프하게 합니다.
@@ -1116,10 +1121,6 @@ public abstract class PlayerController : MonoBehaviour
     protected void WallDashJump()
     {
         // 개체의 운동 상태를 갱신합니다.
-        // StopJumping();
-        // StopFalling();
-        // StopDashing();
-        // BlockDashing();
         StopSliding();
         BlockJumping();
         BlockSliding();
@@ -1129,18 +1130,15 @@ public abstract class PlayerController : MonoBehaviour
             (FacingRight ? -1.5f * movingSpeed : 1.5f * movingSpeed, jumpSpeed);
 
         // 개체의 운동에 따른 효과를 처리합니다.
-        /*
-        GameObject wallKick = I_nstantiate
-            (effects[3], slideFogPosition.position, slideFogPosition.rotation)
-            as GameObject;
-        */
-        // I_nstantiate(effects[3], slideFogPosition.position, slideFogPosition.rotation);
         CloneObject(effects[3], slideFogPosition);
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = true;
         Dashing = true;
         DashJumping = true;
+
+        // 일정 시간 후에 개체의 운동 중단을 요청하는 메서드를 호출합니다.
+        Invoke("StopWallJumping", WallJumpingEndTime);
     }
     /// <summary>
     /// 플레이어가 에어 대쉬하게 합니다.
@@ -1185,6 +1183,14 @@ public abstract class PlayerController : MonoBehaviour
     protected void UnblockAirDashing()
     {
         AirDashBlocked = false; // ClearAirDashCount();
+    }
+    /// <summary>
+    /// 플레이어의 벽 점프를 중지합니다.
+    /// </summary>
+    protected void StopWallJumping()
+    {
+        UnblockSliding();
+        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
     }
 
     #endregion
@@ -1265,7 +1271,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     public void RequestSpawn()
     {
-        gameObject.SetActive(true); // this.enabled = true;
+        gameObject.SetActive(true);
         Spawn();
     }
     /// <summary>
@@ -1325,7 +1331,6 @@ public abstract class PlayerController : MonoBehaviour
     {
         return Instantiate
             (gObject, transform.position, transform.rotation) as GameObject;
-        // return clone;
     }
 
     #endregion 보조 메서드 정의
@@ -1333,14 +1338,6 @@ public abstract class PlayerController : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("", true)]
-    public Transform pushCheck;
-    [Obsolete("", true)]
-    public float pushCheckRadius = 0.1f;
-    [Obsolete("", true)]
-    public EdgeCollider2D groundCheckEdge;
-    [Obsolete("", true)]
-    public EdgeCollider2D pushCheckEdge;
 
     #endregion
 }
