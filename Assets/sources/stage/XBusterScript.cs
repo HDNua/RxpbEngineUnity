@@ -63,20 +63,11 @@ public class XBusterScript : AttackScript
             {
                 MakeHitParticle();
                 enemy.Hurt(damage);
-
-                /*
-                AudioSource seHit = hitParticle.AddComponent<AudioSource>();
-                seHit.clip = SoundEffects[0].clip;
-                seHit.Play();
-                */
             }
-
-            Destroy(gameObject);
-            /*
-            EnemyMettoScript metto =
-                other.gameObject.GetComponent<EnemyMettoScript>();
-            metto.Hurt(damage);
-            */
+            if (enemy.IsAlive())
+            {
+                Destroy(gameObject);
+            }
         }
         else if (_collider.IsTouchingLayers(whatIsWall))
         {

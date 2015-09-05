@@ -44,6 +44,13 @@ public abstract class PlayerController : MonoBehaviour
     public Transform groundCheckFront;
     public float groundCheckRadius = 0.1f;
     public LayerMask whatIsGround;
+
+    [Obsolete("pushCheckTop/Bottom으로 대체되었습니다.", true)]
+    public Transform pushCheck;
+
+    public Transform pushCheckTop;
+    public Transform pushCheckBottom;
+    public float pushCheckRadius = 0.1f;
     public LayerMask whatIsWall;
 
     public float walkSpeed = 5;
@@ -80,6 +87,11 @@ public abstract class PlayerController : MonoBehaviour
     /// 효과음의 리스트입니다.
     /// </summary>
     public AudioSource[] SoundEffects { get { return soundEffects; } }
+
+    Vector2 groundBack;
+    Vector2 groundFront;
+    Vector2 wallTop;
+    Vector2 wallBottom;
 
     #endregion
 
@@ -593,7 +605,19 @@ public abstract class PlayerController : MonoBehaviour
         {
             // Pushing = IsTouchingWall(collision) && (FacingRight ?
             //  IsKeyPressed(GameKey.Right) : IsKeyPressed(GameKey.Left));
-            Pushing = IsTouchingWall(collision) && (FacingRight ?
+            // Pushing = IsTouchingWall(collision) && (FacingRight ?
+            //    IsRightKeyPressed() : IsLeftKeyPressed());
+
+            bool touchingWall = IsTouchingWall(collision);
+            Vector2 dir = FacingRight ? Vector2.right : Vector2.left;
+            RaycastHit2D rayT = Physics2D.Raycast
+                (pushCheckTop.position, dir, pushCheckRadius, whatIsWall);
+            RaycastHit2D rayB = Physics2D.Raycast
+                (pushCheckBottom.position, dir, pushCheckRadius, whatIsWall);
+
+            // Debug.DrawRay(pushCheck.position, direction*distance, Color.red);
+            // print((bool)pushRay);
+            Pushing = touchingWall && (rayT || rayB) && (FacingRight ?
                 IsRightKeyPressed() : IsLeftKeyPressed());
         }
     }

@@ -71,7 +71,7 @@
      <Compile Include="Assets\sources\stage\XController.cs" />
      <Compile Include="Assets\sources\stage\ZController.cs" />
      <Compile Include="Assets\sources\stage\ZSaberScript.cs" />
-     <Compile Include="Assets\sources\stage\enemy\EnemyMettoScript.cs" />
+     <Compile Include="Assets\sources\stage\enemy\EnemyMettoolScript.cs" />
      <Compile Include="Assets\sources\stage\enemy\EnemyScript.cs" />
      <None Include="Assets\scenes\cutscene\CS02_HunterBase.txt" />
      <None Include="Assets\scenes\cutscene\CS01_Prologue.txt" />
