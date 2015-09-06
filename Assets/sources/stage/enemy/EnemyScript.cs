@@ -103,13 +103,6 @@ public class EnemyScript : MonoBehaviour
         {
             Dead();
         }
-
-        /*
-        if (IsPlayerDead())
-        {
-            Dead();
-        }
-        */
     }
 
     #endregion

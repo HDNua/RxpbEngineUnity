@@ -50,6 +50,10 @@ public abstract class PlayerController : MonoBehaviour
 
     public Transform pushCheckTop;
     public Transform pushCheckBottom;
+
+    public EdgeCollider2D pushCheckEdge;
+
+    public BoxCollider2D pushCheckBox;
     public float pushCheckRadius = 0.1f;
     public LayerMask whatIsWall;
 
@@ -438,6 +442,20 @@ public abstract class PlayerController : MonoBehaviour
             soundEffects[i].clip = audioClips[i];
             soundEffects[i].playOnAwake = false;
         }
+
+        // 자식 객체를 초기화 합니다.
+        Vector2[] points = new Vector2[]
+        {
+            new Vector2(_collider.bounds.max.x, _collider.bounds.max.y),
+            new Vector2(_collider.bounds.max.x, _collider.bounds.min.y)
+        };
+        points[0].x /= transform.localScale.x;
+        points[0].y /= transform.localScale.y;
+        points[1].x /= transform.localScale.x;
+        points[1].y /= transform.localScale.y;
+
+        pushCheckEdge.transform.position = Vector3.zero; // new Vector3(0.1f, 0);
+        pushCheckEdge.points = points;
     }
     protected virtual void Update()
     {
@@ -608,6 +626,7 @@ public abstract class PlayerController : MonoBehaviour
             // Pushing = IsTouchingWall(collision) && (FacingRight ?
             //    IsRightKeyPressed() : IsLeftKeyPressed());
 
+            /*
             bool touchingWall = IsTouchingWall(collision);
             Vector2 dir = FacingRight ? Vector2.right : Vector2.left;
             RaycastHit2D rayT = Physics2D.Raycast
@@ -618,6 +637,10 @@ public abstract class PlayerController : MonoBehaviour
             // Debug.DrawRay(pushCheck.position, direction*distance, Color.red);
             // print((bool)pushRay);
             Pushing = touchingWall && (rayT || rayB) && (FacingRight ?
+                IsRightKeyPressed() : IsLeftKeyPressed());
+            */
+
+            Pushing = IsTouchingWall(collision) && (FacingRight ?
                 IsRightKeyPressed() : IsLeftKeyPressed());
         }
     }
@@ -719,8 +742,19 @@ public abstract class PlayerController : MonoBehaviour
     bool IsTouchingWall(Collision2D collision)
     {
         // 벽과 닿아있는 경우 몇 가지 더 검사합니다.
+        // if (pushCheckEdge.IsTouchingLayers(whatIsWall))
         if (_collider.IsTouchingLayers(whatIsWall))
         {
+            if (pushCheckBox.IsTouchingLayers(whatIsWall))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+            /*
             float playerBottom = _collider.bounds.min.y;
             float wallTop = collision.collider.bounds.max.y;
 
@@ -739,6 +773,7 @@ public abstract class PlayerController : MonoBehaviour
             {
                 return true;
             }
+            */
         }
         // 벽과 닿아있지 않으면 거짓입니다.
         return false;
@@ -1100,7 +1135,7 @@ public abstract class PlayerController : MonoBehaviour
         UnblockAirDashing();
         _rigidbody.velocity = new Vector2
             (FacingRight ? -1.5f * movingSpeed : 1.5f * movingSpeed,
-            jumpSpeed /* Mathf.Sqrt(2) */);
+            jumpSpeed);
 
         // 개체의 운동에 따른 효과를 처리합니다.
         CloneObject(effects[3], slideFogPosition);

@@ -66,12 +66,6 @@ public class EffectScript : MonoBehaviour
     #region 프레임 이벤트 핸들러를 정의합니다.
     void FE_EndEffect()
     {
-        /*
-        _animator.enabled = false;
-        GetComponent<SpriteRenderer>().color = Color.clear;
-        RequestEnd(); // Destroy(gameObject);
-        */
-
         RequestDestroy();
     }
 
@@ -103,13 +97,6 @@ public class EffectScript : MonoBehaviour
     /// </summary>
     public void RequestEnd()
     {
-        /*
-        // GetComponent<Animator>().SetBool("EndRequested", true);
-        // FE_EndEffect();
-        endRequested = true;
-        */
-        // EndEffect();
-
         if (_animator.parameters.Length > 0)
         {
             EndRequested = true;

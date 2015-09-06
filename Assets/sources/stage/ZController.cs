@@ -68,7 +68,6 @@ public class ZController : PlayerController
             // 실제로 잔상을 생성합니다.
             else
             {
-                // GameObject dashAfterImage = I_nstantiate(effects[4], transform.position, transform.rotation) as GameObject;
                 GameObject dashAfterImage = CloneObject(effects[4], transform);
                 Vector3 daiScale = dashAfterImage.transform.localScale;
                 if (FacingRight == false)
@@ -84,7 +83,7 @@ public class ZController : PlayerController
 
         // 새로운 사용자 입력을 확인합니다.
         // 점프 키가 눌린 경우
-        if (IsKeyDown("Jump")) // IsKeyDown(GameKey.Jump))
+        if (IsKeyDown("Jump"))
         {
             if (JumpBlocked)
             {
@@ -92,7 +91,6 @@ public class ZController : PlayerController
             }
             else if (Sliding)
             {
-                // if (IsKeyPressed(GameKey.Dash))
                 if (IsKeyPressed("Dash"))
                 {
                     WallDashJump();
@@ -106,7 +104,7 @@ public class ZController : PlayerController
             {
                 DashJump();
             }
-            else if (Landed && IsKeyPressed("Dash")) // else if (Landed && IsKeyPressed(GameKey.Dash))
+            else if (Landed && IsKeyPressed("Dash"))
             {
                 DashJump();
             }
@@ -116,7 +114,7 @@ public class ZController : PlayerController
             }
         }
         // 대쉬 키가 눌린 경우
-        else if (IsKeyDown("Dash")) // else if (IsKeyDown(GameKey.Dash))
+        else if (IsKeyDown("Dash"))
         {
             if (Sliding)
             {
@@ -143,10 +141,34 @@ public class ZController : PlayerController
             }
         }
         // 캐릭터 변경 키가 눌린 경우
-        else if (IsKeyDown("ChangeCharacter")) // else if (Input.GetKeyDown(KeyCode.F))
+        else if (IsKeyDown("ChangeCharacter"))
         {
-            // sceneManager.ChangePlayer(sceneManager.PlayerX);
             stageManager.ChangePlayer(stageManager.PlayerX);
+        }
+        // 공격 키가 눌린 경우
+        else if (IsKeyDown("Attack"))
+        {
+            if (AttackBlocked)
+            {
+
+            }
+            else if (AirDashing)
+            {
+                StopAirDashing();
+                JumpAttack();
+            }
+            else if (Jumping)
+            {
+                JumpAttack();
+            }
+            else if (Falling)
+            {
+                JumpAttack();
+            }
+            else
+            {
+                Attack();
+            }
         }
     }
     void FixedUpdate()
@@ -157,28 +179,6 @@ public class ZController : PlayerController
         {
             return;
         }
-
-        /*
-        // 소환 중이라면
-        if (Spawning)
-        {
-            // 준비 중이라면
-            if (Readying)
-            {
-                // 준비가 끝나서 대기 상태로 전환되었다면
-                if (IsAnimationPlaying("Idle"))
-                    // 준비를 완전히 종료합니다.
-                    EndReady();
-            }
-            // 준비 중이 아닌데 지상에 착륙했다면
-            else if (Landed)
-            {
-                // 준비 상태로 전환합니다.
-                Ready();
-            }
-            return;
-        }
-        */
 
         // 기존 사용자 입력을 확인합니다.
         // 점프 중이라면
@@ -315,11 +315,11 @@ public class ZController : PlayerController
                 {
 
                 }
-                else if (IsLeftKeyPressed()) // else if (IsKeyPressed(GameKey.Left))
+                else if (IsLeftKeyPressed())
                 {
                     MoveLeft();
                 }
-                else if (IsRightKeyPressed()) // else if (IsKeyPressed(GameKey.Right)
+                else if (IsRightKeyPressed())
                 {
                     MoveRight();
                 }
@@ -379,32 +379,6 @@ public class ZController : PlayerController
             else
             {
                 StopMoving();
-            }
-        }
-
-        // 공격 키가 눌린 경우를 처리합니다.
-        if (IsKeyDown("Attack"))
-        {
-            if (AttackBlocked)
-            {
-
-            }
-            else if (AirDashing)
-            {
-                StopAirDashing();
-                JumpAttack();
-            }
-            else if (Jumping)
-            {
-                JumpAttack();
-            }
-            else if (Falling)
-            {
-                JumpAttack();
-            }
-            else
-            {
-                Attack();
             }
         }
     }

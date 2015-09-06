@@ -28,17 +28,6 @@ public class ScreenFader : MonoBehaviour
     }
     void Update()
     {
-        /*
-        if (sceneStarting)
-        {
-            StartScene();
-        }
-        else if (sceneEnding)
-        {
-            EndScene();
-        }
-        */
-
         if (fadeInRequested)
         {
             FadeToClear();

@@ -163,13 +163,6 @@ public class XController : PlayerController
         {
             stageManager.ChangePlayer(stageManager.PlayerZ);
         }
-
-        /*
-        if (IsAnimationPlaying("Hurt"))
-        {
-            p_rint(GetCurrentAnimationLength());
-        }
-        */
     }
     void FixedUpdate()
     {
@@ -379,92 +372,6 @@ public class XController : PlayerController
                 StopMoving();
             }
         }
-
-        /*
-        // 공격 키가 눌린 경우를 처리합니다.
-        if (IsKeyPressed("Attack")) // if (IsKeyPressed(GameKey.Attack))
-        {
-            if (shotPressed == false)
-            {
-                shotPressed = true;
-                chargeTime = 0;
-            }
-            else
-            {
-                StartCoroutine(CoroutineCharge());
-                if (chargeTime < chargeLevel[1] - 0.1f)
-                {
-
-                }
-                else if (SoundEffects[7].isPlaying == false)
-                {
-                    SoundEffects[7].time = 0;
-                    SoundEffects[7].Play();
-                }
-                else if (SoundEffects[7].time >= 2.9f)
-                {
-                    SoundEffects[7].time = 2.1f;
-                }
-                chargeTime = (chargeTime >= maxChargeTime)
-                    ? maxChargeTime : (chargeTime + Time.deltaTime);
-                // p_rint(chargeTime);
-            }
-        }
-        else if (shotPressed)
-        {
-            int index = -1;
-            if (chargeTime < chargeLevel[1])
-            {
-                index = 0; // _animator.Play("Shot", 0, 0);
-            }
-            else if (chargeTime < chargeLevel[2])
-            {
-                index = 1; // _animator.Play("Shot", 0, 0);
-            }
-            else
-            {
-                index = 2; // _animator.Play("ChargeShot", 0, 0);
-            }
-
-            Shooting = true;
-            if (Moving)
-            {
-                float nTime = GetCurrentAnimationPlaytime();
-                float fTime = nTime - Mathf.Floor(nTime);
-                _animator.Play("MoveShotRun", 0, fTime);
-            }
-            else
-            {
-                _animator.Play(0, 0, 0);
-            }
-
-            // 버스터 탄환을 생성하고 초기화합니다.
-            GameObject _bullet = I_nstantiate
-                (bullets[index], shotPosition.position, shotPosition.rotation)
-                as GameObject;
-            Vector3 bulletScale = _bullet.transform.localScale;
-            bulletScale.x *= FacingRight ? 1 : -1;
-            _bullet.transform.localScale = bulletScale;
-            _bullet.GetComponent<Rigidbody2D>().velocity
-                = (FacingRight ? Vector3.right : Vector3.left) * shotSpeed;
-            XBusterScript buster = _bullet.GetComponent<XBusterScript>();
-            buster.MainCamera = stageManager.MainCamera;
-
-            // 효과음을 재생하고 상태를 업데이트 합니다.
-            SoundEffects[8 + index].Play();
-            SoundEffects[7].Stop();
-            shotPressed = false;
-            ShotTriggered = true;
-            shotTime = 0;
-            StopCoroutine("CoroutineCharge");
-            // StartCoroutine(CoroutineCharge());
-
-            // 일정 시간 후에 샷 상태를 해제합니다.
-            Invoke("EndShot", endShotTime);
-        }
-
-        shotTime += Time.fixedDeltaTime;
-        */
 
         // 공격 키가 눌린 경우를 처리합니다.
         if (IsKeyPressed("Attack")) // if (IsKeyPressed(GameKey.Attack))

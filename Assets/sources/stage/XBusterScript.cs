@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -19,7 +20,7 @@ public class XBusterScript : AttackScript
 
 
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
-    public LayerMask whatIsWall;
+    public LayerMask busterUnpassable;
 
     #endregion
 
@@ -69,7 +70,8 @@ public class XBusterScript : AttackScript
                 Destroy(gameObject);
             }
         }
-        else if (_collider.IsTouchingLayers(whatIsWall))
+        // else if (_collider.IsTouchingLayers(whatIsGround))
+        else if (_collider.IsTouchingLayers(busterUnpassable))
         {
             MakeHitParticle();
             Destroy(gameObject);
@@ -106,6 +108,14 @@ public class XBusterScript : AttackScript
         // 생성한 효과 객체를 반환합니다.
         return hitParticle;
     }
+
+    #endregion
+
+
+
+    #region 구형 정의를 보관합니다.
+    [Obsolete("busterUnpassable로 대체되었습니다.", true)]
+    public LayerMask whatIsWall;
 
     #endregion
 }
