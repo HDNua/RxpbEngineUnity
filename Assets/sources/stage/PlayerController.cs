@@ -485,7 +485,8 @@ public abstract class PlayerController : MonoBehaviour
         {
             if (stageManager.fader.FadeOutEnded)
             {
-                Application.LoadLevel(Application.loadedLevel);
+                // 구형 정의를 새로운 정의로 업데이트 합니다.
+                stageManager.RestartLevel(); // Application.LoadLevel(Application.loadedLevel);
             }
             return false;
         }

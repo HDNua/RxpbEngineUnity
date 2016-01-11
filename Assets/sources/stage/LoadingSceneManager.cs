@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class LoadingSceneManager : MonoBehaviour
 {
@@ -35,7 +36,9 @@ public class LoadingSceneManager : MonoBehaviour
     #region 보조 메서드를 정의합니다.
     IEnumerator LoadMain()
     {
-        AsyncOperation async = Application.LoadLevelAsync(loadingLevelName);
+        // 구형 정의를 새로운 정의로 업데이트 합니다.
+        AsyncOperation async = SceneManager.LoadSceneAsync(loadingLevelName); // Application.LoadLevelAsync(loadingLevelName);
+
         while (async.isDone == false)
         {
             if (async.progress >= 0.8f)
@@ -61,7 +64,9 @@ public class LoadingSceneManager : MonoBehaviour
     {
         loadingLevelName = levelName;
         loadRequested = true;
-        Application.LoadLevel("Loading");
+
+        // 구형 정의를 새로운 정의로 업데이트 합니다.
+        SceneManager.LoadScene("Loading"); // Application.LoadLevel("Loading");
     }
 
     #endregion

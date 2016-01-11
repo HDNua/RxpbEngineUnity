@@ -1,10 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
+
+
 
 /// <summary>
 /// 스테이지 장면 관리자입니다.
 /// </summary>
-public class StageManager : SceneManager
+public class StageManager : HDSceneManager
 {
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
     public Map map;
@@ -96,6 +99,14 @@ public class StageManager : SceneManager
     public void UnFreeze()
     {
         IsFrozen = false;
+    }
+
+    /// <summary>
+    /// 스테이지를 재시작합니다.
+    /// </summary>
+    public void RestartLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     #endregion
