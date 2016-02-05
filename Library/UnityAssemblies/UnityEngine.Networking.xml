@@ -1068,7 +1068,12 @@
     </member>
     <member name="F:UnityEngine.Networking.NetworkConnection.hostId">
       <summary>
-        <para>Transport level host id for this connection.</para>
+        <para>Transport level host ID for this connection.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Networking.NetworkConnection.isConnected">
+      <summary>
+        <para>True if the connection is connected to a remote end-point.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.Networking.NetworkConnection.isReady">
@@ -1090,6 +1095,15 @@
       <summary>
         <para>The list of players for this connection.</para>
       </summary>
+    </member>
+    <member name="M:UnityEngine.Networking.NetworkConnection.CheckHandler(System.Int16)">
+      <summary>
+        <para>This function checks if there is a message handler registered for the message ID.</para>
+      </summary>
+      <param name="msgType">The message ID of the handler to look for.</param>
+      <returns>
+        <para>True if a handler function was found.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.Networking.NetworkConnection.Disconnect">
       <summary>
@@ -1178,7 +1192,7 @@
       <summary>
         <para>This function invokes the registered handler function for a message, without any message data.</para>
       </summary>
-      <param name="msgType">The message id of the handler to invoke.</param>
+      <param name="msgType">The message ID of the handler to invoke.</param>
       <returns>
         <para>True if a handler function was found and invoked.</para>
       </returns>
@@ -1207,7 +1221,7 @@
       <summary>
         <para>This registers a handler function for a message Id.</para>
       </summary>
-      <param name="msgType">The message Id to register.</param>
+      <param name="msgType">The message ID to register.</param>
       <param name="handler">The handler function to register.</param>
     </member>
     <member name="M:UnityEngine.Networking.NetworkConnection.ResetStats">
@@ -1217,9 +1231,9 @@
     </member>
     <member name="M:UnityEngine.Networking.NetworkConnection.Send(System.Int16,UnityEngine.Networking.MessageBase)">
       <summary>
-        <para>This sends a network message with a message Id on the connection. This message is sent on channel zero, which by default is the reliable channel.</para>
+        <para>This sends a network message with a message ID on the connection. This message is sent on channel zero, which by default is the reliable channel.</para>
       </summary>
-      <param name="msgType">The id of the message to send.</param>
+      <param name="msgType">The ID of the message to send.</param>
       <param name="msg">The message to send.</param>
       <returns>
         <para>True if the message was sent.</para>
@@ -1229,7 +1243,7 @@
       <summary>
         <para>This sends a network message on the connection using a specific transport layer channel.</para>
       </summary>
-      <param name="msgType">The message id to send.</param>
+      <param name="msgType">The message ID to send.</param>
       <param name="msg">The message to send.</param>
       <param name="channelId">The transport layer channel to send on.</param>
       <returns>
@@ -1249,9 +1263,9 @@
     </member>
     <member name="M:UnityEngine.Networking.NetworkConnection.SendUnreliable(System.Int16,UnityEngine.Networking.MessageBase)">
       <summary>
-        <para>This sends a network message with a message Id on the connection. This message is sent on channel one, which by default is the unreliable channel.</para>
+        <para>This sends a network message with a message ID on the connection. This message is sent on channel one, which by default is the unreliable channel.</para>
       </summary>
-      <param name="msgType">The message id to send.</param>
+      <param name="msgType">The message ID to send.</param>
       <param name="msg">The message to send.</param>
       <returns>
         <para>True if the message was sent.</para>
@@ -1313,7 +1327,7 @@
       <summary>
         <para>This removes the handler registered for a message Id.</para>
       </summary>
-      <param name="msgType">The message id to unregister.</param>
+      <param name="msgType">The message ID to unregister.</param>
     </member>
     <member name="T:UnityEngine.Networking.NetworkCRC">
       <summary>
@@ -3051,6 +3065,11 @@ All of the player objects in the game are disabled when the host is lost. Then, 
         <para>A list of all the current connections from clients.</para>
       </summary>
     </member>
+    <member name="P:UnityEngine.Networking.NetworkServer.dontListen">
+      <summary>
+        <para>If you enable this, the server will not listen for incoming connections on the regular network port.</para>
+      </summary>
+    </member>
     <member name="P:UnityEngine.Networking.NetworkServer.handlers">
       <summary>
         <para>Dictionary of the message handlers registered with the server.</para>
@@ -3616,6 +3635,11 @@ All of the player objects in the game are disabled when the host is lost. Then, 
         <para>A NetworkConnection objects, or null if no connection found.</para>
       </returns>
     </member>
+    <member name="M:UnityEngine.Networking.NetworkServerSimple.Initialize">
+      <summary>
+        <para>Initialization function that is invoked when the server starts listening. This can be overridden to perform custom initialization such as setting the NetworkConnectionClass.</para>
+      </summary>
+    </member>
     <member name="M:UnityEngine.Networking.NetworkServerSimple.Listen(System.Int32)">
       <summary>
         <para>This starts the server listening for connections on the specified port.</para>
@@ -3748,6 +3772,11 @@ All of the player objects in the game are disabled when the host is lost. Then, 
     <member name="M:UnityEngine.Networking.NetworkServerSimple.Update">
       <summary>
         <para>This function pumps the server causing incoming network data to be processed, and pending outgoing data to be sent.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.Networking.NetworkServerSimple.UpdateConnections">
+      <summary>
+        <para>This function causes pending outgoing data on connections to be sent, but unlike Update() it works when the server is not listening.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Networking.NetworkSettingsAttribute">
@@ -4543,20 +4572,48 @@ All of the player objects in the game are disabled when the host is lost. Then, 
         <para>A list of booleans that will be synchronized from server to clients.</para>
       </summary>
     </member>
+    <member name="M:UnityEngine.Networking.SyncListBool.ReadReference(UnityEngine.Networking.NetworkReader,UnityEngine.Networking.SyncListBool)">
+      <summary>
+        <para>An internal function used for serializing SyncList member variables.</para>
+      </summary>
+      <param name="reader"></param>
+      <param name="syncList"></param>
+    </member>
     <member name="T:UnityEngine.Networking.SyncListFloat">
       <summary>
         <para>A list of floats that will be synchronized from server to clients.</para>
       </summary>
+    </member>
+    <member name="M:UnityEngine.Networking.SyncListFloat.ReadReference(UnityEngine.Networking.NetworkReader,UnityEngine.Networking.SyncListFloat)">
+      <summary>
+        <para>An internal function used for serializing SyncList member variables.</para>
+      </summary>
+      <param name="reader"></param>
+      <param name="syncList"></param>
     </member>
     <member name="T:UnityEngine.Networking.SyncListInt">
       <summary>
         <para>A list of integers that will be synchronized from server to clients.</para>
       </summary>
     </member>
+    <member name="M:UnityEngine.Networking.SyncListInt.ReadReference(UnityEngine.Networking.NetworkReader,UnityEngine.Networking.SyncListInt)">
+      <summary>
+        <para>An internal function used for serializing SyncList member variables.</para>
+      </summary>
+      <param name="reader"></param>
+      <param name="syncList"></param>
+    </member>
     <member name="T:UnityEngine.Networking.SyncListString">
       <summary>
         <para>This is a list of strings that will be synchronized from the server to clients.</para>
       </summary>
+    </member>
+    <member name="M:UnityEngine.Networking.SyncListString.ReadReference(UnityEngine.Networking.NetworkReader,UnityEngine.Networking.SyncListString)">
+      <summary>
+        <para>An internal function used for serializing SyncList member variables.</para>
+      </summary>
+      <param name="reader"></param>
+      <param name="syncList"></param>
     </member>
     <member name="T:UnityEngine.Networking.SyncListStruct`1">
       <summary>
@@ -4567,6 +4624,13 @@ All of the player objects in the game are disabled when the host is lost. Then, 
       <summary>
         <para>A list of unsigned integers that will be synchronized from server to clients.</para>
       </summary>
+    </member>
+    <member name="M:UnityEngine.Networking.SyncListUInt.ReadReference(UnityEngine.Networking.NetworkReader,UnityEngine.Networking.SyncListUInt)">
+      <summary>
+        <para>An internal function used for serializing SyncList member variables.</para>
+      </summary>
+      <param name="reader"></param>
+      <param name="syncList"></param>
     </member>
     <member name="T:UnityEngine.Networking.SyncVarAttribute">
       <summary>

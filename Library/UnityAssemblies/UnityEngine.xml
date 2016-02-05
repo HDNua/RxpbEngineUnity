@@ -3279,6 +3279,32 @@ If relativePath is empty it refers to the game object the animation clip is atta
         <para>Enable anisotropic filtering for all textures.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.Apple.TV.Remote">
+      <summary>
+        <para>A class for Apple TV remote input configuration.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Apple.TV.Remote.allowExitToHome">
+      <summary>
+        <para>Configures how "Menu" button behaves on Apple TV Remote. If this property is set to true hitting "Menu" on Remote will exit to system home screen. When this property is false current application is responsible for handling "Menu" button. It is recommended to set this property to true on top level menus of your application.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Apple.TV.Remote.allowRemoteRotation">
+      <summary>
+        <para>Configures if Apple TV Remote should autorotate all the inputs when Remote is being held in horizontal orientation. Default is false.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Apple.TV.Remote.reportAbsoluteDpadValues">
+      <summary>
+        <para>Configures how touches are mapped to analog joystick axes in relative or absolute values. If set to true it will return +1 on Horizontal axis when very far right is being touched on Remote touch aread (and -1 when very left area is touched correspondingly). The same applies for Vertical axis too. When this property is set to false player should swipe instead of touching specific area of remote to generate Horizontal or Vertical input.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Apple.TV.Remote.touchesEnabled">
+      <summary>
+        <para>Disables Apple TV Remote touch propagation to Unity Input.touches API. Useful for 3rd party frameworks, which do not respect Touch.type == Indirect.
+Default is false.</para>
+      </summary>
+    </member>
     <member name="T:UnityEngine.Application">
       <summary>
         <para>Access to application run-time data.</para>
@@ -3471,6 +3497,14 @@ If relativePath is empty it refers to the game object the animation clip is atta
         <para>Indicates whether Unity's webplayer security model is enabled.</para>
       </summary>
     </member>
+    <member name="T:UnityEngine.Application.AdvertisingIdentifierCallback">
+      <summary>
+        <para>Delegate method for fetching advertising ID.</para>
+      </summary>
+      <param name="advertisingId">Advertising ID.</param>
+      <param name="trackingEnabled">Indicates whether user has chosen to limit ad tracking.</param>
+      <param name="errorMsg">Error message.</param>
+    </member>
     <member name="M:UnityEngine.Application.CancelQuit">
       <summary>
         <para>Cancels quitting the application. This is useful for showing a splash screen at the end of a game.</para>
@@ -3612,6 +3646,15 @@ If relativePath is empty it refers to the game object the animation clip is atta
       <summary>
         <para>Quits the player application.</para>
       </summary>
+    </member>
+    <member name="M:UnityEngine.Application.RequestAdvertisingIdentifierAsync(UnityEngine.Application/AdvertisingIdentifierCallback)">
+      <summary>
+        <para>Request advertising ID for iOS, Android and Windows Store.</para>
+      </summary>
+      <param name="delegateMethod">Delegate method.</param>
+      <returns>
+        <para>In case of error returns false and the delegate method will not be invoked.</para>
+      </returns>
     </member>
     <member name="M:UnityEngine.Application.RequestUserAuthorization(UnityEngine.UserAuthorization)">
       <summary>
@@ -9122,6 +9165,11 @@ See Also: CanvasRenderer.SetMaterialCount, CanvasRenderer.SetTexture.</para>
     <member name="F:UnityEngine.ComputeBufferType.DrawIndirect">
       <summary>
         <para>ComputeBuffer used for Graphics.DrawProceduralIndirect.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.ComputeBufferType.GPUMemory">
+      <summary>
+        <para>ComputeBuffer is attempted to be located in GPU memory.</para>
       </summary>
     </member>
     <member name="F:UnityEngine.ComputeBufferType.Raw">
@@ -30138,7 +30186,7 @@ Topology is used to define how many client can connect, and how many messages sh
     </member>
     <member name="M:UnityEngine.ParticleSystem.EmitParams.ResetAngularVelocity">
       <summary>
-        <para>Revert the angular velocity back to the value specified in the inspector.</para>
+        <para>Reverts angularVelocity and angularVelocity3D back to the values specified in the inspector.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.ParticleSystem.EmitParams.ResetAxisOfRotation">
@@ -30158,7 +30206,7 @@ Topology is used to define how many client can connect, and how many messages sh
     </member>
     <member name="M:UnityEngine.ParticleSystem.EmitParams.ResetRotation">
       <summary>
-        <para>Revert the rotation back to the value specified in the inspector.</para>
+        <para>Reverts rotation and rotation3D back to the values specified in the inspector.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.ParticleSystem.EmitParams.ResetStartColor">
@@ -38874,6 +38922,20 @@ Developing, Development, Invalid, Operating.</para>
         <para>The number of root transforms of this scene.</para>
       </summary>
     </member>
+    <member name="M:UnityEngine.SceneManagement.Scene.GetRootGameObjects">
+      <summary>
+        <para>Returns all the root game objects in the scene.</para>
+      </summary>
+      <returns>
+        <para>An array of game objects.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.SceneManagement.Scene.GetRootGameObjects(System.Collections.Generic.List`1&lt;UnityEngine.GameObject&gt;)">
+      <summary>
+        <para>Returns all the root game objects in the scene.</para>
+      </summary>
+      <param name="rootGameObjects">A list which is used to return the root game objects.</param>
+    </member>
     <member name="M:UnityEngine.SceneManagement.Scene.IsValid">
       <summary>
         <para>Tells if the scene is valid.
@@ -38912,14 +38974,15 @@ A scene can be invalid if you eg. tried to open a scene that does not exists in 
         <para>Number of scenes in Build Settings.</para>
       </summary>
     </member>
+    <member name="M:UnityEngine.SceneManagement.SceneManager.CreateScene(System.String)">
+      <summary>
+        <para>Create an empty new scene with the given name additively.</para>
+      </summary>
+      <param name="sceneName">The name of the new scene. It cannot be empty or null, or same as the name of the existing scenes.</param>
+    </member>
     <member name="M:UnityEngine.SceneManagement.SceneManager.GetActiveScene">
       <summary>
         <para>Get the active scene.</para>
-      </summary>
-    </member>
-    <member name="M:UnityEngine.SceneManagement.SceneManager.GetAllScenes">
-      <summary>
-        <para>Get all the scenes.</para>
       </summary>
     </member>
     <member name="M:UnityEngine.SceneManagement.SceneManager.GetSceneAt(System.Int32)">
@@ -39003,20 +39066,33 @@ It is required that the GameObject is at the root of its current scene.</para>
     </member>
     <member name="M:UnityEngine.SceneManagement.SceneManager.UnloadScene(System.Int32)">
       <summary>
-        <para>Unloads all GameObjects associated with the given scene. Note that assets are currently not unloaded, in order to free up asset memory call Resources.UnloadAllUnusedAssets.</para>
+        <para>Unloads all GameObjects associated with the given scene.</para>
       </summary>
       <param name="sceneBuildIndex">Index of the scene in the Build Settings to unload.</param>
       <param name="sceneName">Name of the scene to unload.</param>
+      <param name="scene">Scene to unload.</param>
       <returns>
         <para>Returns true if the scene is unloaded.</para>
       </returns>
     </member>
     <member name="M:UnityEngine.SceneManagement.SceneManager.UnloadScene(System.String)">
       <summary>
-        <para>Unloads all GameObjects associated with the given scene. Note that assets are currently not unloaded, in order to free up asset memory call Resources.UnloadAllUnusedAssets.</para>
+        <para>Unloads all GameObjects associated with the given scene.</para>
       </summary>
       <param name="sceneBuildIndex">Index of the scene in the Build Settings to unload.</param>
       <param name="sceneName">Name of the scene to unload.</param>
+      <param name="scene">Scene to unload.</param>
+      <returns>
+        <para>Returns true if the scene is unloaded.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.SceneManagement.SceneManager.UnloadScene">
+      <summary>
+        <para>Unloads all GameObjects associated with the given scene.</para>
+      </summary>
+      <param name="sceneBuildIndex">Index of the scene in the Build Settings to unload.</param>
+      <param name="sceneName">Name of the scene to unload.</param>
+      <param name="scene">Scene to unload.</param>
       <returns>
         <para>Returns true if the scene is unloaded.</para>
       </returns>
@@ -39998,7 +40074,7 @@ Note: The single argument version of this API will always issue an error message
       <summary>
         <para>Authenticate the local user to the current active Social API implementation and fetch his profile data.</para>
       </summary>
-      <param name="callback"></param>
+      <param name="callback">Callback that is called whenever authentication operation is finished.</param>
     </member>
     <member name="M:UnityEngine.SocialPlatforms.ILocalUser.LoadFriends(System.Action`1&lt;System.Boolean&gt;)">
       <summary>
@@ -44912,7 +44988,7 @@ Useful for restarting a trail from a new position.</para>
     </member>
     <member name="F:UnityEngine.VR.VRDeviceType.Morpheus">
       <summary>
-        <para>Sony's Project Morpheus VR device for Playstation 4.</para>
+        <para>Sony's Project Morpheus VR device for Playstation 4. (Obsolete please use VRDeviceType.PlayStationVR instead).</para>
       </summary>
     </member>
     <member name="F:UnityEngine.VR.VRDeviceType.None">
@@ -44923,6 +44999,11 @@ Useful for restarting a trail from a new position.</para>
     <member name="F:UnityEngine.VR.VRDeviceType.Oculus">
       <summary>
         <para>Oculus family of VR devices.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.VR.VRDeviceType.PlayStationVR">
+      <summary>
+        <para>Sony's PlayStation VR device for Playstation 4 (formerly called Project Morpheus VR).</para>
       </summary>
     </member>
     <member name="F:UnityEngine.VR.VRDeviceType.Split">
@@ -45501,6 +45582,556 @@ Useful for restarting a trail from a new position.</para>
       <summary>
         <para>When time reaches the end of the animation clip, time will ping pong back between beginning and end.</para>
       </summary>
+    </member>
+    <member name="T:UnityEngine.WSA.AppCallbackItem">
+      <summary>
+        <para>Delegate that can be invoked on specific thread.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.WSA.Application">
+      <summary>
+        <para>Provides essential methods related to Window Store application.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WSA.Application.advertisingIdentifier">
+      <summary>
+        <para>Advertising ID.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WSA.Application.arguments">
+      <summary>
+        <para>Arguments passed to application.</para>
+      </summary>
+    </member>
+    <member name="?:UnityEngine.WSA.Application.windowActivated(UnityEngine.WSA.WindowActivated)">
+      <summary>
+        <para>Fired when application window is activated.</para>
+      </summary>
+      <param name="value"></param>
+    </member>
+    <member name="?:UnityEngine.WSA.Application.windowSizeChanged(UnityEngine.WSA.WindowSizeChanged)">
+      <summary>
+        <para>Fired when window size changes.</para>
+      </summary>
+      <param name="value"></param>
+    </member>
+    <member name="M:UnityEngine.WSA.Application.InvokeOnAppThread(UnityEngine.WSA.AppCallbackItem,System.Boolean)">
+      <summary>
+        <para>Executes callback item on application thread.</para>
+      </summary>
+      <param name="item">Item to execute.</param>
+      <param name="waitUntilDone">Wait until item is executed.</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Application.InvokeOnUIThread(UnityEngine.WSA.AppCallbackItem,System.Boolean)">
+      <summary>
+        <para>Executes callback item on UI thread.</para>
+      </summary>
+      <param name="item">Item to execute.</param>
+      <param name="waitUntilDone">Wait until item is executed.</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Application.RunningOnAppThread">
+      <summary>
+        <para>Returns true if you're running on application thread.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.WSA.Application.RunningOnUIThread">
+      <summary>
+        <para>Returns true if you're running on UI thread.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.WSA.Application.TryInvokeOnAppThread(UnityEngine.WSA.AppCallbackItem,System.Boolean)">
+      <summary>
+        <para>[OBSOLETE] Tries to execute callback item on application thread.</para>
+      </summary>
+      <param name="item">Item to execute.</param>
+      <param name="waitUntilDone">Wait until item is executed.</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Application.TryInvokeOnUIThread(UnityEngine.WSA.AppCallbackItem,System.Boolean)">
+      <summary>
+        <para>[OBSOLETE] Tries to execute callback item on UI thread.</para>
+      </summary>
+      <param name="item">Item to execute.</param>
+      <param name="waitUntilDone">Wait until item is executed.</param>
+    </member>
+    <member name="T:UnityEngine.WSA.Cursor">
+      <summary>
+        <para>Cursor API for Windows Store Apps.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.WSA.Cursor.SetCustomCursor(System.UInt32)">
+      <summary>
+        <para>Set a custom cursor.</para>
+      </summary>
+      <param name="id">The cursor resource id.</param>
+    </member>
+    <member name="T:UnityEngine.WSA.Folder">
+      <summary>
+        <para>List of accessible folders on Windows Store Apps.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.WSA.Launcher">
+      <summary>
+        <para>Class which is capable of launching user's default app for file type or a protocol. See also PlayerSettings where you can specify file or URI associations.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.WSA.Launcher.LaunchFile(UnityEngine.WSA.Folder,System.String,System.Boolean)">
+      <summary>
+        <para>Launches the default app associated with specified file.</para>
+      </summary>
+      <param name="folder">Folder type where the file is located.</param>
+      <param name="relativeFilePath">Relative file path inside the specified folder.</param>
+      <param name="showWarning">Shows user a warning that application will be switched.</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Launcher.LaunchFileWithPicker(System.String)">
+      <summary>
+        <para>Opens a dialog for picking the file.</para>
+      </summary>
+      <param name="fileExtension">File extension.</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Launcher.LaunchUri(System.String,System.Boolean)">
+      <summary>
+        <para>Starts the default app associated with the URI scheme name for the specified URI, using the specified options.</para>
+      </summary>
+      <param name="uri">The URI.</param>
+      <param name="showWarning">Displays a warning that the URI is potentially unsafe.</param>
+    </member>
+    <member name="T:UnityEngine.WSA.SecondaryTileData">
+      <summary>
+        <para>Defines the default look of secondary tile.
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.arguments">
+      <summary>
+        <para>Arguments to be passed for application when secondary tile is activated.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WSA.SecondaryTileData.backgroundColor">
+      <summary>
+        <para>Defines background color for secondary tile.
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.backgroundColorSet">
+      <summary>
+        <para>Defines, whether backgroundColor should be used.
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.displayName">
+      <summary>
+        <para>Display name for secondary tile.
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.foregroundText">
+      <summary>
+        <para>Defines the style for foreground text on a secondary tile.
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.lockScreenBadgeLogo">
+      <summary>
+        <para>Uri to logo, shown for secondary tile on lock screen.
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.lockScreenDisplayBadgeAndTileText">
+      <summary>
+        <para>Whether to show secondary tile on lock screen.
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.phoneticName">
+      <summary>
+        <para>Phonetic name for secondary tile.
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.roamingEnabled">
+      <summary>
+        <para>Defines whether secondary tile is copied to another device when application is installed by the same users account.
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.showNameOnSquare150x150Logo">
+      <summary>
+        <para>Defines whether the displayName should be shown on a medium secondary tile.
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.showNameOnSquare310x310Logo">
+      <summary>
+        <para>Defines whether the displayName should be shown on a large secondary tile.
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.showNameOnWide310x150Logo">
+      <summary>
+        <para>Defines whether the displayName should be shown on a wide secondary tile.
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.square150x150Logo">
+      <summary>
+        <para>Uri to the logo for medium size tile.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.square30x30Logo">
+      <summary>
+        <para>Uri to the logo shown on tile
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.square310x310Logo">
+      <summary>
+        <para>Uri to the logo for large size tile.
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.square70x70Logo">
+      <summary>
+        <para>Uri to the logo for small size tile.
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.tileId">
+      <summary>
+        <para>Unique identifier within application for a secondary tile.
+</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.SecondaryTileData.wide310x150Logo">
+      <summary>
+        <para>Uri to the logo for wide tile.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.WSA.SecondaryTileData.#ctor(System.String,System.String)">
+      <summary>
+        <para>Constructor for SecondaryTileData, sets default values for all members.</para>
+      </summary>
+      <param name="id">Unique identifier for secondary tile.</param>
+      <param name="displayName">A display name for a tile.</param>
+    </member>
+    <member name="T:UnityEngine.WSA.Tile">
+      <summary>
+        <para>Represents tile on Windows start screen
+</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WSA.Tile.exists">
+      <summary>
+        <para>Whether secondary tile is pinned to start screen.
+</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WSA.Tile.hasUserConsent">
+      <summary>
+        <para>Whether secondary tile was approved (pinned to start screen) or rejected by user.
+</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WSA.Tile.id">
+      <summary>
+        <para>A unique string, identifying secondary tile</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WSA.Tile.main">
+      <summary>
+        <para>Returns applications main tile
+</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.CreateOrUpdateSecondary(UnityEngine.WSA.SecondaryTileData)">
+      <summary>
+        <para>Creates new or updates existing secondary tile.</para>
+      </summary>
+      <param name="data">The data used to create or update secondary tile.</param>
+      <param name="pos">The coordinates for a request to create new tile.</param>
+      <param name="area">The area on the screen above which the request to create new tile will be displayed.</param>
+      <returns>
+        <para>New Tile object, that can be used for further work with the tile.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.CreateOrUpdateSecondary(UnityEngine.WSA.SecondaryTileData,UnityEngine.Vector2)">
+      <summary>
+        <para>Creates new or updates existing secondary tile.</para>
+      </summary>
+      <param name="data">The data used to create or update secondary tile.</param>
+      <param name="pos">The coordinates for a request to create new tile.</param>
+      <param name="area">The area on the screen above which the request to create new tile will be displayed.</param>
+      <returns>
+        <para>New Tile object, that can be used for further work with the tile.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.CreateOrUpdateSecondary(UnityEngine.WSA.SecondaryTileData,UnityEngine.Rect)">
+      <summary>
+        <para>Creates new or updates existing secondary tile.</para>
+      </summary>
+      <param name="data">The data used to create or update secondary tile.</param>
+      <param name="pos">The coordinates for a request to create new tile.</param>
+      <param name="area">The area on the screen above which the request to create new tile will be displayed.</param>
+      <returns>
+        <para>New Tile object, that can be used for further work with the tile.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.Delete">
+      <summary>
+        <para>Show a request to unpin secondary tile from start screen.</para>
+      </summary>
+      <param name="pos">The coordinates for a request to unpin tile.</param>
+      <param name="area">The area on the screen above which the request to unpin tile will be displayed.</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.Delete(UnityEngine.Vector2)">
+      <summary>
+        <para>Show a request to unpin secondary tile from start screen.</para>
+      </summary>
+      <param name="pos">The coordinates for a request to unpin tile.</param>
+      <param name="area">The area on the screen above which the request to unpin tile will be displayed.</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.Delete(UnityEngine.Rect)">
+      <summary>
+        <para>Show a request to unpin secondary tile from start screen.</para>
+      </summary>
+      <param name="pos">The coordinates for a request to unpin tile.</param>
+      <param name="area">The area on the screen above which the request to unpin tile will be displayed.</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.DeleteSecondary(System.String)">
+      <summary>
+        <para>Show a request to unpin secondary tile from start screen.</para>
+      </summary>
+      <param name="tileId">An identifier for secondary tile.</param>
+      <param name="pos">The coordinates for a request to unpin tile.</param>
+      <param name="area">The area on the screen above which the request to unpin tile will be displayed.</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.DeleteSecondary(System.String,UnityEngine.Vector2)">
+      <summary>
+        <para>Show a request to unpin secondary tile from start screen.</para>
+      </summary>
+      <param name="tileId">An identifier for secondary tile.</param>
+      <param name="pos">The coordinates for a request to unpin tile.</param>
+      <param name="area">The area on the screen above which the request to unpin tile will be displayed.</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.DeleteSecondary(System.String,UnityEngine.Rect)">
+      <summary>
+        <para>Show a request to unpin secondary tile from start screen.</para>
+      </summary>
+      <param name="tileId">An identifier for secondary tile.</param>
+      <param name="pos">The coordinates for a request to unpin tile.</param>
+      <param name="area">The area on the screen above which the request to unpin tile will be displayed.</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.Exists(System.String)">
+      <summary>
+        <para>Whether secondary tile is pinned to start screen.</para>
+      </summary>
+      <param name="tileId">An identifier for secondary tile.</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.GetSecondaries">
+      <summary>
+        <para>Gets all secondary tiles.</para>
+      </summary>
+      <returns>
+        <para>An array of Tile objects.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.GetSecondary(System.String)">
+      <summary>
+        <para>Returns the secondary tile, identified by tile id.</para>
+      </summary>
+      <param name="tileId">A tile identifier.</param>
+      <returns>
+        <para>A Tile object or null if secondary tile does not exist (not pinned to start screen and user request is complete).</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.GetTemplate(UnityEngine.WSA.TileTemplate)">
+      <summary>
+        <para>Get template XML for tile notification.</para>
+      </summary>
+      <param name="templ">A template identifier.</param>
+      <returns>
+        <para>String, which is an empty XML document to be filled and used for tile notification.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.PeriodicBadgeUpdate(System.String,System.Single)">
+      <summary>
+        <para>Starts periodic update of a  badge on a tile.
+</para>
+      </summary>
+      <param name="uri">A remote location from where to retrieve tile update</param>
+      <param name="interval">A time interval in minutes, will be rounded to a value, supported by the system</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.PeriodicUpdate(System.String,System.Single)">
+      <summary>
+        <para>Starts periodic update of a tile.
+</para>
+      </summary>
+      <param name="uri">a remote location fromwhere to retrieve tile update</param>
+      <param name="interval">a time interval in minutes, will be rounded to a value, supported by the system</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.RemoveBadge">
+      <summary>
+        <para>Remove badge from tile.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.StopPeriodicBadgeUpdate">
+      <summary>
+        <para>Stops previously started periodic update of a tile.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.StopPeriodicUpdate">
+      <summary>
+        <para>Stops previously started periodic update of a tile.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.Update(System.String)">
+      <summary>
+        <para>Send a notification for tile (update tiles look).</para>
+      </summary>
+      <param name="xml">A string containing XML document for new tile look.</param>
+      <param name="medium">An uri to 150x150 image, shown on medium tile.</param>
+      <param name="wide">An uri to a 310x150 image to be shown on a wide tile (if such issupported).</param>
+      <param name="large">An uri to a 310x310 image to be shown on a large tile (if such is supported).</param>
+      <param name="text">A text to shown on a tile.</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.Update(System.String,System.String,System.String,System.String)">
+      <summary>
+        <para>Send a notification for tile (update tiles look).</para>
+      </summary>
+      <param name="xml">A string containing XML document for new tile look.</param>
+      <param name="medium">An uri to 150x150 image, shown on medium tile.</param>
+      <param name="wide">An uri to a 310x150 image to be shown on a wide tile (if such issupported).</param>
+      <param name="large">An uri to a 310x310 image to be shown on a large tile (if such is supported).</param>
+      <param name="text">A text to shown on a tile.</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.UpdateBadgeImage(System.String)">
+      <summary>
+        <para>Sets or updates badge on a tile to an image.</para>
+      </summary>
+      <param name="image">Image identifier.</param>
+    </member>
+    <member name="M:UnityEngine.WSA.Tile.UpdateBadgeNumber(System.Single)">
+      <summary>
+        <para>Set or update a badge on a tile to a number.</para>
+      </summary>
+      <param name="number">Number to be shown on a badge.</param>
+    </member>
+    <member name="T:UnityEngine.WSA.TileForegroundText">
+      <summary>
+        <para>Style for foreground text on a secondary tile.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.WSA.TileTemplate">
+      <summary>
+        <para>Templates for various tile styles.
+</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.WSA.Toast">
+      <summary>
+        <para>Represents a toast notification in Windows Store Apps.
+</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WSA.Toast.activated">
+      <summary>
+        <para>true if toast was activated by user.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WSA.Toast.arguments">
+      <summary>
+        <para>Arguments to be passed for application when toast notification is activated.</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WSA.Toast.dismissed">
+      <summary>
+        <para>true if toast notification was dismissed (for any reason).</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.WSA.Toast.dismissedByUser">
+      <summary>
+        <para>true if toast notification was explicitly dismissed by user.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.WSA.Toast.Create(System.String)">
+      <summary>
+        <para>Create toast notification.</para>
+      </summary>
+      <param name="xml">XML document with tile data.</param>
+      <param name="image">Uri to image to show on a toast, can be empty, in that case text-only notification will be shown.</param>
+      <param name="text">A text to display on a toast notification.</param>
+      <returns>
+        <para>A toast object for further work with created notification or null, if creation of toast failed.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.WSA.Toast.Create(System.String,System.String)">
+      <summary>
+        <para>Create toast notification.</para>
+      </summary>
+      <param name="xml">XML document with tile data.</param>
+      <param name="image">Uri to image to show on a toast, can be empty, in that case text-only notification will be shown.</param>
+      <param name="text">A text to display on a toast notification.</param>
+      <returns>
+        <para>A toast object for further work with created notification or null, if creation of toast failed.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.WSA.Toast.GetTemplate(UnityEngine.WSA.ToastTemplate)">
+      <summary>
+        <para>Get template XML for toast notification.
+</para>
+      </summary>
+      <param name="templ">A template identifier.</param>
+      <returns>
+        <para>string, which is an empty XML document to be filled and used for toast notification.</para>
+      </returns>
+    </member>
+    <member name="M:UnityEngine.WSA.Toast.Hide">
+      <summary>
+        <para>Hide displayed toast notification.</para>
+      </summary>
+    </member>
+    <member name="M:UnityEngine.WSA.Toast.Show">
+      <summary>
+        <para>Show toast notification.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.WSA.ToastTemplate">
+      <summary>
+        <para>Templates for various toast styles.
+</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.WSA.WindowActivated">
+      <summary>
+        <para>This event occurs when window completes activation or deactivation, it also fires up when you snap and unsnap the application.</para>
+      </summary>
+      <param name="state"></param>
+    </member>
+    <member name="T:UnityEngine.WSA.WindowActivationState">
+      <summary>
+        <para>Specifies the set of reasons that a windowActivated event was raised.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.WindowActivationState.CodeActivated">
+      <summary>
+        <para>The window was activated.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.WindowActivationState.Deactivated">
+      <summary>
+        <para>The window was deactivated.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.WSA.WindowActivationState.PointerActivated">
+      <summary>
+        <para>The window was activated by pointer interaction.</para>
+      </summary>
+    </member>
+    <member name="T:UnityEngine.WSA.WindowSizeChanged">
+      <summary>
+        <para>This event occurs when window rendering size changes.</para>
+      </summary>
+      <param name="width"></param>
+      <param name="height"></param>
     </member>
     <member name="T:UnityEngine.WWW">
       <summary>
