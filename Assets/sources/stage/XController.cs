@@ -55,6 +55,10 @@ public class XController : PlayerController
     bool dangerVoicePlayed = false;
     const float endHurtLength = 0.361112f;
 
+
+
+    bool fullyCharged = false;
+
     #endregion
 
 
@@ -418,19 +422,6 @@ public class XController : PlayerController
             _renderer.color = PlayerColor;
         }
     }
-    /// <summary>
-    /// 두 색상이 서로 같은 색인지 확인합니다.
-    /// </summary>
-    /// <param name="color1">비교할 색입니다.</param>
-    /// <param name="color2">비교할 색입니다.</param>
-    /// <returns>두 색의 rgba 값이 서로 같으면 참입니다.</returns>
-    bool IsSameColor(Color color1, Color color2)
-    {
-        return (color1.r == color2.r
-            && color1.g == color2.g
-            && color1.b == color2.b
-            && color1.a == color2.a);
-    }
 
     #endregion
 
@@ -487,7 +478,20 @@ public class XController : PlayerController
         }
         else
         {
-            _animator.Play(0, 0, 0);
+            // _animator.Play(0, 0, 0);
+
+            // [2016-02-06. 05:37] 노멀 샷과 차지 샷의 애니메이션 재생 개선.
+            if (fullyCharged) // 완전히 차지된 경우
+            {
+                // ChargeShot 애니메이션을 재생합니다.
+                _animator.Play("ChargeShot", 0, 0);
+                fullyCharged = false;
+            }
+            else
+            {
+                // Shot 애니메이션을 재생합니다.
+                _animator.Play("Shot", 0, 0); 
+            }
         }
         _renderer.color = PlayerColor = Color.white;
 
@@ -556,6 +560,14 @@ public class XController : PlayerController
         {
             _chargeEffect2 = CloneObject(effects[6], chargeEffectPosition);
             _chargeEffect2.transform.SetParent(chargeEffectPosition);
+
+
+
+            // [2016-02-06. 05:37] fullyCharged 필드 처리 추가.
+            fullyCharged = true;
+        }
+        else
+        {
         }
     }
     /// <summary>
@@ -892,6 +904,19 @@ public class XController : PlayerController
 
 
     #region 보조 메서드를 정의합니다.
+    /// <summary>
+    /// 두 색상이 서로 같은 색인지 확인합니다.
+    /// </summary>
+    /// <param name="color1">비교할 색입니다.</param>
+    /// <param name="color2">비교할 색입니다.</param>
+    /// <returns>두 색의 rgba 값이 서로 같으면 참입니다.</returns>
+    bool IsSameColor(Color color1, Color color2)
+    {
+        return (color1.r == color2.r
+            && color1.g == color2.g
+            && color1.b == color2.b
+            && color1.a == color2.a);
+    }
 
     #endregion
 
