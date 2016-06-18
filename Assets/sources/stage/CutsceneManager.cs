@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class CutsceneManager : MonoBehaviour
 {
-    #region MyRegion
+    #region 상수를 정의합니다.
     string NEWLINE { get { return System.Environment.NewLine; } }
     const char SEPERATOR = '|';
 
@@ -29,14 +29,19 @@ public class CutsceneManager : MonoBehaviour
     AudioSource[] _audioSources;
     GUIText _guiText;
 
-    int subIndex;
-    int actionIndex;
-    List<string> subList;
-    List<string[]> actionList;
+    // 스크립트 리스트입니다.
+    int scriptIndex;
+    List<string> scriptList;
+    int actionScriptIndex;
+    List<string[]> actionScriptList;
 
+    // 사용자 인터페이스 상태입니다.
     bool inputBlocked = false;
     bool scriptPlaying = false;
     bool EndScriptPlayingRequested = false;
+
+    // 대사 스크립트 코루틴에 대한 포인터입니다.
+    Coroutine showSpeechscriptCoroutine = null;
 
     #endregion
 
@@ -46,11 +51,11 @@ public class CutsceneManager : MonoBehaviour
     void Start()
     {
         #region 필드 초기화를 진행합니다.
-        subList = new List<string>();
-        actionList = new List<string[]>();
+        scriptList = new List<string>();
+        actionScriptList = new List<string[]>();
         _guiText = textObject.GetComponent<GUIText>();
-        subIndex = 0;
-        actionIndex = 0;
+        scriptIndex = 0;
+        actionScriptIndex = 0;
 
         // 배경음 및 효과음을 초기화 합니다.
         bgmSource = GetComponent<AudioSource>();
@@ -64,66 +69,96 @@ public class CutsceneManager : MonoBehaviour
         #endregion
 
         #region 텍스트 파일로부터 대사를 획득하고 분석합니다.
-        //        string path = System.Environment.CurrentDirectory + "\\Assets\\Cutscene\\CS01_Intro.txt";
-        //        string text = System.IO.File.ReadAllText(path, System.Text.Encoding.UTF8);
-
+        /// string path = System.Environment.CurrentDirectory + "\\Assets\\Cutscene\\CS01_Intro.txt";
+        /// string text = System.IO.File.ReadAllText(path, System.Text.Encoding.UTF8);
+        // 필드를 초기화하기 위해 텍스트 파일의 내용을 가져옵니다.
         string text = textAsset.text;
-        string[] subscriptArray = text.Replace(NEWLINE, "|").Split('|');
+        string[] scriptArray = text.Replace(NEWLINE, "|").Split('|');
+        string newScriptText = null;
 
-        string newSub = null;
-        for (int i = 0, len = subscriptArray.Length; i < len; ++i)
+
+
+        // 스크립트 배열로부터 대사를 획득하고 분석합니다.
+        for (int i = 0, len = scriptArray.Length; i < len; ++i)
         {
-            string subscriptElem = subscriptArray[i];
-            if (subscriptElem == null)
+            // 스크립트를 가져옵니다.
+            string scriptArrayText = scriptArray[i];
+            if (scriptArrayText == null) // 잘못된 스크립트 개체에 대한 예외 처리입니다.
             {
                 throw new System.Exception("INVALID SUBSCRIPT LINE");
             }
-            else if (subscriptElem == string.Empty)
+            // 빈 문자열 스크립트 개체인 경우
+            else if (scriptArrayText == string.Empty) 
             {
-                if (newSub != null)
+                // 이전 스크립트가 다음 스크립트를 사용하려고 할 수 있습니다.
+                if (newScriptText != null)
                 {
-                    newSub += (SEPERATOR);
+                    // 이전 스크립트와 다음 스크립트 사이에 구분자를 넣어서,
+                    // 이후에 구분자를 통해 스크립트를 구분할 수 있게 합니다.
+                    newScriptText += (SEPERATOR);
                 }
                 continue;
             }
 
-            // 대사라면
-            if (subscriptElem == "[")
+
+
+            // 대사 시작 기호를 발견했습니다.
+            if (scriptArrayText == "[")
             {
-                newSub = "";
+                // 스크립트 변수를 초기화합니다.
+                newScriptText = "";
             }
-            else if (subscriptElem == "]")
+            // 대사 닫기 기호를 발견했습니다.
+            else if (scriptArrayText == "]")
             {
-//                p_rint(newSub);
-                subList.Add(newSub);
-                newSub = null;
+                scriptList.Add(newScriptText);
+                newScriptText = null;
             }
-            // 명령이라면
-            else if (subscriptElem[0] == '(')
+            // 액션 스크립트를 발견했습니다.
+            else if (scriptArrayText[0] == '(')
             {
-                actionList.Add(subscriptElem.Substring(1, subscriptElem.Length - 2).Split(' '));
-                subList.Add("$");
+                // 액션 스크립트 리스트에 액션을 추가합니다.
+                actionScriptList.Add(scriptArrayText.Substring(1, scriptArrayText.Length - 2).Split(' '));
+
+                // 스크립트 리스트에는 특수 기호를 넣어서 이것이 액션 스크립트를 참조해야 함을 알립니다.
+                scriptList.Add("$");
                 continue;
             }
             // 그 외의 경우
             else
             {
-                if (newSub == null)
+                // 이전 스크립트가 존재하지 않는다면 예외 처리합니다.
+                if (newScriptText == null)
                     throw new System.Exception("INVALID SUBSCRIPT SEPERATOR");
-                newSub += (subscriptElem + SEPERATOR);
+
+                // 이전 스크립트에 새 스크립트 문자열을 덧붙입니다.
+                newScriptText += (scriptArrayText + SEPERATOR);
             }
         }
 
         #endregion
 
-        // 행동을 시작합니다.
+        // 스크립트를 수행합니다.
         DoNextScript();
     }
     void Update()
     {
-        // p_rint(scriptPlaying);
-        if (Input.anyKeyDown)
+        // 종료 키가 눌린 경우
+        if (Input.GetKeyDown(KeyCode.Escape)) 
         {
+            // 재생 중인 스크립트를 모두 종료하고 다음 장면으로 넘어갑니다.
+            // 보통 마지막 액션을 수행하면 됩니다.
+            inputBlocked = true;
+            _guiText.text = "";
+
+            actionScriptIndex = actionScriptList.Count - 1;
+            StartCoroutine(ActWithCoroutine());
+        }
+        // 그 외의 키가 눌린 경우
+        else if (Input.anyKeyDown)
+        {
+            // 자막 스크립트면 스킵합니다. 그 외의 경우 무시합니다.
+
             if (inputBlocked)
             {
 
@@ -143,45 +178,65 @@ public class CutsceneManager : MonoBehaviour
 
 
     #region 보조 메서드를 정의합니다.
+    /// <summary>
+    /// 다음 스크립트를 실행합니다.
+    /// </summary>
     void DoNextScript()
     {
-        if (subIndex >= subList.Count)
+        // 더 이상 수행할 스크립트가 존재하지 않는 경우
+        if (scriptIndex >= scriptList.Count)
         {
+            // 함수를 종료합니다.
             return;
         }
 
-        char check = subList[subIndex][0];
-        if (check == '$')
+        // 스크립트가 액션인지, 자막인지 판정합니다.
+        char check = scriptList[scriptIndex][0];
+        if (check == '$') // 액션 스크립트라면
         {
-            ++subIndex;
+            ++scriptIndex;
             scriptPlaying = true;
-            inputBlocked = true;
-            Act();
+            /// inputBlocked = true;
+            DoAction();
         }
-        else
+        else // 자막 스크립트라면
         {
             scriptPlaying = true;
-            inputBlocked = true;
+            /// inputBlocked = true;
             ShowNextSubscript();
         }
     }
+    /// <summary>
+    /// 다음 자막 스크립트를 출력합니다.
+    /// </summary>
     void ShowNextSubscript()
     {
         _guiText.text = "";
-        StartCoroutine(ShowSubscriptChar());
+
+        /// showSubscriptCoroutine = ShowSubscriptChar();
+        /// StartCoroutine(showSubscriptCoroutine);
+        showSpeechscriptCoroutine = StartCoroutine("ShowSubscriptChar");
     }
-    void Act()
+    /// <summary>
+    /// 액션을 수행합니다.
+    /// </summary>
+    void DoAction()
     {
         inputBlocked = true;
-        if (actionIndex < actionList.Count)
+        if (actionScriptIndex < actionScriptList.Count)
         {
             _guiText.text = "";
-            StartCoroutine(ActWithCoroutine());
+            /// StartCoroutine(ActWithCoroutine());
+            StartCoroutine("ActWithCoroutine");
         }
     }
+    /// <summary>
+    /// 스크립트에 따라 액션을 수행하는 코루틴입니다.
+    /// </summary>
+    /// <returns>DoNextScript() 함수 호출의 결과입니다.</returns>
     IEnumerator ActWithCoroutine()
     {
-        string[] action = actionList[actionIndex++];
+        string[] action = actionScriptList[actionScriptIndex++];
         string command = action[0];
 
         int index;      // int seIndex, imageIndex;
@@ -256,9 +311,13 @@ public class CutsceneManager : MonoBehaviour
         }
         DoNextScript();
     }
+    /// <summary>
+    /// 다음 자막 스크립트 문자를 출력하는 코루틴입니다.
+    /// </summary>
+    /// <returns></returns>
     IEnumerator ShowSubscriptChar()
     {
-        string subscript = subList[subIndex++];
+        string subscript = scriptList[scriptIndex++];
         string name = null;
 
         for (int i = 0, len = subscript.Length; i < len; ++i)
@@ -307,8 +366,11 @@ public class CutsceneManager : MonoBehaviour
                     ++i;
                 }
                 _guiText.text += name;
+
+                /// scriptPlaying = false;
+                /// inputBlocked = false;
                 EndScriptPlayingRequested = false;
-                scriptPlaying = false;
+                break;
             }
             // 글자 단위로 소리를 내며 출력합니다.
             else
@@ -318,9 +380,13 @@ public class CutsceneManager : MonoBehaviour
             }
             yield return new WaitForSeconds(0.1f);
         }
+
+        StopCoroutine(showSpeechscriptCoroutine);
+        showSpeechscriptCoroutine = null;
         scriptPlaying = false;
         inputBlocked = false;
     }
+
     #endregion
 
 }

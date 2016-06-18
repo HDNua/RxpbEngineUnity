@@ -54,6 +54,7 @@ public class LoadingSceneManager : MonoBehaviour
             }
             yield return true;
         }
+        async.allowSceneActivation = true;
     }
 
     /// <summary>
