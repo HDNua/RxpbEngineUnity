@@ -1,6 +1,7 @@
-RXPB v3.1.0, EnemyScript v1.0.0 (Initial Commit)
+RXPB v3.1.1
 
 - 주석 강화.
+> 지금 branch를 막 배워서 써보고 있는 중이라 뻘짓 commit을 많이 하고 있다.
 
 
 

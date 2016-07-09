@@ -109,32 +109,41 @@ public class XBusterScript : AttackScript
 
     #region Collider2D의 기본 메서드를 재정의합니다.
     /// <summary>
-    /// 
+    /// 충돌체가 트리거 내부로 진입했습니다.
     /// </summary>
-    /// <param name="other"></param>
+    /// <param name="other">자신이 아닌 충돌체 개체입니다.</param>
     void OnTriggerEnter2D(Collider2D other)
     {
+        // 적과 충돌했습니다.
         if (other.gameObject.CompareTag("Enemy"))
         {
             EnemyScript enemy = other.gameObject.GetComponent<EnemyScript>();
 
+
+            // 적이 무적 상태라면
             if (enemy.Invencible)
             {
+                // 아무 것도 하지 않습니다.
 
             }
+            // 그 외의 경우
             else
             {
                 MakeHitParticle();
                 enemy.Hurt(damage);
             }
+
+
+            // 적이 살아있다면 탄환을 제거합니다.
             if (enemy.IsAlive())
             {
                 Destroy(gameObject);
             }
         }
-        // else if (_collider.IsTouchingLayers(whatIsGround))
+        // X 버스터가 통과할 수 없는 레이어와 충돌했습니다.
         else if (_collider.IsTouchingLayers(busterUnpassable))
         {
+            // 타격 입자를 생성하고 탄환을 제거합니다.
             MakeHitParticle();
             Destroy(gameObject);
         }
