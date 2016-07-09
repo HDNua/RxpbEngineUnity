@@ -24,9 +24,27 @@ public class EnemyMettoolScript : EnemyScript
 
 
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
+    /// <summary>
+    /// 자신의 밑에 지면이 존재하는지 검사하기 위해 사용합니다.
+    /// </summary>
     public Transform groundCheck;
+    /// <summary>
+    /// 자신이 진행하는 방향에 벽이 존재하는지 검사하기 위해 사용합니다.
+    /// </summary>
     public Transform pushCheck;
+    /// <summary>
+    /// 무엇이 벽인지를 결정합니다. 기본값은 "Wall, MapBlock"입니다.
+    /// </summary>
     public LayerMask whatIsWall;
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool canJump;
+
+
+
 
     #endregion
 
@@ -66,7 +84,7 @@ public class EnemyMettoolScript : EnemyScript
         StartCoroutine(WalkAround());
     }
     /// <summary>
-    /// 
+    /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트합니다.
     /// </summary>
     protected override void Update()
     {
@@ -89,23 +107,41 @@ public class EnemyMettoolScript : EnemyScript
     }
 
 
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region Collider2D의 기본 메서드를 재정의합니다.
     /// <summary>
-    /// 
+    /// 충돌체가 여전히 트리거 내부에 있습니다.
     /// </summary>
-    /// <param name="other"></param>
+    /// <param name="other">자신이 아닌 충돌체 개체입니다.</param>
     void OnTriggerStay2D(Collider2D other)
     {
+        // 트리거가 발동한 상대 충돌체가 플레이어라면 대미지를 입힙니다.
         if (other.CompareTag("Player"))
         {
             GameObject pObject = other.gameObject;
             PlayerController player = pObject.GetComponent<PlayerController>();
 
+
+            // 플레이어가 무적 상태이거나 죽었다면
             if (player.Invencible || player.IsDead)
             {
+                // 아무 것도 하지 않습니다.
 
             }
+            // 그 외의 경우
             else
             {
+                // 플레이어에게 대미지를 입힙니다.
                 player.Hurt(Damage);
             }
         }

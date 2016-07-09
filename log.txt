@@ -1,16 +1,6 @@
-RXPB v3.1.0
+RXPB v3.1.0, EnemyScript v1.0.0 (Initial Commit)
 
-- Rockman X6의 CommanderYammark 맵의 지형을 거의 구현.
-> 심심할까봐 Mettool 추가.
-> 일부 가시 지형에 닿으면 사망하도록 구현.
-
-
-
-! 카메라 따라오기 기능이 원하는대로 구현되지 않았다.
-
-
-
-! Mettool이 지형을 넘어서 공중에서 오가는 문제가 있음.
+- 주석 강화.
 
 
 

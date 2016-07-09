@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System;
 
+
+
 /// <summary>
 /// 적 캐릭터를 정의합니다.
 /// </summary>
@@ -14,29 +16,54 @@ public class EnemyScript : MonoBehaviour
 
 
 
-    #region Unity에서 접근 가능한 공용 객체를 정의합니다.
+
+
+
+
+
+
+
+    #region Unity에서 접근 가능한 공용 필드를 정의합니다.
+    public int _health;
+    public int _damage;
+
+
     public AudioClip[] audioClips;
     public GameObject[] effects;
 
+
     #endregion
 
 
 
-    #region Unity를 통해 초기화한 속성을 사용 가능한 형태로 보관합니다.
+
+
+
+
+
+
+
+    #region 필드를 정의합니다.
     AudioSource[] soundEffects;
     public AudioSource[] SoundEffects { get { return soundEffects; } }
 
-    #endregion
-
-
-
-    #region 캐릭터의 상태 필드 및 프로퍼티를 정의합니다.
-    public int _health;
-    public int _damage;
 
     bool _isDead;
     bool _invencible;
 
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region 캐릭터의 상태 필드 및 프로퍼티를 정의합니다.
     /// <summary>
     /// 체력을 가져옵니다.
     /// </summary>
@@ -52,6 +79,7 @@ public class EnemyScript : MonoBehaviour
     {
         get { return _damage; }
     }
+
 
     /// <summary>
     /// 캐릭터가 죽었다면 참입니다.
@@ -70,6 +98,7 @@ public class EnemyScript : MonoBehaviour
         protected set { _invencible = value; }
     }
 
+
     /// <summary>
     /// 캐릭터가 살아있는지 확인합니다.
     /// </summary>
@@ -79,11 +108,22 @@ public class EnemyScript : MonoBehaviour
         return (0 < Health);
     }
 
+
     #endregion
 
 
 
+
+
+
+
+
+
+
     #region MonoBehaviour 기본 메서드를 재정의 합니다.
+    /// <summary>
+    /// MonoBehaviour 객체를 초기화합니다.
+    /// </summary>
     protected virtual void Awake()
     {
         _collider = GetComponent<Collider2D>();
@@ -94,9 +134,16 @@ public class EnemyScript : MonoBehaviour
             soundEffects[i].clip = audioClips[i];
         }
     }
+    /// <summary>
+    /// MonoBehaviour 객체를 초기화합니다.
+    /// </summary>
     protected virtual void Start()
     {
+
     }
+    /// <summary>
+    /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트합니다.
+    /// </summary>
     protected virtual void Update()
     {
         if (IsAlive() == false)
@@ -105,7 +152,15 @@ public class EnemyScript : MonoBehaviour
         }
     }
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -119,7 +174,15 @@ public class EnemyScript : MonoBehaviour
         _health -= damage;
     }
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -132,20 +195,20 @@ public class EnemyScript : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+
     #endregion
 
 
 
+
+
+
+
+
+
+
     #region 구형 정의를 보관합니다.
-    [Obsolete("IsDead로 대체되었습니다.", true)]
-    /// <summary>
-    /// 캐릭터가 죽었는지를 확인합니다.
-    /// </summary>
-    /// <returns></returns>
-    bool IsPlayerDead()
-    {
-        return _health == 0;
-    }
+
 
     #endregion
 }
