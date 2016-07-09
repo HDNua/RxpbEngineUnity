@@ -169,6 +169,7 @@ public class Map : MonoBehaviour
     /// </summary>
     void SetViewportCenter()
     {
+        /*
 //        float czLeft = cameraZone.bounds.min.x;
 //        float czRight = cameraZone.bounds.max.x;
         float playerX = _player.transform.position.x;
@@ -196,6 +197,10 @@ public class Map : MonoBehaviour
         {
             _MainCamera.transform.position = newPos;
         }
+        */
+
+        Vector3 playerPos = _player.transform.position;
+        _MainCamera.transform.position = new Vector3(playerPos.x, playerPos.y, _MainCamera.transform.position.z);
     }
 
 

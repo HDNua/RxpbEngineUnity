@@ -8,6 +8,15 @@ using System.Collections;
 /// </summary>
 public class CameraZoneScript : MonoBehaviour
 {
+    #region Unity에서 접근 가능한 공용 필드를 정의합니다.
+    public PlayerController player;
+    public Map map;
+
+
+    #endregion
+
+
+
     #region 필드를 정의합니다.
 
 
@@ -53,7 +62,7 @@ public class CameraZoneScript : MonoBehaviour
     {
         if (other.tag == "Player")
         {
-
+            
         }
     }
 

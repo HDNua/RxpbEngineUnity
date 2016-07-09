@@ -42,7 +42,7 @@ public class XBusterScript : AttackScript
 
 
 
-    #region MonoBehaviour 기본 메서드를 재정의 합니다.
+    #region MonoBehaviour 기본 메서드를 재정의합니다.
     /// <summary>
     /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
@@ -53,18 +53,38 @@ public class XBusterScript : AttackScript
         _rigidbody = GetComponent<Rigidbody2D>();
     }
     /// <summary>
-    /// 
+    /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
     protected override void Start()
     {
         base.Start();
     }
     /// <summary>
-    /// 
+    /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트합니다.
     /// </summary>
     protected override void Update()
     {
         base.Update();
+        /*
+        if (mainCamera != null)
+        {
+            Vector3 camPos = mainCamera.transform.position;
+            Vector3 bulPos = transform.position;
+            if (Mathf.Abs(camPos.x - bulPos.x) > 10)
+            {
+                Destroy(gameObject);
+            }
+        }
+        */
+    }
+    /// <summary>
+    /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트합니다.
+    /// 물리 효과가 적용된 오브젝트를 조정할 때 사용됩니다.
+    /// (Update는 불규칙한 호출이기 때문에 물리엔진 충돌검사가 제대로 되지 않을 수 있습니다.)
+    /// </summary>
+    protected override void FixedUpdate()
+    {
+        base.FixedUpdate();
         if (mainCamera != null)
         {
             Vector3 camPos = mainCamera.transform.position;
@@ -75,6 +95,19 @@ public class XBusterScript : AttackScript
             }
         }
     }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+    #region Collider2D의 기본 메서드를 재정의합니다.
     /// <summary>
     /// 
     /// </summary>
@@ -106,6 +139,7 @@ public class XBusterScript : AttackScript
             Destroy(gameObject);
         }
     }
+
 
     #endregion
 

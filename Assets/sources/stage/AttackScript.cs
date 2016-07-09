@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+
 /// <summary>
 /// 공격 스크립트입니다.
 /// </summary>
@@ -34,16 +36,16 @@ public class AttackScript : MonoBehaviour
 
 
 
-    
-    
-    
-    
-    
-    
-    
-    #region MonoBehaviour 기본 메서드를 재정의 합니다.
+
+
+
+
+
+
+
+    #region MonoBehaviour 기본 메서드를 재정의합니다.
     /// <summary>
-    /// 
+    /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
     protected virtual void Awake()
     {
@@ -56,21 +58,23 @@ public class AttackScript : MonoBehaviour
         }
     }
     /// <summary>
-    /// 
+    /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
     protected virtual void Start()
     {
 
     }
     /// <summary>
-    /// 
+    /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트합니다.
     /// </summary>
     protected virtual void Update()
     {
 
     }
     /// <summary>
-    /// 
+    /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트합니다.
+    /// 물리 효과가 적용된 오브젝트를 조정할 때 사용됩니다.
+    /// (Update는 불규칙한 호출이기 때문에 물리엔진 충돌검사가 제대로 되지 않을 수 있습니다.)
     /// </summary>
     protected virtual void FixedUpdate()
     {
