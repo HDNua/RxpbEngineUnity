@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 
+
+
 /// <summary>
 /// 엑스에 대한 컨트롤러입니다.
 /// </summary>
@@ -9,13 +11,30 @@ public class XController : PlayerController
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
 
+
     #endregion
+
+
+
+
+
+
+
+
 
 
     #region 효과 객체를 보관합니다.
     GameObject dashBoostEffect = null;
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -59,20 +78,37 @@ public class XController : PlayerController
 
     bool fullyCharged = false;
 
+
     #endregion
 
 
 
+
+
+
+
+
+
+
     #region MonoBehavior 기본 메서드를 재정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     protected override void Awake()
     {
         base.Awake(); // Initialize();
         // _renderer = GetComponent<SpriteRenderer>();
     }
+    /// <summary>
+    /// 
+    /// </summary>
     void Start()
     {
         // Initialize();
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected override void Update()
     {
         if (UpdateController() == false)
@@ -168,6 +204,9 @@ public class XController : PlayerController
             stageManager.ChangePlayer(stageManager.PlayerZ);
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     void FixedUpdate()
     {
         UpdateState();
@@ -413,6 +452,9 @@ public class XController : PlayerController
             print(GetCurrentAnimationLength());
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected override void LateUpdate()
     {
         base.LateUpdate();
@@ -423,7 +465,15 @@ public class XController : PlayerController
         }
     }
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -635,7 +685,15 @@ public class XController : PlayerController
         ShotBlocked = false;
     }
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -742,6 +800,13 @@ public class XController : PlayerController
 
 
 
+
+
+
+
+
+
+
     #region PlayerController 상태 메서드를 재정의 합니다.
     /// <summary>
     /// 플레이어 사망을 요청합니다.
@@ -805,6 +870,14 @@ public class XController : PlayerController
     }
 
     #endregion
+
+
+
+
+
+
+
+
 
 
     #region 프레임 이벤트 핸들러를 정의합니다.
@@ -903,6 +976,13 @@ public class XController : PlayerController
 
 
 
+
+
+
+
+
+
+
     #region 보조 메서드를 정의합니다.
     /// <summary>
     /// 두 색상이 서로 같은 색인지 확인합니다.
@@ -919,6 +999,13 @@ public class XController : PlayerController
     }
 
     #endregion
+
+
+
+
+
+
+
 
 
 

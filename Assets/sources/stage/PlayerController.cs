@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+
+
 public abstract class PlayerController : MonoBehaviour
 {
     #region 컨트롤러가 사용할 공용 형식 또는 값을 정의합니다.
@@ -11,25 +13,51 @@ public abstract class PlayerController : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
     #region 컨트롤러가 사용할 Unity 객체에 대한 접근자를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     protected Rigidbody2D _rigidbody
     {
         get { return GetComponent<Rigidbody2D>(); }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected Animator _animator
     {
         get { return GetComponent<Animator>(); }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected Collider2D _collider
     {
         get { return GetComponent<Collider2D>(); }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected SpriteRenderer _renderer
     {
         get { return GetComponent<SpriteRenderer>(); }
     }
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -74,6 +102,13 @@ public abstract class PlayerController : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
     #region Unity를 통해 초기화한 속성을 사용 가능한 형태로 보관합니다.
     /// <summary>
     /// 목소리의 리스트 필드입니다.
@@ -97,7 +132,15 @@ public abstract class PlayerController : MonoBehaviour
     Vector2 wallTop;
     Vector2 wallBottom;
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -157,6 +200,13 @@ public abstract class PlayerController : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
     #region 주인공의 게임 상태 필드를 정의합니다.
     int health = 20;
     int maxHealth = 20;
@@ -184,6 +234,13 @@ public abstract class PlayerController : MonoBehaviour
     public int DangerHealth { get { return dangerHealth; } }
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -233,7 +290,15 @@ public abstract class PlayerController : MonoBehaviour
         get { return wallJumpingEndTime; }
     }
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -319,6 +384,7 @@ public abstract class PlayerController : MonoBehaviour
         set { _animator.SetBool("Sliding", _sliding = value); }
     }
 
+
     /// <summary>
     /// 이동이 막혀있다면 true입니다.
     /// </summary>
@@ -344,14 +410,28 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected bool InputBlocked { get; set; }
 
+
+    /// <summary>
+    /// 
+    /// </summary>
     protected bool DashJumping { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     protected bool WallJumping { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     protected bool WallDashJumping { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
     protected bool AirDashing
     {
         get { return _airDashing; }
         set { _animator.SetBool("AirDashing", _airDashing = value); }
     }
+
 
     /// <summary>
     /// 대미지를 입었다면 true입니다.
@@ -394,6 +474,7 @@ public abstract class PlayerController : MonoBehaviour
         private set { _isDead = value; }
     }
 
+
     /// <summary>
     /// 플레이어의 색상을 반환합니다.
     /// </summary>
@@ -402,6 +483,7 @@ public abstract class PlayerController : MonoBehaviour
         get { return _playerColor; }
         protected set { _playerColor = value; }
     }
+
 
     /// <summary>
     /// 플레이어가 생존해있는지 확인합니다.
@@ -420,11 +502,22 @@ public abstract class PlayerController : MonoBehaviour
         return (health == maxHealth);
     }
 
+
     #endregion
 
 
 
+
+
+
+
+
+
+
     #region MonoBehaviour 기본 메서드를 재정의 합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     protected virtual void Awake()
     {
         // 목소리를 포함한 효과음의 리스트를 초기화 합니다.
@@ -457,22 +550,45 @@ public abstract class PlayerController : MonoBehaviour
         pushCheckEdge.transform.position = Vector3.zero; // new Vector3(0.1f, 0);
         pushCheckEdge.points = points;
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected virtual void Update()
     {
 
     }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="collision"></param>
     protected void OnCollisionEnter2D(Collision2D collision)
     {
         UpdatePhysicsState(collision);
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="collision"></param>
     protected void OnCollisionStay2D(Collision2D collision)
     {
         UpdatePhysicsState(collision);
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="collision"></param>
     protected void OnCollisionExit2D(Collision2D collision)
     {
         UpdatePhysicsState(collision);
     }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     protected virtual bool UpdateController()
     {
         // 소환 중이라면
@@ -503,6 +619,10 @@ public abstract class PlayerController : MonoBehaviour
         }
         return true;
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     protected virtual bool FixedUpdateController()
     {
         // 소환 중이라면
@@ -542,6 +662,9 @@ public abstract class PlayerController : MonoBehaviour
         }
         return true;
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected virtual void LateUpdate()
     {
         if (IsAlive() && Invencible && Damaged == false)
@@ -554,7 +677,15 @@ public abstract class PlayerController : MonoBehaviour
         }
     }
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -1257,6 +1388,13 @@ public abstract class PlayerController : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
     #region 플레이어의 상태 메서드를 정의합니다.
     /// <summary>
     /// 플레이어가 대미지를 입습니다.
@@ -1322,7 +1460,15 @@ public abstract class PlayerController : MonoBehaviour
         yield return true;
     }
 
+
     #endregion
+
+
+
+
+
+
+
 
 
     #region 외부에서 요청 가능한 행동 메서드를 정의합니다.
@@ -1343,6 +1489,13 @@ public abstract class PlayerController : MonoBehaviour
     }
 
     #endregion
+
+
+
+
+
+
+
 
 
     #region 요청을 수행하기 위한 보조 메서드를 정의합니다.
@@ -1393,11 +1546,20 @@ public abstract class PlayerController : MonoBehaviour
             (gObject, transform.position, transform.rotation) as GameObject;
     }
 
-    #endregion 보조 메서드 정의
+
+    #endregion
+
+
+
+
+
+
+
 
 
 
     #region 구형 정의를 보관합니다.
+
 
     #endregion
 }

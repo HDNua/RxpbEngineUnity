@@ -58,18 +58,15 @@
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CameraFollowScript.cs" />
+    <Compile Include="Assets\sources\Tetragon.cs" />
     <Compile Include="Assets\sources\stage\AttackScript.cs" />
+    <Compile Include="Assets\sources\stage\CameraZoneScript.cs" />
     <Compile Include="Assets\sources\stage\CutsceneManager.cs" />
     <Compile Include="Assets\sources\stage\DeadEffectScript.cs" />
     <Compile Include="Assets\sources\stage\EffectScript.cs" />

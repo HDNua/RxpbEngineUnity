@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -13,35 +14,37 @@ public class CutsceneManager : MonoBehaviour
 
 
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
-    public GameObject textObject;
-    public AudioClip[] audioClips;
-    public TextAsset textAsset;
+    public GameObject _textObject;
+    public AudioClip[] _audioClips;
+    public TextAsset _textAsset;
 
-    public SpriteRenderer[] cutsceneImages;
-    public ScreenFader fader;
+    public SpriteRenderer[] _cutsceneImages;
+    public ScreenFader _fader;
 
     #endregion
 
 
 
     #region 필드를 정의합니다.
-    AudioSource bgmSource;
+    AudioSource _bgmSource;
     AudioSource[] _audioSources;
     GUIText _guiText;
 
     // 스크립트 리스트입니다.
-    int scriptIndex;
-    List<string> scriptList;
-    int actionScriptIndex;
-    List<string[]> actionScriptList;
+    int _scriptIndex;
+    List<string> _scriptList;
+    int _actionScriptIndex;
+    List<string[]> _actionScriptList;
 
     // 사용자 인터페이스 상태입니다.
-    bool inputBlocked = false;
-    bool scriptPlaying = false;
-    bool EndScriptPlayingRequested = false;
+    bool _inputBlocked = false;
+    bool _actionScriptPlaying = false; // 액션 스크립트가 재생중이라면 참입니다.
+    bool _speechScriptPlaying = false; // 대사 스크립트가 재생중이라면 참입니다.
+    bool _scriptEndRequested = false; // 스크립트 skip이 요청되었습니다.
 
     // 대사 스크립트 코루틴에 대한 포인터입니다.
-    Coroutine showSpeechscriptCoroutine = null;
+    Coroutine _speechScriptCoroutine = null;
+    Coroutine _actionScriptCoroutine = null;
 
     #endregion
 
@@ -51,19 +54,19 @@ public class CutsceneManager : MonoBehaviour
     void Start()
     {
         #region 필드 초기화를 진행합니다.
-        scriptList = new List<string>();
-        actionScriptList = new List<string[]>();
-        _guiText = textObject.GetComponent<GUIText>();
-        scriptIndex = 0;
-        actionScriptIndex = 0;
+        _scriptList = new List<string>();
+        _actionScriptList = new List<string[]>();
+        _guiText = _textObject.GetComponent<GUIText>();
+        _scriptIndex = 0;
+        _actionScriptIndex = 0;
 
         // 배경음 및 효과음을 초기화 합니다.
-        bgmSource = GetComponent<AudioSource>();
-        _audioSources = new AudioSource[audioClips.Length];
-        for (int i = 0, len = audioClips.Length; i < len; ++i)
+        _bgmSource = GetComponent<AudioSource>();
+        _audioSources = new AudioSource[_audioClips.Length];
+        for (int i = 0, len = _audioClips.Length; i < len; ++i)
         {
             _audioSources[i] = gameObject.AddComponent<AudioSource>();
-            _audioSources[i].clip = audioClips[i];
+            _audioSources[i].clip = _audioClips[i];
         }
 
         #endregion
@@ -71,8 +74,9 @@ public class CutsceneManager : MonoBehaviour
         #region 텍스트 파일로부터 대사를 획득하고 분석합니다.
         /// string path = System.Environment.CurrentDirectory + "\\Assets\\Cutscene\\CS01_Intro.txt";
         /// string text = System.IO.File.ReadAllText(path, System.Text.Encoding.UTF8);
+
         // 필드를 초기화하기 위해 텍스트 파일의 내용을 가져옵니다.
-        string text = textAsset.text;
+        string text = _textAsset.text;
         string[] scriptArray = text.Replace(NEWLINE, "|").Split('|');
         string newScriptText = null;
 
@@ -111,17 +115,17 @@ public class CutsceneManager : MonoBehaviour
             // 대사 닫기 기호를 발견했습니다.
             else if (scriptArrayText == "]")
             {
-                scriptList.Add(newScriptText);
+                _scriptList.Add(newScriptText);
                 newScriptText = null;
             }
             // 액션 스크립트를 발견했습니다.
             else if (scriptArrayText[0] == '(')
             {
                 // 액션 스크립트 리스트에 액션을 추가합니다.
-                actionScriptList.Add(scriptArrayText.Substring(1, scriptArrayText.Length - 2).Split(' '));
+                _actionScriptList.Add(scriptArrayText.Substring(1, scriptArrayText.Length - 2).Split(' '));
 
                 // 스크립트 리스트에는 특수 기호를 넣어서 이것이 액션 스크립트를 참조해야 함을 알립니다.
-                scriptList.Add("$");
+                _scriptList.Add("$");
                 continue;
             }
             // 그 외의 경우
@@ -148,10 +152,10 @@ public class CutsceneManager : MonoBehaviour
         {
             // 재생 중인 스크립트를 모두 종료하고 다음 장면으로 넘어갑니다.
             // 보통 마지막 액션을 수행하면 됩니다.
-            inputBlocked = true;
+            _inputBlocked = true;
             _guiText.text = "";
 
-            actionScriptIndex = actionScriptList.Count - 1;
+            _actionScriptIndex = _actionScriptList.Count - 1;
             StartCoroutine(ActWithCoroutine());
         }
         // 그 외의 키가 눌린 경우
@@ -159,13 +163,17 @@ public class CutsceneManager : MonoBehaviour
         {
             // 자막 스크립트면 스킵합니다. 그 외의 경우 무시합니다.
 
-            if (inputBlocked)
+            if (_inputBlocked)
             {
 
             }
-            else if (scriptPlaying)
+            else if (_actionScriptPlaying)
             {
-                EndScriptPlayingRequested = true;
+
+            }
+            else if (_speechScriptPlaying)
+            {
+                _scriptEndRequested = true;
             }
             else
             {
@@ -173,6 +181,7 @@ public class CutsceneManager : MonoBehaviour
             }
         }
     }
+
     #endregion
 
 
@@ -184,25 +193,23 @@ public class CutsceneManager : MonoBehaviour
     void DoNextScript()
     {
         // 더 이상 수행할 스크립트가 존재하지 않는 경우
-        if (scriptIndex >= scriptList.Count)
+        if (_scriptIndex >= _scriptList.Count)
         {
             // 함수를 종료합니다.
             return;
         }
 
         // 스크립트가 액션인지, 자막인지 판정합니다.
-        char check = scriptList[scriptIndex][0];
+        char check = _scriptList[_scriptIndex][0];
         if (check == '$') // 액션 스크립트라면
         {
-            ++scriptIndex;
-            scriptPlaying = true;
-            /// inputBlocked = true;
+            ++_scriptIndex;
+            _actionScriptPlaying = true;
             DoAction();
         }
         else // 자막 스크립트라면
         {
-            scriptPlaying = true;
-            /// inputBlocked = true;
+            _speechScriptPlaying = true;
             ShowNextSubscript();
         }
     }
@@ -212,22 +219,18 @@ public class CutsceneManager : MonoBehaviour
     void ShowNextSubscript()
     {
         _guiText.text = "";
-
-        /// showSubscriptCoroutine = ShowSubscriptChar();
-        /// StartCoroutine(showSubscriptCoroutine);
-        showSpeechscriptCoroutine = StartCoroutine("ShowSubscriptChar");
+        _speechScriptCoroutine = StartCoroutine("ShowSubscriptChar");
     }
     /// <summary>
     /// 액션을 수행합니다.
     /// </summary>
     void DoAction()
     {
-        inputBlocked = true;
-        if (actionScriptIndex < actionScriptList.Count)
+        _inputBlocked = true;
+        if (_actionScriptIndex < _actionScriptList.Count)
         {
             _guiText.text = "";
-            /// StartCoroutine(ActWithCoroutine());
-            StartCoroutine("ActWithCoroutine");
+            _actionScriptCoroutine = StartCoroutine("ActWithCoroutine");
         }
     }
     /// <summary>
@@ -236,72 +239,82 @@ public class CutsceneManager : MonoBehaviour
     /// <returns>DoNextScript() 함수 호출의 결과입니다.</returns>
     IEnumerator ActWithCoroutine()
     {
-        string[] action = actionScriptList[actionScriptIndex++];
+        string[] action = _actionScriptList[_actionScriptIndex++];
         string command = action[0];
 
-        int index;      // int seIndex, imageIndex;
-        float _time;    // float sec, time;
+        int index;
+        float _time;
         float fadeSpeed;
         string levelName;
         Vector2 position;
 
+        // 명령에 따라 액션을 수행합니다.
         switch (command)
         {
+            // 일정 시간동안 대기합니다.
             case "WaitForSeconds":
                 _time = float.Parse(action[1]);
                 yield return new WaitForSeconds(_time);
                 break;
 
+            // 레벨을 불러옵니다.
             case "Load":
                 levelName = action[1];
                 LoadingSceneManager.LoadLevel(levelName);
                 break;
 
+            // 이미지를 슬라이드합니다.
             case "SlideImage":
                 index = int.Parse(action[1]);
                 _time = float.Parse(action[2]);
                 position = new Vector2(float.Parse(action[3]), float.Parse(action[4]));
                 {
-                    SpriteRenderer image = cutsceneImages[index];
+                    SpriteRenderer image = _cutsceneImages[index];
                     Rigidbody2D image_rbody = image.GetComponent<Rigidbody2D>();
                     Vector2 diff = position - new Vector2(image.transform.position.x, image.transform.position.y);
                     image_rbody.velocity = diff / _time;
                     yield return new WaitForSeconds(_time);
                     image_rbody.velocity = Vector2.zero;
                 }
-
                 break;
-
+            
+            // 이미지를 화면에 표시합니다.
             case "EnableImage":
                 index = int.Parse(action[1]);
-                cutsceneImages[index].enabled = true;
+                _cutsceneImages[index].enabled = true;
                 break;
 
+            // 화면에 표시한 이미지를 disable합니다.
             case "DisableImage":
                 index = int.Parse(action[1]);
-                cutsceneImages[index].enabled = false;
+                _cutsceneImages[index].enabled = false;
                 break;
-
+                
+            // 장면에 페이드인 효과를 부여합니다.
             case "SceneFadeIn":
                 fadeSpeed = float.Parse(action[1]);
-                fader.FadeIn(fadeSpeed);
+                _fader.FadeIn(fadeSpeed);
                 break;
 
+            // 장면에 페이드아웃 효과를 부여합니다.
             case "SceneFadeOut":
                 fadeSpeed = float.Parse(action[1]);
-                fader.FadeOut(fadeSpeed);
+                _fader.FadeOut(fadeSpeed);
                 break;
 
+            // 배경 음악을 재생합니다.
             case "PlayMusic":
                 index = int.Parse(action[1]);
-                bgmSource.clip = _audioSources[index].clip;
-                bgmSource.Play();
+                _bgmSource.clip = _audioSources[index].clip;
+                _bgmSource.Play();
                 break;
 
+            // 음악 재생을 중지합니다.
             case "StopMusic":
-                bgmSource.Stop();
+                _bgmSource.Stop();
                 break;
 
+            // 효과음을 재생합니다.
             case "PlaySound":
                 index = int.Parse(action[1]);
                 _time = float.Parse(action[2]);
@@ -309,6 +322,11 @@ public class CutsceneManager : MonoBehaviour
                 yield return new WaitForSeconds(_time);
                 break;
         }
+
+        // 액션 수행이 모두 종료되었으므로 스위치를 닫습니다.
+        _actionScriptPlaying = false;
+
+        // 다음 스크립트를 수행합니다.
         DoNextScript();
     }
     /// <summary>
@@ -317,12 +335,15 @@ public class CutsceneManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator ShowSubscriptChar()
     {
-        string subscript = scriptList[scriptIndex++];
+        string speechText = _scriptList[_scriptIndex++];
         string name = null;
 
-        for (int i = 0, len = subscript.Length; i < len; ++i)
+
+
+        // 대사 텍스트를 출력합니다.
+        for (int i = 0, len = speechText.Length; i < len; ++i)
         {
-            char subChar = subscript[i];
+            char subChar = speechText[i];
 
             // 콜론으로 시작하는 문장은 즉시 출력합니다.
             // 대화 시 캐릭터의 이름에 사용합니다.
@@ -332,13 +353,13 @@ public class CutsceneManager : MonoBehaviour
                 name = "";
                 while (i < len)
                 {
-                    if (subscript[i] == SEPERATOR)
+                    if (speechText[i] == SEPERATOR)
                     {
                         break;
                     }
                     else
                     {
-                        name += subscript[i];
+                        name += speechText[i];
                     }
                     ++i;
                 }
@@ -350,26 +371,25 @@ public class CutsceneManager : MonoBehaviour
                 _guiText.text += NEWLINE;
             }
             // 스크립트 재생이 사용자에 의해 종료된 경우
-            else if (EndScriptPlayingRequested)
+            else if (_scriptEndRequested)
             {
                 name = "";
                 while (i < len)
                 {
-                    if (subscript[i] == SEPERATOR)
+                    if (speechText[i] == SEPERATOR)
                     {
                         name += NEWLINE;
                     }
                     else
                     {
-                        name += subscript[i];
+                        name += speechText[i];
                     }
                     ++i;
                 }
                 _guiText.text += name;
 
-                /// scriptPlaying = false;
-                /// inputBlocked = false;
-                EndScriptPlayingRequested = false;
+                // 스크립트 종료 요청을 모두 수행했으므로 스위치를 닫습니다.
+                _scriptEndRequested = false;
                 break;
             }
             // 글자 단위로 소리를 내며 출력합니다.
@@ -381,10 +401,14 @@ public class CutsceneManager : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
 
-        StopCoroutine(showSpeechscriptCoroutine);
-        showSpeechscriptCoroutine = null;
-        scriptPlaying = false;
-        inputBlocked = false;
+
+
+
+        StopCoroutine(_speechScriptCoroutine);
+        _speechScriptCoroutine = null;
+        _inputBlocked = false;
+
+        _speechScriptPlaying = false;
     }
 
     #endregion

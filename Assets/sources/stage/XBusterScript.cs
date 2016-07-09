@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 
+
+
 [RequireComponent(typeof(Rigidbody2D))]
 /// <summary>
 /// 버스터 공격 스크립트입니다.
@@ -19,6 +21,13 @@ public class XBusterScript : AttackScript
 
 
 
+
+
+
+
+
+
+
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
     public LayerMask busterUnpassable;
 
@@ -26,17 +35,33 @@ public class XBusterScript : AttackScript
 
 
 
+
+
+
+
+
+
+
     #region MonoBehaviour 기본 메서드를 재정의 합니다.
+    /// <summary>
+    /// MonoBehaviour 개체를 초기화합니다.
+    /// </summary>
     protected override void Awake()
     {
         base.Awake();
         _collider = GetComponent<Collider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected override void Start()
     {
         base.Start();
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected override void Update()
     {
         base.Update();
@@ -50,6 +75,10 @@ public class XBusterScript : AttackScript
             }
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="other"></param>
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Enemy"))
@@ -82,6 +111,13 @@ public class XBusterScript : AttackScript
 
 
 
+
+
+
+
+
+
+
     #region 보조 메서드를 정의합니다.
     /// <summary>
     /// 피격 효과 객체를 생성합니다.
@@ -110,6 +146,13 @@ public class XBusterScript : AttackScript
     }
 
     #endregion
+
+
+
+
+
+
+
 
 
 

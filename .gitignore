@@ -1,0 +1,12 @@
+# temporary files
+*~
+
+# build output
+*.exe
+*.pdb
+
+
+
+
+
+

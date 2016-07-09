@@ -2,6 +2,8 @@
 using System;
 using System.Collections;
 
+
+
 /// <summary>
 /// 멧토 적 캐릭터를 정의합니다.
 /// </summary>
@@ -14,12 +16,26 @@ public class EnemyMettoolScript : EnemyScript
 
 
 
+
+
+
+
+
+
+
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
     public Transform groundCheck;
     public Transform pushCheck;
     public LayerMask whatIsWall;
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -32,13 +48,26 @@ public class EnemyMettoolScript : EnemyScript
 
 
 
+
+
+
+
+
+
+
     #region MonoBehaviour 기본 메서드를 재정의 합니다.
+    /// <summary>
+    /// MonoBehaviour 개체를 초기화합니다.
+    /// </summary>
     protected override void Start()
     {
         base.Start();
         _rigidbody = GetComponent<Rigidbody2D>();
         StartCoroutine(WalkAround());
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected override void Update()
     {
         base.Update();
@@ -58,6 +87,12 @@ public class EnemyMettoolScript : EnemyScript
             }
         }
     }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="other"></param>
     void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
@@ -76,7 +111,15 @@ public class EnemyMettoolScript : EnemyScript
         }
     }
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -91,7 +134,15 @@ public class EnemyMettoolScript : EnemyScript
         base.Dead();
     }
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -152,7 +203,15 @@ public class EnemyMettoolScript : EnemyScript
         }
     }
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 

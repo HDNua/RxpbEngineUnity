@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+
 /// <summary>
 /// 지형에 대한 스크립트입니다.
 /// </summary>
@@ -11,6 +13,13 @@ public class GeometryScript : MonoBehaviour
     //    EdgeCollider2D ground, left, right;
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -27,7 +36,17 @@ public class GeometryScript : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
     #region MonoBehaviour 기본 메서드를 재정의 합니다.
+    /// <summary>
+    /// MonoBehaviour 개체를 초기화합니다.
+    /// </summary>
     void Start()
     {
         _collider = GetComponent<Collider2D>();
@@ -97,16 +116,28 @@ public class GeometryScript : MonoBehaviour
             { uppers[uppers.Length - 1], lowers[lowers.Length - 1] };
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     void Update()
     {
 
     }
 
+
     #endregion
 
 
 
+
+
+
+
+
+
+
     #region 보조 메서드를 정의합니다.
+
 
     #endregion
 }
