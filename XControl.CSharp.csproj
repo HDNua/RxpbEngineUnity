@@ -63,7 +63,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CameraFollowScript.cs" />
+    <Compile Include="Assets\sources\CameraFollowScript.cs" />
     <Compile Include="Assets\sources\Tetragon.cs" />
     <Compile Include="Assets\sources\stage\AttackScript.cs" />
     <Compile Include="Assets\sources\stage\CameraZoneScript.cs" />
