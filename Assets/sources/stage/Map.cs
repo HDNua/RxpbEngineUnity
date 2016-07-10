@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 
 
@@ -34,11 +35,15 @@ public class Map : MonoBehaviour
     /// <summary>
     /// 메인 카메라입니다.
     /// </summary>
-    public Camera _MainCamera;
+    public Camera _mainCamera;
     /// <summary>
     /// 카메라 존 배열입니다.
     /// </summary>
-    public BoxCollider2D[] _CameraZones;
+    public CameraZoneScript[] _cameraZones;
+
+
+    public BoxCollider2D _cameraBox;
+    public PolygonCollider2D _cameraBoxZone;
 
 
     #endregion
@@ -56,7 +61,7 @@ public class Map : MonoBehaviour
     /// <summary>
     /// 현재 플레이어가 속한 카메라 존입니다.
     /// </summary>
-    BoxCollider2D _cameraZone;
+    CameraZoneScript _cameraZone;
 
 
     /// <summary>
@@ -102,25 +107,8 @@ public class Map : MonoBehaviour
     /// </summary>
     void Start()
     {
-        _cameraZone = _CameraZones[0];
-
-        float czLeft = _cameraZone.bounds.min.x;
-        float czRight = _cameraZone.bounds.max.x;
-        float viewCenterX = _MainCamera.transform.position.x;
-
-        float czTop = _cameraZone.bounds.max.y;
-        float czBottom = _cameraZone.bounds.min.y;
-        float viewCenterY = _MainCamera.transform.position.y;
-
-
-        // 필드를 업데이트 합니다.
-        czWidth = viewCenterX - czLeft;
-        czHorMin = czLeft + czWidth;
-        czHorMax = czRight - czWidth;
-
-        czHeight = viewCenterY - czBottom;
-        czVerMin = czBottom + czHeight;
-        czVerMax = czTop - czHeight;
+        _cameraZone = _cameraZones[0];
+        UpdateCameraZoneBounds();
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -163,23 +151,179 @@ public class Map : MonoBehaviour
 
 
 
-    #region 요청을 수행하기 위한 보조 메서드를 정의합니다.
+    #region 메서드를 정의합니다.
     /// <summary>
     /// 뷰 포트를 가운데로 맞춥니다.
     /// </summary>
     void SetViewportCenter()
     {
         /*
-//        float czLeft = cameraZone.bounds.min.x;
-//        float czRight = cameraZone.bounds.max.x;
+        Vector3 playerPos = _player.transform.position;
+        _mainCamera.transform.position = new Vector3(playerPos.x, playerPos.y, _mainCamera.transform.position.z);
+        return;
+        */
+
+        /*
+        float czLeft = _cameraZone_dep.bounds.min.x;
+        float czRight = _cameraZone_dep.bounds.max.x;
         float playerX = _player.transform.position.x;
-//        float czTop = cameraZone.bounds.max.y;
-//        float czBottom = cameraZone.bounds.min.y;
+        float czTop = _cameraZone_dep.bounds.max.y;
+        float czBottom = _cameraZone_dep.bounds.min.y;
+        float playerY = _player.transform.position.y;
+        */
+
+
+        float czLeft = _cameraZone.minX;
+        float czRight = _cameraZone.maxX;
+        float viewCenterX = _mainCamera.transform.position.x;
+        float czTop = _cameraZone.minY;
+        float czBottom = _cameraZone.maxY;
+        float viewCenterY = _mainCamera.transform.position.y;
+        float playerX = _player.transform.position.x;
+        float playerY = _player.transform.position.y;
+
+
+        // 테스트
+        bool movePos = false;
+        var newPos = _mainCamera.transform.position;
+        if (czHorMin < playerX && playerX < czHorMax)
+        {
+            newPos.x = playerX;
+            movePos = true;
+        }
+        if (czVerMin < playerY && playerY < czVerMax)
+        {
+            newPos.y = playerY;
+            movePos = true;
+        }
+
+
+        // 화면이 움직였다면 업데이트합니다.
+        if (movePos)
+        {
+            _mainCamera.transform.position = newPos;
+        }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    void UpdateCameraZoneBounds()
+    {
+        float czLeft = _cameraZone.minX;
+        float czRight = _cameraZone.maxX;
+        float viewCenterX = _mainCamera.transform.position.x;
+        float czTop = _cameraZone.minY;
+        float czBottom = _cameraZone.maxY;
+        float viewCenterY = _mainCamera.transform.position.y;
+
+
+        // 필드를 업데이트 합니다.
+        czWidth = viewCenterX - czLeft;
+        czHorMin = czLeft + czWidth;
+        czHorMax = czRight - czWidth;
+
+        czHeight = viewCenterY - czBottom;
+        czVerMin = czBottom + czHeight;
+        czVerMax = czTop - czHeight;
+    }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region public 메서드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="cameraZone"></param>
+    public void UpdateCameraZone(CameraZoneScript cameraZone)
+    {
+        _cameraZone = cameraZone;
+        UpdateCameraZoneBounds();
+    }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+    #region 구형 정의를 보관합니다.
+    [Obsolete()]
+    /// <summary>
+    /// 카메라 존 배열입니다.
+    /// </summary>
+    public BoxCollider2D[] _cameraZones_dep;
+    [Obsolete()]
+    /// <summary>
+    /// 현재 플레이어가 속한 카메라 존입니다.
+    /// </summary>
+    BoxCollider2D _cameraZone_dep;
+
+
+    [Obsolete()]
+    /// <summary>
+    /// MonoBehaviour 개체를 초기화 합니다.
+    /// </summary>
+    void Start_dep()
+    {
+        _cameraZone_dep = _cameraZones_dep[0];
+
+        float czLeft = _cameraZone_dep.bounds.min.x;
+        float czRight = _cameraZone_dep.bounds.max.x;
+        float viewCenterX = _mainCamera.transform.position.x;
+
+        float czTop = _cameraZone_dep.bounds.max.y;
+        float czBottom = _cameraZone_dep.bounds.min.y;
+        float viewCenterY = _mainCamera.transform.position.y;
+
+
+        // 필드를 업데이트 합니다.
+        czWidth = viewCenterX - czLeft;
+        czHorMin = czLeft + czWidth;
+        czHorMax = czRight - czWidth;
+
+        czHeight = viewCenterY - czBottom;
+        czVerMin = czBottom + czHeight;
+        czVerMax = czTop - czHeight;
+    }
+
+
+    [Obsolete()]
+    /// <summary>
+    /// 뷰 포트를 가운데로 맞춥니다.
+    /// </summary>
+    void SetViewportCenter_dep()
+    {
+        /**
+        Vector3 playerPos = _player.transform.position;
+        _mainCamera.transform.position = new Vector3(playerPos.x, playerPos.y, _mainCamera.transform.position.z);
+        return;
+        */
+
+        float czLeft = _cameraZone_dep.bounds.min.x;
+        float czRight = _cameraZone_dep.bounds.max.x;
+        float playerX = _player.transform.position.x;
+        float czTop = _cameraZone_dep.bounds.max.y;
+        float czBottom = _cameraZone_dep.bounds.min.y;
         float playerY = _player.transform.position.y;
 
 
         bool movePos = false;
-        var newPos = _MainCamera.transform.position;
+        var newPos = _mainCamera.transform.position;
         if (czHorMin < playerX && playerX < czHorMax)
         {
             newPos.x = playerX;
@@ -195,12 +339,9 @@ public class Map : MonoBehaviour
         // 
         if (movePos)
         {
-            _MainCamera.transform.position = newPos;
+            _mainCamera.transform.position = newPos;
         }
-        */
 
-        Vector3 playerPos = _player.transform.position;
-        _MainCamera.transform.position = new Vector3(playerPos.x, playerPos.y, _MainCamera.transform.position.z);
     }
 
 

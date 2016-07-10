@@ -17,10 +17,43 @@ public class CameraZoneScript : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
     #region 필드를 정의합니다.
+    public float x;
+    public float y;
+    public float minX;
+    public float minY;
+    public float maxX;
+    public float maxY;
 
 
     #endregion
+
+
+
+
+
+
+
+
+
+    #region 프로퍼티를 정의합니다.
+
+
+    #endregion
+
+
+
+
+
+
+
 
 
 
@@ -30,7 +63,7 @@ public class CameraZoneScript : MonoBehaviour
     /// </summary>
     void Start()
     {
-
+        
     }
     /// <summary>
     /// 
@@ -45,29 +78,36 @@ public class CameraZoneScript : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
     #region Collider2D 메서드를 재정의합니다.
     /// <summary>
-    /// 충돌이 감지되었습니다.
+    /// 충돌체가 트리거 내부로 진입했습니다.
     /// </summary>
-    /// <param name="collision">충돌 정보 객체입니다.</param>
-    protected void OnCollisionEnter2D(Collision2D collision)
-    {
-        
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="other"></param>
+    /// <param name="other">자신이 아닌 충돌체 개체입니다.</param>
     protected void OnTriggerEnter2D(Collider2D other)
     {
         if (other.tag == "Player")
         {
-            
+            map.UpdateCameraZone(this);
+            Debug.Log(string.Format("CameraZone changed to {0}", this));
         }
     }
 
 
     #endregion
+
+
+
+
+
+
+
 
 
 

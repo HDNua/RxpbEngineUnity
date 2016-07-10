@@ -447,10 +447,13 @@ public class XController : PlayerController
         }
         shotTime += Time.fixedDeltaTime;
 
+
+        /**
         if (IsAnimationPlaying("X_WallJump"))
         {
             print(GetCurrentAnimationLength());
         }
+        */
     }
     /// <summary>
     /// 
