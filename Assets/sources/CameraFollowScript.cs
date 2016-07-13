@@ -141,10 +141,7 @@ public class CameraFollowScript : MonoBehaviour
     /// </summary>
     void Update()
     {
-        /*
-        _cameraViewBox.transform.position = new Vector3
-            (_camera.transform.position.x, _camera.transform.position.y, 0);
-        */
+
     }
     /// <summary>
     /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트 합니다.
@@ -153,12 +150,7 @@ public class CameraFollowScript : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
-        /*
-        if (_map.Player != null)
-        {
-            UpdateViewport();
-        }
-        */
+
     }
     /// <summary>
     /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
@@ -174,6 +166,13 @@ public class CameraFollowScript : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
     #region Collider2D 메서드를 재정의합니다.
 
 
@@ -181,7 +180,17 @@ public class CameraFollowScript : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
     #region 메서드를 정의합니다.
+    /// <summary>
+    /// 뷰 포트를 업데이트 합니다.
+    /// </summary>
     void UpdateViewport()
     {
         Vector3 playerPos = _map.Player.transform.position;
@@ -189,6 +198,19 @@ public class CameraFollowScript : MonoBehaviour
         _camera.transform.position = new Vector3
             (playerPos.x, playerPos.y, _camera.transform.position.z);
     }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+    #region 구형 정의를 보관합니다.
 
 
     #endregion

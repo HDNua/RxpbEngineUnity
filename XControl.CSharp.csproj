@@ -63,17 +63,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CameraZone2Script.cs" />
-    <Compile Include="Assets\CameraZone5Script.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\ImportBehaviour.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\SortingLayerExposed.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\SpriteDepthInMap.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TileAnimator.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledInitialShaderProperties.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledMap.cs" />
-    <Compile Include="Assets\TiledGeometryScript.cs" />
     <Compile Include="Assets\sources\CameraFollowScript.cs" />
+    <Compile Include="Assets\sources\CameraZone2Script.cs" />
+    <Compile Include="Assets\sources\CameraZone5Script.cs" />
     <Compile Include="Assets\sources\Tetragon.cs" />
+    <Compile Include="Assets\sources\TiledGeometryScript.cs" />
     <Compile Include="Assets\sources\stage\AttackScript.cs" />
     <Compile Include="Assets\sources\stage\CameraZoneScript.cs" />
     <Compile Include="Assets\sources\stage\CutsceneManager.cs" />

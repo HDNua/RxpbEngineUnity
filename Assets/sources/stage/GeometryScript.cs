@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 
 
+[Obsolete("TiledGeometryScript로 대체되었습니다.")]
 /// <summary>
 /// 지형에 대한 스크립트입니다.
 /// </summary>
