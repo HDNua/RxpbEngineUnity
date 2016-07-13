@@ -20,26 +20,52 @@ public class StageManager : HDSceneManager
     public DeadEffectScript deadEffect;
     public HUDScript hud;
 
+
     #endregion
 
 
 
+
+
+
+
+
+
+
     #region 필드를 정의합니다.
+    /// <summary>
+    /// 플레이어를 조종할 수 없는 상태라면 참입니다.
+    /// </summary>
     bool _isFrozen;
+    /// <summary>
+    /// 플레이어를 조종할 수 없는 상태라면 참입니다.
+    /// </summary>
     public bool IsFrozen
     {
         get { return _isFrozen; }
         protected set { _isFrozen = value; }
     }
 
+
     #endregion
 
 
 
-    #region MonoBehaviour 기본 메서드를 재정의 합니다.
+
+
+
+
+
+
+
+    #region MonoBehaviour 기본 메서드를 재정의합니다.
+    /// <summary>
+    /// MonoBehaviour 개체를 초기화합니다.
+    /// </summary>
     protected override void Start()
     {
         base.Start();
+
 
         // 불러온 캐릭터를 잠깐 사용 불가능하게 합니다.
         PlayerX.gameObject.SetActive(false);
@@ -50,23 +76,39 @@ public class StageManager : HDSceneManager
         map.Player = player;
 
         // 페이드인 효과를 처리합니다.
-        fader.FadeIn();
+        _fader.FadeIn();
     }
+    /// <summary>
+    /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
+    /// </summary>
     protected override void Update()
     {
         base.Update();
-        if (fader.FadeInEnded)
+
+
+        // 페이드 인 효과가 종료되는 시점에
+        if (_fader.FadeInEnded)
         {
-            ready.gameObject.SetActive(true); // = true;
+            // 준비 애니메이션 재생을 시작합니다.
+            ready.gameObject.SetActive(true);
         }
 
+        // 
         if (IsFrozen)
         {
 
         }
     }
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -92,14 +134,22 @@ public class StageManager : HDSceneManager
         map.Player = player = newPlayer;
     }
 
+
+    /// <summary>
+    /// 
+    /// </summary>
     public void Freeze()
     {
         IsFrozen = true;
     }
+    /// <summary>
+    /// 
+    /// </summary>
     public void UnFreeze()
     {
         IsFrozen = false;
     }
+
 
     /// <summary>
     /// 스테이지를 재시작합니다.
@@ -108,6 +158,20 @@ public class StageManager : HDSceneManager
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+    #region 구형 정의를 보관합니다.
+
 
     #endregion
 }

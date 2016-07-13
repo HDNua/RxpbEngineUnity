@@ -1,8 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 
 
+[Obsolete("CameraZone5Script로 대체되었습니다.")]
 /// <summary>
 /// 카메라 존에 대한 스크립트입니다.
 /// </summary>

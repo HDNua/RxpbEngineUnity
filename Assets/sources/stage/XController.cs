@@ -439,7 +439,9 @@ public class XController : PlayerController
                 // Fire();
                 shotPressed = true;
             }
-            print(chargeTime);
+
+
+            /// print(chargeTime);
         }
         else if (shotPressed)
         {
@@ -557,7 +559,7 @@ public class XController : PlayerController
         _bullet.GetComponent<Rigidbody2D>().velocity
             = (FacingRight ? Vector3.right : Vector3.left) * shotSpeed;
         XBusterScript buster = _bullet.GetComponent<XBusterScript>();
-        buster.MainCamera = stageManager.MainCamera;
+        buster.MainCamera = stageManager._mainCamera;
 
         // 효과음을 재생합니다.
         SoundEffects[8 + index].Play();

@@ -1,6 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
-using System;
 
 
 
@@ -36,10 +36,6 @@ public class Map : MonoBehaviour
     /// 메인 카메라입니다.
     /// </summary>
     public Camera _mainCamera;
-    /// <summary>
-    /// 카메라 존 배열입니다.
-    /// </summary>
-    public CameraZoneScript[] _cameraZones;
 
 
     public BoxCollider2D _cameraBox;
@@ -58,36 +54,6 @@ public class Map : MonoBehaviour
 
 
     #region 필드를 정의합니다.
-    /// <summary>
-    /// 현재 플레이어가 속한 카메라 존입니다.
-    /// </summary>
-    CameraZoneScript _cameraZone;
-
-
-    /// <summary>
-    /// 카메라 존의 가로 길이입니다.
-    /// </summary>
-    float czWidth;
-    /// <summary>
-    /// 카메라 존의 가로 길이 최솟값입니다.
-    /// </summary>
-    float czHorMin;
-    /// <summary>
-    /// 카메라 존의 가로 길이 최댓값입니다.
-    /// </summary>
-    float czHorMax;
-    /// <summary>
-    /// 카메라 존의 세로 길이입니다.
-    /// </summary>
-    float czHeight;
-    /// <summary>
-    /// 카메라 존의 세로 길이 최솟값입니다.
-    /// </summary>
-    float czVerMin;
-    /// <summary>
-    /// 카메라 존의 세로 길이 최댓값입니다.
-    /// </summary>
-    float czVerMax;
 
 
     #endregion
@@ -107,23 +73,14 @@ public class Map : MonoBehaviour
     /// </summary>
     void Start()
     {
-        /*
-        _cameraZone = _cameraZones[0];
-        UpdateCameraZoneBounds();
-        */
+
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
     /// </summary>
     void Update()
     {
-        /*
-        if (_player != null)
-        {
-            // 뷰 포트를 맞춥니다.
-            SetViewportCenter();
-        }
-        */
+
     }
     /// <summary>
     /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트 합니다.
@@ -156,80 +113,7 @@ public class Map : MonoBehaviour
 
 
     #region 메서드를 정의합니다.
-    /// <summary>
-    /// 뷰 포트를 가운데로 맞춥니다.
-    /// </summary>
-    void SetViewportCenter()
-    {
-        /*
-        Vector3 playerPos = _player.transform.position;
-        _mainCamera.transform.position = new Vector3(playerPos.x, playerPos.y, _mainCamera.transform.position.z);
-        return;
-        */
 
-        /*
-        float czLeft = _cameraZone_dep.bounds.min.x;
-        float czRight = _cameraZone_dep.bounds.max.x;
-        float playerX = _player.transform.position.x;
-        float czTop = _cameraZone_dep.bounds.max.y;
-        float czBottom = _cameraZone_dep.bounds.min.y;
-        float playerY = _player.transform.position.y;
-        */
-
-
-        float czLeft = _cameraZone.minX;
-        float czRight = _cameraZone.maxX;
-        float viewCenterX = _mainCamera.transform.position.x;
-        float czTop = _cameraZone.minY;
-        float czBottom = _cameraZone.maxY;
-        float viewCenterY = _mainCamera.transform.position.y;
-        float playerX = _player.transform.position.x;
-        float playerY = _player.transform.position.y;
-
-
-        // 테스트
-        bool movePos = false;
-        var newPos = _mainCamera.transform.position;
-        if (czHorMin < playerX && playerX < czHorMax)
-        {
-            newPos.x = playerX;
-            movePos = true;
-        }
-        if (czVerMin < playerY && playerY < czVerMax)
-        {
-            newPos.y = playerY;
-            movePos = true;
-        }
-
-
-        // 화면이 움직였다면 업데이트합니다.
-        if (movePos)
-        {
-            _mainCamera.transform.position = newPos;
-        }
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    void UpdateCameraZoneBounds()
-    {
-        float czLeft = _cameraZone.minX;
-        float czRight = _cameraZone.maxX;
-        float viewCenterX = _mainCamera.transform.position.x;
-        float czTop = _cameraZone.minY;
-        float czBottom = _cameraZone.maxY;
-        float viewCenterY = _mainCamera.transform.position.y;
-
-
-        // 필드를 업데이트 합니다.
-        czWidth = viewCenterX - czLeft;
-        czHorMin = czLeft + czWidth;
-        czHorMax = czRight - czWidth;
-
-        czHeight = viewCenterY - czBottom;
-        czVerMin = czBottom + czHeight;
-        czVerMax = czTop - czHeight;
-    }
 
 
     #endregion
@@ -244,15 +128,6 @@ public class Map : MonoBehaviour
 
 
     #region public 메서드를 정의합니다.
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="cameraZone"></param>
-    public void UpdateCameraZone(CameraZoneScript cameraZone)
-    {
-        _cameraZone = cameraZone;
-        UpdateCameraZoneBounds();
-    }
 
 
     #endregion
@@ -306,6 +181,16 @@ public class Map : MonoBehaviour
     }
 
 
+
+
+    [Obsolete()]
+    /// <summary>
+    /// 카메라 존 배열입니다.
+    /// </summary>
+    public CameraZoneScript[] _cameraZones;
+
+
+
     [Obsolete()]
     /// <summary>
     /// 뷰 포트를 가운데로 맞춥니다.
@@ -346,6 +231,135 @@ public class Map : MonoBehaviour
             _mainCamera.transform.position = newPos;
         }
 
+    }
+
+
+    [Obsolete()]
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="cameraZone"></param>
+    public void UpdateCameraZone(CameraZoneScript cameraZone)
+    {
+        _cameraZone = cameraZone;
+        UpdateCameraZoneBounds();
+    }
+
+
+    [Obsolete()]
+    /// <summary>
+    /// 현재 플레이어가 속한 카메라 존입니다.
+    /// </summary>
+    CameraZoneScript _cameraZone;
+
+
+    [Obsolete()]
+    /// <summary>
+    /// 카메라 존의 가로 길이입니다.
+    /// </summary>
+    float czWidth;
+    [Obsolete()]
+    /// <summary>
+    /// 카메라 존의 가로 길이 최솟값입니다.
+    /// </summary>
+    float czHorMin;
+    [Obsolete()]
+    /// <summary>
+    /// 카메라 존의 가로 길이 최댓값입니다.
+    /// </summary>
+    float czHorMax;
+    [Obsolete()]
+    /// <summary>
+    /// 카메라 존의 세로 길이입니다.
+    /// </summary>
+    float czHeight;
+    [Obsolete()]
+    /// <summary>
+    /// 카메라 존의 세로 길이 최솟값입니다.
+    /// </summary>
+    float czVerMin;
+    [Obsolete()]
+    /// <summary>
+    /// 카메라 존의 세로 길이 최댓값입니다.
+    /// </summary>
+    float czVerMax;
+
+
+    [Obsolete()]
+    /// <summary>
+    /// 뷰 포트를 가운데로 맞춥니다.
+    /// </summary>
+    void SetViewportCenter()
+    {
+        /*
+        Vector3 playerPos = _player.transform.position;
+        _mainCamera.transform.position = new Vector3(playerPos.x, playerPos.y, _mainCamera.transform.position.z);
+        return;
+        */
+
+        /*
+        float czLeft = _cameraZone_dep.bounds.min.x;
+        float czRight = _cameraZone_dep.bounds.max.x;
+        float playerX = _player.transform.position.x;
+        float czTop = _cameraZone_dep.bounds.max.y;
+        float czBottom = _cameraZone_dep.bounds.min.y;
+        float playerY = _player.transform.position.y;
+        */
+
+
+        float czLeft = _cameraZone.minX;
+        float czRight = _cameraZone.maxX;
+        float viewCenterX = _mainCamera.transform.position.x;
+        float czTop = _cameraZone.minY;
+        float czBottom = _cameraZone.maxY;
+        float viewCenterY = _mainCamera.transform.position.y;
+        float playerX = _player.transform.position.x;
+        float playerY = _player.transform.position.y;
+
+
+        // 테스트
+        bool movePos = false;
+        var newPos = _mainCamera.transform.position;
+        if (czHorMin < playerX && playerX < czHorMax)
+        {
+            newPos.x = playerX;
+            movePos = true;
+        }
+        if (czVerMin < playerY && playerY < czVerMax)
+        {
+            newPos.y = playerY;
+            movePos = true;
+        }
+
+
+        // 화면이 움직였다면 업데이트합니다.
+        if (movePos)
+        {
+            _mainCamera.transform.position = newPos;
+        }
+    }
+    [Obsolete()]
+    /// <summary>
+    /// 
+    /// </summary>
+    void UpdateCameraZoneBounds()
+    {
+        float czLeft = _cameraZone.minX;
+        float czRight = _cameraZone.maxX;
+        float viewCenterX = _mainCamera.transform.position.x;
+        float czTop = _cameraZone.minY;
+        float czBottom = _cameraZone.maxY;
+        float viewCenterY = _mainCamera.transform.position.y;
+
+
+        // 필드를 업데이트 합니다.
+        czWidth = viewCenterX - czLeft;
+        czHorMin = czLeft + czWidth;
+        czHorMax = czRight - czWidth;
+
+        czHeight = viewCenterY - czBottom;
+        czVerMin = czBottom + czHeight;
+        czVerMax = czTop - czHeight;
     }
 
 

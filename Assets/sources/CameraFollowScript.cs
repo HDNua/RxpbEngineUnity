@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 
@@ -9,21 +10,12 @@ using System.Collections;
 public class CameraFollowScript : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
-    public float smoothTimeX;
-    public float smoothTimeY;
-
-
     public BoxCollider2D _cameraViewBox;
-
-    public EdgeCollider2D[] _camEdges;
-
-
     public Map _map;
 
 
+    public CameraZone5Script[] _cameraZones;
 
-    public BoxCollider2D test;
-    public PolygonCollider2D test2;
 
 
     #endregion
@@ -38,10 +30,26 @@ public class CameraFollowScript : MonoBehaviour
 
 
     #region 필드를 정의합니다.
+    /// <summary>
+    /// Scene에서 사용할 메인 카메라입니다.
+    /// </summary>
     Camera _camera;
+    /// <summary>
+    /// PlayerController입니다.
+    /// </summary>
+    PlayerController _player;
 
-    Rect _pixelRect;
-    Rect _rect;
+
+    /// <summary>
+    /// 현재 플레이어가 위치한 카메라 존입니다.
+    /// </summary>
+    CameraZone5Script _currentCameraZone;
+
+
+    /// <summary>
+    /// 메인 카메라의 Z 좌표입니다.
+    /// </summary>
+    float _camZ;
 
 
     #endregion
@@ -56,18 +64,11 @@ public class CameraFollowScript : MonoBehaviour
 
     #region 프로퍼티를 정의합니다.
     /// <summary>
-    /// 
+    /// 현재 플레이어가 위치한 카메라 존을 업데이트 합니다.
     /// </summary>
-    public Rect PixelRect
+    public CameraZone5Script CurrentCameraZone
     {
-        get { return _pixelRect; }
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    public Rect Rect
-    {
-        get { return _rect; }
+        set { _currentCameraZone = value; }
     }
 
 
@@ -89,16 +90,10 @@ public class CameraFollowScript : MonoBehaviour
     void Start()
     {
         _camera = gameObject.GetComponent<Camera>();
-
-        _pixelRect = _camera.pixelRect;
-        _rect = _camera.rect;
+        _camZ = _camera.transform.position.z;
 
 
         // 필드 초기화
-        /// _map = GetComponentInParent<Map>();
-
-
-        // 따내기?
         float frustumHeight = Mathf.Abs(2.0f * _camera.transform.position.z * Mathf.Tan(_camera.fieldOfView * 0.5f * Mathf.Deg2Rad));
         float frustumWidth = Mathf.Abs(frustumHeight * _camera.aspect);
         _cameraViewBox.size = new Vector2(frustumWidth, frustumHeight);
@@ -106,42 +101,19 @@ public class CameraFollowScript : MonoBehaviour
             (_camera.transform.position.x, _camera.transform.position.y, 0);
 
 
-        Bounds camBound = _cameraViewBox.bounds;
-
-        // 엣지 업데이트
-        _camEdges[0].points = new Vector2[]
-        {
-            new Vector2(-_camera.transform.position.x + camBound.center.x - camBound.extents.x, -_camera.transform.position.y + camBound.center.y - camBound.extents.y),
-            new Vector2(-_camera.transform.position.x + camBound.center.x + camBound.extents.x, -_camera.transform.position.y + camBound.center.y - camBound.extents.y),
-        };
-        _camEdges[1].points = new Vector2[]
-        {
-            new Vector2(-_camera.transform.position.x + camBound.center.x - camBound.extents.x, -_camera.transform.position.y + camBound.center.y + camBound.extents.y),
-            new Vector2(-_camera.transform.position.x + camBound.center.x + camBound.extents.x, -_camera.transform.position.y + camBound.center.y + camBound.extents.y),
-        };
-        _camEdges[2].points = new Vector2[]
-        {
-            new Vector2(-_camera.transform.position.x + camBound.center.x - camBound.extents.x, -_camera.transform.position.y + camBound.center.y - camBound.extents.y),
-            new Vector2(-_camera.transform.position.x + camBound.center.x - camBound.extents.x, -_camera.transform.position.y + camBound.center.y + camBound.extents.y),
-        };
-        _camEdges[3].points = new Vector2[]
-        {
-            new Vector2(-_camera.transform.position.x + camBound.center.x + camBound.extents.x, -_camera.transform.position.y + camBound.center.y - camBound.extents.y),
-            new Vector2(-_camera.transform.position.x + camBound.center.x + camBound.extents.x, -_camera.transform.position.y + camBound.center.y + camBound.extents.y),
-        };
+        // 
+        _player = _map.Player;
 
 
-
-        test.transform.position = new Vector3(test.transform.position.x, test.transform.position.y);
-        test2.transform.position = new Vector3(test2.transform.position.x, test2.transform.position.y);
-
+        // 카메라 존 설정
+        _currentCameraZone = _cameraZones[0];
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
     /// </summary>
     void Update()
     {
-
+        UpdateViewport();
     }
     /// <summary>
     /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트 합니다.
@@ -191,12 +163,40 @@ public class CameraFollowScript : MonoBehaviour
     /// <summary>
     /// 뷰 포트를 업데이트 합니다.
     /// </summary>
-    void UpdateViewport()
+    void UpdateViewport1()
     {
         Vector3 playerPos = _map.Player.transform.position;
 
         _camera.transform.position = new Vector3
             (playerPos.x, playerPos.y, _camera.transform.position.z);
+    }
+
+
+    /// <summary>
+    /// 뷰 포트를 업데이트합니다.
+    /// </summary>
+    void UpdateViewport()
+    {
+        SetViewportPosition(_player.transform.position.x, _player.transform.position.y);
+    }
+    /// <summary>
+    /// 뷰 포트의 위치를 업데이트합니다.
+    /// </summary>
+    /// <param name="curX">플레이어의 현재 X 좌표입니다.</param>
+    /// <param name="curY">플레이어의 현재 Y 좌표입니다.</param>
+    void SetViewportPosition(float curX, float curY)
+    {
+        float xMin = _currentCameraZone._isLeftBounded ? _currentCameraZone._left : float.MinValue;
+        float xMax = _currentCameraZone._isRightBounded ? _currentCameraZone._right : float.MaxValue;
+        float yMin = _currentCameraZone._isBottomBounded ? _currentCameraZone._bottom : float.MinValue;
+        float yMax = _currentCameraZone._isTopBounded ? _currentCameraZone._top : float.MaxValue;
+        float x = Mathf.Clamp(curX, xMin, xMax);
+        float y = Mathf.Clamp(curY, yMin, yMax);
+
+
+
+        Debug.Log(string.Format("x: [{0:F8}/{1:F8}/{2:F8}], y: [{3:F8}/{4:F8}/{5:F8}]", xMin, x, xMax, yMin, y, yMax));
+        _camera.transform.position = new Vector3(x, y, _camZ);
     }
 
 
@@ -211,6 +211,28 @@ public class CameraFollowScript : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
+    [Obsolete()]
+    Rect _pixelRect;
+    [Obsolete()]
+    Rect _rect;
+
+
+    [Obsolete()]
+    /// <summary>
+    /// 
+    /// </summary>
+    public Rect PixelRect
+    {
+        get { return _pixelRect; }
+    }
+    [Obsolete()]
+    /// <summary>
+    /// 
+    /// </summary>
+    public Rect Rect
+    {
+        get { return _rect; }
+    }
 
 
     #endregion

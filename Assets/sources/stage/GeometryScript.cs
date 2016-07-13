@@ -215,7 +215,7 @@ public class GeometryScript : MonoBehaviour
 
 
 
-    #region 보조 메서드를 정의합니다.
+    #region 메서드를 정의합니다.
     /// <summary>
     /// test
     /// </summary>

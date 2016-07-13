@@ -599,7 +599,7 @@ public abstract class PlayerController : MonoBehaviour
         // 사망했다면
         else if (IsDead)
         {
-            if (stageManager.fader.FadeOutEnded)
+            if (stageManager._fader.FadeOutEnded)
             {
                 // 구형 정의를 새로운 정의로 업데이트 합니다.
                 stageManager.RestartLevel(); // Application.LoadLevel(Application.loadedLevel);
@@ -952,7 +952,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     void RequestFadeOut()
     {
-        stageManager.fader.FadeOut(1);
+        stageManager._fader.FadeOut(1);
         Invoke("RequestRestart", 1);
     }
     /// <summary>
