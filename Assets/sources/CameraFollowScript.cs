@@ -13,6 +13,19 @@ public class CameraFollowScript : MonoBehaviour
     public float smoothTimeY;
 
 
+    public BoxCollider2D _cameraViewBox;
+
+    public EdgeCollider2D[] _camEdges;
+
+
+    public Map _map;
+
+
+
+    public BoxCollider2D test;
+    public PolygonCollider2D test2;
+
+
     #endregion
 
 
@@ -25,6 +38,38 @@ public class CameraFollowScript : MonoBehaviour
 
 
     #region 필드를 정의합니다.
+    Camera _camera;
+
+    Rect _pixelRect;
+    Rect _rect;
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+    #region 프로퍼티를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    public Rect PixelRect
+    {
+        get { return _pixelRect; }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public Rect Rect
+    {
+        get { return _rect; }
+    }
+
 
     #endregion
 
@@ -43,6 +88,52 @@ public class CameraFollowScript : MonoBehaviour
     /// </summary>
     void Start()
     {
+        _camera = gameObject.GetComponent<Camera>();
+
+        _pixelRect = _camera.pixelRect;
+        _rect = _camera.rect;
+
+
+        // 필드 초기화
+        /// _map = GetComponentInParent<Map>();
+
+
+        // 따내기?
+        float frustumHeight = Mathf.Abs(2.0f * _camera.transform.position.z * Mathf.Tan(_camera.fieldOfView * 0.5f * Mathf.Deg2Rad));
+        float frustumWidth = Mathf.Abs(frustumHeight * _camera.aspect);
+        _cameraViewBox.size = new Vector2(frustumWidth, frustumHeight);
+        _cameraViewBox.transform.position = new Vector3
+            (_camera.transform.position.x, _camera.transform.position.y, 0);
+
+
+        Bounds camBound = _cameraViewBox.bounds;
+
+        // 엣지 업데이트
+        _camEdges[0].points = new Vector2[]
+        {
+            new Vector2(-_camera.transform.position.x + camBound.center.x - camBound.extents.x, -_camera.transform.position.y + camBound.center.y - camBound.extents.y),
+            new Vector2(-_camera.transform.position.x + camBound.center.x + camBound.extents.x, -_camera.transform.position.y + camBound.center.y - camBound.extents.y),
+        };
+        _camEdges[1].points = new Vector2[]
+        {
+            new Vector2(-_camera.transform.position.x + camBound.center.x - camBound.extents.x, -_camera.transform.position.y + camBound.center.y + camBound.extents.y),
+            new Vector2(-_camera.transform.position.x + camBound.center.x + camBound.extents.x, -_camera.transform.position.y + camBound.center.y + camBound.extents.y),
+        };
+        _camEdges[2].points = new Vector2[]
+        {
+            new Vector2(-_camera.transform.position.x + camBound.center.x - camBound.extents.x, -_camera.transform.position.y + camBound.center.y - camBound.extents.y),
+            new Vector2(-_camera.transform.position.x + camBound.center.x - camBound.extents.x, -_camera.transform.position.y + camBound.center.y + camBound.extents.y),
+        };
+        _camEdges[3].points = new Vector2[]
+        {
+            new Vector2(-_camera.transform.position.x + camBound.center.x + camBound.extents.x, -_camera.transform.position.y + camBound.center.y - camBound.extents.y),
+            new Vector2(-_camera.transform.position.x + camBound.center.x + camBound.extents.x, -_camera.transform.position.y + camBound.center.y + camBound.extents.y),
+        };
+
+
+
+        test.transform.position = new Vector3(test.transform.position.x, test.transform.position.y);
+        test2.transform.position = new Vector3(test2.transform.position.x, test2.transform.position.y);
 
     }
     /// <summary>
@@ -50,7 +141,10 @@ public class CameraFollowScript : MonoBehaviour
     /// </summary>
     void Update()
     {
-
+        /*
+        _cameraViewBox.transform.position = new Vector3
+            (_camera.transform.position.x, _camera.transform.position.y, 0);
+        */
     }
     /// <summary>
     /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트 합니다.
@@ -59,7 +153,12 @@ public class CameraFollowScript : MonoBehaviour
     /// </summary>
     void FixedUpdate()
     {
-
+        /*
+        if (_map.Player != null)
+        {
+            UpdateViewport();
+        }
+        */
     }
     /// <summary>
     /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
@@ -68,6 +167,27 @@ public class CameraFollowScript : MonoBehaviour
     void LastUpdate()
     {
 
+    }
+
+
+    #endregion
+
+
+
+    #region Collider2D 메서드를 재정의합니다.
+
+
+    #endregion
+
+
+
+    #region 메서드를 정의합니다.
+    void UpdateViewport()
+    {
+        Vector3 playerPos = _map.Player.transform.position;
+
+        _camera.transform.position = new Vector3
+            (playerPos.x, playerPos.y, _camera.transform.position.z);
     }
 
 

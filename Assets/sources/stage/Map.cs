@@ -17,7 +17,7 @@ public class Map : MonoBehaviour
     /// <summary>
     /// 플레이어 필드를 업데이트 합니다.
     /// </summary>
-    public PlayerController Player { set { _player = value; } }
+    public PlayerController Player { get { return _player; } set { _player = value; } }
 
 
     #endregion 
@@ -107,19 +107,23 @@ public class Map : MonoBehaviour
     /// </summary>
     void Start()
     {
+        /*
         _cameraZone = _cameraZones[0];
         UpdateCameraZoneBounds();
+        */
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
     /// </summary>
     void Update()
     {
+        /*
         if (_player != null)
         {
             // 뷰 포트를 맞춥니다.
             SetViewportCenter();
         }
+        */
     }
     /// <summary>
     /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트 합니다.
