@@ -71,6 +71,7 @@
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TileAnimator.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledInitialShaderProperties.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledMap.cs" />
+    <Compile Include="Assets\TiledGeometryScript.cs" />
     <Compile Include="Assets\sources\CameraFollowScript.cs" />
     <Compile Include="Assets\sources\Tetragon.cs" />
     <Compile Include="Assets\sources\stage\AttackScript.cs" />
