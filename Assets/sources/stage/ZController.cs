@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+
+
 
 /// <summary>
 /// 제로에 대한 컨트롤러입니다.
@@ -9,6 +12,13 @@ public class ZController : PlayerController
     GameObject dashBoostEffect = null;
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -38,6 +48,13 @@ public class ZController : PlayerController
     }
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -143,7 +160,7 @@ public class ZController : PlayerController
         // 캐릭터 변경 키가 눌린 경우
         else if (IsKeyDown("ChangeCharacter"))
         {
-            stageManager.ChangePlayer(stageManager.PlayerX);
+            stageManager.ChangePlayer(stageManager._playerX);
         }
         // 공격 키가 눌린 경우
         else if (IsKeyDown("Attack"))
@@ -387,6 +404,13 @@ public class ZController : PlayerController
 
 
 
+
+
+
+
+
+
+
     #region 제로에 대해 새롭게 정의된 행동 메서드의 목록입니다.
     ///////////////////////////////////////////////////////////////////
     // 공격
@@ -434,6 +458,13 @@ public class ZController : PlayerController
         BlockAirDashing();
     }
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -562,6 +593,13 @@ public class ZController : PlayerController
 
 
 
+
+
+
+
+
+
+
     #region PlayerController 상태 메서드를 재정의 합니다.
     /// <summary>
     /// 플레이어가 사망합니다.
@@ -570,7 +608,7 @@ public class ZController : PlayerController
     {
         base.Dead();
 
-        stageManager.deadEffect.RequestRun(stageManager.player);
+        stageManager._deadEffect.RequestRun(stageManager._player);
         Voices[8].Play();
         SoundEffects[9].Play();
     }
@@ -603,6 +641,13 @@ public class ZController : PlayerController
     }
 
     #endregion
+
+
+
+
+
+
+
 
 
 

@@ -1,6 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
+
+
+[Obsolete("아주아주 옛날 버전에 사용했습니다. 삭제해도 괜찮을 것 같아요.")]
+/// <summary>
+/// 플레이어 선택 Scene 관리자입니다.
+/// </summary>
 public class PlayerSelectSceneManager : MonoBehaviour
 {
     public GameObject objectX;

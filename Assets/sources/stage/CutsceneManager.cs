@@ -1,15 +1,28 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+
+
+/// <summary>
+/// 컷신을 관리합니다.
+/// </summary>
 public class CutsceneManager : MonoBehaviour
 {
     #region 상수를 정의합니다.
     string NEWLINE { get { return System.Environment.NewLine; } }
     const char SEPERATOR = '|';
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -21,7 +34,15 @@ public class CutsceneManager : MonoBehaviour
     public SpriteRenderer[] _cutsceneImages;
     public ScreenFader _fader;
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -46,11 +67,22 @@ public class CutsceneManager : MonoBehaviour
     Coroutine _speechScriptCoroutine = null;
     Coroutine _actionScriptCoroutine = null;
 
+
     #endregion
 
 
 
+
+
+
+
+
+
+
     #region MonoBehavior 기본 행동을 재정의합니다.
+    /// <summary>
+    /// MonoBehaviour 개체를 초기화합니다.
+    /// </summary>
     void Start()
     {
         #region 필드 초기화를 진행합니다.
@@ -145,6 +177,9 @@ public class CutsceneManager : MonoBehaviour
         // 스크립트를 수행합니다.
         DoNextScript();
     }
+    /// <summary>
+    /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
+    /// </summary>
     void Update()
     {
         // 종료 키가 눌린 경우
@@ -182,11 +217,19 @@ public class CutsceneManager : MonoBehaviour
         }
     }
 
+
     #endregion
 
 
 
-    #region 보조 메서드를 정의합니다.
+
+
+
+
+
+
+
+    #region 메서드를 정의합니다.
     /// <summary>
     /// 다음 스크립트를 실행합니다.
     /// </summary>
@@ -326,6 +369,14 @@ public class CutsceneManager : MonoBehaviour
         // 액션 수행이 모두 종료되었으므로 스위치를 닫습니다.
         _actionScriptPlaying = false;
 
+        // CHECK: 문제가 발생할 때 이 부분을 먼저 확인하세요.
+        // 원래는 이런 구문이 없었습니다.
+        {
+            StopCoroutine(_actionScriptCoroutine);
+            _actionScriptCoroutine = null;
+        }
+
+
         // 다음 스크립트를 수행합니다.
         DoNextScript();
     }
@@ -410,6 +461,7 @@ public class CutsceneManager : MonoBehaviour
 
         _speechScriptPlaying = false;
     }
+
 
     #endregion
 

@@ -1,47 +1,48 @@
-RXPB v3.1.1 Camera v1.0.5.0
+RXPB v3.1.1 Camera v1.1.0
 
-! 다음 버전에서는 무조건 코드 정리 한 번 할 것.
-
-
-
-- 카메라 따라오기 기능 거의 구현했다. 얼마 안 있으면 구현될 것 같음.
-  임시로 저장하자.
-> 임시 저장 버전은 4번째에 숫자로 기록하자.
+- 코드 정리 한 번 **엄청** 크게 함.
+> 사용되지 않는 클래스 다량 삭제.
+> 현대적 Naming Convention을 갖도록 이전에 작성된 클래스 수정.
+> 주석 강화. (!) 아직 더 많이 해야 하지만 이 정도도 크다.
 
 
 
-- CameraZone5Script를 Unity에서 직접 넣는 방식에서,
-  CameraFollowScript가 초기화 시에 자동으로 가져오는 방식 채택.
-> _cameraZoneParent 객체 하나만 추가하고 이 객체의 자식을 가져온다.
+* !!!!! IMPORTANT & HARD CHALLENGE !!!!!
+  Polygon Style CameraZone에 대해 카메라가 이상한 위치에 찍히는 버그 해결.
+> BoxCollider2D에서는 좌표를 잡을 때 Bounds bounds 속성을 이용하고,
+  PolygonCollider2D에서는 Vector2[] points와 transform 속성을 이용했는데,
+  이 두 방식 간에 차이가 있어서 잘 동기화가 안 됐었다.
+  간략히 말하면 Polygon의 경우 Box와 달리, origin 좌표를 point에 더해야 함.
 
 
 
-- 주석 강화.
+* !!!!! IMPORTANT !!!!!
+  임의의 사각형 꼭짓점 좌표로부터 정렬된 좌표 배열을 획득하는
+  새로운 알고리즘을 생각했다.
+> 다음은 "왼쪽 위, 오른쪽 위, 왼쪽 아래, 오른쪽 아래"로
+  사각형 꼭짓점을 정렬하여 반환하는 메서드다.
+
+  Vector2[] GetTetragonPoints(Vector2[] points);
+
+  아이디어는 다음과 같다.
+1. 네 꼭짓점의 평균값을 구한다.
+2. (꼭짓점 좌표 - 평균점 좌표)의 결과로 해당 꼭짓점을 알 수 있다.
+(1) (-,-) : 왼쪽 아래
+(2) (+,-) : 오른쪽 아래
+(3) (-,+) : 왼쪽 위
+(4) (+,+) : 오른쪽 위
+  
+  이 아이디어는 **상당히** 중요하며, 요긴하게 사용할 수 있다. 기억하자.
+> 이 아이디어로, Tiled에서 Polygon을 그릴 때 일정한 규칙을 정해서
+  그 규칙대로만 Polygon을 그릴 필요가 없어졌다. (이게 중요)
 
 
 
-- CameraZone5Script에 _cameraFollow 필드 추가.
+- Map 클래스를 삭제하고 NewMap 클래스 도입.
 
 
 
-! _cameraZoneParent가 null일 때 Console.WriteLine() 호출하는
-  테스트 코드가 있는데, 이거 지우자.
-
-
-
-- 카메라 크기의 절반씩만큼 _top, _left, _right, _bottom을 빼고 더할 때
-  _top/_bottom, _left/_right의 위치가 서로 바뀌는 경우가 있다.
-  일단은 서로의 중간값으로 업데이트함으로써 문제를 반절 해결함.
->! 보다 일반적인 개선이 필요하니 한 번 고려할 것.
-
-
-
-- TiledGeometryScript에서 isLeftDescending 속성 제거됨.
-
-
-
-- Database 클래스 추가.
-
+! 카메라 선형 보간만 구현하면 master와 병합할 것.
 
 
 

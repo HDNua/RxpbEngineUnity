@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
+
+
 
 /// <summary>
 /// 타이틀 화면을 처리합니다.
@@ -12,7 +15,15 @@ public class TitleSceneManager : MonoBehaviour
     public AudioClip[] soundEffects;
     public ScreenFader fader;
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -23,11 +34,22 @@ public class TitleSceneManager : MonoBehaviour
     bool changeSceneRequested = false;
     string nextLevelName = null;
 
+
     #endregion
 
 
 
+
+
+
+
+
+
+
     #region MonoBehaviour 기본 메서드를 재정의 합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     void Start()
     {
         // 효과음 리스트를 초기화 합니다.
@@ -41,6 +63,9 @@ public class TitleSceneManager : MonoBehaviour
         // 페이드인 효과를 실행합니다.
         fader.FadeIn();
     }
+    /// <summary>
+    /// 
+    /// </summary>
     void Update()
     {
         // 장면 전환 요청을 확인한 경우의 처리입니다.
@@ -101,7 +126,15 @@ public class TitleSceneManager : MonoBehaviour
         }
     }
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -119,6 +152,7 @@ public class TitleSceneManager : MonoBehaviour
         menuIndex = index;
         seSources[0].Play();
     }
+
 
     #endregion
 }

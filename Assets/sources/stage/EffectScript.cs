@@ -1,5 +1,7 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
+
+
 
 [RequireComponent(typeof(Animator))]
 /// <summary>
@@ -12,6 +14,13 @@ public class EffectScript : MonoBehaviour
     Animator _animator;
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -33,15 +42,31 @@ public class EffectScript : MonoBehaviour
 
 
 
-    #region MonoBehaviour 기본 메서드를 재정의 합니다.
+
+
+
+
+
+
+
+    #region MonoBehaviour 기본 메서드를 재정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     void Awake()
     {
         _animator = GetComponent<Animator>();
     }
+    /// <summary>
+    /// 
+    /// </summary>
     void Start()
     {
 
     }
+    /// <summary>
+    /// 
+    /// </summary>
     void Update()
     {
         if (_destroyRequested == false)
@@ -63,6 +88,13 @@ public class EffectScript : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
     #region 프레임 이벤트 핸들러를 정의합니다.
     void FE_EndEffect()
     {
@@ -70,6 +102,13 @@ public class EffectScript : MonoBehaviour
     }
 
     #endregion
+
+
+
+
+
+
+
 
 
 

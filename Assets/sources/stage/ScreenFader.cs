@@ -1,5 +1,7 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
+
+
 
 /// <summary>
 /// 장면의 페이드인 또는 페이드아웃 효과를 처리합니다.
@@ -17,6 +19,13 @@ public class ScreenFader : MonoBehaviour
     public bool FadeOutEnded { get { return (_guiTexture.color == Color.black); } }
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -51,7 +60,15 @@ public class ScreenFader : MonoBehaviour
         }
     }
 
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -72,6 +89,7 @@ public class ScreenFader : MonoBehaviour
         _guiTexture.color = Color.Lerp
             (_guiTexture.color, Color.black, fadeSpeed * Time.deltaTime);
     }
+
 
     /// <summary>
     /// 페이드인 효과를 처리합니다.
@@ -107,5 +125,7 @@ public class ScreenFader : MonoBehaviour
         this.fadeSpeed = fadeSpeed;
         FadeOut();
     }
+
+
     #endregion
 }

@@ -1,6 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
+
+
+[Obsolete("나중에 꼭 제대로 정의하십시오!")]
 /// <summary>
 /// 세이버 공격 스크립트입니다.
 /// </summary>
@@ -19,6 +23,7 @@ public class ZSaberScript : AttackScript
     {
         base.Update();
     }
+
 
     #endregion
 }

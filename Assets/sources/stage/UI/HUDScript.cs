@@ -16,7 +16,7 @@ public class HUDScript : MonoBehaviour
     void Update()
     {
         StageManager stageManager = GetComponentInParent<StageManager>();
-        PlayerController player = stageManager.player;
+        PlayerController player = stageManager._player;
         if (player != null)
         {
             Vector3 healthScale = Health.transform.localScale;

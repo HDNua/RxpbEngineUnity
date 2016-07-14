@@ -10,9 +10,9 @@ using System.Collections;
 public class CameraFollowScript : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
-    public BoxCollider2D _cameraViewBox;
-    public Map _map;
+    public NewMap _map;
 
+    public BoxCollider2D _cameraViewBox;
     public GameObject _cameraZoneParent;
 
 
@@ -215,28 +215,6 @@ public class CameraFollowScript : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("다음 커밋에서 삭제하자")]
-    Rect _pixelRect;
-    [Obsolete("다음 커밋에서 삭제하자")]
-    Rect _rect;
-
-
-    [Obsolete("다음 커밋에서 삭제하자")]
-    /// <summary>
-    /// 
-    /// </summary>
-    public Rect PixelRect
-    {
-        get { return _pixelRect; }
-    }
-    [Obsolete("다음 커밋에서 삭제하자")]
-    /// <summary>
-    /// 
-    /// </summary>
-    public Rect Rect
-    {
-        get { return _rect; }
-    }
 
 
     #endregion

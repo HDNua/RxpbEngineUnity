@@ -63,8 +63,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CameraZoneParent.cs" />
-    <Compile Include="Assets\Database.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\ImportBehaviour.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\SortingLayerExposed.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\SpriteDepthInMap.cs" />
@@ -72,22 +70,18 @@
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledInitialShaderProperties.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledMap.cs" />
     <Compile Include="Assets\sources\CameraFollowScript.cs" />
-    <Compile Include="Assets\sources\CameraFollowScript_dep.cs" />
-    <Compile Include="Assets\sources\CameraZone2Script.cs" />
     <Compile Include="Assets\sources\CameraZone5Script.cs" />
+    <Compile Include="Assets\sources\CameraZoneParent.cs" />
+    <Compile Include="Assets\sources\DataBase.cs" />
     <Compile Include="Assets\sources\HandyScriptTemplate.cs" />
-    <Compile Include="Assets\sources\Tetragon.cs" />
+    <Compile Include="Assets\sources\NewMap.cs" />
     <Compile Include="Assets\sources\TiledGeometryScript.cs" />
     <Compile Include="Assets\sources\stage\AttackScript.cs" />
-    <Compile Include="Assets\sources\stage\CameraZoneScript.cs" />
     <Compile Include="Assets\sources\stage\CutsceneManager.cs" />
     <Compile Include="Assets\sources\stage\DeadEffectScript.cs" />
     <Compile Include="Assets\sources\stage\EffectScript.cs" />
-    <Compile Include="Assets\sources\stage\GeometryScript.cs" />
-    <Compile Include="Assets\sources\stage\GroundScript.cs" />
     <Compile Include="Assets\sources\stage\HDSceneManager.cs" />
     <Compile Include="Assets\sources\stage\LoadingSceneManager.cs" />
-    <Compile Include="Assets\sources\stage\Map.cs" />
     <Compile Include="Assets\sources\stage\PlayerController.cs" />
     <Compile Include="Assets\sources\stage\PlayerSelectSceneManager.cs" />
     <Compile Include="Assets\sources\stage\ReadyAnimator.cs" />
@@ -95,11 +89,9 @@
     <Compile Include="Assets\sources\stage\ScreenFader.cs" />
     <Compile Include="Assets\sources\stage\SpeechManager.cs" />
     <Compile Include="Assets\sources\stage\StageManager.cs" />
-    <Compile Include="Assets\sources\stage\StageSceneManager.cs" />
     <Compile Include="Assets\sources\stage\TitleSceneManager.cs" />
     <Compile Include="Assets\sources\stage\UI\HUDScript.cs" />
     <Compile Include="Assets\sources\stage\UI\PauseMenu.cs" />
-    <Compile Include="Assets\sources\stage\WallScript.cs" />
     <Compile Include="Assets\sources\stage\XBusterScript.cs" />
     <Compile Include="Assets\sources\stage\XController.cs" />
     <Compile Include="Assets\sources\stage\ZController.cs" />

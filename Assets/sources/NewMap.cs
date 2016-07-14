@@ -5,13 +5,13 @@ using System.Collections;
 
 
 /// <summary>
-/// Scene 데이터베이스입니다.
+/// 맵 정보를 보관합니다.
 /// </summary>
-public class Database : MonoBehaviour
+public class NewMap : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
-    public PlayerController _playerX;
-    public PlayerController _playerZ;
+    public DataBase _database;
+    public StageManager _sceneManager;
 
 
     #endregion
@@ -38,10 +38,11 @@ public class Database : MonoBehaviour
 
 
 
-
     #region 프로퍼티를 정의합니다.
-    public PlayerController PlayerX { get { return _playerX; } }
-    public PlayerController PlayerZ { get { return _playerZ; } }
+    /// <summary>
+    /// 
+    /// </summary>
+    public PlayerController Player { get { return _sceneManager._player; } }
 
 
     #endregion
@@ -63,13 +64,6 @@ public class Database : MonoBehaviour
     {
 
     }
-    /// <summary>
-    /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
-    /// </summary>
-    void Update()
-    {
-
-    }
 
 
     #endregion
@@ -84,6 +78,14 @@ public class Database : MonoBehaviour
 
 
     #region 메서드를 정의합니다.
+    /// <summary>
+    /// 플레이어를 전환합니다.
+    /// </summary>
+    /// <param name="player">전환할 플레이어입니다.</param>
+    public void UpdatePlayer(PlayerController player)
+    {
+        _sceneManager._player = player;
+    }
 
 
     #endregion
@@ -98,14 +100,6 @@ public class Database : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("구형 정의 테스트입니다.")]
-    /// <summary>
-    /// 구형 정의 테스트 함수입니다.
-    /// </summary>
-    void Function()
-    {
-        Console.WriteLine("Hello, world!");
-    }
 
 
     #endregion

@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 
@@ -201,7 +201,7 @@ public class XController : PlayerController
         // 캐릭터 변경 키가 눌린 경우
         else if (IsKeyDown("ChangeCharacter"))
         {
-            stageManager.ChangePlayer(stageManager.PlayerZ);
+            stageManager.ChangePlayer(stageManager._playerZ);
         }
     }
     /// <summary>
@@ -839,7 +839,7 @@ public class XController : PlayerController
     protected override void Dead()
     {
         base.Dead();
-        stageManager.deadEffect.RequestRun(stageManager.player);
+        stageManager._deadEffect.RequestRun(stageManager._player);
         Voices[9].Play();
         SoundEffects[12].Play();
     }

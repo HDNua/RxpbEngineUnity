@@ -5,14 +5,13 @@ using System.Collections;
 
 
 /// <summary>
-/// CameraZoneScript의 부모입니다.
+/// Scene 데이터베이스입니다.
 /// </summary>
-public class CameraZoneParent : MonoBehaviour
+public class DataBase : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
-    public Map _map;
-    public PlayerController _player;
-    public CameraFollowScript _cameraFollow;
+    public PlayerController _playerX;
+    public PlayerController _playerZ;
 
 
     #endregion
@@ -29,7 +28,6 @@ public class CameraZoneParent : MonoBehaviour
     #region 필드를 정의합니다.
 
 
-
     #endregion
 
 
@@ -40,10 +38,10 @@ public class CameraZoneParent : MonoBehaviour
 
 
 
+
     #region 프로퍼티를 정의합니다.
-    public Map Map { get { return _map; } }
-    public PlayerController Player { get { return _player; } }
-    public CameraFollowScript CameraFollow { get { return _cameraFollow; } }
+    public PlayerController PlayerX { get { return _playerX; } }
+    public PlayerController PlayerZ { get { return _playerZ; } }
 
 
     #endregion
@@ -63,14 +61,14 @@ public class CameraZoneParent : MonoBehaviour
     /// </summary>
     void Start()
     {
-        
+
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
     /// </summary>
     void Update()
     {
-        
+
     }
 
 

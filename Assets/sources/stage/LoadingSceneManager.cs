@@ -1,25 +1,46 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
 
+
+
+/// <summary>
+/// Loading Scene 관리자입니다.
+/// </summary>
 public class LoadingSceneManager : MonoBehaviour
 {
-    #region 필드를 정의합니다.
+    #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     public ScreenFader fader;
+
+
+    #endregion
+
+
+
+    #region 필드를 정의합니다.
     bool fadeRequested = false;
 
     static bool loadRequested = false;
     static string loadingLevelName = null;
 
+
     #endregion
 
+
+
     #region MonoBehaviour 기본 메서드를 재정의 합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     void Start()
     {
         // 페이드인 효과를 추가합니다.
         fader.FadeIn();
     }
+    /// <summary>
+    /// 
+    /// </summary>
     void Update()
     {
         if (loadRequested)
@@ -29,11 +50,16 @@ public class LoadingSceneManager : MonoBehaviour
         }
     }
 
+
     #endregion
 
 
 
     #region 보조 메서드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     IEnumerator LoadMain()
     {
         // 구형 정의를 새로운 정의로 업데이트 합니다.
@@ -69,6 +95,7 @@ public class LoadingSceneManager : MonoBehaviour
         // 구형 정의를 새로운 정의로 업데이트 합니다.
         SceneManager.LoadScene("Loading"); // Application.LoadLevel("Loading");
     }
+
 
     #endregion
 }

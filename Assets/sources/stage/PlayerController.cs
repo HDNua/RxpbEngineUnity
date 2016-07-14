@@ -1,10 +1,13 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 
 
+/// <summary>
+/// 일반 플레이어 컨트롤러입니다.
+/// </summary>
 public abstract class PlayerController : MonoBehaviour
 {
     #region 컨트롤러가 사용할 공용 형식 또는 값을 정의합니다.

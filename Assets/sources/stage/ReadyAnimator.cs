@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 
 
@@ -43,13 +44,13 @@ public class ReadyAnimator : MonoBehaviour
     void FE_SpawnPlayer()
     {
         // HUD를 활성화 합니다.
-        stageManager.hud.Health.SetActive(true);
-        stageManager.hud.HealthBar.SetActive(true);
+        stageManager._HUD.Health.SetActive(true);
+        stageManager._HUD.HealthBar.SetActive(true);
 
         // 플레이어 소환을 요청합니다.
-        stageManager.player.transform.position
-            = stageManager.playerSpawnPos.position;
-        stageManager.player.RequestSpawn();
+        stageManager._player.transform.position
+            = stageManager._playerSpawnPos.position;
+        stageManager._player.RequestSpawn();
     }
 
 

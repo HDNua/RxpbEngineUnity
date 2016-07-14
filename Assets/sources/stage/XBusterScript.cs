@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 
@@ -65,17 +65,6 @@ public class XBusterScript : AttackScript
     protected override void Update()
     {
         base.Update();
-        /*
-        if (mainCamera != null)
-        {
-            Vector3 camPos = mainCamera.transform.position;
-            Vector3 bulPos = transform.position;
-            if (Mathf.Abs(camPos.x - bulPos.x) > 10)
-            {
-                Destroy(gameObject);
-            }
-        }
-        */
     }
     /// <summary>
     /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트합니다.

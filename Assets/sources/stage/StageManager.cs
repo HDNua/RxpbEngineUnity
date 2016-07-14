@@ -10,15 +10,19 @@ using System.Collections;
 public class StageManager : HDSceneManager
 {
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
-    public Map map;
-    public ReadyAnimator ready;
-    public PlayerController player;
-    public Transform playerSpawnPos;
-    public PlayerController PlayerX;
-    public PlayerController PlayerZ;
+    public DataBase _database;
+    public NewMap _map;
 
-    public DeadEffectScript deadEffect;
-    public HUDScript hud;
+
+    public ReadyAnimator _ready;
+    public PlayerController _player;
+    public Transform _playerSpawnPos;
+    public PlayerController _playerX;
+    public PlayerController _playerZ;
+
+
+    public DeadEffectScript _deadEffect;
+    public HUDScript _HUD;
 
 
     #endregion
@@ -68,15 +72,18 @@ public class StageManager : HDSceneManager
 
 
         // 불러온 캐릭터를 잠깐 사용 불가능하게 합니다.
-        PlayerX.gameObject.SetActive(false);
-        PlayerZ.gameObject.SetActive(false);
+        _playerX.gameObject.SetActive(false);
+        _playerZ.gameObject.SetActive(false);
 
         // 맵 데이터를 초기화합니다.
-        player.transform.position = playerSpawnPos.transform.position;
-        map.Player = player;
+        _player.transform.position = _playerSpawnPos.transform.position;
 
         // 페이드인 효과를 처리합니다.
         _fader.FadeIn();
+
+
+        // 
+
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -90,14 +97,15 @@ public class StageManager : HDSceneManager
         if (_fader.FadeInEnded)
         {
             // 준비 애니메이션 재생을 시작합니다.
-            ready.gameObject.SetActive(true);
+            _ready.gameObject.SetActive(true);
         }
 
-        // 
+        /**
         if (IsFrozen)
         {
 
         }
+        */
     }
 
 
@@ -120,18 +128,18 @@ public class StageManager : HDSceneManager
     public void ChangePlayer(PlayerController newPlayer)
     {
         // 이전 플레이어를 비활성화합니다.
-        player.gameObject.SetActive(false);
+        _player.gameObject.SetActive(false);
 
         // 새 플레이어를 소환합니다.
-        newPlayer.transform.position = player.transform.position;
+        newPlayer.transform.position = _player.transform.position;
         newPlayer.RequestSpawn();
-        if (player.FacingRight == false)
+        if (_player.FacingRight == false)
         {
             newPlayer.RequestFlip();
         }
 
         // 관리자 객체의 필드가 새 플레이어를 가리키도록 합니다.
-        map.Player = player = newPlayer;
+        _map.UpdatePlayer(_player = newPlayer);
     }
 
 
