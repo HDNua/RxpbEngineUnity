@@ -4,6 +4,7 @@ using System.Collections;
 
 
 
+[Obsolete("짜증나는데 이거 빼버릴까 합니다.")]
 /// <summary>
 /// 맵을 정의합니다.
 /// </summary>

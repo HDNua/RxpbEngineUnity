@@ -13,9 +13,7 @@ public class CameraFollowScript : MonoBehaviour
     public BoxCollider2D _cameraViewBox;
     public Map _map;
 
-
-    public CameraZone5Script[] _cameraZones;
-
+    public GameObject _cameraZoneParent;
 
 
     #endregion
@@ -44,6 +42,10 @@ public class CameraFollowScript : MonoBehaviour
     /// 현재 플레이어가 위치한 카메라 존입니다.
     /// </summary>
     CameraZone5Script _currentCameraZone;
+    /// <summary>
+    /// 카메라 존 집합입니다.
+    /// </summary>
+    CameraZone5Script[] _cameraZones;
 
 
     /// <summary>
@@ -93,20 +95,22 @@ public class CameraFollowScript : MonoBehaviour
         _camZ = _camera.transform.position.z;
 
 
-        // 필드 초기화
+        // 일반 필드 초기화
         float frustumHeight = Mathf.Abs(2.0f * _camera.transform.position.z * Mathf.Tan(_camera.fieldOfView * 0.5f * Mathf.Deg2Rad));
         float frustumWidth = Mathf.Abs(frustumHeight * _camera.aspect);
         _cameraViewBox.size = new Vector2(frustumWidth, frustumHeight);
         _cameraViewBox.transform.position = new Vector3
             (_camera.transform.position.x, _camera.transform.position.y, 0);
 
-
-        // 
-        _player = _map.Player;
+        _player = _map.Player; // 플레이어 필드 초기화
 
 
-        // 카메라 존 설정
+        // 카메라 존 초기화
+        CameraZone5Script[] cameraZones = _cameraZoneParent.GetComponentsInChildren<CameraZone5Script>();
+        _cameraZones = cameraZones;
         _currentCameraZone = _cameraZones[0];
+
+
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -177,7 +181,7 @@ public class CameraFollowScript : MonoBehaviour
     /// </summary>
     void UpdateViewport()
     {
-        SetViewportPosition(_player.transform.position.x, _player.transform.position.y);
+        SetViewportPosition(_player.transform.localPosition.x, _player.transform.localPosition.y);
     }
     /// <summary>
     /// 뷰 포트의 위치를 업데이트합니다.
@@ -211,13 +215,13 @@ public class CameraFollowScript : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete()]
+    [Obsolete("다음 커밋에서 삭제하자")]
     Rect _pixelRect;
-    [Obsolete()]
+    [Obsolete("다음 커밋에서 삭제하자")]
     Rect _rect;
 
 
-    [Obsolete()]
+    [Obsolete("다음 커밋에서 삭제하자")]
     /// <summary>
     /// 
     /// </summary>
@@ -225,7 +229,7 @@ public class CameraFollowScript : MonoBehaviour
     {
         get { return _pixelRect; }
     }
-    [Obsolete()]
+    [Obsolete("다음 커밋에서 삭제하자")]
     /// <summary>
     /// 
     /// </summary>

@@ -10,7 +10,9 @@ using System.Collections;
 public class CameraZone5Script : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
-    public CameraFollowScript _cameraFollow;
+    public CameraZoneParent _cameraZoneParent;
+//    public CameraFollowScript _cameraFollow;
+//    public Map _map;
 
     public bool _isTopBounded;
     public bool _isLeftBounded;
@@ -35,6 +37,10 @@ public class CameraZone5Script : MonoBehaviour
 
 
     #region 필드를 정의합니다.
+    CameraFollowScript _cameraFollow;
+
+
+
     PlayerController _player;
     Camera _mainCamera;
     float _camZ;
@@ -69,7 +75,14 @@ public class CameraZone5Script : MonoBehaviour
     {
         // 필드를 초기화합니다.
         _mainCamera = Camera.main;
-        _player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+
+        if (_cameraZoneParent == null)
+        {
+            Console.WriteLine();
+        }
+
+        _player = _cameraZoneParent.Player; /// GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+        _cameraFollow = _cameraZoneParent.CameraFollow;
         _camZ = _mainCamera.transform.position.z;
 
 
@@ -120,6 +133,21 @@ public class CameraZone5Script : MonoBehaviour
         _left += _cameraWidthHalf;
         _right -= _cameraWidthHalf;
         _bottom += _cameraHeightHalf;
+
+
+        // 마지막 상하좌우값 조정
+        if (_top < _bottom)
+        {
+            float mid = (_top + _bottom) / 2;
+            _top = _bottom = mid;
+        }
+        if (_right < _left)
+        {
+            float mid = (_left + _right) / 2;
+            _left = _right = mid;
+
+        }
+
     }
 
 

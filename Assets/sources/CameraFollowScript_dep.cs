@@ -4,6 +4,7 @@ using System.Collections;
 
 
 
+[Obsolete("다른 요소로 대체되었습니다.")]
 /// <summary>
 /// 카메라가 주인공을 따라갑니다.
 /// </summary>

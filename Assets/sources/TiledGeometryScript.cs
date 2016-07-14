@@ -10,7 +10,7 @@ using System.Collections;
 public class TiledGeometryScript : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
-    public bool isLeftDescending = true;
+///    public bool isLeftDescending = true;
 
 
     #endregion
