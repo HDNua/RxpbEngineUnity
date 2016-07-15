@@ -70,7 +70,8 @@
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledInitialShaderProperties.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledMap.cs" />
     <Compile Include="Assets\sources\CameraFollowScript.cs" />
-    <Compile Include="Assets\sources\CameraZone5Script.cs" />
+    <Compile Include="Assets\sources\CameraZone.cs" />
+    <Compile Include="Assets\sources\CameraZoneBorder.cs" />
     <Compile Include="Assets\sources\CameraZoneParent.cs" />
     <Compile Include="Assets\sources\DataBase.cs" />
     <Compile Include="Assets\sources\HandyScriptTemplate.cs" />

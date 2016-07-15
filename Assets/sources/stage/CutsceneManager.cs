@@ -369,13 +369,14 @@ public class CutsceneManager : MonoBehaviour
         // 액션 수행이 모두 종료되었으므로 스위치를 닫습니다.
         _actionScriptPlaying = false;
 
+        /**
         // CHECK: 문제가 발생할 때 이 부분을 먼저 확인하세요.
         // 원래는 이런 구문이 없었습니다.
         {
             StopCoroutine(_actionScriptCoroutine);
             _actionScriptCoroutine = null;
         }
-
+        */
 
         // 다음 스크립트를 수행합니다.
         DoNextScript();

@@ -1,19 +1,38 @@
-RXPB v3.1.1 Camera v1.1.1
-
-- TiledGeometryScript에 public PhysicsMaterial2D _material 필드 추가.
-> FrictionlessWall 속성 사용할 것.
-
-
+RXPB v3.1.2 Camera v1.2.0
 
 ! 카메라 선형 보간만 구현하면 master와 병합할 것.
-
-
-
 - 카메라 존을 크게 단순화하고 카메라 전환의 경계선을 추가.
+> 저번 커밋에서 반영된 것 같지만 실제로는 이번 커밋에서 반영되었다.
+>> 이번 커밋은 선형 보간을 제외하면 원래 생각과 가장 이상적으로 일치한다.
+   한 번 저장해두는 것이 좋겠다.
 
 
 
-- 카메라 존 관련해서 크게 바꿀 예정이라 한 번 커밋.
+* CameraZoneBorder에는 두 가지 필드가 있다. _from, _to가 그것이다.
+> 좌우: _from=좌, _to=우
+> 상하: _from=상, _to=하
+  원래 from과 to라는 단어의 의미에 관계 없이, 이는 언제나 고정이다.
+
+
+
+- 클래스 이름 변경.
+> CameraZone5Script -> CameraZone
+
+
+
+- 클래스 추가.
+> CameraZoneBorder
+
+
+
+- CameraFollowScript 클래스에 public CameraZone _startCameraZone 추가.
+
+
+
+- master에서 수정했어야 하는건데 여기서 수정한 거 있음.
+> CutsceneManager의 필드를 Naming Convention을 업데이트하다보니
+  이전 값들이 적용이 안 돼서 컷신이 제대로 동작하지 않는 오류가 있었음.
+  지금은 수정됨.
 
 
 

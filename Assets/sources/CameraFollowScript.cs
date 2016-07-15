@@ -14,9 +14,12 @@ public class CameraFollowScript : MonoBehaviour
 
     public BoxCollider2D _cameraViewBox;
     public GameObject _cameraZoneParent;
+    public CameraZone _startCameraZone;
+
+    public CameraZone _currentCameraZone_Unity = null;
 
 
-    Vector2 _cameraFollowVelocity;
+    // Vector2 _cameraFollowVelocity;
     public float _smoothTimeX;
     public float _smoothTimeY;
 
@@ -46,17 +49,23 @@ public class CameraFollowScript : MonoBehaviour
     /// <summary>
     /// 현재 플레이어가 위치한 카메라 존입니다.
     /// </summary>
-    CameraZone5Script _currentCameraZone;
+    CameraZone _currentCameraZone;
     /// <summary>
     /// 카메라 존 집합입니다.
     /// </summary>
-    CameraZone5Script[] _cameraZones;
+    CameraZone[] _cameraZones;
 
 
     /// <summary>
     /// 메인 카메라의 Z 좌표입니다.
     /// </summary>
     float _camZ;
+
+
+    /// <summary>
+    /// 카메라 존 변경 중이라면 참입니다.
+    /// </summary>
+    bool _transitioning = false;
 
 
     #endregion
@@ -71,9 +80,18 @@ public class CameraFollowScript : MonoBehaviour
 
     #region 프로퍼티를 정의합니다.
     /// <summary>
-    /// 현재 플레이어가 위치한 카메라 존을 업데이트 합니다.
+    /// 현재 플레이어가 위치한 카메라 존입니다.
     /// </summary>
-    public CameraZone5Script CurrentCameraZone
+    public CameraZone CurrentCameraZone
+    {
+        get { return _currentCameraZone; }
+    }
+
+    [Obsolete("UpdateCameraZone() 메서드로 대체되었습니다.")]
+    /// <summary>
+    /// 현재 플레이어가 위치한 카메라 존입니다.
+    /// </summary>
+    public CameraZone CurrentCameraZone_dep
     {
         set { _currentCameraZone = value; }
     }
@@ -111,11 +129,13 @@ public class CameraFollowScript : MonoBehaviour
 
 
         // 카메라 존 초기화
-        CameraZone5Script[] cameraZones = _cameraZoneParent.GetComponentsInChildren<CameraZone5Script>();
+        CameraZone[] cameraZones = _cameraZoneParent.GetComponentsInChildren<CameraZone>();
         _cameraZones = cameraZones;
-        _currentCameraZone = _cameraZones[0];
+        if (_startCameraZone == null)
+            throw new Exception("시작 카메라 존이 설정되지 않았습니다.");
 
-
+        /// _currentCameraZone = _startCameraZone;
+        UpdateCameraZone(_startCameraZone);
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -170,24 +190,20 @@ public class CameraFollowScript : MonoBehaviour
 
     #region 메서드를 정의합니다.
     /// <summary>
-    /// 뷰 포트를 업데이트 합니다.
-    /// </summary>
-    void UpdateViewport1()
-    {
-        Vector3 playerPos = _map.Player.transform.position;
-
-        _camera.transform.position = new Vector3
-            (playerPos.x, playerPos.y, _camera.transform.position.z);
-    }
-
-
-    /// <summary>
     /// 뷰 포트를 업데이트합니다.
     /// </summary>
     void UpdateViewport()
     {
-        /// SetViewportPosition(_player.transform.localPosition.x, _player.transform.localPosition.y);
-        MoveViewportToPlayer();
+        // 카메라 존 변경 중이라면
+        if (_transitioning)
+        {
+            MoveViewportToPlayer();
+        }
+        // 그 외의 경우
+        else
+        {
+            SetViewportPosition(_player.transform.localPosition.x, _player.transform.localPosition.y);
+        }
     }
     /// <summary>
     /// 뷰 포트의 위치를 업데이트합니다.
@@ -203,8 +219,7 @@ public class CameraFollowScript : MonoBehaviour
         float x = Mathf.Clamp(curX, xMin, xMax);
         float y = Mathf.Clamp(curY, yMin, yMax);
 
-
-        Debug.Log(string.Format("x: [{0:F8}/{1:F8}/{2:F8}], y: [{3:F8}/{4:F8}/{5:F8}]", xMin, x, xMax, yMin, y, yMax));
+        /// Debug.Log(string.Format("x: [{0:F8}/{1:F8}/{2:F8}], y: [{3:F8}/{4:F8}/{5:F8}]", xMin, x, xMax, yMin, y, yMax));
         _camera.transform.position = new Vector3(x, y, _camZ);
     }
     /// <summary>
@@ -220,17 +235,17 @@ public class CameraFollowScript : MonoBehaviour
         float yMax = _currentCameraZone._isTopBounded ? _currentCameraZone._top : float.MaxValue;
         float x = Mathf.Clamp(curX, xMin, xMax);
         float y = Mathf.Clamp(curY, yMin, yMax);
-        Vector3 dstPos = new Vector3(x, y, _camZ);
+
+
+        // Vector3 dstPos = new Vector3(x, y, _camZ);
 
         float posX, posY;
         posX = Mathf.Lerp(_camera.transform.position.x, x, Time.deltaTime);
         posY = Mathf.Lerp(_camera.transform.position.y, y, Time.deltaTime);
+        _camera.transform.position = new Vector3(posX, posY, _camZ);
 
-
-
-
-//        _camera.transform.position = Vector3.Lerp(_camera.transform.position, dstPos, Time.deltaTime);
-        _camera.transform.position = dstPos;
+        // _camera.transform.position = Vector3.Lerp(_camera.transform.position, dstPos, Time.deltaTime);
+        // _camera.transform.position = dstPos;
 
         /*
         posX = Mathf.SmoothDamp(_camera.transform.position.x, x, ref _cameraFollowVelocity.x, _smoothTimeX);
@@ -238,6 +253,27 @@ public class CameraFollowScript : MonoBehaviour
         */
         //_camera.transform.position = new Vector3(posX, posY, _camZ);
     }
+
+
+    /// <summary>
+    /// 카메라 존을 업데이트합니다.
+    /// </summary>
+    /// <param name="cameraZone"></param>
+    public void UpdateCameraZone(CameraZone cameraZone)
+    {
+        _currentCameraZone = cameraZone;
+        _currentCameraZone_Unity = _currentCameraZone;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="cameraZone"></param>
+    /// <returns></returns>
+    public bool IsInCameraZone(CameraZone cameraZone)
+    {
+        return _currentCameraZone.GetInstanceID() == cameraZone.GetInstanceID();
+    }
+
 
 
     #endregion
@@ -251,6 +287,17 @@ public class CameraFollowScript : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 뷰 포트를 업데이트 합니다.
+    /// </summary>
+    void UpdateViewport1()
+    {
+        Vector3 playerPos = _map.Player.transform.position;
+
+        _camera.transform.position = new Vector3
+            (playerPos.x, playerPos.y, _camera.transform.position.z);
+    }
 
 
     #endregion
