@@ -10,7 +10,7 @@ using System.Collections;
 public class TiledGeometryScript : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
-///    public bool isLeftDescending = true;
+    public PhysicsMaterial2D _material;
 
 
     #endregion
@@ -52,6 +52,7 @@ public class TiledGeometryScript : MonoBehaviour
 
 
         // 평평한 지형 충돌체의 처리입니다.
+        EdgeCollider2D groundEdge, leftEdge, rightEdge, bottomEdge;
         if (_flatGroundCollider != null)
         {
             // 계산에 필요한 값을 먼저 획득합니다.
@@ -61,13 +62,13 @@ public class TiledGeometryScript : MonoBehaviour
 
             // edge 객체를 gameObject에 추가하고 이에 대한 참조를 획득합니다.
             GameObject childObject;
-            EdgeCollider2D groundEdge, leftEdge, rightEdge, bottomEdge;
 
             // groundEdge
             childObject = new GameObject();
             childObject.layer = LayerMask.NameToLayer("Ground");
             childObject.transform.parent = gameObject.transform;
             childObject.transform.localScale = originScale;
+            childObject.isStatic = true;
             groundEdge = childObject.AddComponent<EdgeCollider2D>();
 
             // leftEdge
@@ -75,6 +76,7 @@ public class TiledGeometryScript : MonoBehaviour
             childObject.layer = LayerMask.NameToLayer("Wall");
             childObject.transform.parent = gameObject.transform;
             childObject.transform.localScale = originScale;
+            childObject.isStatic = true;
             leftEdge = childObject.AddComponent<EdgeCollider2D>();
 
             // rightEdge
@@ -82,13 +84,14 @@ public class TiledGeometryScript : MonoBehaviour
             childObject.layer = LayerMask.NameToLayer("Wall");
             childObject.transform.parent = gameObject.transform;
             childObject.transform.localScale = originScale;
+            childObject.isStatic = true;
             rightEdge = childObject.AddComponent<EdgeCollider2D>();
 
             // bottomEdge
             childObject = new GameObject();
-            // childObject.layer = LayerMask.NameToLayer("Wall");
             childObject.transform.parent = gameObject.transform;
             childObject.transform.localScale = originScale;
+            childObject.isStatic = true;
             bottomEdge = childObject.AddComponent<EdgeCollider2D>();
 
 
@@ -128,13 +131,13 @@ public class TiledGeometryScript : MonoBehaviour
 
             // edge 객체를 gameObject에 추가하고 이에 대한 참조를 획득합니다.
             GameObject childObject;
-            EdgeCollider2D groundEdge, leftEdge, rightEdge, bottomEdge;
 
             // groundEdge
             childObject = new GameObject();
             childObject.layer = LayerMask.NameToLayer("Ground");
             childObject.transform.parent = gameObject.transform;
             childObject.transform.localScale = originScale;
+            childObject.isStatic = true;
             groundEdge = childObject.AddComponent<EdgeCollider2D>();
 
             // leftEdge
@@ -142,6 +145,7 @@ public class TiledGeometryScript : MonoBehaviour
             childObject.layer = LayerMask.NameToLayer("Wall");
             childObject.transform.parent = gameObject.transform;
             childObject.transform.localScale = originScale;
+            childObject.isStatic = true;
             leftEdge = childObject.AddComponent<EdgeCollider2D>();
 
             // rightEdge
@@ -149,13 +153,14 @@ public class TiledGeometryScript : MonoBehaviour
             childObject.layer = LayerMask.NameToLayer("Wall");
             childObject.transform.parent = gameObject.transform;
             childObject.transform.localScale = originScale;
+            childObject.isStatic = true;
             rightEdge = childObject.AddComponent<EdgeCollider2D>();
 
             // bottomEdge
             childObject = new GameObject();
-            // childObject.layer = LayerMask.NameToLayer("Wall");
             childObject.transform.parent = gameObject.transform;
             childObject.transform.localScale = originScale;
+            childObject.isStatic = true;
             bottomEdge = childObject.AddComponent<EdgeCollider2D>();
 
 
@@ -188,6 +193,13 @@ public class TiledGeometryScript : MonoBehaviour
         {
             throw new Exception("TiledGeometryScript가 FlatGround 또는 SlopeGround 둘 중 어느 것도 아닙니다.");
         }
+
+
+        // 공통 속성을 업데이트합니다.
+        groundEdge.sharedMaterial = _material;
+        leftEdge.sharedMaterial = _material;
+        rightEdge.sharedMaterial = _material;
+        bottomEdge.sharedMaterial = _material;
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.

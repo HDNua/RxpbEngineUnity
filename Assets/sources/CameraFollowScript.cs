@@ -16,6 +16,11 @@ public class CameraFollowScript : MonoBehaviour
     public GameObject _cameraZoneParent;
 
 
+    Vector2 _cameraFollowVelocity;
+    public float _smoothTimeX;
+    public float _smoothTimeY;
+
+
     #endregion
 
 
@@ -181,7 +186,8 @@ public class CameraFollowScript : MonoBehaviour
     /// </summary>
     void UpdateViewport()
     {
-        SetViewportPosition(_player.transform.localPosition.x, _player.transform.localPosition.y);
+        /// SetViewportPosition(_player.transform.localPosition.x, _player.transform.localPosition.y);
+        MoveViewportToPlayer();
     }
     /// <summary>
     /// 뷰 포트의 위치를 업데이트합니다.
@@ -198,9 +204,39 @@ public class CameraFollowScript : MonoBehaviour
         float y = Mathf.Clamp(curY, yMin, yMax);
 
 
-
         Debug.Log(string.Format("x: [{0:F8}/{1:F8}/{2:F8}], y: [{3:F8}/{4:F8}/{5:F8}]", xMin, x, xMax, yMin, y, yMax));
         _camera.transform.position = new Vector3(x, y, _camZ);
+    }
+    /// <summary>
+    /// 플레이어로 뷰 포트를 맞춥니다.
+    /// </summary>
+    void MoveViewportToPlayer()
+    {
+        float curX = _player.transform.localPosition.x;
+        float curY = _player.transform.localPosition.y;
+        float xMin = _currentCameraZone._isLeftBounded ? _currentCameraZone._left : float.MinValue;
+        float xMax = _currentCameraZone._isRightBounded ? _currentCameraZone._right : float.MaxValue;
+        float yMin = _currentCameraZone._isBottomBounded ? _currentCameraZone._bottom : float.MinValue;
+        float yMax = _currentCameraZone._isTopBounded ? _currentCameraZone._top : float.MaxValue;
+        float x = Mathf.Clamp(curX, xMin, xMax);
+        float y = Mathf.Clamp(curY, yMin, yMax);
+        Vector3 dstPos = new Vector3(x, y, _camZ);
+
+        float posX, posY;
+        posX = Mathf.Lerp(_camera.transform.position.x, x, Time.deltaTime);
+        posY = Mathf.Lerp(_camera.transform.position.y, y, Time.deltaTime);
+
+
+
+
+//        _camera.transform.position = Vector3.Lerp(_camera.transform.position, dstPos, Time.deltaTime);
+        _camera.transform.position = dstPos;
+
+        /*
+        posX = Mathf.SmoothDamp(_camera.transform.position.x, x, ref _cameraFollowVelocity.x, _smoothTimeX);
+        posY = Mathf.SmoothDamp(_camera.transform.position.y, y, ref _cameraFollowVelocity.y, _smoothTimeY);
+        */
+        //_camera.transform.position = new Vector3(posX, posY, _camZ);
     }
 
 

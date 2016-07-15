@@ -11,13 +11,18 @@ public class CameraZone5Script : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     public CameraZoneParent _cameraZoneParent;
-//    public CameraFollowScript _cameraFollow;
-//    public Map _map;
 
     public bool _isTopBounded;
     public bool _isLeftBounded;
     public bool _isRightBounded;
     public bool _isBottomBounded;
+
+
+    public bool _isTopFirst;
+    public bool _isLeftFirst;
+    public bool _isRightFirst;
+    public bool _isBottomFirst;
+
 
     public float _top;
     public float _left;
@@ -66,21 +71,14 @@ public class CameraZone5Script : MonoBehaviour
     {
         // 필드를 초기화합니다.
         _mainCamera = Camera.main;
-
-        if (_cameraZoneParent == null)
-        {
-            Console.WriteLine();
-        }
-
-        /// _player = _cameraZoneParent.Player; /// GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         _cameraFollow = _cameraZoneParent.CameraFollow;
-        /// _camZ = _mainCamera.transform.position.z;
 
 
-        // 
+        // 카메라 존 충돌체 획득을 시도합니다.
         _boxZone = GetComponent<BoxCollider2D>();
         _slopeZone = GetComponent<PolygonCollider2D>();
 
+        // 박스형 카메라 존이라면
         if (_boxZone != null)
         {
             _top = (_boxZone.bounds.center.y + _boxZone.bounds.extents.y);
@@ -88,18 +86,9 @@ public class CameraZone5Script : MonoBehaviour
             _right = (_boxZone.bounds.center.x + _boxZone.bounds.extents.x);
             _bottom = (_boxZone.bounds.center.y - _boxZone.bounds.extents.y);
         }
+        // 경사면 카메라 존이라면
         else if (_slopeZone != null)
         {
-            /**
-            Vector2[] slopePoints = _slopeZone.points;
-            Vector2[] points = new Vector2[]
-            {
-                slopePoints[0], // 왼쪽 위
-                slopePoints[1], // 오른쪽 위
-                slopePoints[3], // 왼쪽 아래
-                slopePoints[2], // 오른쪽 아래
-            };
-            */
             Vector2[] points = GetTetragonPoints(_slopeZone.points);
             float originX = transform.localPosition.x, originY = transform.localPosition.y;
 
@@ -108,13 +97,12 @@ public class CameraZone5Script : MonoBehaviour
             _right = (originX + Mathf.Max(points[1].x, points[3].x)) * 0.02008f;
             _bottom = (originY + Mathf.Min(points[2].y, points[3].y)) * 0.02008f;
         }
-        //
+        // 그 외의 경우 예외 처리합니다.
         else
-        {
             throw new Exception("둘 다 아님");
-        }
 
 
+        // 카메라 뷰 박스의 크기를 획득합니다.
         float frustumHeight = Mathf.Abs(2.0f * _mainCamera.transform.position.z * Mathf.Tan(_mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad));
         float frustumWidth = Mathf.Abs(frustumHeight * _mainCamera.aspect);
         float cameraWidthHalf = frustumWidth / 2;
@@ -131,13 +119,19 @@ public class CameraZone5Script : MonoBehaviour
         // 마지막 상하좌우값 조정
         if (_top < _bottom)
         {
-            float mid = (_top + _bottom) / 2;
-            _top = _bottom = mid;
+            float result;
+            if (_isTopFirst) result = _top;
+            else if (_isBottomFirst) result = _bottom;
+            else result = (_top + _bottom) / 2;
+            _top = _bottom = result;
         }
         if (_right < _left)
         {
-            float mid = (_left + _right) / 2;
-            _left = _right = mid;
+            float result;
+            if (_isLeftFirst) result = _left;
+            else if (_isRightFirst) result = _right;
+            else result = (_left + _right) / 2;
+            _left = _right = result;
         }
     }
 
