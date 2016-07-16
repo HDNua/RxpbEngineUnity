@@ -65,7 +65,7 @@ public class CutsceneManager : MonoBehaviour
 
     // 대사 스크립트 코루틴에 대한 포인터입니다.
     Coroutine _speechScriptCoroutine = null;
-    Coroutine _actionScriptCoroutine = null;
+//    Coroutine _actionScriptCoroutine = null;
 
 
     #endregion
@@ -273,7 +273,8 @@ public class CutsceneManager : MonoBehaviour
         if (_actionScriptIndex < _actionScriptList.Count)
         {
             _guiText.text = "";
-            _actionScriptCoroutine = StartCoroutine("ActWithCoroutine");
+            // _actionScriptCoroutine = StartCoroutine("ActWithCoroutine");
+            StartCoroutine("ActWithCoroutine");
         }
     }
     /// <summary>

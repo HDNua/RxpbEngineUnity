@@ -42,7 +42,7 @@ public class CameraZone : MonoBehaviour
 
 
     #region 필드를 정의합니다.
-    CameraFollowScript _cameraFollow;
+//    CameraFollowScript _cameraFollow;
 
 
     Camera _mainCamera;
@@ -71,7 +71,7 @@ public class CameraZone : MonoBehaviour
     {
         // 필드를 초기화합니다.
         _mainCamera = Camera.main;
-        _cameraFollow = _cameraZoneParent.CameraFollow;
+//        _cameraFollow = _cameraZoneParent.CameraFollow;
 
 
         // 카메라 존 충돌체 획득을 시도합니다.
@@ -258,7 +258,7 @@ public class CameraZone : MonoBehaviour
         }
 
         _player = _cameraZoneParent.Player; /// GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
-        _cameraFollow = _cameraZoneParent.CameraFollow;
+//        _cameraFollow = _cameraZoneParent.CameraFollow;
         _camZ = _mainCamera.transform.position.z;
 
 

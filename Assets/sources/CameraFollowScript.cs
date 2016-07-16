@@ -50,7 +50,7 @@ public class CameraFollowScript : MonoBehaviour
     /// <summary>
     /// 카메라 존 집합입니다.
     /// </summary>
-    CameraZone[] _cameraZones;
+//    CameraZone[] _cameraZones;
 
 
     /// <summary>
@@ -122,8 +122,10 @@ public class CameraFollowScript : MonoBehaviour
 
 
         // 카메라 존 초기화
-        CameraZone[] cameraZones = _cameraZoneParent.GetComponentsInChildren<CameraZone>();
-        _cameraZones = cameraZones;
+//        CameraZone[] cameraZones = _cameraZoneParent.GetComponentsInChildren<CameraZone>();
+//        _cameraZones = cameraZones;
+
+
         if (_startCameraZone == null)
             throw new Exception("시작 카메라 존이 설정되지 않았습니다.");
 
