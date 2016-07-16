@@ -9,66 +9,51 @@ using System.Collections.Generic;
 /// <summary>
 /// TiledGeometry의 정보를 임포트합니다.
 /// </summary>
-public class HandyImporter_TiledGeometry : Tiled2Unity.ICustomTiledImporter
+public class HandyImporter_TiledGeometry : HandyImporter
 {
+    #region Tiled2Unity.ICustomTiledImporter 메서드를 선언합니다.
     /// <summary>
     /// 사용자 정의 속성을 다룹니다.
     /// </summary>
     /// <param name="gameObject">대상 GameObject입니다.</param>
     /// <param name="customProperties">사용자 정의 속성 딕셔너리입니다.</param>
-    public void HandleCustomProperties(GameObject gameObject, IDictionary<string, string> customProperties)
+    public override void HandleCustomProperties(GameObject gameObject, IDictionary<string, string> customProperties)
     {
-        if (!customProperties.ContainsKey("AddComponent"))
-        {
-//            Debug.Log("HI_Geometry: does not contains key 'AddComponent'");
+        // 자신이 관리할 객체가 아니라면 종료합니다.
+        if (IsValid(customProperties, "TiledGeometryScript") == false)
             return;
-        }
-        string componentName = customProperties["AddComponent"];
-        if (componentName != "TiledGeometryScript")
-        {
-//            Debug.Log("HI_Geometry: component name is " + componentName);
-            return;
-        }
 
-//        Debug.Log("HI_Geometry: TiledGeometryScript.HandleCustomProperties() called");
+        /**
+        // 사용할 변수를 선언합니다.
+        CameraZone component = gameObject.GetComponent<CameraZone>();
 
-
-        if (customProperties.ContainsKey("_isTopBounded"))
-        {
-            string test = customProperties["_isTopBounded"];
-            Debug.Log("HI_Geometry: _isTopBounded: " + test);
-        }
-        else
-        {
-            Debug.Log("HI_Geometry: keys = " + StringArrayToString(customProperties));
-        }
+        // 속성을 업데이트합니다.
+        Log("keys = {0} ({1})", StringArrayToString(customProperties), component);
+        */
     }
-
-
-
     /// <summary>
     /// 프리팹을 커스터마이징합니다.
     /// </summary>
     /// <param name="prefab">커스터마이징할 프리팹입니다.</param>
-    public void CustomizePrefab(GameObject prefab)
+    public override void CustomizePrefab(GameObject prefab)
     {
         // Do Nothing
     }
 
 
+    #endregion
 
+
+
+    #region 생성자를 정의합니다.
     /// <summary>
-    /// 
+    /// TiledGeometry의 정보를 임포트합니다.
     /// </summary>
-    /// <param name="dict"></param>
-    /// <returns></returns>
-    public string StringArrayToString(IDictionary<string, string> dict)
+    public HandyImporter_TiledGeometry() : base("TiledGeometry")
     {
-        string ret = "";
-        foreach (string key in dict.Keys)
-        {
-            ret += string.Format("[{0}:{1}]", key, dict[key]);
-        }
-        return ret;
+
     }
+
+
+    #endregion
 }

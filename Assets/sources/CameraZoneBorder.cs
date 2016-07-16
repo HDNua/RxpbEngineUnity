@@ -12,6 +12,9 @@ public class CameraZoneBorder : MonoBehaviour
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     public CameraZoneParent _cameraZoneParent;
 
+    public int _fromID;
+    public int _toID;
+
     public CameraZone _from;
     public CameraZone _to;
 
@@ -34,7 +37,7 @@ public class CameraZoneBorder : MonoBehaviour
     CameraFollowScript _cameraFollow;
 
     bool _isHorizontal;
-    float _border;
+    public float _border;
 
 
     #endregion
@@ -110,7 +113,7 @@ public class CameraZoneBorder : MonoBehaviour
 
         // 사용할 변수를 먼저 획득합니다.
         Vector3 playerPos = _cameraZoneParent.Player.transform.position;
-        EdgeCollider2D border = GetComponent<EdgeCollider2D>();
+//        EdgeCollider2D border = GetComponent<EdgeCollider2D>();
 //        Vector2[] points = border.points;
 
 
@@ -131,6 +134,10 @@ public class CameraZoneBorder : MonoBehaviour
         // 수직 방향의 전환이라면
         else
         {
+            EdgeCollider2D border = GetComponent<EdgeCollider2D>();
+            Vector2[] points = border.points;
+
+
             // 위쪽에 있는데 아래쪽으로 이동하는 경우
             if (playerPos.y < _border && _cameraFollow.IsInCameraZone(_from))
             {

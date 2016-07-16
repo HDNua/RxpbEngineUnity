@@ -20,6 +20,8 @@ public class CameraFollowScript : MonoBehaviour
 
     public float _unit;
 
+    public GameObject _cameraZoneBorderParent;
+
 
     #endregion
 
@@ -50,7 +52,7 @@ public class CameraFollowScript : MonoBehaviour
     /// <summary>
     /// 카메라 존 집합입니다.
     /// </summary>
-//    CameraZone[] _cameraZones;
+    CameraZone[] _cameraZones;
 
 
     /// <summary>
@@ -122,10 +124,22 @@ public class CameraFollowScript : MonoBehaviour
 
 
         // 카메라 존 초기화
-//        CameraZone[] cameraZones = _cameraZoneParent.GetComponentsInChildren<CameraZone>();
-//        _cameraZones = cameraZones;
+        CameraZone[] cameraZones = _cameraZoneParent.GetComponentsInChildren<CameraZone>();
+        _cameraZones = new CameraZone[cameraZones.Length];
+        foreach (CameraZone cameraZone in cameraZones)
+        {
+            _cameraZones[cameraZone._cameraZoneID] = cameraZone;
+        }
+
+        CameraZoneBorder[] borders = _cameraZoneBorderParent.GetComponentsInChildren<CameraZoneBorder>();
+        foreach (CameraZoneBorder border in borders)
+        {
+            border._from = _cameraZones[border._fromID];
+            border._to = _cameraZones[border._toID];
+        }
 
 
+        _startCameraZone = _cameraZones[0];
         if (_startCameraZone == null)
             throw new Exception("시작 카메라 존이 설정되지 않았습니다.");
 

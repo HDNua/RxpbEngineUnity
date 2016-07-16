@@ -29,6 +29,8 @@ public class CameraZone : MonoBehaviour
     public float _right;
     public float _bottom;
 
+    public int _cameraZoneID;
+
 
     #endregion
 

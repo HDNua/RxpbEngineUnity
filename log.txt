@@ -1,23 +1,27 @@
-RXPB v3.2.0.0
+RXPB v3.2.1.0 (IMPORTANT)
 
-* !!!!! IMPORTANT & CHALLENGE !!!!!
-  Tiled2Unity를 이용하여, Tiled에서 정의한 custom properties를
-  Unity에 적용하는 방법을 알아냈음.
-> https://github.com/Seanba/Tiled2Unity/issues/53 링크 참조.
+- HandyImporter 클래스를 정의하고 Hierarchy 변경.
 
 
 
-- HandyImporter 클래스군 추가.
-> HandyImporter_AddComponent
-> HandyImporter_CameraZone
-> HandyImporter_CameraZoneBorder
-> HandyImporter_TiledGeometry
-> 이들의 자세한 구현은 코드를 직접 참조하거나 다음 링크를 참조.
-  http://www.seanba.com/megadadadventures.html
-
-
-
-- 임시 저장 에디션.
+- 맵 임포트 시마다 직접 정의해야 하는 필드 목록.
+> CameraZoneBorder
+>> CameraZoneParent
+> TiledGeometry
+>> Material: FrictionlessWall
+> CameraZone
+>> CameraZoneParent
+> InvisibleWall
+>> Layer: MapBlock
+>> Material: FrictionlessWall
+> CameraFollowScript
+>> Map: Tiled2Unity가 생성한 map 객체
+>> CameraZoneParent
+>> CameraZoneBorderParent
+> CameraZoneParent
+>> 까먹음
+> NewMap
+>> Tiled2Unity가 생성한 map 객체에 제대로 붙었는지 확인할 것.
 
 
 
