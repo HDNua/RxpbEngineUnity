@@ -15,6 +15,9 @@ public class CameraZoneBorder : MonoBehaviour
     public CameraZone _from;
     public CameraZone _to;
 
+    // 카메라 존 전이 애니메이션을 수행하려면 값을 참으로 설정합니다.
+    public bool _beginTransition;
+
 
     #endregion
 
@@ -114,32 +117,26 @@ public class CameraZoneBorder : MonoBehaviour
         // 수평 방향의 전환이라면
         if (_isHorizontal)
         {
-            /**
-            int curCamZoneID = _cameraFollow.CurrentCameraZone.GetInstanceID();
-            int fromCamZoneID = _from.GetInstanceID();
-            int toCamZoneID = _to.GetInstanceID();
-            */
-
+            // 오른쪽에 있는데 왼쪽으로 이동하는 경우
             if (playerPos.x < _border && _cameraFollow.IsInCameraZone(_to))
             {
                 SwapCameraZone();
             }
+            // 왼쪽에 있는데 오른쪽으로 이동하는 경우
             else if (playerPos.x > _border && _cameraFollow.IsInCameraZone(_from))
             {
                 SwapCameraZone();
-            }
-            else
-            {
-
             }
         }
         // 수직 방향의 전환이라면
         else
         {
+            // 위쪽에 있는데 아래쪽으로 이동하는 경우
             if (playerPos.y < _border && _cameraFollow.IsInCameraZone(_from))
             {
                 SwapCameraZone();
             }
+            // 아래쪽에 있는데 위쪽으로 이동하는 경우
             else if (playerPos.y > _border && _cameraFollow.IsInCameraZone(_to))
             {
                 SwapCameraZone();
@@ -167,21 +164,14 @@ public class CameraZoneBorder : MonoBehaviour
     {
         if (_cameraFollow.IsInCameraZone(_to))
         {
-            Debug.Log(string.Format("CameraZone Updated from ({0}) to ({1}).", _to, _from));
-            _cameraFollow.UpdateCameraZone(_from);
+            // Debug.Log(string.Format("CameraZone Updated from ({0}) to ({1}).", _to, _from));
+            _cameraFollow.UpdateCameraZone(_from, _beginTransition);
         }
         else
         {
-            Debug.Log(string.Format("CameraZone Updated from ({0}) to ({1}).", _from, _to));
-            _cameraFollow.UpdateCameraZone(_to);
+            // Debug.Log(string.Format("CameraZone Updated from ({0}) to ({1}).", _from, _to));
+            _cameraFollow.UpdateCameraZone(_to, _beginTransition);
         }
-
-        /**
-        _cameraFollow.UpdateCameraZone(_to);
-        CameraZone tmp = _to;
-        _to = _from;
-        _from = tmp;
-        */
     }
 
 
@@ -197,29 +187,6 @@ public class CameraZoneBorder : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("OnTriggerStay2D()로 대체되었습니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="other"></param>
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        /*
-        if (other.CompareTag("Player") == true)
-        {
-            _cameraFollow.CurrentCameraZone_dep = null; // this;
-        }
-        */
-    }
-    [Obsolete("OnTriggerStay2D()로 대체되었습니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="other"></param>
-    void OnTriggerExit2D(Collider2D other)
-    {
-
-    }
 
 
     #endregion

@@ -1,38 +1,25 @@
-RXPB v3.1.2 Camera v1.2.0
+RXPB v3.1.2 Camera v1.2.1
 
-! 카메라 선형 보간만 구현하면 master와 병합할 것.
-- 카메라 존을 크게 단순화하고 카메라 전환의 경계선을 추가.
-> 저번 커밋에서 반영된 것 같지만 실제로는 이번 커밋에서 반영되었다.
->> 이번 커밋은 선형 보간을 제외하면 원래 생각과 가장 이상적으로 일치한다.
-   한 번 저장해두는 것이 좋겠다.
-
-
-
-* CameraZoneBorder에는 두 가지 필드가 있다. _from, _to가 그것이다.
-> 좌우: _from=좌, _to=우
-> 상하: _from=상, _to=하
-  원래 from과 to라는 단어의 의미에 관계 없이, 이는 언제나 고정이다.
+* !!!!! IMPORTANT & HARD CHALLENGE !!!!!
+  카메라 선형보간 구현 완료.
+> 록맨 스타일에서 화면의 선형보간은, 속도를 일정하게 하는 방법보다
+  프레임 갱신 시마다 일정한 간격으로 플레이어가 움직이게 하는 게 좋다.
+  그래서 _unit이라는 단위를 놓고, 목표 지점과 현재 위치의 차이를 구한 후
+  (-,-), (+,-)와 같이 방향이 나올 때 _unit의 절댓값만큼 움직이게 만듬.
+  만약 이 차이가 _unit보다 작다면 dif는 0이 되는 거고.
 
 
 
-- 클래스 이름 변경.
-> CameraZone5Script -> CameraZone
+- HandyImporter_AddComponent 클래스 추가.
+> 원래 여기서 할 일이 아니었지...
 
 
 
-- 클래스 추가.
-> CameraZoneBorder
+- 구형 정의 정리.
 
 
 
-- CameraFollowScript 클래스에 public CameraZone _startCameraZone 추가.
-
-
-
-- master에서 수정했어야 하는건데 여기서 수정한 거 있음.
-> CutsceneManager의 필드를 Naming Convention을 업데이트하다보니
-  이전 값들이 적용이 안 돼서 컷신이 제대로 동작하지 않는 오류가 있었음.
-  지금은 수정됨.
+- 이 커밋 이후 master와 병합할 것.
 
 
 
