@@ -29,6 +29,13 @@ public abstract class HandyImporter : Tiled2Unity.ICustomTiledImporter
 
 
 
+
+
+
+
+
+
+
     #region 필드 및 프로퍼티를 정의합니다.
     string _targetName;
     /// <summary>
@@ -38,6 +45,13 @@ public abstract class HandyImporter : Tiled2Unity.ICustomTiledImporter
 
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -53,6 +67,13 @@ public abstract class HandyImporter : Tiled2Unity.ICustomTiledImporter
 
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -81,6 +102,8 @@ public abstract class HandyImporter : Tiled2Unity.ICustomTiledImporter
         string front = "HI_" + _targetName + ": ";
         Debug.Log(front + string.Format(format, args));
     }
+
+
     /// <summary>
     /// 자신이 관리할 객체라면 참입니다.
     /// </summary>
@@ -122,6 +145,8 @@ public abstract class HandyImporter : Tiled2Unity.ICustomTiledImporter
         // 자신이 관리할 객체임을 확인했습니다.
         return true;
     }
+
+
     /// <summary>
     /// 사용자 정의 프로퍼티 딕셔너리로부터 부울 값을 획득합니다.
     /// </summary>

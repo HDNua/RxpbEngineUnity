@@ -11,6 +11,8 @@ public class EnemyMettoolScript : EnemyScript
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
     Rigidbody2D _rigidbody;
+    BoxCollider2D _boxCollider2D;
+
 
     #endregion
 
@@ -36,6 +38,10 @@ public class EnemyMettoolScript : EnemyScript
     /// 무엇이 벽인지를 결정합니다. 기본값은 "Wall, MapBlock"입니다.
     /// </summary>
     public LayerMask whatIsWall;
+    /// <summary>
+    /// 무엇이 땅인지를 결정합니다. 기본값은 "Ground"입니다.
+    /// </summary>
+    public LayerMask whatIsGround;
 
 
     /// <summary>
@@ -60,7 +66,11 @@ public class EnemyMettoolScript : EnemyScript
     #region 캐릭터의 상태 필드 및 프로퍼티를 정의합니다.
     public float movingSpeed;
 
-    bool facingRight = false;
+    /// <summary>
+    /// 캐릭터가 오른쪽을 보고 있다면 참입니다.
+    /// </summary>
+    bool _facingRight = false;
+
 
     #endregion
 
@@ -73,14 +83,30 @@ public class EnemyMettoolScript : EnemyScript
 
 
 
-    #region MonoBehaviour 기본 메서드를 재정의 합니다.
+    #region MonoBehaviour 기본 메서드를 재정의합니다.
     /// <summary>
     /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
     protected override void Start()
     {
         base.Start();
+
+
+        // 필드를 초기화합니다.
         _rigidbody = GetComponent<Rigidbody2D>();
+        _boxCollider2D = GetComponent<BoxCollider2D>();
+
+        // 자신과 가장 가까운 바닥으로 y 좌표를 옮깁니다.
+        RaycastHit2D groundRay = Physics2D.Raycast(groundCheck.position, Vector2.down, 10f, whatIsGround);
+        // float initY = groundRay.point.y + _boxCollider2D.size.y / 2 + _boxCollider2D.offset.y + groundRay.collider.bounds.size.y / 2;
+        float initY = groundRay.point.y + (_boxCollider2D.size.y / 2 * transform.localScale.y);  // + _boxCollider2D.offset.y + groundRay.collider.bounds.size.y / 2;
+
+
+        transform.position = new Vector3(groundRay.point.x, initY);
+        // Debug.Log(groundRay.point);
+
+
+        // 방황 코루틴을 시작합니다.
         StartCoroutine(WalkAround());
     }
     /// <summary>
@@ -89,13 +115,32 @@ public class EnemyMettoolScript : EnemyScript
     protected override void Update()
     {
         base.Update();
+//        Debug.DrawRay(groundCheck.position, new Vector3(0, -1) * 10000f, Color.red);
 
-        Vector3 direction = facingRight ? Vector3.right : Vector3.left;
+
+        // 땅에서 떨어지려고 한다면 즉시 전환합니다.
+        RaycastHit2D groundRay = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, whatIsGround);
+        if (groundRay == false)
+        {
+            if (_facingRight)
+            {
+                MoveLeft();
+            }
+            else
+            {
+                MoveRight();
+            }
+
+            //Debug.Log("Mettool changed direction because groundRay is null");
+        }
+
+        // 벽에 닿는다면 방향을 즉시 전환합니다.
+        Vector3 direction = _facingRight ? Vector3.right : Vector3.left;
         RaycastHit2D pushRay = Physics2D.Raycast
             (pushCheck.position, direction, 0.1f, whatIsWall);
         if (pushRay)
         {
-            if (facingRight)
+            if (_facingRight)
             {
                 MoveLeft();
             }
@@ -188,7 +233,7 @@ public class EnemyMettoolScript : EnemyScript
     /// </summary>
     void MoveLeft()
     {
-        if (facingRight)
+        if (_facingRight)
             Flip();
         _rigidbody.velocity = new Vector2(-movingSpeed, 0);
     }
@@ -197,7 +242,7 @@ public class EnemyMettoolScript : EnemyScript
     /// </summary>
     void MoveRight()
     {
-        if (facingRight == false)
+        if (_facingRight == false)
             Flip();
         _rigidbody.velocity = new Vector2(movingSpeed, 0);
     }
@@ -206,7 +251,7 @@ public class EnemyMettoolScript : EnemyScript
     /// </summary>
     void Flip()
     {
-        if (facingRight)
+        if (_facingRight)
         {
             _rigidbody.transform.localScale = new Vector3
                 (-_rigidbody.transform.localScale.x, _rigidbody.transform.localScale.y);
@@ -216,7 +261,7 @@ public class EnemyMettoolScript : EnemyScript
             _rigidbody.transform.localScale = new Vector3
                 (-_rigidbody.transform.localScale.x, _rigidbody.transform.localScale.y);
         }
-        facingRight = !facingRight;
+        _facingRight = !_facingRight;
     }
     /// <summary>
     /// 주변을 방황합니다.
@@ -235,7 +280,7 @@ public class EnemyMettoolScript : EnemyScript
             {
                 MoveRight();
             }
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(3);
         }
     }
 
@@ -252,24 +297,7 @@ public class EnemyMettoolScript : EnemyScript
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("OnTriggerStay2D로 이동했습니다.", true)]
-    void _OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            GameObject pObject = other.gameObject;
-            PlayerController player = pObject.GetComponent<PlayerController>();
 
-            if (player.Invencible || player.IsDead)
-            {
-
-            }
-            else
-            {
-                player.Hurt(Damage);
-            }
-        }
-    }
 
     #endregion
 }

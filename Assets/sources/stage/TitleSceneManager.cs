@@ -46,9 +46,9 @@ public class TitleSceneManager : MonoBehaviour
 
 
 
-    #region MonoBehaviour 기본 메서드를 재정의 합니다.
+    #region MonoBehaviour 기본 메서드를 재정의합니다.
     /// <summary>
-    /// 
+    /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
     void Start()
     {
@@ -64,7 +64,7 @@ public class TitleSceneManager : MonoBehaviour
         fader.FadeIn();
     }
     /// <summary>
-    /// 
+    /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
     /// </summary>
     void Update()
     {
@@ -105,14 +105,11 @@ public class TitleSceneManager : MonoBehaviour
 
                 case 1:
                     nextLevelName = "CS01_Prologue";
-//                    nextLevelName = "CS02_HunterBase";
-//                    nextLevelName = "01_Intro";
                     changeSceneRequested = true;
                     fader.FadeOut(1);
                     break;
 
                 case 2:
-                    // nextLevelName = "CS02_HunterBase";
                     nextLevelName = "01_Intro";
                     changeSceneRequested = true;
                     fader.FadeOut(1);

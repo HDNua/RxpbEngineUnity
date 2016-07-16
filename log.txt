@@ -1,27 +1,29 @@
-RXPB v3.2.1.0 (IMPORTANT)
+RXPB v3.2.1.1
 
-- HandyImporter 클래스를 정의하고 Hierarchy 변경.
+- 00_Test 구형 맵을 빌드에서 제외했더니 맵을 정상적으로 불러올 수 있었다.
+> 다음 버전에서 00_Test 구형 정의를 제거할 것.
 
 
 
-- 맵 임포트 시마다 직접 정의해야 하는 필드 목록.
-> CameraZoneBorder
->> CameraZoneParent
-> TiledGeometry
->> Material: FrictionlessWall
-> CameraZone
->> CameraZoneParent
-> InvisibleWall
->> Layer: MapBlock
->> Material: FrictionlessWall
-> CameraFollowScript
->> Map: Tiled2Unity가 생성한 map 객체
->> CameraZoneParent
->> CameraZoneBorderParent
-> CameraZoneParent
->> 까먹음
-> NewMap
->> Tiled2Unity가 생성한 map 객체에 제대로 붙었는지 확인할 것.
+- 라이프에너지 아이템 추가.
+> 스프라이트는 1UP이라 나중에 교체해야 한다.
+!> 체력 회복 시에 화면 정지 효과 추가해야 한다.
+
+
+
+- WalkCannon 적을 추가하고 Mettool의 체력과 공력력 조정.
+
+
+
+- 약간의 코드 정리.
+
+
+
+- 적 스크립트는 지속적으로 개선해야 함.
+> 게임 시작시에 적 캐릭터를 지형에 맞춤으로써
+  처음부터 캐릭터가 붕 떠있는 버그를 수정함.
+> 아주 약한 바닥 감지를 걸어서, 바닥을 넘어갈 것 같으면
+  방향을 전환하도록 구현.
 
 
 

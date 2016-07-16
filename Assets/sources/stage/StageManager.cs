@@ -80,10 +80,6 @@ public class StageManager : HDSceneManager
 
         // 페이드인 효과를 처리합니다.
         _fader.FadeIn();
-
-
-        // 
-
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -99,13 +95,6 @@ public class StageManager : HDSceneManager
             // 준비 애니메이션 재생을 시작합니다.
             _ready.gameObject.SetActive(true);
         }
-
-        /**
-        if (IsFrozen)
-        {
-
-        }
-        */
     }
 
 

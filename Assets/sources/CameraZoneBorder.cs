@@ -113,8 +113,6 @@ public class CameraZoneBorder : MonoBehaviour
 
         // 사용할 변수를 먼저 획득합니다.
         Vector3 playerPos = _cameraZoneParent.Player.transform.position;
-//        EdgeCollider2D border = GetComponent<EdgeCollider2D>();
-//        Vector2[] points = border.points;
 
 
         // 수평 방향의 전환이라면

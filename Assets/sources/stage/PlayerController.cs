@@ -53,6 +53,7 @@ public abstract class PlayerController : MonoBehaviour
         get { return GetComponent<SpriteRenderer>(); }
     }
 
+
     #endregion
 
 
@@ -100,6 +101,7 @@ public abstract class PlayerController : MonoBehaviour
     public Transform dashBoostPosition;
     public Transform slideFogPosition;
     public GameObject slideFogEffect;
+
 
     #endregion
 
@@ -211,30 +213,47 @@ public abstract class PlayerController : MonoBehaviour
 
 
     #region 주인공의 게임 상태 필드를 정의합니다.
-    int health = 20;
-    int maxHealth = 20;
-    int dangerHealth = 6;
+    /// <summary>
+    /// 플레이어의 현재 체력을 확인합니다.
+    /// </summary>
+    public int _health = 20;
+    /// <summary>
+    /// 플레이어의 최대 체력을 확인합니다.
+    /// </summary>
+    int _maxHealth = 20;
+    /// <summary>
+    /// 위험 상태로 바뀌는 체력의 값입니다.
+    /// </summary>
+    int _dangerHealth = 6;
+
 
     /// <summary>
     /// 플레이어의 현재 체력을 확인합니다.
     /// </summary>
     public int Health
     {
-        get { return health; }
-        private set { health = value; }
+        get { return _health; }
+        private set
+        {
+            _health = Mathf.Clamp(value, 0, MaxHealth);
+        }
     }
     /// <summary>
     /// 플레이어의 최대 체력을 확인합니다.
     /// </summary>
     public int MaxHealth
     {
-        get { return maxHealth; }
-        private set { maxHealth = value; }
+        get { return _maxHealth; }
+        private set { _maxHealth = value; }
     }
     /// <summary>
     /// 위험 상태로 바뀌는 체력의 값입니다.
     /// </summary>
-    public int DangerHealth { get { return dangerHealth; } }
+    public int DangerHealth
+    {
+        get { return _dangerHealth; }
+    }
+
 
     #endregion
 
@@ -415,19 +434,19 @@ public abstract class PlayerController : MonoBehaviour
 
 
     /// <summary>
-    /// 
+    /// 대쉬 점프중이라면 참입니다.
     /// </summary>
     protected bool DashJumping { get; set; }
     /// <summary>
-    /// 
+    /// 벽 점프중이라면 참입니다.
     /// </summary>
     protected bool WallJumping { get; set; }
     /// <summary>
-    /// 
+    /// 벽 대쉬 점프중이라면 참입니다.
     /// </summary>
     protected bool WallDashJumping { get; set; }
     /// <summary>
-    /// 
+    /// 에어 대쉬중이라면 참입니다.
     /// </summary>
     protected bool AirDashing
     {
@@ -494,7 +513,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>체력이 정상 범위에 있다면 true입니다.</returns>
     public bool IsAlive()
     {
-        return (0 < health);
+        return (0 < _health);
     }
     /// <summary>
     /// 플레이어의 체력이 가득 찼는지 확인합니다.
@@ -502,7 +521,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>체력이 가득 찼다면 true입니다.</returns>
     public bool IsHealthFull()
     {
-        return (health == maxHealth);
+        return (_health == _maxHealth);
     }
 
 
@@ -918,6 +937,13 @@ public abstract class PlayerController : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
     #region 일회성 행동 메서드를 정의합니다.
     /// <summary>
     /// 플레이어를 소환합니다.
@@ -980,6 +1006,13 @@ public abstract class PlayerController : MonoBehaviour
     }
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -1400,17 +1433,30 @@ public abstract class PlayerController : MonoBehaviour
 
     #region 플레이어의 상태 메서드를 정의합니다.
     /// <summary>
+    /// 플레이어가 체력을 회복합니다.
+    /// </summary>
+    /// <param name="point">플레이어가 회복할 에너지 양입니다.</param>
+    public virtual void Heal(int point)
+    {
+        Health += point;
+        if (_health > _dangerHealth)
+        {
+            Danger = false;
+        }
+
+    }
+    /// <summary>
     /// 플레이어가 대미지를 입습니다.
     /// </summary>
-    /// <param name="damage">플레이어가 입을 대미지입니다.</param>
-    public virtual void Hurt(int damage)
+    /// <param name="point">플레이어가 입을 대미지입니다.</param>
+    public virtual void Hurt(int point)
     {
-        Health -= damage;
+        Health -= point;
         if (IsAlive() == false)
         {
             RequestDead();
         }
-        else if (health <= dangerHealth)
+        else if (_health <= _dangerHealth)
         {
             Danger = true;
         }
@@ -1490,6 +1536,7 @@ public abstract class PlayerController : MonoBehaviour
     {
         Flip();
     }
+
 
     #endregion
 

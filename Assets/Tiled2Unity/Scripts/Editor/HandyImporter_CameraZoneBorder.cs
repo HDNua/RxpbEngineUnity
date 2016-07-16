@@ -34,7 +34,7 @@ public class HandyImporter_CameraZoneBorder : HandyImporter
         component._fromID = fromID;
         component._toID = toID;
         component._beginTransition = beginTransition;
-        Log("keys = {0} [{1}/{2}/{3}] ({4})", StringArrayToString(customProperties), fromID, toID, beginTransition, component);
+        // Log("keys = {0} [{1}/{2}/{3}] ({4})", StringArrayToString(customProperties), fromID, toID, beginTransition, component);
     }
     /// <summary>
     /// 프리팹을 커스터마이징합니다.
