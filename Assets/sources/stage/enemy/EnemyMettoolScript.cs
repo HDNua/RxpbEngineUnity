@@ -98,16 +98,13 @@ public class EnemyMettoolScript : EnemyScript
 
         // 자신과 가장 가까운 바닥으로 y 좌표를 옮깁니다.
         RaycastHit2D groundRay = Physics2D.Raycast(groundCheck.position, Vector2.down, 10f, whatIsGround);
-        // float initY = groundRay.point.y + _boxCollider2D.size.y / 2 + _boxCollider2D.offset.y + groundRay.collider.bounds.size.y / 2;
-        float initY = groundRay.point.y + (_boxCollider2D.size.y / 2 * transform.localScale.y);  // + _boxCollider2D.offset.y + groundRay.collider.bounds.size.y / 2;
-
-
+        float initY = groundRay.point.y + (_boxCollider2D.size.y / 2 * transform.localScale.y);
         transform.position = new Vector3(groundRay.point.x, initY);
-        // Debug.Log(groundRay.point);
-
 
         // 방황 코루틴을 시작합니다.
-        StartCoroutine(WalkAround());
+        // StartCoroutine(WalkAround());
+
+        MoveLeft();
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트합니다.
@@ -115,7 +112,6 @@ public class EnemyMettoolScript : EnemyScript
     protected override void Update()
     {
         base.Update();
-//        Debug.DrawRay(groundCheck.position, new Vector3(0, -1) * 10000f, Color.red);
 
 
         // 땅에서 떨어지려고 한다면 즉시 전환합니다.
@@ -130,8 +126,6 @@ public class EnemyMettoolScript : EnemyScript
             {
                 MoveRight();
             }
-
-            //Debug.Log("Mettool changed direction because groundRay is null");
         }
 
         // 벽에 닿는다면 방향을 즉시 전환합니다.
@@ -210,8 +204,21 @@ public class EnemyMettoolScript : EnemyScript
     /// </summary>
     public override void Dead()
     {
+        // 폭발 효과를 생성하고 효과음을 재생합니다.
         SoundEffects[0].Play();
         Instantiate(effects[0], transform.position, transform.rotation);
+
+
+        // 사망 시 아이템 드롭 루틴입니다.
+        int dropItem = UnityEngine.Random.Range(0, _items.Length);
+        if (dropItem != 0)
+        {
+            // Instantiate(_items[dropItem], transform.position, transform.rotation);
+            CreateItem(_items[dropItem]);
+        }
+
+
+        // 캐릭터가 사망합니다.
         base.Dead();
     }
 

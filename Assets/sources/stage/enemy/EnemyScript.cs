@@ -32,6 +32,12 @@ public class EnemyScript : MonoBehaviour
     public GameObject[] effects;
 
 
+    /// <summary>
+    /// 적이 사망할 때 드롭 가능한 아이템의 목록입니다.
+    /// </summary>
+    public ItemScript[] _items;
+
+
     #endregion
 
 
@@ -193,6 +199,24 @@ public class EnemyScript : MonoBehaviour
     public virtual void Dead()
     {
         gameObject.SetActive(false);
+    }
+
+
+    /// <summary>
+    /// 자신의 위치에 아이템을 생성합니다.
+    /// </summary>
+    /// <param name="item">생성할 아이템입니다.</param>
+    /// <returns>생성된 아이템을 반환합니다.</returns>
+    protected ItemScript CreateItem(ItemScript item)
+    {
+        // 아이템 객체를 생성합니다.
+        ItemScript ret = (ItemScript)Instantiate(item, transform.position, transform.rotation);
+
+        // 속성을 업데이트합니다.
+        ret.IsDropped = true;
+
+        // 아이템을 반환합니다.
+        return ret;
     }
 
 

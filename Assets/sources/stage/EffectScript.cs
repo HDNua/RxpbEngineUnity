@@ -13,6 +13,7 @@ public class EffectScript : MonoBehaviour
     AudioSource _audioSource = null;
     Animator _animator;
 
+
     #endregion
 
 

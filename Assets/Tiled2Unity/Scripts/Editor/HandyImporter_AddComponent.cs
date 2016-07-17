@@ -36,6 +36,10 @@ public class HandyImporter_AddComponent : HandyImporter
                     gameObject.AddComponent<TiledGeometryScript>();
                     break;
 
+                case "DeadZoneScript":
+                    gameObject.AddComponent<DeadZoneScript>();
+                    break;
+
                 default:
                     Log("Unknown component typename '{0}'", typename);
                     break;
