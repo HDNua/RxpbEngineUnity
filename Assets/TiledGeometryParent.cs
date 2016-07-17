@@ -17,11 +17,13 @@ public class TiledGeometryParent : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        /**
         TiledGeometryScript[] children = GetComponentsInChildren<TiledGeometryScript>();
         foreach(TiledGeometryScript child in children)
         {
             child._database = _database;
         }
+        */
     }
 
     // Update is called once per frame

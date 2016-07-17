@@ -77,13 +77,15 @@ public class CameraZoneParent : MonoBehaviour
     /// <summary>
     /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
-    void Awake()
+    void Start()
     {
+        /**
         CameraZone[] children = GetComponentsInChildren<CameraZone>();
         foreach (CameraZone child in children)
         {
             child._cameraZoneParent = this;
         }
+        */
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.

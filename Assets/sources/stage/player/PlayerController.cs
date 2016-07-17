@@ -736,10 +736,16 @@ public abstract class PlayerController : MonoBehaviour
         if (OnGround())
         {
             Landed = true;
+
+
+            Debug.Log("case 1");
         }
         else if (Jumping || Falling)
         {
             Landed = false;
+
+
+            Debug.Log("case 1");
         }
         else if (rayB || rayF)
         {
@@ -748,10 +754,16 @@ public abstract class PlayerController : MonoBehaviour
             transform.position = pos;
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, 0);
             Landed = true;
+
+
+            Debug.Log("case 3");
         }
         else
         {
             Landed = false;
+
+
+            Debug.Log("case 4");
         }
         return Landed;
     }

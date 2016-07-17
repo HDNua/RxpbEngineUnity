@@ -52,4 +52,4 @@
 ]
 (SceneFadeOut 1)
 (WaitForSeconds 1.5)
-(Load CS03_HunterBase)
+(Load Title)

@@ -253,6 +253,7 @@ public class XController : PlayerController
             {
                 if (SlideBlocked)
                 {
+
                 }
                 else
                 {
@@ -310,6 +311,9 @@ public class XController : PlayerController
                 StopSliding();
                 Fall();
             }
+            else if (_rigidbody.velocity.y == 0f)
+            {
+            }
         }
         // 벽을 밀고 있다면
         else if (Pushing)
@@ -333,6 +337,11 @@ public class XController : PlayerController
 
             UnblockSliding();
         }
+
+
+        Debug.Log("테스트 " + DateTime.Now + ": " + _rigidbody.velocity);
+
+
 
         // 방향 키 입력에 대해 처리합니다.
         // 대쉬 중이라면

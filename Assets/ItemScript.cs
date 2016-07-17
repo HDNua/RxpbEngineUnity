@@ -153,26 +153,24 @@ public class ItemScript : MonoBehaviour
         // 플레이어와 닿았다면 플레이어가 획득합니다.
         if (other.CompareTag("Player"))
         {
-            /**
-            // Handy: 삭제할 코드입니다.
+            // 게임 종료 마크를 만났다면
+            if (_itemType == "EndGame")
+            {
+                LoadingSceneManager.LoadLevel("CS03_GaiaFound");
+            }
+            // 
+            else
+            {
+                // 사용할 변수를 선언합니다.
+                GameObject pObject = other.gameObject;
+                PlayerController player = pObject.GetComponent<PlayerController>();
 
-            // 사용할 변수를 선언합니다.
-            GameObject pObject = other.gameObject;
-            PlayerController player = pObject.GetComponent<PlayerController>();
+                // 아이템 효과를 발동합니다.
+                _sceneManager.RequestHeal(player, _itemValue);
 
-            // 아이템 효과를 발동합니다.
-            player.Heal(_itemValue);
-            */
-
-            // 사용할 변수를 선언합니다.
-            GameObject pObject = other.gameObject;
-            PlayerController player = pObject.GetComponent<PlayerController>();
-
-            // 아이템 효과를 발동합니다.
-            _sceneManager.RequestHeal(player, _itemValue);
-
-            // 먹은 아이템을 삭제합니다.
-            Destroy(gameObject);
+                // 먹은 아이템을 삭제합니다.
+                Destroy(gameObject);
+            }
         }
     }
 
@@ -202,8 +200,6 @@ public class ItemScript : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("사용되지 않습니다. 다음 커밋에서 제거할 예정입니다.")]
-    BoxCollider2D _triggerBox;
 
 
     #endregion

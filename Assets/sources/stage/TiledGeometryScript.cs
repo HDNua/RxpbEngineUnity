@@ -1,8 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
-
-
+using System.Collections.Generic;
 
 /// <summary>
 /// Tiled로 작업한 지형의 스크립트입니다.
@@ -10,7 +9,6 @@ using System.Collections;
 public class TiledGeometryScript : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
-    public DataBase _database;
 
 
     #endregion
@@ -25,7 +23,23 @@ public class TiledGeometryScript : MonoBehaviour
 
 
     #region 필드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    TiledGeometryParent _parent;
+    /// <summary>
+    /// 
+    /// </summary>
+    DataBase _database;
+
+
+    /// <summary>
+    /// 
+    /// </summary>
     BoxCollider2D _flatGroundCollider;
+    /// <summary>
+    /// 
+    /// </summary>
     PolygonCollider2D _slopeGroundCollider;
 
 
@@ -33,7 +47,7 @@ public class TiledGeometryScript : MonoBehaviour
 
 
 
-
+    public Vector2[] _points;
 
 
 
@@ -46,10 +60,15 @@ public class TiledGeometryScript : MonoBehaviour
     /// </summary>
     void Start()
     {
+        // 작업에 필요한 정보를 먼저 획득합니다.
+        _parent = GetComponentInParent<TiledGeometryParent>();
+        _database = _parent._database;
+        PhysicsMaterial2D material = _database.FrictionlessWall;
+
+
         // Collider 컴포넌트를 획득합니다.
         _flatGroundCollider = gameObject.GetComponent<BoxCollider2D>();
         _slopeGroundCollider = gameObject.GetComponent<PolygonCollider2D>();
-        PhysicsMaterial2D material = _database.FrictionlessWall;
 
 
         // 평평한 지형 충돌체의 처리입니다.
@@ -166,12 +185,12 @@ public class TiledGeometryScript : MonoBehaviour
 
 
             // 주어진 정보를 바탕으로 꼭짓점을 계산합니다.
-            Vector2[] slopePoints = box.points;
+            Vector2[] slopePoints = GetTetragonPoints(box.points);
             Vector2[] points = new Vector2[4];
             points[0] = slopePoints[0] + edgeOrigin; // 왼쪽 위
             points[1] = slopePoints[1] + edgeOrigin; // 오른쪽 위
-            points[2] = slopePoints[3] + edgeOrigin; // 왼쪽 아래
-            points[3] = slopePoints[2] + edgeOrigin; // 오른쪽 아래
+            points[2] = slopePoints[2] + edgeOrigin; // 왼쪽 아래
+            points[3] = slopePoints[3] + edgeOrigin; // 오른쪽 아래
 
 
             // 스케일을 맞춥니다.
@@ -188,6 +207,7 @@ public class TiledGeometryScript : MonoBehaviour
             rightEdge.points = new Vector2[] { points[1], points[3] };
             bottomEdge.points = new Vector2[] { points[2], points[3] };
 
+            _points = points;
         }
         // 그 외의 경우 예외 처리합니다.
         else
@@ -221,8 +241,104 @@ public class TiledGeometryScript : MonoBehaviour
 
 
 
+    readonly Vector2 Vector2_Invalid = Vector2.one * float.MinValue;
 
     #region 메서드를 정의합니다.
+    /// <summary>
+    /// 임의의 사각형 좌표로부터, "왼쪽 위, 오른쪽 위, 왼쪽 아래, 오른쪽 아래"로 정렬된 좌표 배열을 획득합니다.
+    /// </summary>
+    /// <param name="points">사각형의 꼭짓점 좌표 배열입니다.</param>
+    /// <returns>"왼쪽 위, 오른쪽 위, 왼쪽 아래, 오른쪽 아래"로 정렬된 좌표 배열을 획득합니다.</returns>
+    Vector2[] GetTetragonPoints(Vector2[] points)
+    {
+        Vector2[] ret = new Vector2[4] {
+            Vector2_Invalid,
+            Vector2_Invalid,
+            Vector2_Invalid,
+            Vector2_Invalid,
+        };
+
+
+        List<Vector2> sorted = new List<Vector2>(points);
+        sorted.Sort(delegate (Vector2 a, Vector2 b)
+        {
+            if (a.x != b.x)
+            {
+                return (a.x < b.x) ? -1 : 1;
+            }
+            else if (a.y != b.y)
+            {
+                return (a.y > b.y) ? -1 : 1;
+            }
+            return 0;
+        });
+
+        ret[0] = sorted[0];
+        ret[1] = sorted[2];
+        ret[2] = sorted[1];
+        ret[3] = sorted[3];
+        return ret;
+
+
+
+        /*
+        // 절차:
+        // 1. 네 꼭짓점의 평균값을 구한다.
+        // 2. (꼭짓점 좌표 - 평균점 좌표)의 결과로 해당 꼭짓점을 알 수 있다.
+        // (1) (-,-) : 왼쪽 아래
+        // (2) (+,-) : 오른쪽 아래
+        // (3) (-,+) : 왼쪽 위
+        // (4) (+,+) : 오른쪽 위
+        Vector2 center = (points[0] + points[1] + points[2] + points[3]) / 4;
+        int dst;
+        for (int i = 0; i < 4; ++i)
+        {
+            Vector2 dif = points[i] - center;
+            if (dif.x < 0 && dif.y < 0) dst = 2;
+            else if (dif.x > 0 && dif.y < 0) dst = 3;
+            else if (dif.x < 0 && dif.y > 0) dst = 0;
+            else if (dif.x > 0 && dif.y > 0) dst = 1;
+            else
+            {
+                if (dif.y == 0f)
+                {
+                    dst = (dif.x > 0) ? 1 : 2;
+                }
+                else
+                {
+                    dst = (dif.y > 0) ? 0 : 3;
+                }
+
+                ret[dst] = points[i];
+                continue;
+            }
+
+
+
+            // 결과 배열의 값을 업데이트합니다.
+            if (ret[dst] != Vector2_Invalid)
+            {
+                Vector2 tmp = ret[dst];
+                
+                if (dst == 0 || dst == 2)
+                {
+                    ret[0] = points[i].y > tmp.y ? points[i] : tmp;
+                    ret[2] = points[i].y < tmp.y ? points[i] : tmp;
+                }
+                else
+                {
+                    ret[1] = points[i].y > tmp.y ? points[i] : tmp;
+                    ret[3] = points[i].y < tmp.y ? points[i] : tmp;
+                }
+            }
+            else
+            {
+                ret[dst] = points[i];
+            }
+        }
+        return ret;
+        */
+    }
 
 
     #endregion
