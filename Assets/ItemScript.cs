@@ -11,7 +11,6 @@ using System.Collections;
 public class ItemScript : MonoBehaviour
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
-    BoxCollider2D _triggerBox;
     SpriteRenderer _renderer;
 
 
@@ -108,7 +107,7 @@ public class ItemScript : MonoBehaviour
     void Start()
     {
         // 필드를 초기화합니다.
-        _triggerBox = GetComponent<BoxCollider2D>();
+        /// _triggerBox = GetComponent<BoxCollider2D>();
         _renderer = GetComponent<SpriteRenderer>();
     }
     /// <summary>
@@ -203,14 +202,8 @@ public class ItemScript : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("구형 정의 테스트입니다.")]
-    /// <summary>
-    /// 구형 정의 테스트 함수입니다.
-    /// </summary>
-    void Function()
-    {
-        Console.WriteLine("Hello, world!");
-    }
+    [Obsolete("사용되지 않습니다. 다음 커밋에서 제거할 예정입니다.")]
+    BoxCollider2D _triggerBox;
 
 
     #endregion

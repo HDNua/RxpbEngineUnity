@@ -63,6 +63,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CameraZoneBorderParent.cs" />
+    <Compile Include="Assets\InvisibleWallParent.cs" />
     <Compile Include="Assets\ItemScript.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\ImportBehaviour.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\SortingLayerExposed.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TileAnimator.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledInitialShaderProperties.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledMap.cs" />
+    <Compile Include="Assets\TiledGeometryParent.cs" />
     <Compile Include="Assets\sources\CutsceneManager.cs" />
     <Compile Include="Assets\sources\HDSceneManager.cs" />
     <Compile Include="Assets\sources\HandyScriptTemplate.cs" />

@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
-
-
+using System;
 
 /// <summary>
 /// 스테이지 장면 관리자입니다.
@@ -11,7 +10,6 @@ public class StageManager : HDSceneManager
 {
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
     public DataBase _database;
-    public NewMap _map;
 
 
     public ReadyAnimator _ready;
@@ -38,9 +36,28 @@ public class StageManager : HDSceneManager
 
     #region 필드를 정의합니다.
     /// <summary>
+    /// 맵 객체입니다.
+    /// </summary>
+    NewMap _map;
+
+
+    /// <summary>
     /// 플레이어를 조종할 수 없는 상태라면 참입니다.
     /// </summary>
     bool _isFrozen;
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+    #region 프로퍼티를 정의합니다.
     /// <summary>
     /// 플레이어를 조종할 수 없는 상태라면 참입니다.
     /// </summary>
@@ -69,6 +86,10 @@ public class StageManager : HDSceneManager
     protected override void Start()
     {
         base.Start();
+
+
+        // 필드를 초기화합니다.
+        _map = _database.Map;
 
 
         // 불러온 캐릭터를 잠깐 사용 불가능하게 합니다.

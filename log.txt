@@ -1,23 +1,38 @@
-RXPB v3.3.0
+RXPB v3.3.1
 
-- 00_Test 구형 정의를 제거했습니다.
-
-
-
-- 구형 리소스 폴더를 일부 제거했습니다.
+- DataBase에 PhysicsMaterial2D _frictionlessWall 추가.
 
 
 
-- DeadZone & DeadZoneScript 추가.
+- CameraZoneParent가 PlayerController를 직접 가지는 대신,
+  장면 관리자인 StageManager 필드를 두고 여기서 가져오게 함.
 
 
 
-- 파일 위치 변경.
+! DataBase와 StageManager의 역할이 서로 모호하다.
+  나중에 합치던지 역할을 분명히 하던지 결정해야 한다.
 
 
 
-! 보스 룸에서 아이템을 획득하면 장면을 종료하고 컷신으로 넘어가게
-  구현해보자.
+* 이제부터 레이어마다 Parent 객체가 붙습니다.
+> Parent 객체는 Start() 호출 시에 다음 구문을 수행합니다.
+
+ComponentType[] children = GetComponentsInChildren<ComponentType>();
+foreach (ComponentType child in children)
+{
+    child.field = value;
+}
+
+  이와 같이 정의해두면 Tiled2Unity 도구를 이용하여 맵을 불러올 때
+  Unity에서 직접 연결해야 하는 필드의 수가 확연하게 줄어듭니다.
+
+!> 맨 처음에는 이 방식이 괜찮다고 생각했는데, Start()가 호출되는
+   순서가 고정되지 않아서 다른 방식을 쓰게 될 것 같다.
+   (아예 안 쓰는 건 아님. InvisibleWall의 경우는 이렇게 하고 있음.)
+
+
+
+- 엄청 여러개를 해놔서 기억이 잘 안 난다. 한 번 커밋하자.
 
 
 

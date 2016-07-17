@@ -10,7 +10,6 @@ using System.Collections;
 public class NewMap : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
-    public DataBase _database;
     public StageManager _sceneManager;
 
 
@@ -100,6 +99,8 @@ public class NewMap : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
+    [Obsolete("그냥 StageManager 필드 쓰세요. 다음 커밋에서 지웁니다.")]
+    public DataBase _database;
 
 
     #endregion

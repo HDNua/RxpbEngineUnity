@@ -14,6 +14,19 @@ public class DataBase : MonoBehaviour
     public PlayerController _playerZ;
 
 
+    public PhysicsMaterial2D _frictionlessWall;
+    public CameraZoneParent _cameraZoneParent;
+
+
+    public NewMap _map;
+
+
+    public CameraFollowScript _cameraFollow;
+
+
+    public StageManager _stageManager;
+
+
     #endregion
 
 
@@ -42,6 +55,34 @@ public class DataBase : MonoBehaviour
     #region 프로퍼티를 정의합니다.
     public PlayerController PlayerX { get { return _playerX; } }
     public PlayerController PlayerZ { get { return _playerZ; } }
+
+
+    public PhysicsMaterial2D FrictionlessWall
+    {
+        get { return _frictionlessWall; }
+    }
+    public CameraZoneParent CameraZoneParent
+    {
+        get { return _cameraZoneParent; }
+    }
+
+
+    public NewMap Map
+    {
+        get { return _map; }
+    }
+
+
+    public CameraFollowScript CameraFollow
+    {
+        get { return _cameraFollow; }
+    }
+
+
+    public StageManager StageManager
+    {
+        get { return _stageManager; }
+    }
 
 
     #endregion

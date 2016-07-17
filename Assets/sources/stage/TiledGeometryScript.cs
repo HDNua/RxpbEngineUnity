@@ -10,7 +10,7 @@ using System.Collections;
 public class TiledGeometryScript : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
-    public PhysicsMaterial2D _material;
+    public DataBase _database;
 
 
     #endregion
@@ -49,6 +49,7 @@ public class TiledGeometryScript : MonoBehaviour
         // Collider 컴포넌트를 획득합니다.
         _flatGroundCollider = gameObject.GetComponent<BoxCollider2D>();
         _slopeGroundCollider = gameObject.GetComponent<PolygonCollider2D>();
+        PhysicsMaterial2D material = _database.FrictionlessWall;
 
 
         // 평평한 지형 충돌체의 처리입니다.
@@ -196,10 +197,10 @@ public class TiledGeometryScript : MonoBehaviour
 
 
         // 공통 속성을 업데이트합니다.
-        groundEdge.sharedMaterial = _material;
-        leftEdge.sharedMaterial = _material;
-        rightEdge.sharedMaterial = _material;
-        bottomEdge.sharedMaterial = _material;
+        groundEdge.sharedMaterial = material;
+        leftEdge.sharedMaterial = material;
+        rightEdge.sharedMaterial = material;
+        bottomEdge.sharedMaterial = material;
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -226,4 +227,19 @@ public class TiledGeometryScript : MonoBehaviour
 
     #endregion
 
+
+
+
+
+
+
+
+
+
+    #region 구형 정의를 보관합니다.
+    [Obsolete("DataBase.FrictionlessWall로 대체되었습니다.")]
+    public PhysicsMaterial2D _material;
+
+
+    #endregion
 }

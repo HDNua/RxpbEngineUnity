@@ -10,6 +10,10 @@ using System.Collections;
 public class CameraZoneBorder : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
+    public DataBase _database;
+    public StageManager _sceneManager;
+
+    [Obsolete()]
     public CameraZoneParent _cameraZoneParent;
 
     public int _fromID;
@@ -44,7 +48,7 @@ public class CameraZoneBorder : MonoBehaviour
 
 
 
-
+    CameraZoneBorderParent _parent;
 
 
 
@@ -58,7 +62,10 @@ public class CameraZoneBorder : MonoBehaviour
     void Start()
     {
         // 필드를 초기화합니다.
-        _cameraFollow = _cameraZoneParent.CameraFollow;
+        _parent = GetComponentInParent<CameraZoneBorderParent>();
+        /// _cameraFollow = _cameraZoneParent.CameraFollow;
+        _cameraFollow = _parent.CameraFollow; // _database.CameraFollow;
+        _sceneManager = _parent.StageManager;
 
 
         // 경계선 객체를 획득합니다.
@@ -112,7 +119,8 @@ public class CameraZoneBorder : MonoBehaviour
             return;
 
         // 사용할 변수를 먼저 획득합니다.
-        Vector3 playerPos = _cameraZoneParent.Player.transform.position;
+        /// Vector3 playerPos = _cameraZoneParent.Player.transform.position;
+        Vector3 playerPos = _sceneManager._player.transform.position;
 
 
         // 수평 방향의 전환이라면

@@ -23,13 +23,13 @@ public class HandyImporter_TiledGeometry : HandyImporter
         if (IsValid(customProperties, "TiledGeometryScript") == false)
             return;
 
-        /**
         // 사용할 변수를 선언합니다.
-        CameraZone component = gameObject.GetComponent<CameraZone>();
+//        TiledGeometryScript component = gameObject.GetComponent<TiledGeometryScript>();
+//        component._material = DataBase.FrictionlessWall;
+
 
         // 속성을 업데이트합니다.
-        Log("keys = {0} ({1})", StringArrayToString(customProperties), component);
-        */
+        /// Log("keys = {0} ({1})", StringArrayToString(customProperties), component);
     }
     /// <summary>
     /// 프리팹을 커스터마이징합니다.
