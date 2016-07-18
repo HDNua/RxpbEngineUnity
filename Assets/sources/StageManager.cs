@@ -11,8 +11,10 @@ using System.Collections;
 public class StageManager : HDSceneManager
 {
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
+    /// <summary>
+    /// Scene 데이터베이스입니다.
+    /// </summary>
     public DataBase _database;
-
 
     public ReadyAnimator _ready;
     public PlayerController _player;
@@ -41,6 +43,10 @@ public class StageManager : HDSceneManager
     /// 맵 객체입니다.
     /// </summary>
     NewMap _map;
+    /// <summary>
+    /// UnityEngine.Time 관리자입니다.
+    /// </summary>
+    TimeManager _timeManager;
 
 
     /// <summary>
@@ -92,6 +98,7 @@ public class StageManager : HDSceneManager
 
         // 필드를 초기화합니다.
         _map = _database.Map;
+        _timeManager = _database.TimeManager;
 
 
         // 불러온 캐릭터를 잠깐 사용 불가능하게 합니다.
@@ -118,13 +125,6 @@ public class StageManager : HDSceneManager
         {
             // 준비 애니메이션 재생을 시작합니다.
             _ready.gameObject.SetActive(true);
-        }
-
-
-        // 화면 정지 상태라면
-        if (IsFrozen)
-        {
-
         }
     }
 
@@ -169,13 +169,15 @@ public class StageManager : HDSceneManager
     public void Freeze()
     {
         IsFrozen = true;
+        _timeManager.StageManagerRequested = true;
     }
     /// <summary>
     /// 화면 동결을 해제합니다.
     /// </summary>
-    public void UnFreeze()
+    public void Unfreeze()
     {
         IsFrozen = false;
+        _timeManager.StageManagerRequested = false;
     }
 
 
@@ -206,35 +208,137 @@ public class StageManager : HDSceneManager
     /// <param name="item">플레이어가 사용한 아이템입니다.</param>
     public void ActivateItem(PlayerController player, ItemScript item)
     {
-        if (item.Type == "EndGame")
+        switch (item.Type)
         {
-            LoadingSceneManager.LoadLevel("CS03_GaiaFound");
-        }
-        else
-        {
-            AudioSource seSource = gameObject.AddComponent<AudioSource>();
-            seSource.clip = item.SoundEffect;
+            case "EndGame":
+                LoadingSceneManager.LoadLevel("CS03_GaiaFound");
+                break;
 
-            seSource.Play();
-            Heal(player, item.Value);
+            case "1UP":
+                GetItem1UP(player, item);
+                break;
 
-            /*
-            while (seSource.isPlaying)
-                ;
-            */
+            case "ECan":
+                GetItemECan(player, item);
+                break;
+
+            case "WCan":
+                GetItemWCan(player, item);
+                break;
+
+            // 일반적인 경우의 처리입니다.
+            default:
+                Heal(player, item);
+                break;
         }
     }
 
+
+    #endregion
+
+
+
+
+
+
+    IEnumerator HealRoutine(PlayerController player, ItemScript item, AudioSource audioSource)
+    {
+        float time = 0f;
+        float unitTime = 0.02f;
+
+        for (int i = 0, len = item._itemValue; i < len; ++i)
+        {
+            time = 0f;
+
+            // 체력이 가득 찼다면 반복문을 탈출합니다.
+            if (player.IsHealthFull())
+            {
+                // 정지한 움직임을 해제합니다.
+                Unfreeze();
+                yield break;
+            }
+
+            // 체력을 회복하면서 체력 회복 효과음을 재생합니다.
+            audioSource.Play();
+            audioSource.time = 0;
+            player.Heal(1);
+
+            while (time < unitTime)
+            {
+                time += Time.unscaledDeltaTime;
+                yield return null;
+            }
+        }
+
+        // 정지한 움직임을 해제합니다.
+        Unfreeze();
+        yield return null;
+    }
+
+
+
+    #region 메서드를 정의합니다.
     /// <summary>
     /// 플레이어의 체력을 회복합니다.
     /// </summary>
-    /// <param name="player">체력을 회복할 플레이어입니다.</param>
-    /// <param name="point">회복할 체력 양입니다.</param>
-    void Heal(PlayerController player, int point)
+    /// <param name="player">아이템을 사용할 플레이어입니다.</param>
+    /// <param name="item">획득한 아이템입니다.</param>
+    void Heal(PlayerController player, ItemScript item)
     {
+        // 움직임을 정지합니다.
         Freeze();
-        player.Heal(point);
-        UnFreeze();
+
+        // 사용할 변수를 정의합니다.
+        AudioSource seSource = gameObject.AddComponent<AudioSource>();
+        seSource.clip = item.SoundEffect;
+
+        // 체력이 회복되는 동안의 루프입니다.
+        StartCoroutine(HealRoutine(player, item, seSource));
+    }
+    /// <summary>
+    /// 1UP 아이템을 획득합니다.
+    /// </summary>
+    /// <param name="player">아이템을 사용할 플레이어입니다.</param>
+    /// <param name="item">획득한 아이템입니다.</param>
+    void GetItem1UP(PlayerController player, ItemScript item)
+    {
+        // 사용할 변수를 정의합니다.
+        AudioSource seSource = gameObject.AddComponent<AudioSource>();
+        seSource.clip = item.SoundEffect;
+
+
+        // 효과음을 재생합니다.
+        seSource.Play();
+    }
+    /// <summary>
+    /// 라이프 서브탱크 아이템을 획득합니다.
+    /// </summary>
+    /// <param name="player">아이템을 사용할 플레이어입니다.</param>
+    /// <param name="item">획득한 아이템입니다.</param>
+    void GetItemECan(PlayerController player, ItemScript item)
+    {
+        // 사용할 변수를 정의합니다.
+        AudioSource seSource = gameObject.AddComponent<AudioSource>();
+        seSource.clip = item.SoundEffect;
+
+
+        // 효과음을 재생합니다.
+        seSource.Play();
+    }
+    /// <summary>
+    /// 웨폰 서브탱크 아이템을 획득합니다.
+    /// </summary>
+    /// <param name="player">아이템을 사용할 플레이어입니다.</param>
+    /// <param name="item">획득한 아이템입니다.</param>
+    void GetItemWCan(PlayerController player, ItemScript item)
+    {
+        // 사용할 변수를 정의합니다.
+        AudioSource seSource = gameObject.AddComponent<AudioSource>();
+        seSource.clip = item.SoundEffect;
+
+
+        // 효과음을 재생합니다.
+        seSource.Play();
     }
 
 

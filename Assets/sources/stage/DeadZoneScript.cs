@@ -10,8 +10,6 @@ using System.Collections;
 public class DeadZoneScript : EnemyScript
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
-//    Rigidbody2D _rigidbody;
-//    BoxCollider2D _boxCollider2D;
 
 
     #endregion

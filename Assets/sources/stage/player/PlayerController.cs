@@ -220,11 +220,11 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어의 최대 체력을 확인합니다.
     /// </summary>
-    int _maxHealth = 20;
+    public int _maxHealth = 20;
     /// <summary>
     /// 위험 상태로 바뀌는 체력의 값입니다.
     /// </summary>
-    int _dangerHealth = 6;
+    public int _dangerHealth = 6;
 
 
     /// <summary>

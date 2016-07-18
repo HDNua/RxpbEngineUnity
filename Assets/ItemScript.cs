@@ -182,34 +182,11 @@ public class ItemScript : MonoBehaviour
         // 플레이어와 닿았다면 플레이어가 획득합니다.
         if (other.CompareTag("Player"))
         {
-            /**
-            // 게임 종료 마크를 만났다면
-            if (_itemType == "EndGame")
-            {
-                LoadingSceneManager.LoadLevel("CS03_GaiaFound");
-            }
-            // 그 외의 경우
-            else
-            {
-                // 사용할 변수를 선언합니다.
-                GameObject pObject = other.gameObject;
-                PlayerController player = pObject.GetComponent<PlayerController>();
-
-                // 아이템 효과를 발동합니다.
-                /// _sceneManager.RequestHeal(player, _itemValue);
-                _sceneManager.ActivateItem(player, this);
-
-                // 먹은 아이템을 삭제합니다.
-                Destroy(gameObject);
-            }
-            */
-
             // 사용할 변수를 선언합니다.
             GameObject pObject = other.gameObject;
             PlayerController player = pObject.GetComponent<PlayerController>();
 
             // 아이템 효과를 발동합니다.
-            /// _sceneManager.RequestHeal(player, _itemValue);
             _sceneManager.ActivateItem(player, this);
 
             // 먹은 아이템을 삭제합니다.

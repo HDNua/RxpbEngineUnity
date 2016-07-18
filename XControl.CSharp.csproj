@@ -88,6 +88,7 @@
     <Compile Include="Assets\sources\stage\ReadyAnimator.cs" />
     <Compile Include="Assets\sources\stage\SpeechManager.cs" />
     <Compile Include="Assets\sources\stage\TiledGeometryScript.cs" />
+    <Compile Include="Assets\sources\stage\TimeManager.cs" />
     <Compile Include="Assets\sources\stage\UI\HUDScript.cs" />
     <Compile Include="Assets\sources\stage\UI\PauseMenu.cs" />
     <Compile Include="Assets\sources\stage\camera\CameraFollowScript.cs" />

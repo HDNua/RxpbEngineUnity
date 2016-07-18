@@ -10,21 +10,22 @@ using System.Collections;
 public class DataBase : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
+    // 기본 데이터입니다.
     public PlayerController _playerX;
     public PlayerController _playerZ;
 
 
+    // Material입니다.
     public PhysicsMaterial2D _frictionlessWall;
-    public CameraZoneParent _cameraZoneParent;
 
 
+    // 공용 맵 요소입니다.
     public NewMap _map;
-
-
+    public CameraZoneParent _cameraZoneParent;
     public CameraFollowScript _cameraFollow;
-
-
     public StageManager _stageManager;
+    public PauseMenu _pauseMenu;
+    public TimeManager _timeManager;
 
 
     #endregion
@@ -57,33 +58,48 @@ public class DataBase : MonoBehaviour
     public PlayerController PlayerZ { get { return _playerZ; } }
 
 
-    public PhysicsMaterial2D FrictionlessWall
-    {
-        get { return _frictionlessWall; }
-    }
-    public CameraZoneParent CameraZoneParent
-    {
-        get { return _cameraZoneParent; }
-    }
-
-
+    /// <summary>
+    /// 맵 객체입니다.
+    /// </summary>
     public NewMap Map
     {
         get { return _map; }
     }
-
-
+    /// <summary>
+    /// 마찰 없는 벽을 표현하는 Material입니다.
+    /// </summary>
+    public PhysicsMaterial2D FrictionlessWall
+    {
+        get { return _frictionlessWall; }
+    }
+    /// <summary>
+    /// 카메라 존의 부모 객체입니다.
+    /// </summary>
+    public CameraZoneParent CameraZoneParent
+    {
+        get { return _cameraZoneParent; }
+    }
+    /// <summary>
+    /// CameraFollow 객체입니다.
+    /// </summary>
     public CameraFollowScript CameraFollow
     {
         get { return _cameraFollow; }
     }
-
-
+    /// <summary>
+    /// 스테이지 장면 관리자입니다.
+    /// </summary>
     public StageManager StageManager
     {
         get { return _stageManager; }
     }
-
+    /// <summary>
+    /// UnityEngine.Time 관리자입니다.
+    /// </summary>
+    public TimeManager TimeManager
+    {
+        get { return _timeManager; }
+    }
 
     #endregion
 
@@ -124,7 +140,7 @@ public class DataBase : MonoBehaviour
 
 
 
-    #region 메서드를 정의합니다.
+    #region 요청 메서드를 정의합니다.
 
 
     #endregion
@@ -139,13 +155,21 @@ public class DataBase : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("구형 정의 테스트입니다.")]
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
-    /// 구형 정의 테스트 함수입니다.
+    /// 
     /// </summary>
-    void Function()
+    public void Freeze()
     {
-        Console.WriteLine("Hello, world!");
+        _pauseMenu.RequestPauseToggle();
+    }
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 
+    /// </summary>
+    public void Unfreeze()
+    {
+        _pauseMenu.RequestPauseToggle();
     }
 
 

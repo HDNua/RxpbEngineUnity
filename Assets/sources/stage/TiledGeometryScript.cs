@@ -3,6 +3,8 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+
+
 /// <summary>
 /// Tiled로 작업한 지형의 스크립트입니다.
 /// </summary>
@@ -24,21 +26,21 @@ public class TiledGeometryScript : MonoBehaviour
 
     #region 필드를 정의합니다.
     /// <summary>
-    /// 
+    /// TiledGeometry 집합의 부모 개체입니다.
     /// </summary>
     TiledGeometryParent _parent;
     /// <summary>
-    /// 
+    /// Scene 데이터베이스입니다.
     /// </summary>
     DataBase _database;
 
 
     /// <summary>
-    /// 
+    /// 평평한 지형 충돌체입니다.
     /// </summary>
     BoxCollider2D _flatGroundCollider;
     /// <summary>
-    /// 
+    /// 경사면 지형 충돌체입니다.
     /// </summary>
     PolygonCollider2D _slopeGroundCollider;
 
@@ -47,7 +49,7 @@ public class TiledGeometryScript : MonoBehaviour
 
 
 
-    public Vector2[] _points;
+
 
 
 
@@ -241,7 +243,6 @@ public class TiledGeometryScript : MonoBehaviour
 
 
 
-    readonly Vector2 Vector2_Invalid = Vector2.one * float.MinValue;
 
     #region 메서드를 정의합니다.
     /// <summary>
@@ -278,66 +279,6 @@ public class TiledGeometryScript : MonoBehaviour
         ret[2] = sorted[1];
         ret[3] = sorted[3];
         return ret;
-
-
-
-        /*
-        // 절차:
-        // 1. 네 꼭짓점의 평균값을 구한다.
-        // 2. (꼭짓점 좌표 - 평균점 좌표)의 결과로 해당 꼭짓점을 알 수 있다.
-        // (1) (-,-) : 왼쪽 아래
-        // (2) (+,-) : 오른쪽 아래
-        // (3) (-,+) : 왼쪽 위
-        // (4) (+,+) : 오른쪽 위
-        Vector2 center = (points[0] + points[1] + points[2] + points[3]) / 4;
-        int dst;
-        for (int i = 0; i < 4; ++i)
-        {
-            Vector2 dif = points[i] - center;
-            if (dif.x < 0 && dif.y < 0) dst = 2;
-            else if (dif.x > 0 && dif.y < 0) dst = 3;
-            else if (dif.x < 0 && dif.y > 0) dst = 0;
-            else if (dif.x > 0 && dif.y > 0) dst = 1;
-            else
-            {
-                if (dif.y == 0f)
-                {
-                    dst = (dif.x > 0) ? 1 : 2;
-                }
-                else
-                {
-                    dst = (dif.y > 0) ? 0 : 3;
-                }
-
-                ret[dst] = points[i];
-                continue;
-            }
-
-
-
-            // 결과 배열의 값을 업데이트합니다.
-            if (ret[dst] != Vector2_Invalid)
-            {
-                Vector2 tmp = ret[dst];
-                
-                if (dst == 0 || dst == 2)
-                {
-                    ret[0] = points[i].y > tmp.y ? points[i] : tmp;
-                    ret[2] = points[i].y < tmp.y ? points[i] : tmp;
-                }
-                else
-                {
-                    ret[1] = points[i].y > tmp.y ? points[i] : tmp;
-                    ret[3] = points[i].y < tmp.y ? points[i] : tmp;
-                }
-            }
-            else
-            {
-                ret[dst] = points[i];
-            }
-        }
-        return ret;
-        */
     }
 
 
@@ -353,8 +294,15 @@ public class TiledGeometryScript : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("DataBase.FrictionlessWall로 대체되었습니다.")]
-    public PhysicsMaterial2D _material;
+    [Obsolete("안 써도 될 것 같습니다. 다음 커밋에서 삭제할 예정입니다.")]
+    readonly Vector2 Vector2_Invalid = Vector2.one * float.MinValue;
+
+
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// GetTetragonPoints()가 반환하는 값을 확인하기 위한 임시 변수입니다.
+    /// </summary>
+    public Vector2[] _points;
 
 
     #endregion

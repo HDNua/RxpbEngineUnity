@@ -44,14 +44,6 @@ public class EnemyMettoolScript : EnemyScript
     public LayerMask whatIsGround;
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public bool canJump;
-
-
-
-
     #endregion
 
 
@@ -64,6 +56,9 @@ public class EnemyMettoolScript : EnemyScript
 
 
     #region 캐릭터의 상태 필드 및 프로퍼티를 정의합니다.
+    /// <summary>
+    /// 캐릭터가 움직이는 속도를 정의합니다.
+    /// </summary>
     public float movingSpeed;
 
     /// <summary>
@@ -304,6 +299,11 @@ public class EnemyMettoolScript : EnemyScript
 
 
     #region 구형 정의를 보관합니다.
+    [Obsolete("뭔진 알겠는데 이거 빼도 되지 않나요?")]
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool canJump;
 
 
     #endregion
