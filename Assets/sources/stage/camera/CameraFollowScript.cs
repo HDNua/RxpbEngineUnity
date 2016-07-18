@@ -183,7 +183,7 @@ public class CameraFollowScript : MonoBehaviour
     /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
     /// 주로 오브젝트를 따라가게 설정한 카메라는 LastUpdate를 사용합니다.
     /// </summary>
-    void LastUpdate()
+    void LateUpdate()
     {
 
     }

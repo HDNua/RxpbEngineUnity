@@ -9,7 +9,61 @@ using System.Collections;
 /// </summary>
 public class XController : PlayerController
 {
-    #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
+    #region 상수를 정의합니다.
+    /// <summary>
+    /// 차지 단계가 변하는 시간입니다.
+    /// </summary>
+    readonly float[] chargeLevel = { 0.2f, 0.3f, 1.7f };
+
+    /// <summary>
+    /// 
+    /// </summary>
+    const float END_HURT_LENGTH = 0.361112f;
+
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region Unity에서 접근 가능한 공용 필드를 정의합니다.
+    /// <summary>
+    /// 버스터가 발사되는 속도입니다.
+    /// </summary>
+    public float _shotSpeed = 20;
+    /// <summary>
+    /// 최대 차지 시간입니다.
+    /// </summary>
+    public float _maxChargeTime = 3;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _endShotTime = 0.5416667f;
+    /// <summary>
+    /// 버스터 샷 집합입니다.
+    /// </summary>
+    public GameObject[] _bullets;
+    /// <summary>
+    /// 버스터 샷이 생성되는 위치입니다.
+    /// </summary>
+    public Transform _shotPosition;
+    /// <summary>
+    /// 차지 효과가 발생하는 위치입니다.
+    /// </summary>
+    public Transform _chargeEffectPosition;
+
+
+    /// <summary>
+    /// 테스트용: 삭제할 예정입니다.
+    /// </summary>
+    public GameObject _test;
 
 
     #endregion
@@ -24,6 +78,9 @@ public class XController : PlayerController
 
 
     #region 효과 객체를 보관합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     GameObject dashBoostEffect = null;
 
 
@@ -39,44 +96,83 @@ public class XController : PlayerController
 
 
     #region 플레이어의 상태 필드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     bool _shooting = false;
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _shotPressed = false;
+    /// <summary>
+    /// 
+    /// </summary>
+    float _chargeTime = 0;
+    /// <summary>
+    /// 
+    /// </summary>
+    float _shotTime = 0;
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _shotBlocked = false;
+    /// <summary>
+    /// 
+    /// </summary>
+    GameObject _chargeEffect1 = null;
+    /// <summary>
+    /// 
+    /// </summary>
+    GameObject _chargeEffect2 = null;
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    bool dangerVoicePlayed = false;
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    bool fullyCharged = false;
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+    #region 프로퍼티를 정의합니다.
+    /// <summary>
+    /// 샷을 발사하고 있다면 참입니다.
+    /// </summary>
     bool Shooting
     {
         get { return _shooting; }
         set { _animator.SetBool("Shooting", _shooting = value); }
     }
-    bool shotPressed = false;
-    float chargeTime = 0;
-    public float maxChargeTime = 3;
+    /// <summary>
+    /// 샷이 발동중이라면 참입니다. (Note) Shooting 프로퍼티와 하는 일이 같습니다.
+    /// </summary>
     bool ShotTriggered
     {
         get { return _shooting; }
         set { _animator.SetBool("Shooting", _shooting = value); }
     }
-    public GameObject[] bullets;
-    public Transform shotPosition;
-    public float shotSpeed = 10;
-    float shotTime = 0;
-    public float endShotTime = 0.5416667f; // 0.4f;
-    readonly float[] chargeLevel = { 0.2f, 0.3f, 1.7f };
-
-    bool _shotBlocked = false;
+    /// <summary>
+    /// 샷이 막혀있다면 참입니다.
+    /// </summary>
     public bool ShotBlocked
     {
         get { return _shotBlocked; }
         private set { _shotBlocked = value; }
     }
-
-    GameObject _chargeEffect1 = null;
-    GameObject _chargeEffect2 = null;
-    public Transform chargeEffectPosition;
-
-    bool dangerVoicePlayed = false;
-    const float endHurtLength = 0.361112f;
-
-
-
-    bool fullyCharged = false;
 
 
     #endregion
@@ -92,22 +188,21 @@ public class XController : PlayerController
 
     #region MonoBehavior 기본 메서드를 재정의합니다.
     /// <summary>
-    /// 
+    /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
     protected override void Awake()
     {
-        base.Awake(); // Initialize();
-        // _renderer = GetComponent<SpriteRenderer>();
+        base.Awake();
     }
     /// <summary>
-    /// 
+    /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
     void Start()
     {
-        // Initialize();
+
     }
     /// <summary>
-    /// 
+    /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
     /// </summary>
     protected override void Update()
     {
@@ -127,7 +222,6 @@ public class XController : PlayerController
             // 실제로 잔상을 생성합니다.
             else
             {
-                // GameObject dashAfterImage = I_nstantiate(effects[4], transform.position, transform.rotation) as GameObject;
                 GameObject dashAfterImage = CloneObject(effects[4], transform);
                 Vector3 daiScale = dashAfterImage.transform.localScale;
                 if (FacingRight == false)
@@ -141,6 +235,8 @@ public class XController : PlayerController
             }
         }
 
+
+        ///////////////////////////////////////////////////////////////////////////
         // 새로운 사용자 입력을 확인합니다.
         // 점프 키가 눌린 경우
         if (IsKeyDown("Jump"))
@@ -177,6 +273,7 @@ public class XController : PlayerController
         {
             if (Sliding)
             {
+
             }
             else if (Landed == false)
             {
@@ -205,7 +302,9 @@ public class XController : PlayerController
         }
     }
     /// <summary>
-    /// 
+    /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트 합니다.
+    /// 물리 효과가 적용된 오브젝트를 조정할 때 사용됩니다.
+    /// (Update는 불규칙한 호출이기 때문에 물리엔진 충돌검사가 제대로 되지 않을 수 있습니다.)
     /// </summary>
     void FixedUpdate()
     {
@@ -238,7 +337,7 @@ public class XController : PlayerController
             else
             {
                 _rigidbody.velocity = new Vector2
-                    (_rigidbody.velocity.x, _rigidbody.velocity.y - jumpDecSize);
+                    (_rigidbody.velocity.x, _rigidbody.velocity.y - _jumpDecSize);
             }
         }
         // 떨어지고 있다면
@@ -262,7 +361,7 @@ public class XController : PlayerController
             }
             else
             {
-                float vy = _rigidbody.velocity.y - jumpDecSize;
+                float vy = _rigidbody.velocity.y - _jumpDecSize;
                 _rigidbody.velocity = new Vector2
                     (_rigidbody.velocity.x, vy > -16 ? vy : -16);
             }
@@ -386,7 +485,7 @@ public class XController : PlayerController
         // 그 외의 경우
         else
         {
-            if (IsLeftKeyPressed()) // if (IsKeyPressed(GameKey.Left))
+            if (IsLeftKeyPressed())
             {
                 if (FacingRight == false && Pushing)
                 {
@@ -401,7 +500,7 @@ public class XController : PlayerController
                     MoveLeft();
                 }
             }
-            else if (IsRightKeyPressed()) // else if (IsKeyPressed(GameKey.Right))
+            else if (IsRightKeyPressed())
             {
                 if (FacingRight && Pushing)
                 {
@@ -423,11 +522,11 @@ public class XController : PlayerController
         }
 
         // 공격 키가 눌린 경우를 처리합니다.
-        if (IsKeyPressed("Attack")) // if (IsKeyPressed(GameKey.Attack))
+        if (IsKeyPressed("Attack"))
         {
-            if (shotPressed)
+            if (_shotPressed)
             {
-                if (chargeTime > 0)
+                if (_chargeTime > 0)
                 {
                     // _chargeEffect2 = CloneObject(effects[6], transform);
                     Charge();
@@ -437,40 +536,32 @@ public class XController : PlayerController
                     // _chargeEffect1 = CloneObject(effects[5], transform);
                     BeginCharge();
                 }
-                chargeTime = (chargeTime >= maxChargeTime)
-                    ? maxChargeTime : (chargeTime + Time.fixedDeltaTime);
+                _chargeTime = (_chargeTime >= _maxChargeTime)
+                    ? _maxChargeTime : (_chargeTime + Time.fixedDeltaTime);
             }
             else
             {
                 // Fire();
-                shotPressed = true;
+                _shotPressed = true;
             }
-
-
-            /// print(chargeTime);
         }
-        else if (shotPressed)
+        else if (_shotPressed)
         {
             Fire();
         }
-        shotTime += Time.fixedDeltaTime;
-
-
-        /**
-        if (IsAnimationPlaying("X_WallJump"))
-        {
-            print(GetCurrentAnimationLength());
-        }
-        */
+        _shotTime += Time.fixedDeltaTime;
     }
     /// <summary>
-    /// 
+    /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
+    /// 주로 오브젝트를 따라가게 설정한 카메라는 LastUpdate를 사용합니다.
     /// </summary>
     protected override void LateUpdate()
     {
         base.LateUpdate();
 
-        if (chargeTime > 0)
+
+        // 플레이어가 차지 중이라면 색을 업데이트합니다.
+        if (_chargeTime > 0)
         {
             _renderer.color = PlayerColor;
         }
@@ -497,12 +588,12 @@ public class XController : PlayerController
     void Fire()
     {
         int index = -1;
-        if (chargeTime < chargeLevel[1])
+        if (_chargeTime < chargeLevel[1])
         {
             index = 0; // _animator.Play("Shot", 0, 0);
             ShotBlocked = true;
         }
-        else if (chargeTime < chargeLevel[2])
+        else if (_chargeTime < chargeLevel[2])
         {
             index = 1; // _animator.Play("Shot", 0, 0);
             ShotBlocked = true;
@@ -526,9 +617,9 @@ public class XController : PlayerController
         }
 
         ShotTriggered = true;
-        shotPressed = false;
-        chargeTime = 0;
-        shotTime = 0;
+        _shotPressed = false;
+        _chargeTime = 0;
+        _shotTime = 0;
         StopCoroutine("CoroutineCharge");
         Shooting = true;
         if (Moving)
@@ -558,12 +649,12 @@ public class XController : PlayerController
 
         // 버스터 탄환을 생성하고 초기화합니다.
         // GameObject _bullet = I_nstantiate(bullets[index], shotPosition.position, shotPosition.rotation) as GameObject;
-        GameObject _bullet = CloneObject(bullets[index], shotPosition);
+        GameObject _bullet = CloneObject(_bullets[index], _shotPosition);
         Vector3 bulletScale = _bullet.transform.localScale;
         bulletScale.x *= FacingRight ? 1 : -1;
         _bullet.transform.localScale = bulletScale;
         _bullet.GetComponent<Rigidbody2D>().velocity
-            = (FacingRight ? Vector3.right : Vector3.left) * shotSpeed;
+            = (FacingRight ? Vector3.right : Vector3.left) * _shotSpeed;
         XBusterScript buster = _bullet.GetComponent<XBusterScript>();
         buster.MainCamera = stageManager._mainCamera;
 
@@ -572,7 +663,7 @@ public class XController : PlayerController
         SoundEffects[7].Stop();
 
         // 일정 시간 후에 샷 상태를 해제합니다.
-        Invoke("EndShot", endShotTime);
+        Invoke("EndShot", _endShotTime);
     }
     /// <summary>
     /// 차지를 시작합니다.
@@ -589,7 +680,7 @@ public class XController : PlayerController
     void Charge()
     {
         // 차지 효과음 재생에 관한 코드입니다.
-        if (chargeTime < chargeLevel[0]) // chargeLevel[1] - 0.1f
+        if (_chargeTime < chargeLevel[0]) // chargeLevel[1] - 0.1f
         {
 
         }
@@ -604,23 +695,23 @@ public class XController : PlayerController
         }
 
         // 차지 애니메이션 재생에 관한 코드입니다.
-        if (chargeTime < chargeLevel[0])
+        if (_chargeTime < chargeLevel[0])
         {
 
         }
         else if (_chargeEffect1 == null)
         {
-            _chargeEffect1 = CloneObject(effects[5], chargeEffectPosition);
-            _chargeEffect1.transform.SetParent(chargeEffectPosition);
+            _chargeEffect1 = CloneObject(effects[5], _chargeEffectPosition);
+            _chargeEffect1.transform.SetParent(_chargeEffectPosition);
         }
-        else if (chargeTime < chargeLevel[2])
+        else if (_chargeTime < chargeLevel[2])
         {
 
         }
         else if (_chargeEffect2 == null)
         {
-            _chargeEffect2 = CloneObject(effects[6], chargeEffectPosition);
-            _chargeEffect2.transform.SetParent(chargeEffectPosition);
+            _chargeEffect2 = CloneObject(effects[6], _chargeEffectPosition);
+            _chargeEffect2.transform.SetParent(_chargeEffectPosition);
 
 
 
@@ -638,9 +729,9 @@ public class XController : PlayerController
     IEnumerator CoroutineCharge()
     {
         float startTime = 0;
-        while (chargeTime >= 0)
+        while (_chargeTime >= 0)
         {
-            if (chargeTime < chargeLevel[1])
+            if (_chargeTime < chargeLevel[1])
             {
 
             }
@@ -649,7 +740,7 @@ public class XController : PlayerController
                 int cTime = (int)(startTime * 10) % 3;
                 if (cTime != 0)
                 {
-                    PlayerColor = (chargeTime < chargeLevel[2]) ?
+                    PlayerColor = (_chargeTime < chargeLevel[2]) ?
                         Color.cyan : Color.green;
                 }
                 else
@@ -669,7 +760,7 @@ public class XController : PlayerController
     /// </summary>
     void EndShot()
     {
-        if (shotTime >= endShotTime)
+        if (_shotTime >= _endShotTime)
         {
             float nTime = GetCurrentAnimationPlaytime();
             float fTime = nTime - Mathf.Floor(nTime);
@@ -836,7 +927,7 @@ public class XController : PlayerController
             _chargeEffect1.GetComponent<EffectScript>().RequestDestroy();
             _chargeEffect1 = null;
             SoundEffects[7].Stop();
-            chargeTime = 0;
+            _chargeTime = 0;
         }
     }
     /// <summary>
@@ -861,7 +952,7 @@ public class XController : PlayerController
             Voices[4].Play();
             SoundEffects[11].Play();
         }
-        Invoke("EndHurt", endHurtLength);
+        Invoke("EndHurt", END_HURT_LENGTH);
     }
     /// <summary>
     /// 대미지 상태를 해제합니다.
@@ -902,7 +993,6 @@ public class XController : PlayerController
         // 슬라이드를 금지합니다.
 //        BlockSliding();
 //        Invoke("UnblockSliding", 0.1f);
-
 //        SlideBlocked = true;
     }
     /// <summary>
@@ -912,10 +1002,8 @@ public class XController : PlayerController
     {
         // 금지한 슬라이딩을 해제합니다.
 //        UnblockSliding();
-
 //        SlideBlocked = false;
     }
-
 
 
     ///////////////////////////////////////////////////////////////////
@@ -932,7 +1020,6 @@ public class XController : PlayerController
     /// </summary>
     void FE_DashRunBeg()
     {
-        // GameObject dashBoost = I_nstantiate(effects[1], dashBoostPosition.position, dashBoostPosition.rotation) as GameObject;
         GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
         dashBoost.transform.SetParent(groundCheck.transform);
         if (FacingRight == false)
@@ -967,6 +1054,7 @@ public class XController : PlayerController
     {
     }
 
+
     ///////////////////////////////////////////////////////////////////
     // 벽 타기
     /// <summary>
@@ -991,6 +1079,7 @@ public class XController : PlayerController
         // UnblockSliding();
         // _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
     }
+
 
     ///////////////////////////////////////////////////////////////////
     // 기타

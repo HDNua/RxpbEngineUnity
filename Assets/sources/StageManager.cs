@@ -241,39 +241,7 @@ public class StageManager : HDSceneManager
 
 
 
-    IEnumerator HealRoutine(PlayerController player, ItemScript item, AudioSource audioSource)
-    {
-        float time = 0f;
-        float unitTime = 0.02f;
 
-        for (int i = 0, len = item._itemValue; i < len; ++i)
-        {
-            time = 0f;
-
-            // 체력이 가득 찼다면 반복문을 탈출합니다.
-            if (player.IsHealthFull())
-            {
-                // 정지한 움직임을 해제합니다.
-                Unfreeze();
-                yield break;
-            }
-
-            // 체력을 회복하면서 체력 회복 효과음을 재생합니다.
-            audioSource.Play();
-            audioSource.time = 0;
-            player.Heal(1);
-
-            while (time < unitTime)
-            {
-                time += Time.unscaledDeltaTime;
-                yield return null;
-            }
-        }
-
-        // 정지한 움직임을 해제합니다.
-        Unfreeze();
-        yield return null;
-    }
 
 
 
@@ -339,6 +307,55 @@ public class StageManager : HDSceneManager
 
         // 효과음을 재생합니다.
         seSource.Play();
+    }
+
+
+    /// <summary>
+    /// 회복이 이루어지는 루틴입니다.
+    /// </summary>
+    /// <param name="player">회복할 플레이어 객체입니다.</param>
+    /// <param name="item">사용한 아이템입니다.</param>
+    /// <param name="audioSource">효과음 재생을 위해 추가한 컴포넌트입니다.</param>
+    /// <returns>Update()를 다시 호출하기 위해 함수를 종료할 때마다 null을 반환합니다.</returns>
+    IEnumerator HealRoutine(PlayerController player, ItemScript item, AudioSource audioSource)
+    {
+        float time = 0f;
+        float unitTime = 0.02f;
+
+        for (int i = 0, len = item._itemValue; i < len; ++i)
+        {
+            time = 0f;
+
+            // 체력이 가득 찼다면 반복문을 탈출합니다.
+            if (player.IsHealthFull())
+            {
+                break;
+
+                /**
+                // 정지한 움직임을 해제합니다.
+                Unfreeze();
+                yield break;
+                */
+            }
+
+            // 체력을 회복하면서 체력 회복 효과음을 재생합니다.
+            audioSource.Play();
+            audioSource.time = 0;
+            player.Heal(); // player.Heal(1);
+
+            while (time < unitTime)
+            {
+                time += Time.unscaledDeltaTime;
+                yield return null;
+            }
+        }
+
+        // 정지한 움직임을 해제합니다.
+        Unfreeze();
+        // 음원 객체를 파괴합니다.
+        Destroy(audioSource, audioSource.clip.length);
+        // 코루틴을 종료합니다.
+        yield break;
     }
 
 

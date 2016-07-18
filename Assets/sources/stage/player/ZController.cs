@@ -220,7 +220,7 @@ public class ZController : PlayerController
             else
             {
                 _rigidbody.velocity = new Vector2
-                    (_rigidbody.velocity.x, _rigidbody.velocity.y - jumpDecSize);
+                    (_rigidbody.velocity.x, _rigidbody.velocity.y - _jumpDecSize);
             }
         }
         // 떨어지고 있다면
@@ -244,7 +244,7 @@ public class ZController : PlayerController
             }
             else
             {
-                float vy = _rigidbody.velocity.y - jumpDecSize;
+                float vy = _rigidbody.velocity.y - _jumpDecSize;
                 _rigidbody.velocity = new Vector2
                     (_rigidbody.velocity.x, vy > -16 ? vy : -16);
             }

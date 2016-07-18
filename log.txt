@@ -1,41 +1,56 @@
-RXPB v3.4.0 (IMPORTANT)
+RXPB v3.4.1
 
-- bug.txt 문서를 새롭게 만들었습니다.
-> 구현해야 하는 버그의 목록을 정의합니다.
-  새롭게 추가되는 버그는 log.txt와 bug.txt에 모두 기록합니다.
-  
-  
-- 정지 화면에 버튼 추가.
-> 아직 동작하는 것은 없음.
+- 정지 화면 버튼에 동작 추가.
 
 
-* !!!!! IMPORTANT !!!!!
-  TimeManager 구현.
-> Time.timeScale을 0 또는 1로 맞추는 것으로 화면 경직을 구현했었는데,
-  이것이 둘 이상으로 나뉘다보니 Update() 호출 시에 서로의 필드를 배척하는 결과가 나타났다.
-  예를 들면 PauseUI의 Paused 속성은 false인데 StageManager의 IsFrozen은 true이면
-  당연히 멈춰야 하지만 PauseUI의 Update()가 나중에 호출되는 경우, Paused가 false이면
-  Time.timeScale을 1로 바꿔버리곤 했던 것이다. 이 문제는 TimeManager 중간 객체를 두고,
-  이 개체를 통해서만 Time.timeScale을 관리하면 해결된다.
-  
-  
-* !!!!! IMPORTANT !!!!!
-  회복 아이템을 먹을 때 화면이 경직되는 효과 구현.
-> 이 문제는 생각보다 크게 까다로웠는데, 왜냐하면 Time.timeScale로 화면을 경직시키면
-  WaitForSeconds()가 동작하지 않는다는 **중요한** 특성 때문이었다. 프로젝트에서는
-  Time.unscaledDeltaTime 속성을 더하여 Time 차이를 알아내는 식으로 구현하였다.
-  후에 자세히 기록할 것.
-> StartCoroutine()의 색다른 사용법을 이해하고 사용할 수 있게 되었다.
-  
-
-! 맵 로딩 속도가 지나치게 느리다는 의견이 있다. 데모가 공개된 후에 패치할 것.
+* PlayerController와 XController에 대해 크게 주석 강화 및 리팩터링.
 
 
-- 세세한 수정.
-> ECan을 먹을 때 효과음이 재생되지 않는 버그 수정.
-> WCan에 대해 코드 구현. 스프라이트만 가져오면 거의 구현된다.
-!> 'XCan(EX아이템)', '라이프 업'을 구현해야 한다.
-> 사용되지 않는 코드 정리.
+- WCan 추가.
+> 동작은 ECan의 경우와 마찬가지임. 시간이 더 필요하다.
+
+
+- 재미 삼아서 세본, 작성한 코드 줄 수.
+> PlayerController			: 1657
+> XController				: 1154
+> TiledGeometryParent		: X
+> ItemScript				: 227
+> InvisibleWallParent		: 21
+> CameraZoneBorderParent	: 43
+> TitleSceneManager			: 155
+> StageManager				: 377
+> ScreenFader				: 131
+> PlayerSelectSceneManager	: 122
+> LoadingSceneManager		: 111
+> HDSceneManager			: 113
+> HandyScriptTemplate		: 114
+> CutsceneManager			: 470
+> TimeManager				: 107
+> TiledGeometryScript		: 298
+> ReadyAnimator				: 58
+> NewMap					: 108
+> EffectScript				: 176
+> DeadZoneScript			: 159
+> DataBase					: 178
+> PauseMenu					: 138
+> HUDScript					: 28
+> ZSaberScript				: 30
+> ZController				: 921
+> XBusterScript				: 196
+> DeadEffectScript			: 151
+> AttackScript				: 110
+> EnemyScript				: 239
+> EnemyMettoolScript		: 310
+> CameraZoneParent			: 136
+> CameraZoneBorder			: 207
+> CameraZone				: 220
+> CameraFollowScript		: 432
+> HandyImporter						: 207
+> HandyImporter_AddComponent		: 75
+> HandyImporter_CameraZone			: 73
+> HandyImporter_CameraZoneBorder	: 64
+> HandyImporter_TiledGeometry		: 57
+>> 계: 9373
 
 
 end.

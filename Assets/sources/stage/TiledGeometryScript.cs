@@ -208,8 +208,6 @@ public class TiledGeometryScript : MonoBehaviour
             leftEdge.points = new Vector2[] { points[0], points[2] };
             rightEdge.points = new Vector2[] { points[1], points[3] };
             bottomEdge.points = new Vector2[] { points[2], points[3] };
-
-            _points = points;
         }
         // 그 외의 경우 예외 처리합니다.
         else
@@ -252,15 +250,13 @@ public class TiledGeometryScript : MonoBehaviour
     /// <returns>"왼쪽 위, 오른쪽 위, 왼쪽 아래, 오른쪽 아래"로 정렬된 좌표 배열을 획득합니다.</returns>
     Vector2[] GetTetragonPoints(Vector2[] points)
     {
-        Vector2[] ret = new Vector2[4] {
-            Vector2_Invalid,
-            Vector2_Invalid,
-            Vector2_Invalid,
-            Vector2_Invalid,
-        };
-
-
+        // 임의의 사각형이 아닌, 직각사다리꼴과 같은 단순한 도형에 대해 꼭짓점을 구한다는 특성을 이용합니다.
+        Vector2[] ret = new Vector2[4];
         List<Vector2> sorted = new List<Vector2>(points);
+
+        // 배열을 정렬합니다. x 좌표는 오름차순, y 좌표는 내림차순으로 정렬합니다.
+        // 이렇게 정렬하면 배열은 "왼쪽 위, 왼쪽 아래, 오른쪽 위, 오른쪽 아래"로 정렬됩니다.
+        // 이것이 직각사다리꼴과 같은 단순한 도형에 대해 꼭짓점을 구한다는 특성을 이용한 것입니다.
         sorted.Sort(delegate (Vector2 a, Vector2 b)
         {
             if (a.x != b.x)
@@ -274,6 +270,7 @@ public class TiledGeometryScript : MonoBehaviour
             return 0;
         });
 
+        // 반환하려는 순서대로 맞춥니다.
         ret[0] = sorted[0];
         ret[1] = sorted[2];
         ret[2] = sorted[1];
@@ -294,15 +291,6 @@ public class TiledGeometryScript : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("안 써도 될 것 같습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    readonly Vector2 Vector2_Invalid = Vector2.one * float.MinValue;
-
-
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// GetTetragonPoints()가 반환하는 값을 확인하기 위한 임시 변수입니다.
-    /// </summary>
-    public Vector2[] _points;
 
 
     #endregion

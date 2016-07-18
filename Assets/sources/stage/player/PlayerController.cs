@@ -10,19 +10,6 @@ using System.Collections.Generic;
 /// </summary>
 public abstract class PlayerController : MonoBehaviour
 {
-    #region 컨트롤러가 사용할 공용 형식 또는 값을 정의합니다.
-
-    #endregion
-
-
-
-
-
-
-
-
-
-
     #region 컨트롤러가 사용할 Unity 객체에 대한 접근자를 정의합니다.
     /// <summary>
     /// Rigidbody2D 요소를 가져옵니다.
@@ -66,40 +53,103 @@ public abstract class PlayerController : MonoBehaviour
 
 
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     public StageManager stageManager;
 
+
+    /// <summary>
+    /// 
+    /// </summary>
     public AudioClip[] voiceClips;
+    /// <summary>
+    /// 
+    /// </summary>
     public AudioClip[] audioClips;
 
+
+    /// <summary>
+    /// 
+    /// </summary>
     public Transform groundCheck;
+    /// <summary>
+    /// 
+    /// </summary>
     public Transform groundCheckBack;
+    /// <summary>
+    /// 
+    /// </summary>
     public Transform groundCheckFront;
+    /// <summary>
+    /// 
+    /// </summary>
     public float groundCheckRadius = 0.1f;
+    /// <summary>
+    /// 
+    /// </summary>
     public LayerMask whatIsGround;
 
-    [Obsolete("pushCheckTop/Bottom으로 대체되었습니다.", true)]
-    public Transform pushCheck;
 
-    public Transform pushCheckTop;
-    public Transform pushCheckBottom;
-
-    public EdgeCollider2D pushCheckEdge;
-
+    /// <summary>
+    /// 벽 검사를 위한 충돌체입니다.
+    /// </summary>
     public BoxCollider2D pushCheckBox;
+    /// <summary>
+    /// 벽 검사 범위를 표현하는 실수입니다.
+    /// </summary>
     public float pushCheckRadius = 0.1f;
+    /// <summary>
+    /// 무엇이 벽인지를 나타내는 마스크입니다. 기본값은 "Wall"입니다.
+    /// </summary>
     public LayerMask whatIsWall;
 
-    public float walkSpeed = 5;
-    public float jumpSpeed = 16;
-    public float jumpDecSize = 0.8f;
-    public float slideSpeed = 4f;
-    public float spawnSpeed = 16;
-    public float dashSpeed = 10;
 
+    /// <summary>
+    /// 걷는 속도입니다.
+    /// </summary>
+    public float _walkSpeed = 5;
+    /// <summary>
+    /// 점프 시작 속도입니다.
+    /// </summary>
+    public float _jumpSpeed = 16;
+    /// <summary>
+    /// 점프한 이후로 매 시간 속도가 깎이는 양입니다.
+    /// </summary>
+    public float _jumpDecSize = 0.8f;
+    /// <summary>
+    /// 벽에서 미끄러지는 속도입니다.
+    /// </summary>
+    public float _slideSpeed = 4f;
+    /// <summary>
+    /// 소환 시에 하늘에서 내려올 때의 속도입니다.
+    /// </summary>
+    public float _spawnSpeed = 16;
+    /// <summary>
+    /// 대쉬 속도입니다.
+    /// </summary>
+    public float _dashSpeed = 12;
+
+
+    /// <summary>
+    /// PlayerController 객체가 사용할 효과 집합입니다.
+    /// </summary>
     public GameObject[] effects;
+    /// <summary>
+    /// 대쉬 연기가 발생하는 위치입니다.
+    /// </summary>
     public Transform dashFogPosition;
+    /// <summary>
+    /// 대쉬 부스터가 발생하는 위치입니다.
+    /// </summary>
     public Transform dashBoostPosition;
+    /// <summary>
+    /// 벽 타기 시 연기가 발생하는 위치입니다.
+    /// </summary>
     public Transform slideFogPosition;
+    /// <summary>
+    /// 벽 타기 시 연기 효과 객체입니다.
+    /// </summary>
     public GameObject slideFogEffect;
 
 
@@ -216,15 +266,15 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어의 현재 체력을 확인합니다.
     /// </summary>
-    public int _health = 20;
+    public int _health = 40;
     /// <summary>
     /// 플레이어의 최대 체력을 확인합니다.
     /// </summary>
-    public int _maxHealth = 20;
+    public int _maxHealth = 40;
     /// <summary>
     /// 위험 상태로 바뀌는 체력의 값입니다.
     /// </summary>
-    public int _dangerHealth = 6;
+    public int _dangerHealth = 10;
 
 
     /// <summary>
@@ -543,7 +593,7 @@ public abstract class PlayerController : MonoBehaviour
 
     #region MonoBehaviour 기본 메서드를 재정의 합니다.
     /// <summary>
-    /// 
+    /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
     protected virtual void Awake()
     {
@@ -574,15 +624,33 @@ public abstract class PlayerController : MonoBehaviour
         points[1].x /= transform.localScale.x;
         points[1].y /= transform.localScale.y;
 
-        pushCheckEdge.transform.position = Vector3.zero; // new Vector3(0.1f, 0);
-        pushCheckEdge.points = points;
+
+
+        // 다음 커밋에서 삭제할 예정입니다.
+//        pushCheckEdge.transform.position = Vector3.zero; // new Vector3(0.1f, 0);
+//        pushCheckEdge.points = points;
     }
     /// <summary>
-    /// 
+    /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
     /// </summary>
     protected virtual void Update()
     {
 
+    }
+    /// <summary>
+    /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
+    /// 주로 오브젝트를 따라가게 설정한 카메라는 LastUpdate를 사용합니다.
+    /// </summary>
+    protected virtual void LateUpdate()
+    {
+        if (IsAlive() && Invencible && Damaged == false)
+        {
+            _renderer.color = _playerColor;
+        }
+        else
+        {
+            _renderer.color = Color.white;
+        }
     }
 
 
@@ -689,20 +757,6 @@ public abstract class PlayerController : MonoBehaviour
         }
         return true;
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    protected virtual void LateUpdate()
-    {
-        if (IsAlive() && Invencible && Damaged == false)
-        {
-            _renderer.color = _playerColor;
-        }
-        else
-        {
-            _renderer.color = Color.white;
-        }
-    }
 
 
     #endregion
@@ -780,31 +834,11 @@ public abstract class PlayerController : MonoBehaviour
         // 벽과 접촉한 경우의 처리입니다.
         if (IsSameLayer(layer, whatIsWall))
         {
-            // Handy: 삭제할 코드입니다.
-
-            // Pushing = IsTouchingWall(collision) && (FacingRight ?
-            //  IsKeyPressed(GameKey.Right) : IsKeyPressed(GameKey.Left));
-            // Pushing = IsTouchingWall(collision) && (FacingRight ?
-            //    IsRightKeyPressed() : IsLeftKeyPressed());
-
-            /*
-            bool touchingWall = IsTouchingWall(collision);
-            Vector2 dir = FacingRight ? Vector2.right : Vector2.left;
-            RaycastHit2D rayT = Physics2D.Raycast
-                (pushCheckTop.position, dir, pushCheckRadius, whatIsWall);
-            RaycastHit2D rayB = Physics2D.Raycast
-                (pushCheckBottom.position, dir, pushCheckRadius, whatIsWall);
-
-            // Debug.DrawRay(pushCheck.position, direction*distance, Color.red);
-            // print((bool)pushRay);
-            Pushing = touchingWall && (rayT || rayB) && (FacingRight ?
-                IsRightKeyPressed() : IsLeftKeyPressed());
-            */
-
             Pushing = IsTouchingWall(collision) && (FacingRight ?
                 IsRightKeyPressed() : IsLeftKeyPressed());
         }
     }
+
 
     /// <summary>
     /// 레이어가 어떤 레이어 마스크에 포함되는지 확인합니다.
@@ -903,7 +937,6 @@ public abstract class PlayerController : MonoBehaviour
     bool IsTouchingWall(Collision2D collision)
     {
         // 벽과 닿아있는 경우 몇 가지 더 검사합니다.
-        // if (pushCheckEdge.IsTouchingLayers(whatIsWall))
         if (_collider.IsTouchingLayers(whatIsWall))
         {
             if (pushCheckBox.IsTouchingLayers(whatIsWall))
@@ -914,28 +947,6 @@ public abstract class PlayerController : MonoBehaviour
             {
                 return false;
             }
-
-            // Handy: 삭제할 코드입니다.
-            /*
-            float playerBottom = _collider.bounds.min.y;
-            float wallTop = collision.collider.bounds.max.y;
-
-            // 땅을 밟고 있지 않다면 참입니다.
-            if (Landed == false)
-            {
-                return true;
-            }
-            // 
-            else if (playerBottom >= wallTop)
-            {
-                return false;
-            }
-            // 
-            else
-            {
-                return true;
-            }
-            */
         }
         // 벽과 닿아있지 않으면 거짓입니다.
         return false;
@@ -959,7 +970,7 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void Spawn()
     {
         Spawning = true;
-        _rigidbody.velocity = new Vector2(0, -spawnSpeed);
+        _rigidbody.velocity = new Vector2(0, -_spawnSpeed);
     }
     /// <summary>
     /// 플레이어를 소환 상태에서 준비 상태로 전환합니다.
@@ -1110,7 +1121,7 @@ public abstract class PlayerController : MonoBehaviour
         BlockJumping();
         BlockDashing();
         UnblockAirDashing();
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpSpeed);
+        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _jumpSpeed);
         // _rigidbody.velocity = new Vector2(0, jumpSpeed);
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
@@ -1180,9 +1191,9 @@ public abstract class PlayerController : MonoBehaviour
         BlockMoving();
         BlockDashing();
         BlockAirDashing();
-        movingSpeed = dashSpeed;
+        movingSpeed = _dashSpeed;
         _rigidbody.velocity = new Vector2
-            (_facingRight ? dashSpeed : -dashSpeed, _rigidbody.velocity.y);
+            (_facingRight ? _dashSpeed : -_dashSpeed, _rigidbody.velocity.y);
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = true;
@@ -1195,7 +1206,7 @@ public abstract class PlayerController : MonoBehaviour
         // 개체의 운동 상태를 갱신합니다.
         UnblockMoving();
         UnblockDashing();
-        movingSpeed = walkSpeed;
+        movingSpeed = _walkSpeed;
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
@@ -1232,10 +1243,9 @@ public abstract class PlayerController : MonoBehaviour
         BlockDashing();
         UnblockJumping();
         UnblockAirDashing();
-        _rigidbody.velocity = new Vector2(0, -slideSpeed);
+        _rigidbody.velocity = new Vector2(0, -_slideSpeed);
 
         // 개체의 운동에 따른 효과를 처리합니다.
-        // GameObject slideFog = I_nstantiate(effects[2], slideFogPosition.position, slideFogPosition.rotation) as GameObject;
         GameObject slideFog = CloneObject(effects[2], slideFogPosition);
         slideFog.transform.SetParent(groundCheck.transform);
         if (FacingRight == false)
@@ -1284,6 +1294,7 @@ public abstract class PlayerController : MonoBehaviour
         SlideBlocked = false;
     }
 
+
     ///////////////////////////////////////////////////////////////////
     // 사다리 타기
     /// <summary>
@@ -1293,6 +1304,7 @@ public abstract class PlayerController : MonoBehaviour
     {
         UnblockAirDashing(); // ClearAirDashCount();
     }
+
 
     ///////////////////////////////////////////////////////////////////
     // 조합
@@ -1311,7 +1323,7 @@ public abstract class PlayerController : MonoBehaviour
         UnblockAirDashing();
         _rigidbody.velocity = new Vector2
             (FacingRight ? -1.5f * movingSpeed : 1.5f * movingSpeed,
-            jumpSpeed);
+            _jumpSpeed);
 
         // 개체의 운동에 따른 효과를 처리합니다.
         CloneObject(effects[3], slideFogPosition);
@@ -1333,8 +1345,8 @@ public abstract class PlayerController : MonoBehaviour
         StopSliding();
         BlockDashing();
         BlockJumping();
-        movingSpeed = dashSpeed;
-        _rigidbody.velocity = new Vector2(0, jumpSpeed);
+        movingSpeed = _dashSpeed;
+        _rigidbody.velocity = new Vector2(0, _jumpSpeed);
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = true;
@@ -1360,9 +1372,9 @@ public abstract class PlayerController : MonoBehaviour
         BlockJumping();
         BlockSliding();
         BlockAirDashing();
-        movingSpeed = dashSpeed;
+        movingSpeed = _dashSpeed;
         _rigidbody.velocity = new Vector2
-            (FacingRight ? -1.5f * movingSpeed : 1.5f * movingSpeed, jumpSpeed);
+            (FacingRight ? -1.5f * movingSpeed : 1.5f * movingSpeed, _jumpSpeed);
 
         // 개체의 운동에 따른 효과를 처리합니다.
         CloneObject(effects[3], slideFogPosition);
@@ -1387,7 +1399,7 @@ public abstract class PlayerController : MonoBehaviour
         BlockMoving();
         BlockAirDashing();
         _rigidbody.velocity = new Vector2
-            (FacingRight ? dashSpeed : -dashSpeed, 0);
+            (FacingRight ? _dashSpeed : -_dashSpeed, 0);
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = true;
@@ -1428,6 +1440,7 @@ public abstract class PlayerController : MonoBehaviour
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
     }
 
+
     #endregion
 
 
@@ -1443,15 +1456,13 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어가 체력을 회복합니다.
     /// </summary>
-    /// <param name="point">플레이어가 회복할 에너지 양입니다.</param>
-    public virtual void Heal(int point)
+    public virtual void Heal()
     {
-        Health += point;
+        Health++;
         if (_health > _dangerHealth)
         {
             Danger = false;
         }
-
     }
     /// <summary>
     /// 플레이어가 대미지를 입습니다.
@@ -1617,6 +1628,29 @@ public abstract class PlayerController : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.", true)]
+    public Transform pushCheck;
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    public Transform pushCheckTop;
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    public Transform pushCheckBottom;
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    public EdgeCollider2D pushCheckEdge;
+
+
+    [Obsolete("Heal()로 대체되었습니다.")]
+    /// <summary>
+    /// 플레이어가 체력을 회복합니다.
+    /// </summary>
+    /// <param name="point">플레이어가 회복할 에너지 양입니다.</param>
+    public virtual void Heal(int point)
+    {
+        Health += point;
+        if (_health > _dangerHealth)
+        {
+            Danger = false;
+        }
+    }
 
 
     #endregion

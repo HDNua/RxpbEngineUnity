@@ -36,22 +36,6 @@ public class HandyImporter_CameraZone : HandyImporter
         component._isRightFirst = GetBooleanValue(customProperties, "_isRightFirst");
         component._isBottomBounded = GetBooleanValue(customProperties, "_isBottomBounded");
         component._isBottomFirst = GetBooleanValue(customProperties, "_isBottomFirst");
-
-//        component.name = component._cameraZoneID.ToString();
-
-        /**
-        if (customProperties.ContainsKey("_isTopBounded"))
-        {
-            customProperties["_isTopBounded"];
-
-            string test = customProperties["_isTopBounded"];
-            Log("_isTopBounded: " + test);
-        }
-        else
-        {
-            Log("keys = " + StringArrayToString(customProperties));
-        }
-        */
     }
     /// <summary>
     /// 프리팹을 커스터마이징합니다.

@@ -132,24 +132,6 @@ public class PauseMenu : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 일시정지를 요청합니다.
-    /// </summary>
-    public void RequestPause()
-    {
-        _paused = true;
-        _timeManager.PauseMenuRequested = true;
-    }
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 일시정지 종료를 요청합니다.
-    /// </summary>
-    public void RequestPauseEnd()
-    {
-        _paused = false;
-        _timeManager.PauseMenuRequested = false;
-    }
 
 
     #endregion
