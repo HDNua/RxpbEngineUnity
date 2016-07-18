@@ -899,8 +899,24 @@ public class XController : PlayerController
     /// </summary>
     void FE_JumpBeg()
     {
+        // 슬라이드를 금지합니다.
+//        BlockSliding();
+//        Invoke("UnblockSliding", 0.1f);
 
+//        SlideBlocked = true;
     }
+    /// <summary>
+    /// 점프 시작이 끝난 후에 발생합니다.
+    /// </summary>
+    void FE_JumpRun()
+    {
+        // 금지한 슬라이딩을 해제합니다.
+//        UnblockSliding();
+
+//        SlideBlocked = false;
+    }
+
+
 
     ///////////////////////////////////////////////////////////////////
     // 대쉬

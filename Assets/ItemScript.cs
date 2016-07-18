@@ -33,6 +33,12 @@ public class ItemScript : MonoBehaviour
 
 
     /// <summary>
+    /// 아이템을 사용했을 때의 효과음입니다.
+    /// </summary>
+    public AudioClip _soundEffect;
+
+
+    /// <summary>
     /// 아이템의 형식을 표현합니다.
     /// </summary>
     public string _itemType;
@@ -80,6 +86,30 @@ public class ItemScript : MonoBehaviour
 
     #region 프로퍼티를 정의합니다.
     /// <summary>
+    /// 아이템을 사용했을 때의 효과음입니다.
+    /// </summary>
+    public AudioClip SoundEffect
+    {
+        get { return _soundEffect; }
+    }
+
+    /// <summary>
+    /// 아이템의 형식을 표현합니다.
+    /// </summary>
+    public string Type
+    {
+        get { return _itemType; }
+    }
+    /// <summary>
+    /// 아이템의 증감량을 정합니다.
+    /// </summary>
+    public int Value
+    {
+        get { return _itemValue; }
+    }
+
+
+    /// <summary>
     /// 적 캐릭터가 사망하면서 떨어뜨린 아이템이라면 참입니다.
     /// </summary>
     public bool IsDropped
@@ -107,7 +137,6 @@ public class ItemScript : MonoBehaviour
     void Start()
     {
         // 필드를 초기화합니다.
-        /// _triggerBox = GetComponent<BoxCollider2D>();
         _renderer = GetComponent<SpriteRenderer>();
     }
     /// <summary>
@@ -153,6 +182,7 @@ public class ItemScript : MonoBehaviour
         // 플레이어와 닿았다면 플레이어가 획득합니다.
         if (other.CompareTag("Player"))
         {
+            /**
             // 게임 종료 마크를 만났다면
             if (_itemType == "EndGame")
             {
@@ -166,11 +196,24 @@ public class ItemScript : MonoBehaviour
                 PlayerController player = pObject.GetComponent<PlayerController>();
 
                 // 아이템 효과를 발동합니다.
-                _sceneManager.RequestHeal(player, _itemValue);
+                /// _sceneManager.RequestHeal(player, _itemValue);
+                _sceneManager.ActivateItem(player, this);
 
                 // 먹은 아이템을 삭제합니다.
                 Destroy(gameObject);
             }
+            */
+
+            // 사용할 변수를 선언합니다.
+            GameObject pObject = other.gameObject;
+            PlayerController player = pObject.GetComponent<PlayerController>();
+
+            // 아이템 효과를 발동합니다.
+            /// _sceneManager.RequestHeal(player, _itemValue);
+            _sceneManager.ActivateItem(player, this);
+
+            // 먹은 아이템을 삭제합니다.
+            Destroy(gameObject);
         }
     }
 

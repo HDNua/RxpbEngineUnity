@@ -1,7 +1,9 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
-using System;
+
+
 
 /// <summary>
 /// 스테이지 장면 관리자입니다.
@@ -198,11 +200,37 @@ public class StageManager : HDSceneManager
 
     #region 요청 메서드를 정의합니다.
     /// <summary>
+    /// 아이템의 효과를 발동합니다.
+    /// </summary>
+    /// <param name="player">플레이어 객체입니다.</param>
+    /// <param name="item">플레이어가 사용한 아이템입니다.</param>
+    public void ActivateItem(PlayerController player, ItemScript item)
+    {
+        if (item.Type == "EndGame")
+        {
+            LoadingSceneManager.LoadLevel("CS03_GaiaFound");
+        }
+        else
+        {
+            AudioSource seSource = gameObject.AddComponent<AudioSource>();
+            seSource.clip = item.SoundEffect;
+
+            seSource.Play();
+            Heal(player, item.Value);
+
+            /*
+            while (seSource.isPlaying)
+                ;
+            */
+        }
+    }
+
+    /// <summary>
     /// 플레이어의 체력을 회복합니다.
     /// </summary>
     /// <param name="player">체력을 회복할 플레이어입니다.</param>
     /// <param name="point">회복할 체력 양입니다.</param>
-    public void RequestHeal(PlayerController player, int point)
+    void Heal(PlayerController player, int point)
     {
         Freeze();
         player.Heal(point);
