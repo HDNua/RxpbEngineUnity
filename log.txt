@@ -1,59 +1,42 @@
-RXPB v3.3.2
+RXPB v3.3.3
 
 ! DataBase와 StageManager의 역할이 서로 모호하다.
   나중에 합치던지 역할을 분명히 하던지 결정해야 한다.
-
-
-
 ! PlayerController 오류 잡기.
 > 벽에 붙어서 점프가 되지 않는 현상.
 !> 이건 해결해야 함. 아직 해결 못했음.
 
-> 방향키를 누르고 있으면 가끔 벽에 붙어서 떨어지지 않는 현상.
->> 지형에 isTrigger를 On으로 해두었더니 해결된 것 같다....
-> 특정 경사면을 지형으로 인식하지 못하고 떠있는 현상.
->> GetTetragonPoints가 제대로 적용되지 않아서 생긴 문제.
+
+
+! 자꾸 몹들이 (0, 0, 0)으로 이동해버린다.
+> 이건 처음에 TiledGeometryScript.Start() 함수에서 Ground 레이어를 생성하는데,
+  그 이전에 EnemyMettoolScript.Start()에서 Ray를 쏴서 Ground 레이어가 없을 때
+  레이가 없다고 판정했기 때문이다. whatIsGround에 TiledGeomtry 레이어를 추가하고
+  TiledGeometry 밑의 실제 객체들의 레이어를 TiledGeometry로 맞추면 해결된다.
+!> 수십번씩 방향 전환하는 것은 해결해야 함.
 
 
 
-! GetTetragonPoints가 일반해인줄 알았는데, 고려되지 않은 상황이 많았다.
-  보다 많은 연구가 필요함.
-> CameraZone에서 GetTetragonPoints가 잘 동작했던 건,
-  CameraZone의 생김새가 생각보다 특수한 형태였기 때문이다.
-  이에 대해서는 기억할 수 있으리라 생각함.
+- DeadZone이 기본적으로 체력을 가지고 있게 함.
+> 이는 임시 방편인데, 왜냐하면 데드 존을 공격했을 때 데드존이 파괴될 수 있기 때문이다.
+  이에 대해 대책을 강구할 것.
 
 
 
-* !!!!! IMPORTANT & HARD CHALLENGE !!!!!
-  지금 버전에서는 사각형의 모양이 엄청나게 특수하지는 않다는 점을 들어서,
-  평행 사변형 정도나 한 변이 직각인 사다리꼴만 있다고 간주한다.
-  그러면 다음과 같은 정렬 방법으로 정렬된 배열을 얻을 수 있다.
-
-  List<Vector2> sorted = new List<Vector2>(points);
-  sorted.Sort(delegate (Vector2 a, Vector2 b)
-  {
-    if (a.x != b.x)
-    {
-      return (a.x < b.x) ? -1 : 1;
-    }
-    else if (a.y != b.y)
-    {
-      return (a.y > b.y) ? -1 : 1;
-    }
-    return 0;
-  });
-
-  ret[0] = sorted[0];
-  ret[1] = sorted[2];
-  ret[2] = sorted[1];
-  ret[3] = sorted[3];
-  return ret;
-
-  임시방편 치고 그렇게 나쁘지 않은 방법이라 기억해둘 필요가 있겠다.
+- 라이프 에너지 아이템 추가.
+> 라이프 에너지 아이템은 맵에 Template을 하나 놓고, 프리팹이 아니라 이것을 써야 한다.
+  왜냐하면 아이템은 필드로 StageManager를 받는데, 프리팹에는 StageManager를 설정할 수
+  없기 때문이다.
 
 
 
-! 다음 커밋에서 Log 일괄적으로 삭제할 것.
+- 멧툴로 구현했던 데드 존 삭제.
+
+
+
+! 체력 회복 시 또는 피격 시에 화면이 멈추는 현상 구현하기.
+> 체력 회복은 화면이 멈춘 상태에서 체력만 차는 것을 구현해야 한다.
+> 피격 시에는 아주 잠깐동안 화면이 경직되어 타격감이 있게 해야 한다.
 
 
 

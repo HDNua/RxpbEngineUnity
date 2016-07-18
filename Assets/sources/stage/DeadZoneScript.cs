@@ -61,6 +61,8 @@ public class DeadZoneScript : EnemyScript
     protected override void Start()
     {
         base.Start();
+
+        Health = 100;
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트합니다.

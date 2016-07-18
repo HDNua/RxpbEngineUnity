@@ -339,9 +339,6 @@ public class XController : PlayerController
         }
 
 
-        Debug.Log("테스트 " + DateTime.Now + ": " + _rigidbody.velocity);
-
-
 
         // 방향 키 입력에 대해 처리합니다.
         // 대쉬 중이라면

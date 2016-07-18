@@ -158,7 +158,7 @@ public class ItemScript : MonoBehaviour
             {
                 LoadingSceneManager.LoadLevel("CS03_GaiaFound");
             }
-            // 
+            // 그 외의 경우
             else
             {
                 // 사용할 변수를 선언합니다.
