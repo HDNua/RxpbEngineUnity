@@ -1456,7 +1456,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어가 체력을 회복합니다.
     /// </summary>
-    public virtual void Heal()
+    public void Heal()
     {
         Health++;
         if (_health > _dangerHealth)
@@ -1464,6 +1464,15 @@ public abstract class PlayerController : MonoBehaviour
             Danger = false;
         }
     }
+    /// <summary>
+    /// 플레이어의 최대 체력을 증가시킵니다.
+    /// </summary>
+    public void IncreaseMaxHealth()
+    {
+        MaxHealth++;
+    }
+
+
     /// <summary>
     /// 플레이어가 대미지를 입습니다.
     /// </summary>

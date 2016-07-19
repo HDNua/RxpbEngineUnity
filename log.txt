@@ -1,56 +1,21 @@
-RXPB v3.4.1
+RXPB v3.4.2
 
-- 정지 화면 버튼에 동작 추가.
-
-
-* PlayerController와 XController에 대해 크게 주석 강화 및 리팩터링.
-
-
-- WCan 추가.
-> 동작은 ECan의 경우와 마찬가지임. 시간이 더 필요하다.
+- 아이템 추가.
+> LifeUp: 플레이어의 최대 체력을 늘린다.
+> XCan: 최대 목숨 수를 늘린다.
 
 
-- 재미 삼아서 세본, 작성한 코드 줄 수.
-> PlayerController			: 1657
-> XController				: 1154
-> TiledGeometryParent		: X
-> ItemScript				: 227
-> InvisibleWallParent		: 21
-> CameraZoneBorderParent	: 43
-> TitleSceneManager			: 155
-> StageManager				: 377
-> ScreenFader				: 131
-> PlayerSelectSceneManager	: 122
-> LoadingSceneManager		: 111
-> HDSceneManager			: 113
-> HandyScriptTemplate		: 114
-> CutsceneManager			: 470
-> TimeManager				: 107
-> TiledGeometryScript		: 298
-> ReadyAnimator				: 58
-> NewMap					: 108
-> EffectScript				: 176
-> DeadZoneScript			: 159
-> DataBase					: 178
-> PauseMenu					: 138
-> HUDScript					: 28
-> ZSaberScript				: 30
-> ZController				: 921
-> XBusterScript				: 196
-> DeadEffectScript			: 151
-> AttackScript				: 110
-> EnemyScript				: 239
-> EnemyMettoolScript		: 310
-> CameraZoneParent			: 136
-> CameraZoneBorder			: 207
-> CameraZone				: 220
-> CameraFollowScript		: 432
-> HandyImporter						: 207
-> HandyImporter_AddComponent		: 75
-> HandyImporter_CameraZone			: 73
-> HandyImporter_CameraZoneBorder	: 64
-> HandyImporter_TiledGeometry		: 57
->> 계: 9373
+- ItemScript의 동작 방식 개선.
+> 예전에는 ItemScript에서 매번 AudioSource를 생성했기 때문에 코드에서 직접
+  AudioSource를 삭제하는 코드가 필요했는데, 이제는 StageManager가 기본적으로
+  가지고 있는 AudioSource를 사용하므로 삭제하지 않습니다.
+  
+  
+! 최대 체력이 늘어나면 체력이 오히려 줄어드는 것처럼 보이는 현상이 있는데,
+  이는 사실 수학적으로는 정확한 현상이다. 왜 그런지는 좀만 생각하면 알 것.
+> 아무튼 이 문제는 해결해야 하는데, 문제는 HealthBar의 생김새에 있다.
+  체력 바를 새로 작성해야 할 것 같다.
+
 
 
 end.

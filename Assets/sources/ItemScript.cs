@@ -33,9 +33,9 @@ public class ItemScript : MonoBehaviour
 
 
     /// <summary>
-    /// 아이템을 사용했을 때의 효과음입니다.
+    /// 아이템을 사용했을 때 재생할 효과음의 인덱스 리스트입니다.
     /// </summary>
-    public AudioClip _soundEffect;
+    public int[] _soundEffectIndexes;
 
 
     /// <summary>
@@ -86,13 +86,12 @@ public class ItemScript : MonoBehaviour
 
     #region 프로퍼티를 정의합니다.
     /// <summary>
-    /// 아이템을 사용했을 때의 효과음입니다.
+    /// 아이템을 사용했을 때 재생할 효과음의 인덱스 리스트입니다.
     /// </summary>
-    public AudioClip SoundEffect
+    public int[] SoundEffectIndexes
     {
-        get { return _soundEffect; }
+        get { return _soundEffectIndexes; }
     }
-
     /// <summary>
     /// 아이템의 형식을 표현합니다.
     /// </summary>
@@ -220,6 +219,19 @@ public class ItemScript : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
+    [Obsolete("_soundEffectIndexes로 대체되었습니다.")]
+    /// <summary>
+    /// 아이템을 사용했을 때의 효과음입니다.
+    /// </summary>
+    public AudioClip _soundEffect;
+    [Obsolete("SoundEffects로 대체되었습니다.")]
+    /// <summary>
+    /// 아이템을 사용했을 때의 효과음입니다.
+    /// </summary>
+    public AudioClip SoundEffect
+    {
+        get { return _soundEffect; }
+    }
 
 
     #endregion
