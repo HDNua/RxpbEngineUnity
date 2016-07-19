@@ -18,6 +18,12 @@ public struct GameMapStatus
 
 
     /// <summary>
+    /// 
+    /// </summary>
+    public bool[] itemFound;
+
+
+    /// <summary>
     /// '라이프 업' 아이템을 획득했습니다.
     /// </summary>
     public bool itemLifeUpFound;

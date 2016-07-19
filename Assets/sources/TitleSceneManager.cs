@@ -52,6 +52,8 @@ public class TitleSceneManager : MonoBehaviour
     /// </summary>
     void Start()
     {
+        Time.timeScale = 1;
+
         // 효과음 리스트를 초기화 합니다.
         seSources = new AudioSource[soundEffects.Length];
         for (int i = 0, len = seSources.Length; i < len; ++i)
@@ -95,7 +97,7 @@ public class TitleSceneManager : MonoBehaviour
                     ChangeMenuItem(menuIndex + 1);
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.Return))
+            else if (IsSelectKeyPressed())
             {
                 switch (menuIndex)
                 {
@@ -157,6 +159,16 @@ public class TitleSceneManager : MonoBehaviour
         nextItem.GetComponent<SpriteRenderer>().sprite = sprites[2 * index];
         menuIndex = index;
         seSources[0].Play();
+    }
+
+
+    /// <summary>
+    /// 선택 키가 눌렸는지 확인합니다.
+    /// </summary>
+    /// <returns>선택 키가 눌렸다면 참입니다.</returns>
+    bool IsSelectKeyPressed()
+    {
+        return (Input.GetKeyDown(KeyCode.Return) || Input.GetButton("Attack") || Input.GetKey(KeyCode.Space));
     }
 
 

@@ -240,6 +240,13 @@ public class StageManager : HDSceneManager
                 break;
         }
     }
+    /// <summary>
+    /// 메인 메뉴로 복귀합니다.
+    /// </summary>
+    public void BackToMainMenu()
+    {
+        LoadingSceneManager.LoadLevel("Title");
+    }
 
 
     #endregion

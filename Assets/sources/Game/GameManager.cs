@@ -6,7 +6,6 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 
 
-[Serializable]
 /// <summary>
 /// 게임 관리자입니다.
 /// </summary>
@@ -22,41 +21,35 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 엑스의 최대 체력입니다.
     /// </summary>
-    public int MaxHealthX { get { return _maxHealthX; } }
+    public int MaxHealthX { get { return _gameData.MaxHealthX; } }
     /// <summary>
     /// 제로의 최대 체력입니다.
     /// </summary>
-    public int MaxHealthZ { get { return _maxHealthZ; } }
+    public int MaxHealthZ { get { return _gameData.MaxHealthZ; } }
 
 
     /// <summary>
     /// 맵 상태 집합입니다.
     /// </summary>
-    public GameMapStatus[] MapStatuses { get { return _mapStatus; } }
+    public GameMapStatus[] MapStatuses { get { return _gameData.MapStatuses; } }
 
 
     #endregion
 
 
 
+
+
+
+
+
+
+
     #region 필드를 정의합니다.
-    GameData GameData;
-
-
     /// <summary>
-    /// 엑스의 최대 체력입니다.
+    /// 게임 데이터 필드입니다.
     /// </summary>
-    int _maxHealthX = 20;
-    /// <summary>
-    /// 제로의 최대 체력입니다.
-    /// </summary>
-    int _maxHealthZ = 20;
-
-
-    /// <summary>
-    /// 맵 상태 집합입니다.
-    /// </summary>
-    GameMapStatus[] _mapStatus;
+    GameData _gameData;
 
 
     #endregion
@@ -76,7 +69,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+//        DontDestroyOnLoad(gameObject);
         Instance = this;
     }
     /// <summary>
@@ -103,51 +96,69 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// 맵 상태를 업데이트합니다.
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="mapStatus"></param>
+    /// <param name="index">상태를 업데이트할 맵의 인덱스입니다.</param>
+    /// <param name="mapStatus">맵의 새로운 상태입니다.</param>
     public void UpdateMapStatus(int index, GameMapStatus mapStatus)
     {
-        _mapStatus[index] = mapStatus;
+        _gameData.MapStatuses[index] = mapStatus;
     }
 
 
     /// <summary>
-    /// 
+    /// 게임 데이터를 저장합니다.
     /// </summary>
-    /// <param name="filename"></param>
+    /// <param name="filename">게임 데이터 파일의 이름입니다.</param>
     void Save(string filename)
     {
         Stream ws = new FileStream(filename, FileMode.Create);
         BinaryFormatter serializer = new BinaryFormatter();
 
-        serializer.Serialize(ws, this);
+        serializer.Serialize(ws, _gameData);
         ws.Close();
     }
     /// <summary>
-    /// 
+    /// 게임 데이터를 저장합니다.
     /// </summary>
-    /// <param name="filename"></param>
-    /// <returns></returns>
-    GameManager Load(string filename)
+    /// <param name="filename">게임 데이터 파일의 이름입니다.</param>
+    /// <param name="gameData">저장할 게임 데이터입니다.</param>
+    void Save(string filename, GameData gameData)
     {
-        Stream rs = new FileStream(filename, FileMode.Open);
-        BinaryFormatter deserializer = new BinaryFormatter();
+        Stream ws = new FileStream(filename, FileMode.Create);
+        BinaryFormatter serializer = new BinaryFormatter();
 
-        GameManager gameData = (GameManager)deserializer.Deserialize(rs);
-        rs.Close();
-
-        return gameData;
+        serializer.Serialize(ws, gameData);
+        ws.Close();
     }
     /// <summary>
-    /// 
+    /// 게임 데이터를 불러옵니다.
     /// </summary>
-    /// <param name="gameData"></param>
-    void UpdateGameData(GameManager gameData)
+    /// <param name="filename">게임 데이터 파일의 이름입니다.</param>
+    /// <returns>성공하면 GameData를, 실패하면 null을 반환합니다.</returns>
+    GameData Load(string filename)
     {
-        // 필드를 업데이트 합니다.
-        _maxHealthX = gameData._maxHealthX;
-        _maxHealthZ = gameData._maxHealthZ;
-        _mapStatus = gameData._mapStatus;
+        try
+        {
+            Stream rs = new FileStream(filename, FileMode.Open);
+            BinaryFormatter deserializer = new BinaryFormatter();
+
+            GameData gameData = (GameData)deserializer.Deserialize(rs);
+            rs.Close();
+
+            return gameData;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+    /// <summary>
+    /// 게임 데이터 필드를 업데이트합니다.
+    /// </summary>
+    /// <param name="gameData">새 게임 데이터입니다.</param>
+    void UpdateGameData(GameData gameData)
+    {
+        // 필드를 업데이트합니다.
+        _gameData = gameData;
     }
 
 
@@ -163,29 +174,46 @@ public class GameManager : MonoBehaviour
 
     #region 요청 메서드를 정의합니다.
     /// <summary>
-    /// 
+    /// 게임을 저장합니다.
     /// </summary>
-    /// <param name="filename"></param>
+    /// <param name="filename">게임 데이터 파일의 이름입니다.</param>
     public void RequestSave(string filename)
     {
-        Save(filename);
+        Save(filename, _gameData);
     }
     /// <summary>
-    /// 
+    /// 게임을 저장합니다.
     /// </summary>
-    /// <param name="filename"></param>
-    /// <returns></returns>
-    public GameManager RequestLoad(string filename)
+    /// <param name="filename">게임 데이터 파일의 이름입니다.</param>
+    /// <param name="gameData">저장할 게임 데이터입니다.</param>
+    public void RequestSave(string filename, GameData gameData)
+    {
+        Save(filename, gameData);
+    }
+    /// <summary>
+         /// 게임을 불러옵니다.
+         /// </summary>
+         /// <param name="filename">게임 데이터 파일의 이름입니다.</param>
+         /// <returns>  </returns>
+    public GameData RequestLoad(string filename)
     {
         return Load(filename);
     }
     /// <summary>
-    /// 
+    /// 게임 데이터를 업데이트합니다.
     /// </summary>
-    /// <param name="_saveData"></param>
-    public void RequestUpdateData(GameManager _saveData)
+    /// <param name="gameData">새 게임 데이터입니다.</param>
+    public void RequestUpdateData(GameData gameData)
     {
-        UpdateGameData(_saveData);
+        UpdateGameData(gameData);
+    }
+    /// <summary>
+    /// 디스크에서 게임 데이터를 제거합니다.
+    /// </summary>
+    /// <param name="filename"></param>
+    public void RequestDeleteData(string filename)
+    {
+        File.Delete(filename);
     }
 
 

@@ -1,18 +1,23 @@
-RXPB v3.4.3.0
+RXPB v3.4.3.1
 
-- 키 입력 인식 개선.
-> Input.anyKeyDown을 먼저 확인한 다음에, 키 입력인 것이 인정되면
-  키에 대한 루틴을 진행하는 Scene이 몇 개 있습니다.
-> StageScene은 아마 예외인데, 왜냐하면 거의 항상 키가 눌려있기 때문에
-  오히려 성능에 방해가 되기 때문입니다.
-  
-  
-* GameManager 도입.
+- 리소스 이름 일부 변경.
 
 
-- 뭔가 여러 개 하긴 했는데 완성 버전은 아니다.
-> 일단 임시로 커밋해놓자.
+- 일부 구형 정의에 대해 Naming Convention 맞춤.
 
+
+- ContinueScene, StageSelectScene 등을 추가.
+> TitleSceneManager에서 CONTINUE 항목을 선택하면 ContinueScene으로 이동하게 구현 변경.
+
+
+- GameManager의 필드를 GameData로 감쌈.
+> 이전에는 직접 GameManager를 직렬화해서 사용했는데, 이제는 GameData를 쓰면 된다.
+
+
+- 이전에 구조체였던 GameData와 같은 형식을 class로 변경.
+
+
+- ItemScript에서 ItemType이라는 enum 형식을 정의해봄. 아직 사용은 안 했음.
 
 
 end.

@@ -12,21 +12,47 @@ public class ContinueSceneManager : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     /// <summary>
-    /// 
+    /// 효과음 리스트입니다.
+    /// </summary>
+    public AudioClip[] _soundEffects;
+    /// <summary>
+    /// 커서 객체입니다.
     /// </summary>
     public GameObject _cursor;
+    /// <summary>
+    /// 커서의 시작점입니다.
+    /// </summary>
+    public float _cursorOriginY = 1.5f;
 
 
     /// <summary>
-    /// 
+    /// 게임 시스템 관리자입니다.
     /// </summary>
     public GameManager _gameManager;
+    /// <summary>
+    /// 페이드 인/아웃 효과 관리자입니다.
+    /// </summary>
+    public ScreenFader _fader;
 
 
     /// <summary>
-    /// 
+    /// 현재 커서가 가리키는 세이브 파일의 정보입니다.
+    /// </summary>
+    public GameObject _gameDataPanel;
+    /// <summary>
+    /// 획득한 '라이프 업' 아이템을 표현합니다.
     /// </summary>
     public GameObject[] _lifeups;
+
+
+    /// <summary>
+    /// 데이터가 없을 때 화면에 출력할 텍스트 객체입니다.
+    /// </summary>
+    public UnityEngine.UI.Text _noDataText;
+    /// <summary>
+    /// 현재 Scene의 상태를 표시하는 텍스트 객체입니다.
+    /// </summary>
+    public UnityEngine.UI.Text _statusText;
 
 
     #endregion
@@ -44,6 +70,12 @@ public class ContinueSceneManager : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
+    AudioSource[] _seSources;
+
+
+    /// <summary>
+    /// 
+    /// </summary>
     bool _loading = false;
 
 
@@ -58,7 +90,7 @@ public class ContinueSceneManager : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    GameManager _saveData;
+    GameData _gameData = null;
 
 
     #endregion
@@ -78,8 +110,21 @@ public class ContinueSceneManager : MonoBehaviour
     /// </summary>
     void Start()
     {
+        // 효과음 리스트를 초기화 합니다.
+        _seSources = new AudioSource[_soundEffects.Length];
+        for (int i = 0, len = _seSources.Length; i < len; ++i)
+        {
+            _seSources[i] = gameObject.AddComponent<AudioSource>();
+            _seSources[i].clip = _soundEffects[i];
+        }
+
+        // 페이드인 효과를 실행합니다.
+        _fader.FadeIn();
+
+
+
         // 필드를 초기화합니다.
-        _saveDataCount = PlayerPrefs.GetInt("SaveDataCount", 0);
+        _saveDataCount = PlayerPrefs.GetInt("SaveDataCount", 5);
         if (_saveDataCount > 0)
         {
             ChangeSaveItem(0);
@@ -93,15 +138,41 @@ public class ContinueSceneManager : MonoBehaviour
         // 게임 데이터를 불러오는 중이라면 로딩만 수행합니다.
         if (_loading)
         {
-
-
+            if (_fader.FadeOutEnded)
+            {
+                LoadingSceneManager.LoadLevel("StageSelect");
+            }
             return;
         }
 
 
-        // 
+        // 아무 키나 눌린 경우
         if (Input.anyKeyDown)
         {
+            // 테스트 함수를 호출합니다.
+            {
+                if (Input.GetKeyDown(KeyCode.A))
+                {
+                    AddSaveData(_saveDataIndex);
+                    return;
+                }
+                else if (Input.GetKeyDown(KeyCode.D))
+                {
+                    DeleteSaveData(_saveDataIndex);
+                    return;
+                }
+                else if (Input.GetKeyDown(KeyCode.S))
+                {
+                    PreserveSaveData();
+                    return;
+                }
+                else if (Input.GetKeyDown(KeyCode.F))
+                {
+                    DeletePlayerPrefsSaveData();
+                    return;
+                }
+            }
+
             // 
             if (Input.GetButtonDown("Attack"))
             {
@@ -110,7 +181,12 @@ public class ContinueSceneManager : MonoBehaviour
             }
             else if (Input.GetButtonDown("Jump"))
             {
-                AddSaveData();
+                return;
+            }
+            else if (Input.GetButtonDown("Dash"))
+            {
+                LoadingSceneManager.LoadLevel("Title");
+                return;
             }
 
 
@@ -127,9 +203,59 @@ public class ContinueSceneManager : MonoBehaviour
     }
 
 
-    void AddSaveData()
+    /// <summary>
+    /// 게임 데이터를 추가합니다.
+    /// </summary>
+    /// <param name="index">추가할 게임 데이터의 인덱스입니다.</param>
+    void AddSaveData(int index)
     {
-        GameManager gameData = new GameManager();
+        GameData gameData = new GameData();
+        gameData.MaxHealthX = 20;
+        gameData.MaxHealthZ = 20;
+        gameData.MapStatuses[1].itemLifeUpFound = true;
+
+        // 
+        _gameData = gameData;
+        _gameManager.RequestSave(index.ToString(), gameData);
+        UpdateScene();
+
+        // 상태 메시지를 출력합니다.
+        _statusText.text = "New Game Data Saved";
+    }
+    /// <summary>
+    /// 게임 데이터를 디스크에서 제거합니다.
+    /// </summary>
+    /// <param name="index">삭제할 게임 데이터의 인덱스입니다.</param>
+    void DeleteSaveData(int index)
+    {
+        _gameManager.RequestDeleteData(index.ToString());
+
+        // 
+        _gameData = null;
+        UpdateScene();
+
+        // 상태 메시지를 출력합니다.
+        _statusText.text = "Game Data Deleted";
+    }
+    /// <summary>
+    /// PlayerPrefs 속성을 제거합니다.
+    /// </summary>
+    void DeletePlayerPrefsSaveData()
+    {
+        PlayerPrefs.DeleteAll();
+
+        // 상태 메시지를 출력합니다.
+        _statusText.text = "PlayerPrefs Initialized";
+    }
+    /// <summary>
+    /// PlayerPrefs 속성을 보존합니다.
+    /// </summary>
+    void PreserveSaveData()
+    {
+        PlayerPrefs.Save();
+
+        // 상태 메시지를 출력합니다.
+        _statusText.text = "PlayerPrefs Preserved";
     }
 
 
@@ -146,74 +272,90 @@ public class ContinueSceneManager : MonoBehaviour
 
     #region 메서드를 정의합니다.
     /// <summary>
-    /// 
+    /// 커서가 다른 세이브 데이터를 가리키게 합니다.
     /// </summary>
     /// <param name="index"></param>
     void ChangeSaveItem(int index)
     {
+        // 
         if (_saveDataCount == 0)
             return;
-
-
-        index = Mathf.Clamp(index, 0, _saveDataCount - 1);
-        if (index < 0)
-            index = 0;
-        else if (index >= _saveDataCount)
-            index = _saveDataCount - 1;
+        else if (index < 0 || index >= _saveDataCount)
+            return;
 
 
         // 
         string filename = index.ToString();
         if (File.Exists(filename))
         {
-            _saveData = _gameManager.RequestLoad(index.ToString());
+            _gameData = _gameManager.RequestLoad(index.ToString());
         }
         else
         {
-            _saveData = null;
+            _gameData = null;
         }
 
 
-        // 
-        _cursor.transform.position = new Vector3(_cursor.transform.position.x, index);
-        UpdateScreen();
+        // 화면을 갱신하고 나머지 필드를 업데이트합니다.
+        UpdateScene();
+        _seSources[0].Play();
+        _cursor.transform.position = new Vector3(_cursor.transform.position.x, _cursorOriginY - index);
         _saveDataIndex = index;
+        _statusText.text = "Save Item Changed";
     }
     /// <summary>
-    /// 
+    /// 세이브 데이터로부터 게임을 불러옵니다.
     /// </summary>
     void Load()
     {
-        if (_saveData == null)
+        if (_gameData == null)
         {
 
         }
         else
         {
             _loading = true;
-            _gameManager.RequestUpdateData(_saveData);
-            LoadingSceneManager.LoadLevel("StageSelect");
+            _gameManager.RequestUpdateData(_gameData);
+
+            // 
+            _seSources[1].Play();
+
+            // 페이드 아웃을 진행합니다.
+            _fader.FadeOut(1);
         }
     }
     /// <summary>
-    /// 
+    /// Scene을 새로고침합니다.
     /// </summary>
-    void UpdateScreen()
+    void UpdateScene()
     {
-        if (_saveData == null)
+        if (_gameData == null)
         {
-            for (int i = 0; i < _lifeups.Length; ++i)
-            {
-                _lifeups[i].SetActive(true);
-            }
+            _noDataText.enabled = true;
+            _gameDataPanel.SetActive(false);
         }
         else
         {
-            GameMapStatus[] mapStatuses = _saveData.MapStatuses;
+            _noDataText.enabled = false;
+            ClearPreviousActiveState();
+            GameMapStatus[] mapStatuses = _gameData.MapStatuses;
             for (int i = 0; i < _lifeups.Length; ++i)
             {
                 _lifeups[i].SetActive(mapStatuses[i].itemLifeUpFound);
             }
+            _gameDataPanel.SetActive(true);
+        }
+    }
+
+
+    /// <summary>
+    /// 이전의 활성화 상태를 제거합니다.
+    /// </summary>
+    void ClearPreviousActiveState()
+    {
+        for (int i = 0; i < _lifeups.Length; ++i)
+        {
+            _lifeups[i].SetActive(false);
         }
     }
 

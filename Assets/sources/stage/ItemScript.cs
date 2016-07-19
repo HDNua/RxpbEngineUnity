@@ -10,6 +10,22 @@ using System.Collections;
 /// </summary>
 public class ItemScript : MonoBehaviour
 {
+    #region 공용 형식을 정의합니다.
+    public enum ItemType : int
+    {
+        LifeEnergy,
+        WeaponEnergy,
+        LifeUp,
+        ECan,
+        WCan,
+        XCan,
+        TryUp,
+    }
+
+    #endregion
+
+
+
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
     SpriteRenderer _renderer;
 
