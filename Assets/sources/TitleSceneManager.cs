@@ -79,47 +79,56 @@ public class TitleSceneManager : MonoBehaviour
         }
 
         // 키 입력에 대한 처리입니다.
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.anyKeyDown)
         {
-            if (0 < menuIndex)
+            if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                ChangeMenuItem(menuIndex - 1);
+                if (0 < menuIndex)
+                {
+                    ChangeMenuItem(menuIndex - 1);
+                }
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if (menuIndex < menuItems.Length - 1)
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                ChangeMenuItem(menuIndex + 1);
+                if (menuIndex < menuItems.Length - 1)
+                {
+                    ChangeMenuItem(menuIndex + 1);
+                }
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.Return))
-        {
-            switch (menuIndex)
+            else if (Input.GetKeyDown(KeyCode.Return))
             {
-                case 0:
-                    nextLevelName = "CS00_PreviousStory";
-                    changeSceneRequested = true;
-                    fader.FadeOut(1);
-                    break;
+                switch (menuIndex)
+                {
+                    case 0:
+                        nextLevelName = "CS00_PreviousStory";
+                        changeSceneRequested = true;
+                        fader.FadeOut(1);
+                        break;
 
-                case 1:
-                    nextLevelName = "CS01_Prologue";
-                    changeSceneRequested = true;
-                    fader.FadeOut(1);
-                    break;
+                    case 1:
+                        nextLevelName = "CS01_Prologue";
+                        changeSceneRequested = true;
+                        fader.FadeOut(1);
+                        break;
 
-                case 2:
-                    nextLevelName = "01_Intro";
-                    changeSceneRequested = true;
-                    fader.FadeOut(1);
-                    break;
+                    case 2:
+                        nextLevelName = "Continue";
+                        changeSceneRequested = true;
+                        fader.FadeOut(1);
+                        break;
 
-                default:
-                    nextLevelName = null;
-                    break;
+                    case 3:
+                        nextLevelName = "01_Intro";
+                        changeSceneRequested = true;
+                        fader.FadeOut(1);
+                        break;
+
+                    default:
+                        nextLevelName = null;
+                        break;
+                }
+                seSources[1].Play();
             }
-            seSources[1].Play();
         }
     }
 

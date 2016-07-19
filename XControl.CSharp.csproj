@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>5.3.5f1</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -63,30 +65,35 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Rotator.cs" />
+    <Compile Include="Assets\sources\Game\GameData.cs" />
+    <Compile Include="Assets\sources\Game\GameMapStatus.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\ImportBehaviour.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\SortingLayerExposed.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\SpriteDepthInMap.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TileAnimator.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledInitialShaderProperties.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledMap.cs" />
-    <Compile Include="Assets\sources\CameraZoneBorderParent.cs" />
+    <Compile Include="Assets\_Trashbin\PlayerSelectSceneManager.cs" />
+    <Compile Include="Assets\sources\ContinueSceneManager.cs" />
     <Compile Include="Assets\sources\CutsceneManager.cs" />
+    <Compile Include="Assets\sources\Game\GameManager.cs" />
     <Compile Include="Assets\sources\HDSceneManager.cs" />
     <Compile Include="Assets\sources\HandyScriptTemplate.cs" />
-    <Compile Include="Assets\sources\InvisibleWallParent.cs" />
-    <Compile Include="Assets\sources\ItemScript.cs" />
     <Compile Include="Assets\sources\LoadingSceneManager.cs" />
-    <Compile Include="Assets\sources\PlayerSelectSceneManager.cs" />
     <Compile Include="Assets\sources\ScreenFader.cs" />
-    <Compile Include="Assets\sources\StageManager.cs" />
-    <Compile Include="Assets\sources\TiledGeometryParent.cs" />
     <Compile Include="Assets\sources\TitleSceneManager.cs" />
+    <Compile Include="Assets\sources\stage\CameraZoneBorderParent.cs" />
     <Compile Include="Assets\sources\stage\DataBase.cs" />
     <Compile Include="Assets\sources\stage\DeadZoneScript.cs" />
     <Compile Include="Assets\sources\stage\EffectScript.cs" />
+    <Compile Include="Assets\sources\stage\InvisibleWallParent.cs" />
+    <Compile Include="Assets\sources\stage\ItemScript.cs" />
     <Compile Include="Assets\sources\stage\NewMap.cs" />
     <Compile Include="Assets\sources\stage\ReadyAnimator.cs" />
     <Compile Include="Assets\sources\stage\SpeechManager.cs" />
+    <Compile Include="Assets\sources\stage\StageManager.cs" />
+    <Compile Include="Assets\sources\stage\TiledGeometryParent.cs" />
     <Compile Include="Assets\sources\stage\TiledGeometryScript.cs" />
     <Compile Include="Assets\sources\stage\TimeManager.cs" />
     <Compile Include="Assets\sources\stage\UI\HUDScript.cs" />
