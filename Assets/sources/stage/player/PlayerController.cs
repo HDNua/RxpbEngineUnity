@@ -1065,14 +1065,14 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어의 입력을 방지합니다.
     /// </summary>
-    protected void BlockInput()
+    protected virtual void BlockInput()
     {
         InputBlocked = true;
     }
     /// <summary>
     /// 플레이어의 입력 방지를 해제합니다.
     /// </summary>
-    protected void UnblockInput()
+    protected virtual void UnblockInput()
     {
         InputBlocked = false;
     }
@@ -1083,7 +1083,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어를 왼쪽으로 이동합니다.
     /// </summary>
-    protected void MoveLeft()
+    protected virtual void MoveLeft()
     {
         if (_facingRight)
             Flip();
@@ -1094,7 +1094,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어를 오른쪽으로 이동합니다.
     /// </summary>
-    protected void MoveRight()
+    protected virtual void MoveRight()
     {
         if (_facingRight == false)
             Flip();
@@ -1104,7 +1104,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어의 이동을 중지합니다.
     /// </summary>
-    protected void StopMoving()
+    protected virtual void StopMoving()
     {
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
         Moving = false;
@@ -1112,14 +1112,14 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어의 이동 요청을 막습니다.
     /// </summary>
-    protected void BlockMoving()
+    protected virtual void BlockMoving()
     {
         MoveBlocked = true;
     }
     /// <summary>
     /// 플레이어가 이동을 요청할 수 있도록 합니다.
     /// </summary>
-    protected void UnblockMoving()
+    protected virtual void UnblockMoving()
     {
         MoveBlocked = false;
     }
@@ -1145,7 +1145,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어의 점프를 중지합니다.
     /// </summary>
-    protected void StopJumping()
+    protected virtual void StopJumping()
     {
         // 개체의 운동 상태를 갱신합니다.
         UnblockJumping();
@@ -1157,21 +1157,21 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어의 점프 요청을 막습니다.
     /// </summary>
-    protected void BlockJumping()
+    protected virtual void BlockJumping()
     {
         JumpBlocked = true;
     }
     /// <summary>
     /// 플레이어가 점프할 수 있도록 합니다.
     /// </summary>
-    protected void UnblockJumping()
+    protected virtual void UnblockJumping()
     {
         JumpBlocked = false;
     }
     /// <summary>
     /// 플레이어를 낙하시킵니다.
     /// </summary>
-    protected void Fall()
+    protected virtual void Fall()
     {
         // 개체의 운동 상태를 갱신합니다.
         BlockJumping();
@@ -1231,14 +1231,14 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어의 대쉬 요청을 막습니다.
     /// </summary>
-    protected void BlockDashing()
+    protected virtual void BlockDashing()
     {
         DashBlocked = true;
     }
     /// <summary>
     /// 플레이어가 대쉬할 수 있도록 합니다.
     /// </summary>
-    protected void UnblockDashing()
+    protected virtual void UnblockDashing()
     {
         DashBlocked = false;
     }
@@ -1249,7 +1249,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어가 벽을 타도록 합니다.
     /// </summary>
-    protected void Slide()
+    protected virtual void Slide()
     {
         // 개체의 운동 상태를 갱신합니다.
         StopMoving();
@@ -1279,7 +1279,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어의 벽 타기를 중지합니다.
     /// </summary>
-    protected void StopSliding()
+    protected virtual void StopSliding()
     {
         // 개체의 운동 상태를 갱신합니다.
         UnblockDashing();
@@ -1299,14 +1299,14 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어의 벽 타기 요청을 막습니다.
     /// </summary>
-    protected void BlockSliding()
+    protected virtual void BlockSliding()
     {
         SlideBlocked = true;
     }
     /// <summary>
     /// 플레이어가 벽 타기할 수 있도록 합니다.
     /// </summary>
-    protected void UnblockSliding()
+    protected virtual void UnblockSliding()
     {
         SlideBlocked = false;
     }
@@ -1317,7 +1317,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어가 사다리를 타도록 합니다.
     /// </summary>
-    protected void RideLadder()
+    protected virtual void RideLadder()
     {
         UnblockAirDashing(); // ClearAirDashCount();
     }
@@ -1328,7 +1328,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어가 벽 점프를 합니다.
     /// </summary>
-    protected void WallJump()
+    protected virtual void WallJump()
     {
         // 개체의 운동 상태를 갱신합니다.
         StopJumping();
@@ -1373,7 +1373,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어의 대쉬 점프를 중지합니다.
     /// </summary>
-    protected void StopDashJumping()
+    protected virtual void StopDashJumping()
     {
         Jumping = false;
         Dashing = false;
@@ -1382,7 +1382,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어가 벽에서 대쉬 점프하게 합니다.
     /// </summary>
-    protected void WallDashJump()
+    protected virtual void WallDashJump()
     {
         // 개체의 운동 상태를 갱신합니다.
         StopSliding();
@@ -1437,21 +1437,21 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어의 에어 대쉬 요청을 막습니다.
     /// </summary>
-    protected void BlockAirDashing()
+    protected virtual void BlockAirDashing()
     {
         AirDashBlocked = true; // airDashCount = 1;
     }
     /// <summary>
     /// 플레이어가 에어 대쉬할 수 있도록 합니다.
     /// </summary>
-    protected void UnblockAirDashing()
+    protected virtual void UnblockAirDashing()
     {
         AirDashBlocked = false; // ClearAirDashCount();
     }
     /// <summary>
     /// 플레이어의 벽 점프를 중지합니다.
     /// </summary>
-    protected void StopWallJumping()
+    protected virtual void StopWallJumping()
     {
         UnblockSliding();
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);

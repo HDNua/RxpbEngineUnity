@@ -16,10 +16,41 @@ public class XController : PlayerController
     readonly float[] chargeLevel = { 0.2f, 0.3f, 1.7f };
 
     /// <summary>
+    /// 무적 상태가 유지되는 시간입니다.
+    /// </summary>
+    const float INVENCIBLE_TIME = 0.361112f;
+
+
+    /// <summary>
     /// 
     /// </summary>
-    const float END_HURT_LENGTH = 0.361112f;
+    const string AniName_Idle = "Idle";
+    /// <summary>
+    /// 
+    /// </summary>
+    const string AniName_Shot = "X04_Shot";
+    /// <summary>
+    /// 
+    /// </summary>
+    const string AniName_ChargeShot = "X05_ChargeShot";
+    /// <summary>
+    /// 
+    /// </summary>
+    const string AniName_Walk_1beg = "X06_Walk_1beg";
+    /// <summary>
+    /// 
+    /// </summary>
+    const string AniName_Walk_2run = "X06_Walk_2run";
 
+
+    /// <summary>
+    /// 
+    /// </summary>
+    const string AniName_WalkShot_1beg = "X09_WalkShot_1beg";
+    /// <summary>
+    /// 
+    /// </summary>
+    const string AniName_WalkShot_2run = "X09_WalkShot_2run";
 
 
     #endregion
@@ -127,7 +158,7 @@ public class XController : PlayerController
 
 
     /// <summary>
-    /// 
+    /// 완전히 버스터가 차지된 상태라면 참입니다.
     /// </summary>
     bool _fullyCharged = false;
 
@@ -147,14 +178,6 @@ public class XController : PlayerController
     /// 샷을 발사하고 있다면 참입니다.
     /// </summary>
     bool Shooting
-    {
-        get { return _shooting; }
-        set { _animator.SetBool("Shooting", _shooting = value); }
-    }
-    /// <summary>
-    /// 샷이 발동중이라면 참입니다. (Note) Shooting 프로퍼티와 하는 일이 같습니다.
-    /// </summary>
-    bool ShotTriggered
     {
         get { return _shooting; }
         set { _animator.SetBool("Shooting", _shooting = value); }
@@ -541,7 +564,7 @@ public class XController : PlayerController
         }
         else if (_shotPressed)
         {
-            Fire();
+            Shot();
         }
         _shotTime += Time.fixedDeltaTime;
     }
@@ -579,16 +602,19 @@ public class XController : PlayerController
     /// <summary>
     /// 버스터를 발사합니다.
     /// </summary>
-    void Fire()
+    void Shot()
     {
+        // 탄환 객체 인덱스입니다.
         int index = -1;
         if (_chargeTime < chargeLevel[1])
         {
+            // 탄환 객체 인덱스를 업데이트합니다.
             index = 0; // _animator.Play("Shot", 0, 0);
             ShotBlocked = true;
         }
         else if (_chargeTime < chargeLevel[2])
         {
+            // 탄환 객체 인덱스를 업데이트합니다.
             index = 1; // _animator.Play("Shot", 0, 0);
             ShotBlocked = true;
         }
@@ -598,51 +624,65 @@ public class XController : PlayerController
             ShotBlocked = true;
         }
 
-        // 상태를 업데이트 합니다.
-        if (_chargeEffect1 != null)
+
+        // 상태를 업데이트합니다.
         {
-            if (_chargeEffect2 != null)
+            /**
+            ShotTriggered = true;
+            _shotPressed = false;
+            _chargeTime = 0;
+            _shotTime = 0;
+            StopCoroutine("CoroutineCharge");
+            Shooting = true;
+            */
+
+            // 차지 효과 객체의 상태를 업데이트 합니다.
+            if (_chargeEffect1 != null)
             {
-                _chargeEffect2.GetComponent<EffectScript>().RequestDestroy();
-                _chargeEffect2 = null;
+                if (_chargeEffect2 != null)
+                {
+                    _chargeEffect2.GetComponent<EffectScript>().RequestDestroy();
+                    _chargeEffect2 = null;
+                }
+                _chargeEffect1.GetComponent<EffectScript>().RequestDestroy();
+                _chargeEffect1 = null;
             }
-            _chargeEffect1.GetComponent<EffectScript>().RequestDestroy();
-            _chargeEffect1 = null;
+
+            // 필드를 초기화합니다.
+            _shotPressed = false;
+            _chargeTime = 0;
+            _shotTime = 0;
+            StopCoroutine(_chargeCoroutine);
+            Shooting = true;
         }
 
-        ShotTriggered = true;
-        _shotPressed = false;
-        _chargeTime = 0;
-        _shotTime = 0;
-        StopCoroutine("CoroutineCharge");
-        Shooting = true;
+
+        // 플레이어의 상태에 따라 애니메이션을 결정합니다.
         if (Moving)
         {
             float nTime = GetCurrentAnimationPlaytime();
             float fTime = nTime - Mathf.Floor(nTime);
-            _animator.Play("MoveShotRun", 0, fTime);
+            _animator.Play(AniName_WalkShot_2run, 0, fTime);
         }
         else
         {
-            // _animator.Play(0, 0, 0);
-
-            // [2016-02-06. 05:37] 노멀 샷과 차지 샷의 애니메이션 재생 개선.
-            if (_fullyCharged) // 완전히 차지된 경우
+            // 완전히 차지된 경우
+            if (_fullyCharged)
             {
                 // ChargeShot 애니메이션을 재생합니다.
-                _animator.Play("ChargeShot", 0, 0);
+                _animator.Play(AniName_ChargeShot, 0, 0);
                 _fullyCharged = false;
             }
             else
             {
                 // Shot 애니메이션을 재생합니다.
-                _animator.Play("Shot", 0, 0); 
+                _animator.Play(AniName_Shot, 0, 0); 
             }
         }
         _renderer.color = PlayerColor = Color.white;
 
+
         // 버스터 탄환을 생성하고 초기화합니다.
-        // GameObject _bullet = I_nstantiate(bullets[index], shotPosition.position, shotPosition.rotation) as GameObject;
         GameObject _bullet = CloneObject(_bullets[index], _shotPosition);
         Vector3 bulletScale = _bullet.transform.localScale;
         bulletScale.x *= FacingRight ? 1 : -1;
@@ -664,9 +704,8 @@ public class XController : PlayerController
     /// </summary>
     void BeginCharge()
     {
-        // I_nstantiate(effects[5], transform.position, transform.rotation);
-        // _chargeEffect1 = CloneObject(effects[5], transform);
-        StartCoroutine(CoroutineCharge());
+        /// StartCoroutine(CoroutineCharge());
+        _chargeCoroutine = StartCoroutine(ChargeCoroutine());
     }
     /// <summary>
     /// 차지 상태를 갱신합니다.
@@ -688,6 +727,7 @@ public class XController : PlayerController
             SoundEffects[7].time = 2.1f;
         }
 
+
         // 차지 애니메이션 재생에 관한 코드입니다.
         if (_chargeTime < chargeLevel[0])
         {
@@ -708,46 +748,12 @@ public class XController : PlayerController
             _chargeEffect2.transform.SetParent(_chargeEffectPosition);
 
 
-
-            // [2016-02-06. 05:37] fullyCharged 필드 처리 추가.
+            // 필드를 업데이트합니다.
             _fullyCharged = true;
         }
         else
         {
         }
-    }
-    /// <summary>
-    /// 차지 코루틴입니다.
-    /// </summary>
-    /// <returns>코루틴 열거자입니다.</returns>
-    IEnumerator CoroutineCharge()
-    {
-        float startTime = 0;
-        while (_chargeTime >= 0)
-        {
-            if (_chargeTime < chargeLevel[1])
-            {
-
-            }
-            else
-            {
-                int cTime = (int)(startTime * 10) % 3;
-                if (cTime != 0)
-                {
-                    PlayerColor = (_chargeTime < chargeLevel[2]) ?
-                        Color.cyan : Color.green;
-                }
-                else
-                {
-                    PlayerColor = Color.white;
-                }
-
-                startTime += Time.fixedDeltaTime;
-            }
-            yield return false;
-        }
-
-        yield return true;
     }
     /// <summary>
     /// 버스터 공격을 종료합니다.
@@ -758,18 +764,22 @@ public class XController : PlayerController
         {
             float nTime = GetCurrentAnimationPlaytime();
             float fTime = nTime - Mathf.Floor(nTime);
-            ShotTriggered = false;
+
+
+            /// ShotTriggered = false;
+            Shooting = false;
+
 
             string nextStateName = null;
             if (Landed)
             {
                 if (Moving)
                 {
-                    nextStateName = "MoveRun";
+                    nextStateName = AniName_Walk_2run;
                 }
                 else
                 {
-                    nextStateName = "Idle";
+                    nextStateName = AniName_Idle;
                 }
             }
             else
@@ -795,19 +805,70 @@ public class XController : PlayerController
 
     #region PlayerController 행동 메서드를 위한 코루틴을 정의합니다.
     /// <summary>
-    /// 
+    /// 차지 코루틴 필드입니다.
     /// </summary>
-    Coroutine _dashCoroutine;
+    Coroutine _chargeCoroutine = null;
+    /// <summary>
+    /// 차지 코루틴입니다.
+    /// </summary>
+    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
+    IEnumerator ChargeCoroutine()
+    {
+        float startTime = 0;
+        while (_chargeTime >= 0)
+        {
+            if (_chargeTime < chargeLevel[1])
+            {
+
+            }
+            else
+            {
+                int cTime = (int)(startTime * 10) % 3;
+                if (cTime != 0)
+                {
+                    PlayerColor = (_chargeTime < chargeLevel[2]) ?
+                        Color.cyan : Color.green;
+                }
+                else
+                {
+                    PlayerColor = Color.white;
+                }
+
+                startTime += Time.fixedDeltaTime;
+            }
+            yield return null;
+        }
+
+        yield return null;
+    }
 
 
     /// <summary>
     /// 
     /// </summary>
+    Coroutine _jumpCoroutine = null;
+    /// <summary>
+    /// 
+    /// </summary>
     /// <returns></returns>
-    IEnumerator DashCoroutine()
+    IEnumerator JumpCoroutine()
     {
 
 
+        yield break;
+    }
+
+
+    /// <summary>
+    /// 대쉬 코루틴 필드입니다.
+    /// </summary>
+    Coroutine _dashCoroutine = null;
+    /// <summary>
+    /// 대쉬 코루틴입니다.
+    /// </summary>
+    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
+    IEnumerator DashCoroutine()
+    {
         // FE_DashRunBeg()
         {
             GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
@@ -836,6 +897,112 @@ public class XController : PlayerController
 
         // 코루틴을 중지합니다.
         yield break;
+    }
+
+
+    /// <summary>
+    /// 벽 타기 코루틴 필드입니다.
+    /// </summary>
+    Coroutine _slideCoroutine = null;
+    /// <summary>
+    /// 벽 타기 코루틴입니다.
+    /// </summary>
+    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
+    IEnumerator SlideCoroutine()
+    {
+        /// <summary>
+        /// 벽 타기 시에 발생합니다.
+        /// </summary>
+        // FE_SlideBeg()
+        {
+            SoundEffects[6].Play();
+        }
+
+        // 코루틴을 중지합니다.
+        yield break;
+    }
+
+
+    /// <summary>
+    /// 벽 점프 코루틴 필드입니다.
+    /// </summary>
+    Coroutine _wallJumpCoroutine = null;
+    /// <summary>
+    /// 벽 점프 코루틴입니다.
+    /// </summary>
+    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
+    IEnumerator WallJumpCoroutine()
+    {
+        /// <summary>
+        /// 벽 점프 시에 발생합니다.
+        /// </summary>
+        // FE_WallJumpBeg()
+        {
+            SoundEffects[5].Play();
+        }
+        /// <summary>
+        /// 벽 점프가 종료할 때 발생합니다.
+        /// </summary>
+        // FE_WallJumpEnd()
+        {
+            // UnblockSliding();
+            // _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+        }
+
+        // 코루틴을 중지합니다.
+        yield break;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Coroutine _moveCoroutine = null;
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator MoveCoroutine()
+    {
+        /**
+        // 이미 걷기 애니메이션이 재생중이라면 무시합니다.
+        if (IsAnimationPlaying(AniName_Walk_1beg) || IsAnimationPlaying(AniName_Walk_2run))
+            yield break;
+        */
+        
+        // 애니메이션 재생을 시작합니다.
+        _animator.Play(AniName_Walk_1beg);
+
+        // 첫 번째 애니메이션 재생이 끝날 때까지 코루틴은 대기합니다.
+        yield return new WaitForSeconds(GetCurrentAnimationLength());
+
+
+        // 첫 번째 애니메이션 재생이 끝나면 두 번째 애니메이션으로 교체합니다.
+        _animator.Play(AniName_Walk_2run);
+        /**
+        if (Moving && !Dashing && !Jumping && !Sliding)
+        {
+            _animator.Play(AniName_Walk_1beg, 0, 0);
+            Debug.Log(AniName_Walk_1beg + " playing");
+        }
+        */
+
+
+        // 코루틴을 종료합니다.
+
+        _moveCoroutine = null;
+        yield break;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    void StopMoveCoroutine()
+    {
+        if (_moveCoroutine != null)
+        {
+            StopCoroutine(_moveCoroutine);
+            _moveCoroutine = null;
+        }
     }
 
 
@@ -869,6 +1036,45 @@ public class XController : PlayerController
         base.Land();
         SoundEffects[2].Play();
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override void MoveLeft()
+    {
+        base.MoveLeft();
+
+
+        // 코루틴을 시작합니다.
+        if (_moveCoroutine == null)
+        {
+            _moveCoroutine = StartCoroutine(MoveCoroutine());
+        }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override void MoveRight()
+    {
+        base.MoveRight();
+
+
+        // 코루틴을 시작합니다.
+        if (_moveCoroutine == null)
+        {
+            _moveCoroutine = StartCoroutine(MoveCoroutine());
+        }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override void StopMoving()
+    {
+        base.StopMoving();
+
+
+        // 코루틴을 중지합니다.
+        StopCoroutine(_moveCoroutine);
+    }
 
 
     ///////////////////////////////////////////////////////////////////
@@ -880,6 +1086,19 @@ public class XController : PlayerController
     {
         base.Jump();
         SoundEffects[1].Play();
+
+        // 코루틴을 시작합니다.
+        _jumpCoroutine = StartCoroutine(JumpCoroutine());
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override void StopJumping()
+    {
+        base.StopJumping();
+
+        // 코루틴을 중지합니다.
+        StopCoroutine(_jumpCoroutine);
     }
 
 
@@ -891,7 +1110,7 @@ public class XController : PlayerController
     protected override void Dash()
     {
         base.Dash();
-        _dashCoroutine = StartCoroutine(DashCoroutine());
+
 
         // 대쉬 효과 애니메이션을 추가합니다.
         GameObject dashFog = CloneObject(effects[0], dashFogPosition);
@@ -902,6 +1121,10 @@ public class XController : PlayerController
             dashFog.transform.localScale = newScale;
         }
         SoundEffects[3].Play();
+
+
+        // 대쉬 코루틴을 실행합니다.
+        _dashCoroutine = StartCoroutine(DashCoroutine());
     }
     /// <summary>
     /// 플레이어의 대쉬를 중지합니다. (사용자의 입력에 의함)
@@ -914,7 +1137,65 @@ public class XController : PlayerController
             _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
             _dashBoostEffect = null;
         }
+
+
+        // 코루틴을 중지합니다.
+        StopCoroutine(_dashCoroutine);
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    // 벽 타기
+    /// <summary>
+    /// 플레이어가 벽을 타도록 합니다.
+    /// </summary>
+    protected override void Slide()
+    {
+        base.Slide();
+
+
+        // 코루틴을 시작합니다.
+        _slideCoroutine = StartCoroutine(SlideCoroutine());
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override void StopSliding()
+    {
+        base.StopSliding();
+
+
+        // 코루틴을 중지합니다.
+        StopCoroutine(_slideCoroutine);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    // 조합
+    /// <summary>
+    /// 플레이어가 벽 점프를 합니다.
+    /// </summary>
+    protected override void WallJump()
+    {
+        base.WallJump();
+
+
+        // 코루틴을 시작합니다.
+        _wallJumpCoroutine = StartCoroutine(WallJumpCoroutine());
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override void StopWallJumping()
+    {
+        base.StopWallJumping();
+
+
+        // 코루틴을 중지합니다.
+        StopCoroutine(_wallJumpCoroutine);
+    }
+
+
     /// <summary>
     /// 플레이어가 대쉬 점프하게 합니다.
     /// </summary>
@@ -922,6 +1203,8 @@ public class XController : PlayerController
     {
         base.DashJump();
 
+
+        // 
         SoundEffects[3].Stop();
         SoundEffects[1].Play();
         if (_dashBoostEffect != null)
@@ -971,6 +1254,8 @@ public class XController : PlayerController
     {
         base.RequestDead();
 
+
+        // 사망할 때 플레이어가 차지 상태라면 효과를 제거합니다.
         if (_chargeEffect1 != null)
         {
             if (_chargeEffect2 != null)
@@ -990,6 +1275,9 @@ public class XController : PlayerController
     protected override void Dead()
     {
         base.Dead();
+
+
+        // 사망 시 입자가 퍼지는 효과를 요청합니다.
         stageManager._deadEffect.RequestRun(stageManager._player);
         Voices[9].Play();
         SoundEffects[12].Play();
@@ -1001,12 +1289,17 @@ public class XController : PlayerController
     public override void Hurt(int damage)
     {
         base.Hurt(damage);
+
+
+        // 플레이어가 생존해있다면
         if (IsAlive())
         {
             Voices[4].Play();
             SoundEffects[11].Play();
         }
-        Invoke("EndHurt", END_HURT_LENGTH);
+
+        // END_HURT_LENGTH 시간 후에 대미지를 입은 상태를 종료합니다.
+        Invoke("EndHurt", INVENCIBLE_TIME);
     }
     /// <summary>
     /// 대미지 상태를 해제합니다.
@@ -1014,16 +1307,21 @@ public class XController : PlayerController
     protected override void EndHurt()
     {
         base.EndHurt();
+
+
+        // 위험한 상태인데 위험 상태 경고 보이스를 재생하지 않았다면 재생합니다.
         if (Danger && _dangerVoicePlayed == false)
         {
             Voices[6].Play();
             _dangerVoicePlayed = true;
         }
+        // 위험 상태에서 벗어나면 위의 스위치를 해제합니다.
         else if (Health > DangerHealth)
         {
             _dangerVoicePlayed = false;
         }
     }
+
 
     #endregion
 
@@ -1036,9 +1334,100 @@ public class XController : PlayerController
 
 
 
-    #region 프레임 이벤트 핸들러를 정의합니다.
+    #region 보조 메서드를 정의합니다.
+    /// <summary>
+    /// 두 색상이 서로 같은 색인지 확인합니다.
+    /// </summary>
+    /// <param name="color1">비교할 색입니다.</param>
+    /// <param name="color2">비교할 색입니다.</param>
+    /// <returns>두 색의 rgba 값이 서로 같으면 참입니다.</returns>
+    bool IsSameColor(Color color1, Color color2)
+    {
+        return (color1.r == color2.r
+            && color1.g == color2.g
+            && color1.b == color2.b
+            && color1.a == color2.a);
+    }
+
+
+    /// <summary>
+    /// 코루틴을 중지합니다. 코루틴이 null이면 아무것도 하지 않습니다.
+    /// </summary>
+    /// <param name="coroutine"></param>
+    new void StopCoroutine(Coroutine coroutine)
+    {
+        if (coroutine != null)
+            base.StopCoroutine(coroutine);
+    }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region 구형 정의를 보관합니다.
+    [Obsolete("Shooting을 대신 사용하십시오.")]
+    /// <summary>
+    /// 샷이 발동중이라면 참입니다. (Note) Shooting 프로퍼티와 하는 일이 같습니다.
+    /// </summary>
+    bool ShotTriggered
+    {
+        get { return _shooting; }
+        set { _animator.SetBool("Shooting", _shooting = value); }
+    }
+
+
+    [Obsolete("ChargeCoroutine()으로 대체되었습니다.")]
+    /// <summary>
+    /// 차지 코루틴입니다.
+    /// </summary>
+    /// <returns>코루틴 열거자입니다.</returns>
+    IEnumerator CoroutineCharge()
+    {
+        float startTime = 0;
+        while (_chargeTime >= 0)
+        {
+            if (_chargeTime < chargeLevel[1])
+            {
+
+            }
+            else
+            {
+                int cTime = (int)(startTime * 10) % 3;
+                if (cTime != 0)
+                {
+                    PlayerColor = (_chargeTime < chargeLevel[2]) ?
+                        Color.cyan : Color.green;
+                }
+                else
+                {
+                    PlayerColor = Color.white;
+                }
+
+                startTime += Time.fixedDeltaTime;
+            }
+            yield return false;
+        }
+
+        yield return true;
+    }
+
+
+    #endregion
+
+
+
+    #region 구형 정의: 프레임 이벤트 핸들러를 정의합니다.
     ///////////////////////////////////////////////////////////////////
     // 점프 및 낙하
+    /**
     [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
     /// <summary>
     /// 점프 시작 시에 발생합니다.
@@ -1050,6 +1439,8 @@ public class XController : PlayerController
 //        Invoke("UnblockSliding", 0.1f);
 //        SlideBlocked = true;
     }
+    */
+    /**
     [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
     /// <summary>
     /// 점프 시작이 끝난 후에 발생합니다.
@@ -1060,6 +1451,7 @@ public class XController : PlayerController
 //        UnblockSliding();
 //        SlideBlocked = false;
     }
+    */
 
 
     ///////////////////////////////////////////////////////////////////
@@ -1128,6 +1520,7 @@ public class XController : PlayerController
 
     ///////////////////////////////////////////////////////////////////
     // 벽 타기
+    /**
     [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
     /// <summary>
     /// 벽 타기 시에 발생합니다.
@@ -1153,10 +1546,11 @@ public class XController : PlayerController
         // UnblockSliding();
         // _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
     }
-
+    */
 
     ///////////////////////////////////////////////////////////////////
     // 기타
+    /**
     [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
     /// <summary>
     /// 뭔지 모르겠어요.
@@ -1165,46 +1559,7 @@ public class XController : PlayerController
     {
         
     }
-
-    #endregion
-
-
-
-
-
-
-
-
-
-
-    #region 보조 메서드를 정의합니다.
-    /// <summary>
-    /// 두 색상이 서로 같은 색인지 확인합니다.
-    /// </summary>
-    /// <param name="color1">비교할 색입니다.</param>
-    /// <param name="color2">비교할 색입니다.</param>
-    /// <returns>두 색의 rgba 값이 서로 같으면 참입니다.</returns>
-    bool IsSameColor(Color color1, Color color2)
-    {
-        return (color1.r == color2.r
-            && color1.g == color2.g
-            && color1.b == color2.b
-            && color1.a == color2.a);
-    }
-
-
-    #endregion
-
-
-
-
-
-
-
-
-
-
-    #region 구형 정의를 보관합니다.
+    */
 
 
     #endregion
