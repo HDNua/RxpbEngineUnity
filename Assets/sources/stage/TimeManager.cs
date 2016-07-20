@@ -38,6 +38,20 @@ public class TimeManager : MonoBehaviour
     public bool StageManagerRequested { get; set; }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool TestTimeScale { get; set; }
+    /// <summary>
+    /// 
+    /// </summary>
+    public float TimeScale
+    {
+        get { return Time.timeScale; }
+        set { Time.timeScale = value; }
+    }
+
+
     #endregion
 
 
@@ -83,6 +97,15 @@ public class TimeManager : MonoBehaviour
     /// </summary>
     void UpdateTimeScale()
     {
+        if (TestTimeScale)
+        {
+            
+            return;
+        }
+
+
+
+
         if (_isStopped)
         {
             if (!PauseMenuRequested && !StageManagerRequested)

@@ -126,6 +126,14 @@ public class StageManager : HDSceneManager
             // 준비 애니메이션 재생을 시작합니다.
             _ready.gameObject.SetActive(true);
         }
+
+
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            float test = 0.01f;
+            _timeManager.TimeScale = _timeManager.TimeScale == test ? 1 : test;
+        }
     }
 
 

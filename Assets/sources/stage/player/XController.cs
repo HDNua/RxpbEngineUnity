@@ -28,6 +28,26 @@ public class XController : PlayerController
     /// <summary>
     /// 
     /// </summary>
+    const string AniName_Jump_1beg = "X03_Jump_1beg";
+    /// <summary>
+    /// 
+    /// </summary>
+    const string AniName_Jump_2run = "X03_Jump_2run";
+    /// <summary>
+    /// 
+    /// </summary>
+    const string AniName_Fall_1beg = "X03_Fall_1beg";
+    /// <summary>
+    /// 
+    /// </summary>
+    const string AniName_Fall_2run = "X03_Fall_2run";
+    /// <summary>
+    /// 
+    /// </summary>
+    const string AniName_Fall_3end = "X03_Fall_3end";
+    /// <summary>
+    /// 
+    /// </summary>
     const string AniName_Shot = "X04_Shot";
     /// <summary>
     /// 
@@ -51,6 +71,12 @@ public class XController : PlayerController
     /// 
     /// </summary>
     const string AniName_WalkShot_2run = "X09_WalkShot_2run";
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    const string AniName_Danger = "X19_Danger";
 
 
     #endregion
@@ -253,6 +279,10 @@ public class XController : PlayerController
         }
 
 
+        // 애니메이터를 업데이트합니다.
+        UpdateAnimator();
+
+
         ///////////////////////////////////////////////////////////////////////////
         // 새로운 사용자 입력을 확인합니다.
         // 점프 키가 눌린 경우
@@ -317,6 +347,10 @@ public class XController : PlayerController
         {
             stageManager.ChangePlayer(stageManager._playerZ);
         }
+
+
+        // 애니메이터를 업데이트합니다.
+//        UpdateAnimator();
     }
     /// <summary>
     /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트 합니다.
@@ -843,169 +877,6 @@ public class XController : PlayerController
     }
 
 
-    /// <summary>
-    /// 
-    /// </summary>
-    Coroutine _jumpCoroutine = null;
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator JumpCoroutine()
-    {
-
-
-        yield break;
-    }
-
-
-    /// <summary>
-    /// 대쉬 코루틴 필드입니다.
-    /// </summary>
-    Coroutine _dashCoroutine = null;
-    /// <summary>
-    /// 대쉬 코루틴입니다.
-    /// </summary>
-    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
-    IEnumerator DashCoroutine()
-    {
-        // FE_DashRunBeg()
-        {
-            GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
-            dashBoost.transform.SetParent(groundCheck.transform);
-            if (FacingRight == false)
-            {
-                var newScale = dashBoost.transform.localScale;
-                newScale.x = FacingRight ? newScale.x : -newScale.x;
-                dashBoost.transform.localScale = newScale;
-            }
-            _dashBoostEffect = dashBoost;
-        }
-
-        // FE_DashRunEnd()
-        {
-            StopDashing();
-            StopAirDashing();
-        }
-
-        // FE_DashEndBeg()
-        {
-            StopMoving();
-            SoundEffects[3].Stop();
-            SoundEffects[4].Play();
-        }
-
-        // 코루틴을 중지합니다.
-        yield break;
-    }
-
-
-    /// <summary>
-    /// 벽 타기 코루틴 필드입니다.
-    /// </summary>
-    Coroutine _slideCoroutine = null;
-    /// <summary>
-    /// 벽 타기 코루틴입니다.
-    /// </summary>
-    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
-    IEnumerator SlideCoroutine()
-    {
-        /// <summary>
-        /// 벽 타기 시에 발생합니다.
-        /// </summary>
-        // FE_SlideBeg()
-        {
-            SoundEffects[6].Play();
-        }
-
-        // 코루틴을 중지합니다.
-        yield break;
-    }
-
-
-    /// <summary>
-    /// 벽 점프 코루틴 필드입니다.
-    /// </summary>
-    Coroutine _wallJumpCoroutine = null;
-    /// <summary>
-    /// 벽 점프 코루틴입니다.
-    /// </summary>
-    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
-    IEnumerator WallJumpCoroutine()
-    {
-        /// <summary>
-        /// 벽 점프 시에 발생합니다.
-        /// </summary>
-        // FE_WallJumpBeg()
-        {
-            SoundEffects[5].Play();
-        }
-        /// <summary>
-        /// 벽 점프가 종료할 때 발생합니다.
-        /// </summary>
-        // FE_WallJumpEnd()
-        {
-            // UnblockSliding();
-            // _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-        }
-
-        // 코루틴을 중지합니다.
-        yield break;
-    }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    Coroutine _moveCoroutine = null;
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator MoveCoroutine()
-    {
-        /**
-        // 이미 걷기 애니메이션이 재생중이라면 무시합니다.
-        if (IsAnimationPlaying(AniName_Walk_1beg) || IsAnimationPlaying(AniName_Walk_2run))
-            yield break;
-        */
-        
-        // 애니메이션 재생을 시작합니다.
-        _animator.Play(AniName_Walk_1beg);
-
-        // 첫 번째 애니메이션 재생이 끝날 때까지 코루틴은 대기합니다.
-        yield return new WaitForSeconds(GetCurrentAnimationLength());
-
-
-        // 첫 번째 애니메이션 재생이 끝나면 두 번째 애니메이션으로 교체합니다.
-        _animator.Play(AniName_Walk_2run);
-        /**
-        if (Moving && !Dashing && !Jumping && !Sliding)
-        {
-            _animator.Play(AniName_Walk_1beg, 0, 0);
-            Debug.Log(AniName_Walk_1beg + " playing");
-        }
-        */
-
-
-        // 코루틴을 종료합니다.
-
-        _moveCoroutine = null;
-        yield break;
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    void StopMoveCoroutine()
-    {
-        if (_moveCoroutine != null)
-        {
-            StopCoroutine(_moveCoroutine);
-            _moveCoroutine = null;
-        }
-    }
-
-
     #endregion
 
 
@@ -1043,12 +914,13 @@ public class XController : PlayerController
     {
         base.MoveLeft();
 
-
+        /**
         // 코루틴을 시작합니다.
         if (_moveCoroutine == null)
         {
             _moveCoroutine = StartCoroutine(MoveCoroutine());
         }
+        */
     }
     /// <summary>
     /// 
@@ -1057,12 +929,13 @@ public class XController : PlayerController
     {
         base.MoveRight();
 
-
+        /**
         // 코루틴을 시작합니다.
         if (_moveCoroutine == null)
         {
             _moveCoroutine = StartCoroutine(MoveCoroutine());
         }
+        */
     }
     /// <summary>
     /// 
@@ -1071,9 +944,10 @@ public class XController : PlayerController
     {
         base.StopMoving();
 
-
+        /**
         // 코루틴을 중지합니다.
         StopCoroutine(_moveCoroutine);
+        */
     }
 
 
@@ -1087,8 +961,10 @@ public class XController : PlayerController
         base.Jump();
         SoundEffects[1].Play();
 
+        /**
         // 코루틴을 시작합니다.
         _jumpCoroutine = StartCoroutine(JumpCoroutine());
+        */
     }
     /// <summary>
     /// 
@@ -1097,8 +973,10 @@ public class XController : PlayerController
     {
         base.StopJumping();
 
+        /**
         // 코루틴을 중지합니다.
         StopCoroutine(_jumpCoroutine);
+        */
     }
 
 
@@ -1154,8 +1032,10 @@ public class XController : PlayerController
         base.Slide();
 
 
+        /**
         // 코루틴을 시작합니다.
         _slideCoroutine = StartCoroutine(SlideCoroutine());
+        */
     }
     /// <summary>
     /// 
@@ -1165,8 +1045,10 @@ public class XController : PlayerController
         base.StopSliding();
 
 
+        /**
         // 코루틴을 중지합니다.
         StopCoroutine(_slideCoroutine);
+        */
     }
 
 
@@ -1180,8 +1062,10 @@ public class XController : PlayerController
         base.WallJump();
 
 
+        /**
         // 코루틴을 시작합니다.
         _wallJumpCoroutine = StartCoroutine(WallJumpCoroutine());
+        */
     }
     /// <summary>
     /// 
@@ -1191,8 +1075,10 @@ public class XController : PlayerController
         base.StopWallJumping();
 
 
+        /**
         // 코루틴을 중지합니다.
         StopCoroutine(_wallJumpCoroutine);
+        */
     }
 
 
@@ -1220,6 +1106,10 @@ public class XController : PlayerController
     {
         base.AirDash();
         SoundEffects[3].Play();
+
+
+        // 코루틴을 시작합니다.
+        _airDashCoroutine = StartCoroutine(AirDashCoroutine());
     }
     /// <summary>
     /// 플레이어의 에어 대쉬를 중지합니다.
@@ -1231,6 +1121,14 @@ public class XController : PlayerController
         {
             _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
             _dashBoostEffect = null;
+        }
+
+
+        // 코루틴을 중지합니다.
+        if (_airDashCoroutine != null)
+        {
+            StopCoroutine(_airDashCoroutine);
+            _airDashCoroutine = null;
         }
     }
 
@@ -1350,14 +1248,131 @@ public class XController : PlayerController
     }
 
 
+    [Obsolete("")]
     /// <summary>
     /// 코루틴을 중지합니다. 코루틴이 null이면 아무것도 하지 않습니다.
     /// </summary>
     /// <param name="coroutine"></param>
-    new void StopCoroutine(Coroutine coroutine)
+    void StopCoroutine_dep(Coroutine coroutine)
     {
         if (coroutine != null)
             base.StopCoroutine(coroutine);
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    void UpdateAnimator()
+    {
+
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    void UpdateAnimator2()
+    {
+        /*
+        if (Shooting)
+        {
+
+        }
+        else
+        {
+            if (AirDashing)
+            {
+                if (IsAnimationPlaying("X07_Dash_1beg")
+                    || IsAnimationPlaying("X07_Dash_2run")
+                    || IsAnimationPlaying("X07_Dash_3end"))
+                {
+
+                }
+                else
+                {
+                    _animator.Play("X07_Dash_2run");
+                }
+            }
+            else if (Sliding)
+            {
+
+            }
+            else if (Dashing)
+            {
+                _animator.Play("");
+            }
+            else if (Falling)
+            {
+                if (Landed)
+                {
+                    _animator.Play(AniName_Fall_3end);
+                }
+                else if (IsAnimationPlaying(AniName_Fall_2run))
+                {
+
+                }
+                else if (IsAnimationPlaying(AniName_Fall_1beg)
+                    && GetCurrentAnimationPlaytime() >= 1)
+                {
+                    _animator.Play(AniName_Fall_2run);
+                }
+                else if (IsAnimationPlaying(AniName_Fall_1beg) == false)
+                {
+                    _animator.Play(AniName_Fall_1beg);
+                }
+            }
+            else if (Jumping)
+            {
+                if (IsAnimationPlaying(AniName_Jump_2run))
+                {
+
+                }
+                else if (IsAnimationPlaying(AniName_Jump_1beg)
+                    && GetCurrentAnimationPlaytime() >= 1)
+                {
+                    _animator.Play(AniName_Jump_2run);
+                }
+                else if (IsAnimationPlaying(AniName_Jump_1beg) == false)
+                {
+                    _animator.Play(AniName_Jump_1beg);
+                }
+            }
+            else if (Moving)
+            {
+                if (IsAnimationPlaying(AniName_Walk_2run))
+                {
+
+                }
+                else if (IsAnimationPlaying(AniName_Walk_1beg)
+                    && GetCurrentAnimationPlaytime() >= 1)
+                {
+                    _animator.Play(AniName_Walk_2run);
+                }
+                else if (IsAnimationPlaying(AniName_Walk_1beg) == false)
+                {
+                    _animator.Play(AniName_Walk_1beg);
+                }
+            }
+            else
+            {
+                if (Danger)
+                {
+                    if (IsAnimationPlaying(AniName_Danger) == false
+                        && GetCurrentAnimationPlaytime() >= 1)
+                    {
+                        _animator.Play(AniName_Danger);
+                    }
+                }
+                else
+                {
+                    if (IsAnimationPlaying(AniName_Idle) == false
+                        && GetCurrentAnimationPlaytime() >= 1)
+                    {
+                        _animator.Play(AniName_Idle);
+                    }
+                }
+            }
+        }
+        */
     }
 
 
@@ -1417,6 +1432,209 @@ public class XController : PlayerController
         }
 
         yield return true;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+//    Coroutine _jumpCoroutine = null;
+    [Obsolete("")]
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator JumpCoroutine()
+    {
+
+
+        yield break;
+    }
+
+
+    /// <summary>
+    /// 대쉬 코루틴 필드입니다.
+    /// </summary>
+    Coroutine _dashCoroutine = null;
+    /// <summary>
+    /// 대쉬 코루틴입니다.
+    /// </summary>
+    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
+    IEnumerator DashCoroutine()
+    {
+        // DashBeg
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        // DashRun
+        if (DashJumping == false)
+        {
+            GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
+            dashBoost.transform.SetParent(groundCheck.transform);
+            if (FacingRight == false)
+            {
+                var newScale = dashBoost.transform.localScale;
+                newScale.x = FacingRight ? newScale.x : -newScale.x;
+                dashBoost.transform.localScale = newScale;
+            }
+            _dashBoostEffect = dashBoost;
+
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        // DashEnd
+        if (DashJumping == false)
+        {
+            StopDashing();
+            StopAirDashing();
+
+            StopMoving();
+            SoundEffects[3].Stop();
+            SoundEffects[4].Play();
+        }
+
+        // 코루틴을 중지합니다.
+        yield break;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Coroutine _airDashCoroutine = null;
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator AirDashCoroutine()
+    {
+        // AirDashBeg
+        {
+
+        }
+
+        // AirDashRun
+        {
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        // AirDashEnd
+        {
+            StopAirDashing();
+        }
+
+        yield break;
+    }
+
+
+    /// <summary>
+    /// 벽 타기 코루틴 필드입니다.
+    /// </summary>
+//    Coroutine _slideCoroutine = null;
+    [Obsolete("")]
+    /// <summary>
+    /// 벽 타기 코루틴입니다.
+    /// </summary>
+    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
+    IEnumerator SlideCoroutine()
+    {
+        /// <summary>
+        /// 벽 타기 시에 발생합니다.
+        /// </summary>
+        // FE_SlideBeg()
+        {
+            SoundEffects[6].Play();
+        }
+
+        // 코루틴을 중지합니다.
+        yield break;
+    }
+
+
+    /// <summary>
+    /// 벽 점프 코루틴 필드입니다.
+    /// </summary>
+//    Coroutine _wallJumpCoroutine = null;
+    [Obsolete("")]
+    /// <summary>
+    /// 벽 점프 코루틴입니다.
+    /// </summary>
+    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
+    IEnumerator WallJumpCoroutine()
+    {
+        /// <summary>
+        /// 벽 점프 시에 발생합니다.
+        /// </summary>
+        // FE_WallJumpBeg()
+        {
+            SoundEffects[5].Play();
+        }
+        /// <summary>
+        /// 벽 점프가 종료할 때 발생합니다.
+        /// </summary>
+        // FE_WallJumpEnd()
+        {
+            // UnblockSliding();
+            // _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+        }
+
+        // 코루틴을 중지합니다.
+        yield break;
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Coroutine _moveCoroutine = null;
+    [Obsolete("")]
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator MoveCoroutine()
+    {
+        /*
+        // 이미 걷기 애니메이션이 재생중이라면 무시합니다.
+        if (IsAnimationPlaying(AniName_Walk_1beg) || IsAnimationPlaying(AniName_Walk_2run))
+            yield break;
+
+        
+        // 애니메이션 재생을 시작합니다.
+        _animator.Play(AniName_Walk_1beg);
+
+        // 첫 번째 애니메이션 재생이 끝날 때까지 코루틴은 대기합니다.
+        yield return new WaitForSeconds(GetCurrentAnimationLength());
+
+
+        // 첫 번째 애니메이션 재생이 끝나면 두 번째 애니메이션으로 교체합니다.
+        _animator.Play(AniName_Walk_2run);
+        /**
+        if (Moving && !Dashing && !Jumping && !Sliding)
+        {
+            _animator.Play(AniName_Walk_1beg, 0, 0);
+            Debug.Log(AniName_Walk_1beg + " playing");
+        }
+        */
+
+
+        // 코루틴을 종료합니다.
+
+        _moveCoroutine = null;
+        yield break;
+    }
+    [Obsolete("")]
+    /// <summary>
+    /// 
+    /// </summary>
+    void StopMoveCoroutine()
+    {
+        if (_moveCoroutine != null)
+        {
+            StopCoroutine(_moveCoroutine);
+            _moveCoroutine = null;
+        }
     }
 
 
