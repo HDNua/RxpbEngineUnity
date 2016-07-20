@@ -54,39 +54,39 @@ public abstract class PlayerController : MonoBehaviour
 
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     /// <summary>
-    /// 
+    /// 스테이지 관리자입니다.
     /// </summary>
     public StageManager stageManager;
 
 
     /// <summary>
-    /// 
+    /// 캐릭터 음성 집합입니다.
     /// </summary>
     public AudioClip[] voiceClips;
     /// <summary>
-    /// 
+    /// 캐릭터 효과음 집합입니다.
     /// </summary>
     public AudioClip[] audioClips;
 
 
     /// <summary>
-    /// 
+    /// 바닥 검사를 위한 위치 객체입니다.
     /// </summary>
     public Transform groundCheck;
     /// <summary>
-    /// 
+    /// 후방 지형 검사를 위한 위치 객체입니다.
     /// </summary>
     public Transform groundCheckBack;
     /// <summary>
-    /// 
+    /// 전방 지형 검사를 위한 위치 객체입니다.
     /// </summary>
     public Transform groundCheckFront;
     /// <summary>
-    /// 
+    /// 지형 검사 범위를 표현하는 실수입니다.
     /// </summary>
     public float groundCheckRadius = 0.1f;
     /// <summary>
-    /// 
+    /// 무엇이 지형인지를 나타내는 마스크입니다. 기본값은 ""입니다.
     /// </summary>
     public LayerMask whatIsGround;
 
@@ -182,10 +182,26 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     public AudioSource[] SoundEffects { get { return soundEffects; } }
 
+
+    /// <summary>
+    /// 
+    /// </summary>
     Vector2 groundBack;
+    /// <summary>
+    /// 
+    /// </summary>
     Vector2 groundFront;
+    /// <summary>
+    /// 
+    /// </summary>
     Vector2 wallTop;
+    /// <summary>
+    /// 
+    /// </summary>
     Vector2 wallBottom;
+
+
+    Dictionary<string, string> AnimationNameDict;
 
 
     #endregion
@@ -623,12 +639,6 @@ public abstract class PlayerController : MonoBehaviour
         points[0].y /= transform.localScale.y;
         points[1].x /= transform.localScale.x;
         points[1].y /= transform.localScale.y;
-
-
-
-        // 다음 커밋에서 삭제할 예정입니다.
-//        pushCheckEdge.transform.position = Vector3.zero; // new Vector3(0.1f, 0);
-//        pushCheckEdge.points = points;
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -655,25 +665,25 @@ public abstract class PlayerController : MonoBehaviour
 
 
     /// <summary>
-    /// 
+    /// 충돌이 시작되었습니다.
     /// </summary>
-    /// <param name="collision"></param>
+    /// <param name="collision">충돌 객체입니다.</param>
     protected void OnCollisionEnter2D(Collision2D collision)
     {
         UpdatePhysicsState(collision);
     }
     /// <summary>
-    /// 
+    /// 충돌이 유지되고 있습니다.
     /// </summary>
-    /// <param name="collision"></param>
+    /// <param name="collision">충돌 객체입니다.</param>
     protected void OnCollisionStay2D(Collision2D collision)
     {
         UpdatePhysicsState(collision);
     }
     /// <summary>
-    /// 
+    /// 충돌이 끝났습니다.
     /// </summary>
-    /// <param name="collision"></param>
+    /// <param name="collision">충돌 객체입니다.</param>
     protected void OnCollisionExit2D(Collision2D collision)
     {
         UpdatePhysicsState(collision);
@@ -681,9 +691,9 @@ public abstract class PlayerController : MonoBehaviour
 
 
     /// <summary>
-    /// 
+    /// 자식 클래스의 Update()를 실행하기 전에 부모 클래스에서 Update()를 수행합니다.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>자식 클래스의 Update 실행을 막으려면 참을 반환합니다.</returns>
     protected virtual bool UpdateController()
     {
         // 소환 중이라면
@@ -715,9 +725,9 @@ public abstract class PlayerController : MonoBehaviour
         return true;
     }
     /// <summary>
-    /// 
+    /// 자식 클래스의 FixedUpdate()를 실행하기 전에 부모 클래스에서 FixedUpdate()를 수행합니다.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>자식 클래스의 Update 실행을 막으려면 참을 반환합니다.</returns>
     protected virtual bool FixedUpdateController()
     {
         // 소환 중이라면
@@ -727,7 +737,7 @@ public abstract class PlayerController : MonoBehaviour
             if (Readying)
             {
                 // 준비가 끝나서 대기 상태로 전환되었다면
-                if (IsAnimationPlaying("Idle"))
+                if (IsAnimationPlaying("Idle")) // if (IsAnimationPlaying(AnimationNameDict["Idle"]))
                     // 준비를 완전히 종료합니다.
                     EndReady();
             }
@@ -952,6 +962,7 @@ public abstract class PlayerController : MonoBehaviour
         return false;
     }
 
+
     #endregion
 
 
@@ -1011,6 +1022,7 @@ public abstract class PlayerController : MonoBehaviour
 
     }
 
+
     /// <summary>
     /// 플레이어 사망을 요청합니다.
     /// </summary>
@@ -1023,6 +1035,7 @@ public abstract class PlayerController : MonoBehaviour
         _animator.speed = 0;
         Invoke("Dead", 0.5f);
     }
+
 
     #endregion
 
@@ -1063,6 +1076,7 @@ public abstract class PlayerController : MonoBehaviour
     {
         InputBlocked = false;
     }
+
 
     ///////////////////////////////////////////////////////////////////
     // 이동
@@ -1109,6 +1123,7 @@ public abstract class PlayerController : MonoBehaviour
     {
         MoveBlocked = false;
     }
+
 
     ///////////////////////////////////////////////////////////////////
     // 점프 및 낙하
@@ -1180,6 +1195,7 @@ public abstract class PlayerController : MonoBehaviour
         Falling = false;
     }
 
+
     ///////////////////////////////////////////////////////////////////
     // 대쉬
     /// <summary>
@@ -1226,6 +1242,7 @@ public abstract class PlayerController : MonoBehaviour
     {
         DashBlocked = false;
     }
+
 
     ///////////////////////////////////////////////////////////////////
     // 벽 타기

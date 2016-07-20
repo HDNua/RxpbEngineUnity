@@ -60,12 +60,6 @@ public class XController : PlayerController
     public Transform _chargeEffectPosition;
 
 
-    /// <summary>
-    /// 테스트용: 삭제할 예정입니다.
-    /// </summary>
-    public GameObject _test;
-
-
     #endregion
 
 
@@ -81,7 +75,7 @@ public class XController : PlayerController
     /// <summary>
     /// 
     /// </summary>
-    GameObject dashBoostEffect = null;
+    GameObject _dashBoostEffect = null;
 
 
     #endregion
@@ -129,13 +123,13 @@ public class XController : PlayerController
     /// <summary>
     /// 
     /// </summary>
-    bool dangerVoicePlayed = false;
+    bool _dangerVoicePlayed = false;
 
 
     /// <summary>
     /// 
     /// </summary>
-    bool fullyCharged = false;
+    bool _fullyCharged = false;
 
 
     #endregion
@@ -633,11 +627,11 @@ public class XController : PlayerController
             // _animator.Play(0, 0, 0);
 
             // [2016-02-06. 05:37] 노멀 샷과 차지 샷의 애니메이션 재생 개선.
-            if (fullyCharged) // 완전히 차지된 경우
+            if (_fullyCharged) // 완전히 차지된 경우
             {
                 // ChargeShot 애니메이션을 재생합니다.
                 _animator.Play("ChargeShot", 0, 0);
-                fullyCharged = false;
+                _fullyCharged = false;
             }
             else
             {
@@ -716,7 +710,7 @@ public class XController : PlayerController
 
 
             // [2016-02-06. 05:37] fullyCharged 필드 처리 추가.
-            fullyCharged = true;
+            _fullyCharged = true;
         }
         else
         {
@@ -799,7 +793,64 @@ public class XController : PlayerController
 
 
 
-    #region PlayerController 행동 메서드를 재정의 합니다.
+    #region PlayerController 행동 메서드를 위한 코루틴을 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    Coroutine _dashCoroutine;
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator DashCoroutine()
+    {
+
+
+        // FE_DashRunBeg()
+        {
+            GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
+            dashBoost.transform.SetParent(groundCheck.transform);
+            if (FacingRight == false)
+            {
+                var newScale = dashBoost.transform.localScale;
+                newScale.x = FacingRight ? newScale.x : -newScale.x;
+                dashBoost.transform.localScale = newScale;
+            }
+            _dashBoostEffect = dashBoost;
+        }
+
+        // FE_DashRunEnd()
+        {
+            StopDashing();
+            StopAirDashing();
+        }
+
+        // FE_DashEndBeg()
+        {
+            StopMoving();
+            SoundEffects[3].Stop();
+            SoundEffects[4].Play();
+        }
+
+        // 코루틴을 중지합니다.
+        yield break;
+    }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region PlayerController 행동 메서드를 재정의합니다.
     ///////////////////////////////////////////////////////////////////
     // 기본
     /// <summary>
@@ -819,6 +870,7 @@ public class XController : PlayerController
         SoundEffects[2].Play();
     }
 
+
     ///////////////////////////////////////////////////////////////////
     // 점프 및 낙하
     /// <summary>
@@ -830,6 +882,7 @@ public class XController : PlayerController
         SoundEffects[1].Play();
     }
 
+
     ///////////////////////////////////////////////////////////////////
     // 대쉬
     /// <summary>
@@ -838,9 +891,9 @@ public class XController : PlayerController
     protected override void Dash()
     {
         base.Dash();
+        _dashCoroutine = StartCoroutine(DashCoroutine());
 
         // 대쉬 효과 애니메이션을 추가합니다.
-        // GameObject dashFog = I_nstantiate(effects[0], dashFogPosition.position, dashFogPosition.rotation) as GameObject;
         GameObject dashFog = CloneObject(effects[0], dashFogPosition);
         if (FacingRight == false)
         {
@@ -856,10 +909,10 @@ public class XController : PlayerController
     protected override void StopDashing()
     {
         base.StopDashing();
-        if (dashBoostEffect != null)
+        if (_dashBoostEffect != null)
         {
-            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
-            dashBoostEffect = null;
+            _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
+            _dashBoostEffect = null;
         }
     }
     /// <summary>
@@ -871,10 +924,10 @@ public class XController : PlayerController
 
         SoundEffects[3].Stop();
         SoundEffects[1].Play();
-        if (dashBoostEffect != null)
+        if (_dashBoostEffect != null)
         {
-            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
-            dashBoostEffect = null;
+            _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
+            _dashBoostEffect = null;
         }
     }
     /// <summary>
@@ -891,12 +944,13 @@ public class XController : PlayerController
     protected override void StopAirDashing()
     {
         base.StopAirDashing();
-        if (dashBoostEffect != null)
+        if (_dashBoostEffect != null)
         {
-            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
-            dashBoostEffect = null;
+            _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
+            _dashBoostEffect = null;
         }
     }
+
 
     #endregion
 
@@ -960,14 +1014,14 @@ public class XController : PlayerController
     protected override void EndHurt()
     {
         base.EndHurt();
-        if (Danger && dangerVoicePlayed == false)
+        if (Danger && _dangerVoicePlayed == false)
         {
             Voices[6].Play();
-            dangerVoicePlayed = true;
+            _dangerVoicePlayed = true;
         }
         else if (Health > DangerHealth)
         {
-            dangerVoicePlayed = false;
+            _dangerVoicePlayed = false;
         }
     }
 
@@ -985,6 +1039,7 @@ public class XController : PlayerController
     #region 프레임 이벤트 핸들러를 정의합니다.
     ///////////////////////////////////////////////////////////////////
     // 점프 및 낙하
+    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
     /// <summary>
     /// 점프 시작 시에 발생합니다.
     /// </summary>
@@ -995,6 +1050,7 @@ public class XController : PlayerController
 //        Invoke("UnblockSliding", 0.1f);
 //        SlideBlocked = true;
     }
+    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
     /// <summary>
     /// 점프 시작이 끝난 후에 발생합니다.
     /// </summary>
@@ -1008,6 +1064,8 @@ public class XController : PlayerController
 
     ///////////////////////////////////////////////////////////////////
     // 대쉬
+    /**
+    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
     /// <summary>
     /// 대쉬 준비 애니메이션이 시작할 때 발생합니다.
     /// </summary>
@@ -1015,6 +1073,9 @@ public class XController : PlayerController
     {
 
     }
+    */
+    /**
+    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
     /// <summary>
     /// 대쉬 부스트 애니메이션이 시작할 때 발생합니다.
     /// </summary>
@@ -1028,8 +1089,11 @@ public class XController : PlayerController
             newScale.x = FacingRight ? newScale.x : -newScale.x;
             dashBoost.transform.localScale = newScale;
         }
-        dashBoostEffect = dashBoost;
+        _dashBoostEffect = dashBoost;
     }
+    */
+    /**
+    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
     /// <summary>
     /// 플레이어의 대쉬 상태를 종료하도록 요청합니다.
     /// </summary>
@@ -1038,6 +1102,9 @@ public class XController : PlayerController
         StopDashing();
         StopAirDashing();
     }
+    */
+    /**
+    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
     /// <summary>
     /// 대쉬가 사용자에 의해 중지될 때 발생합니다.
     /// </summary>
@@ -1047,16 +1114,21 @@ public class XController : PlayerController
         SoundEffects[3].Stop();
         SoundEffects[4].Play();
     }
+    */
+    /**
+    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
     /// <summary>
     /// 대쉬 점프 모션이 사용자에 의해 완전히 중지되어 대기 상태로 바뀔 때 발생합니다.
     /// </summary>
     void FE_DashEndEnd()
     {
     }
+    */
 
 
     ///////////////////////////////////////////////////////////////////
     // 벽 타기
+    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
     /// <summary>
     /// 벽 타기 시에 발생합니다.
     /// </summary>
@@ -1064,6 +1136,7 @@ public class XController : PlayerController
     {
         SoundEffects[6].Play();
     }
+    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
     /// <summary>
     /// 벽 점프 시에 발생합니다.
     /// </summary>
@@ -1071,6 +1144,7 @@ public class XController : PlayerController
     {
         SoundEffects[5].Play();
     }
+    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
     /// <summary>
     /// 벽 점프가 종료할 때 발생합니다.
     /// </summary>
@@ -1083,6 +1157,10 @@ public class XController : PlayerController
 
     ///////////////////////////////////////////////////////////////////
     // 기타
+    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
+    /// <summary>
+    /// 뭔지 모르겠어요.
+    /// </summary>
     void FE_Flash()
     {
         
@@ -1114,6 +1192,7 @@ public class XController : PlayerController
             && color1.a == color2.a);
     }
 
+
     #endregion
 
 
@@ -1126,28 +1205,6 @@ public class XController : PlayerController
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("Fire로 대체되었습니다.", true)]
-    /// <summary>
-    /// 버스터 공격합니다.
-    /// </summary>
-    void Shot()
-    {
-        if (Shooting)
-        {
-            _animator.Play("Shot", 0, 0);
-        }
-
-        Shooting = true;
-        Invoke("StopShot", 1);
-    }
-    [Obsolete("Fire로 대체되었습니다.", true)]
-    /// <summary>
-    /// 버스터 공격을 중지합니다.
-    /// </summary>
-    void StopShot()
-    {
-        Shooting = false;
-    }
 
 
     #endregion

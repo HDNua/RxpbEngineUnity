@@ -208,7 +208,6 @@ public class EnemyMettoolScript : EnemyScript
         int dropItem = UnityEngine.Random.Range(0, _items.Length);
         if (dropItem != 0)
         {
-            // Instantiate(_items[dropItem], transform.position, transform.rotation);
             CreateItem(_items[dropItem]);
         }
 
@@ -237,7 +236,8 @@ public class EnemyMettoolScript : EnemyScript
     {
         if (_facingRight)
             Flip();
-        _rigidbody.velocity = new Vector2(-movingSpeed, 0);
+        // _rigidbody.velocity = new Vector2(movingSpeed, 0);
+        _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
     }
     /// <summary>
     /// 오른쪽으로 이동합니다.
@@ -246,7 +246,8 @@ public class EnemyMettoolScript : EnemyScript
     {
         if (_facingRight == false)
             Flip();
-        _rigidbody.velocity = new Vector2(movingSpeed, 0);
+        // _rigidbody.velocity = new Vector2(movingSpeed, 0);
+        _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
     }
     /// <summary>
     /// 방향을 바꿉니다.
