@@ -1637,29 +1637,7 @@ public abstract class PlayerController : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.", true)]
-    public Transform pushCheck;
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    public Transform pushCheckTop;
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    public Transform pushCheckBottom;
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    public EdgeCollider2D pushCheckEdge;
 
-
-    [Obsolete("Heal()로 대체되었습니다.")]
-    /// <summary>
-    /// 플레이어가 체력을 회복합니다.
-    /// </summary>
-    /// <param name="point">플레이어가 회복할 에너지 양입니다.</param>
-    public virtual void Heal(int point)
-    {
-        Health += point;
-        if (_health > _dangerHealth)
-        {
-            Danger = false;
-        }
-    }
 
 
     #endregion

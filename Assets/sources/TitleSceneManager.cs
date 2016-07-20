@@ -28,11 +28,24 @@ public class TitleSceneManager : MonoBehaviour
 
 
     #region 필드를 정의합니다.
-    AudioSource[] seSources;
+    /// <summary>
+    /// 
+    /// </summary>
+    AudioSource[] _seSources;
 
-    int menuIndex = 1;
-    bool changeSceneRequested = false;
-    string nextLevelName = null;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    int _menuIndex = 1;
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _changeSceneRequested = false;
+    /// <summary>
+    /// 
+    /// </summary>
+    string _nextLevelName = null;
 
 
     #endregion
@@ -55,11 +68,11 @@ public class TitleSceneManager : MonoBehaviour
         Time.timeScale = 1;
 
         // 효과음 리스트를 초기화 합니다.
-        seSources = new AudioSource[soundEffects.Length];
-        for (int i = 0, len = seSources.Length; i < len; ++i)
+        _seSources = new AudioSource[soundEffects.Length];
+        for (int i = 0, len = _seSources.Length; i < len; ++i)
         {
-            seSources[i] = gameObject.AddComponent<AudioSource>();
-            seSources[i].clip = soundEffects[i];
+            _seSources[i] = gameObject.AddComponent<AudioSource>();
+            _seSources[i].clip = soundEffects[i];
         }
 
         // 페이드인 효과를 실행합니다.
@@ -71,11 +84,11 @@ public class TitleSceneManager : MonoBehaviour
     void Update()
     {
         // 장면 전환 요청을 확인한 경우의 처리입니다.
-        if (changeSceneRequested)
+        if (_changeSceneRequested)
         {
             if (fader.FadeOutEnded)
             {
-                LoadingSceneManager.LoadLevel(nextLevelName);
+                LoadingSceneManager.LoadLevel(_nextLevelName);
             }
             return;
         }
@@ -85,51 +98,55 @@ public class TitleSceneManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.UpArrow))
             {
-                if (0 < menuIndex)
+                if (0 < _menuIndex)
                 {
-                    ChangeMenuItem(menuIndex - 1);
+                    ChangeMenuItem(_menuIndex - 1);
                 }
             }
             else if (Input.GetKeyDown(KeyCode.DownArrow))
             {
-                if (menuIndex < menuItems.Length - 1)
+                if (_menuIndex < menuItems.Length - 1)
                 {
-                    ChangeMenuItem(menuIndex + 1);
+                    ChangeMenuItem(_menuIndex + 1);
                 }
             }
             else if (IsSelectKeyPressed())
             {
-                switch (menuIndex)
+                switch (_menuIndex)
                 {
                     case 0:
-                        nextLevelName = "CS00_PreviousStory";
-                        changeSceneRequested = true;
+                        _nextLevelName = "CS00_PreviousStory";
+                        _changeSceneRequested = true;
                         fader.FadeOut(1);
                         break;
 
                     case 1:
-                        nextLevelName = "CS01_Prologue";
-                        changeSceneRequested = true;
+                        _nextLevelName = "CS01_Prologue";
+                        _changeSceneRequested = true;
                         fader.FadeOut(1);
                         break;
 
                     case 2:
-                        nextLevelName = "Continue";
-                        changeSceneRequested = true;
+                        _nextLevelName = "Continue";
+                        _changeSceneRequested = true;
                         fader.FadeOut(1);
                         break;
 
                     case 3:
-                        nextLevelName = "01_Intro";
-                        changeSceneRequested = true;
+                        _nextLevelName = "01_Intro";
+                        _changeSceneRequested = true;
                         fader.FadeOut(1);
                         break;
 
+                    case 4:
+                        Application.Quit();
+                        break;
+
                     default:
-                        nextLevelName = null;
+                        _nextLevelName = null;
                         break;
                 }
-                seSources[1].Play();
+                _seSources[1].Play();
             }
         }
     }
@@ -153,12 +170,12 @@ public class TitleSceneManager : MonoBehaviour
     /// <param name="index">선택할 메뉴 아이템의 인덱스입니다.</param>
     void ChangeMenuItem(int index)
     {
-        GameObject prevItem = menuItems[menuIndex];
+        GameObject prevItem = menuItems[_menuIndex];
         GameObject nextItem = menuItems[index];
-        prevItem.GetComponent<SpriteRenderer>().sprite = sprites[2 * menuIndex + 1];
+        prevItem.GetComponent<SpriteRenderer>().sprite = sprites[2 * _menuIndex + 1];
         nextItem.GetComponent<SpriteRenderer>().sprite = sprites[2 * index];
-        menuIndex = index;
-        seSources[0].Play();
+        _menuIndex = index;
+        _seSources[0].Play();
     }
 
 

@@ -1,23 +1,14 @@
-RXPB v3.4.3.1
+RXPB v3.5.0.0 Sprite v1.0.0
 
-- 리소스 이름 일부 변경.
+* 아무 말도 안 해서 몰랐겠지만 사실 저번 커밋에는 중요한 내용이 있는데,
+  맵 세이브/로드 기능의 기초가 구현되었다는 점입니다.
+!> 지구 회전을 맵에 적용해보고 싶었는데 너무 어려운 도전과제여요.
+  
 
-
-- 일부 구형 정의에 대해 Naming Convention 맞춤.
-
-
-- ContinueScene, StageSelectScene 등을 추가.
-> TitleSceneManager에서 CONTINUE 항목을 선택하면 ContinueScene으로 이동하게 구현 변경.
-
-
-- GameManager의 필드를 GameData로 감쌈.
-> 이전에는 직접 GameManager를 직렬화해서 사용했는데, 이제는 GameData를 쓰면 된다.
+- 엑스 스프라이트를 업데이트하고 있습니다. 보통 일이 아니에요 이거.
+  브랜치 따로 따야 될 정도...
 
 
-- 이전에 구조체였던 GameData와 같은 형식을 class로 변경.
-
-
-- ItemScript에서 ItemType이라는 enum 형식을 정의해봄. 아직 사용은 안 했음.
 
 
 end.
