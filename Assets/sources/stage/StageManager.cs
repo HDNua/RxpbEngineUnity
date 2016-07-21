@@ -151,6 +151,10 @@ public class StageManager : HDSceneManager
             float test = 0.01f;
             _timeManager.TimeScale = _timeManager.TimeScale == test ? 1 : test;
         }
+        else if (Input.GetKeyDown(KeyCode.W))
+        {
+            _player.Hurt(39);
+        }
     }
 
 

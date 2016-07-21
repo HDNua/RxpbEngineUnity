@@ -560,8 +560,13 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     public bool Danger
     {
-        get { return _danger; }
-        protected set { _animator.SetBool("Danger", _danger = value); }
+        get {
+            return _danger;
+        }
+        protected set
+        {
+            _animator.SetBool("Danger", _danger = value);
+        }
     }
     /// <summary>
     /// 플레이어가 죽었다면 true입니다.
