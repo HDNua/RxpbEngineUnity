@@ -236,8 +236,8 @@ public class EnemyMettoolScript : EnemyScript
     {
         if (_facingRight)
             Flip();
-        // _rigidbody.velocity = new Vector2(movingSpeed, 0);
-        _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
+        _rigidbody.velocity = new Vector2(-movingSpeed, 0);
+        // _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
     }
     /// <summary>
     /// 오른쪽으로 이동합니다.
@@ -246,8 +246,8 @@ public class EnemyMettoolScript : EnemyScript
     {
         if (_facingRight == false)
             Flip();
-        // _rigidbody.velocity = new Vector2(movingSpeed, 0);
-        _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
+        _rigidbody.velocity = new Vector2(movingSpeed, 0);
+        // _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
     }
     /// <summary>
     /// 방향을 바꿉니다.

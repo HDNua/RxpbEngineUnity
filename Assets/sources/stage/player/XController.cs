@@ -107,10 +107,22 @@ public class XController : PlayerController
     /// 버스터 샷 집합입니다.
     /// </summary>
     public GameObject[] _bullets;
+
+
     /// <summary>
     /// 버스터 샷이 생성되는 위치입니다.
     /// </summary>
     public Transform _shotPosition;
+    /// <summary>
+    /// 
+    /// </summary>
+    public Transform _dashShotPosition;
+    /// <summary>
+    /// 
+    /// </summary>
+    public Transform _wallShotPosition;
+
+
     /// <summary>
     /// 차지 효과가 발생하는 위치입니다.
     /// </summary>
@@ -661,15 +673,6 @@ public class XController : PlayerController
 
         // 상태를 업데이트합니다.
         {
-            /**
-            ShotTriggered = true;
-            _shotPressed = false;
-            _chargeTime = 0;
-            _shotTime = 0;
-            StopCoroutine("CoroutineCharge");
-            Shooting = true;
-            */
-
             // 차지 효과 객체의 상태를 업데이트 합니다.
             if (_chargeEffect1 != null)
             {
@@ -686,45 +689,22 @@ public class XController : PlayerController
             _shotPressed = false;
             _chargeTime = 0;
             _shotTime = 0;
-            StopCoroutine(_chargeCoroutine);
+
+            if (_chargeCoroutine != null)
+            {
+                StopCoroutine(_chargeCoroutine);
+                _chargeCoroutine = null;
+            }
             Shooting = true;
         }
 
 
         // 플레이어의 상태에 따라 애니메이션을 결정합니다.
-        if (Moving)
-        {
-            float nTime = GetCurrentAnimationPlaytime();
-            float fTime = nTime - Mathf.Floor(nTime);
-            _animator.Play(AniName_WalkShot_2run, 0, fTime);
-        }
-        else
-        {
-            // 완전히 차지된 경우
-            if (_fullyCharged)
-            {
-                // ChargeShot 애니메이션을 재생합니다.
-                _animator.Play(AniName_ChargeShot, 0, 0);
-                _fullyCharged = false;
-            }
-            else
-            {
-                // Shot 애니메이션을 재생합니다.
-                _animator.Play(AniName_Shot, 0, 0); 
-            }
-        }
-        _renderer.color = PlayerColor = Color.white;
+        _shotCoroutine = StartCoroutine(UpdateShotAnimator());
 
 
         // 버스터 탄환을 생성하고 초기화합니다.
-        GameObject _bullet = CloneObject(_bullets[index], _shotPosition);
-        Vector3 bulletScale = _bullet.transform.localScale;
-        bulletScale.x *= FacingRight ? 1 : -1;
-        _bullet.transform.localScale = bulletScale;
-        _bullet.GetComponent<Rigidbody2D>().velocity
-            = (FacingRight ? Vector3.right : Vector3.left) * _shotSpeed;
-        XBusterScript buster = _bullet.GetComponent<XBusterScript>();
-        buster.MainCamera = stageManager._mainCamera;
+        CreateBullet(index);
 
         // 효과음을 재생합니다.
         SoundEffects[8 + index].Play();
@@ -733,6 +713,31 @@ public class XController : PlayerController
         // 일정 시간 후에 샷 상태를 해제합니다.
         Invoke("EndShot", _endShotTime);
     }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
+    private void CreateBullet(int index)
+    {
+        Transform shotPosition = GetShotPosition();
+        GameObject _bullet = CloneObject(_bullets[index], shotPosition);
+        Vector3 bulletScale = _bullet.transform.localScale;
+        bool toLeft = (Sliding ? FacingRight : !FacingRight);
+
+
+        bulletScale.x *= (toLeft ? -1 : 1); // (FacingRight ? -1 : 1) : (FacingRight ? 1 : -1));
+        _bullet.transform.localScale = bulletScale;
+        _bullet.GetComponent<Rigidbody2D>().velocity
+            = (toLeft ? Vector3.left : Vector3.right) * _shotSpeed;
+
+
+        XBusterScript buster = _bullet.GetComponent<XBusterScript>();
+        buster.MainCamera = stageManager._mainCamera;
+    }
+
+
     /// <summary>
     /// 차지를 시작합니다.
     /// </summary>
@@ -826,6 +831,25 @@ public class XController : PlayerController
     }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    Transform GetShotPosition()
+    {
+        Transform ret = _shotPosition;
+        if (Sliding)
+        {
+            ret = _wallShotPosition;
+        }
+        else if (Dashing)
+        {
+            ret = _dashShotPosition;
+        }
+        return ret;
+    }
+
+
     #endregion
 
 
@@ -838,6 +862,178 @@ public class XController : PlayerController
 
 
     #region PlayerController 행동 메서드를 위한 코루틴을 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    Coroutine _shotCoroutine;
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator UpdateShotAnimator()
+    {
+        if (_shotTime > _endShotTime)
+        {
+            _animator.Play(AniName_Idle);
+            yield break;
+        }
+
+        const float lightingTime = 0.3f;
+        bool endLight = false;
+        
+
+        // 발사 직후 빛나는 시간이라면
+        if (_shotTime < lightingTime)
+        {
+            float nTime = GetCurrentAnimationPlaytime();
+            float fTime = nTime - Mathf.Floor(nTime);
+
+
+            // 
+            if (Jumping)
+            {
+
+            }
+            else if (Falling)
+            {
+
+            }
+            else if (Sliding)
+            {
+
+            }
+            else if (Dashing)
+            {
+                if (IsAnimationPlaying("X07_Dash_3end"))
+                {
+                    _animator.Play("X10_DashShotLight_3end", 0, fTime);
+                }
+                else if (IsAnimationPlaying("X07_Dash_2run"))
+                {
+                    _animator.Play("X10_DashShotLight_2run", 0, fTime);
+                }
+                else if (IsAnimationPlaying("X07_Dash_1beg"))
+                {
+                    _animator.Play("X10_DashShotLight_1beg", 0, fTime);
+                }
+                else
+                {
+                    Debug.Log("Don't know!");
+                }
+            }
+            else if (Moving)
+            {
+                if (IsAnimationPlaying("X06_Walk_2run"))
+                {
+                    _animator.Play("X09_WalkShotLight_2run", 0, fTime);
+                }
+                else if (IsAnimationPlaying("X06_Walk_1beg"))
+                {
+                    _animator.Play("X09_WalkShotLight_1beg", 0, fTime);
+                }
+                else 
+                {
+                    Debug.Log("Don't know!");
+                }
+            }
+            else
+            {
+                // 완전히 차지된 경우
+                if (_fullyCharged)
+                {
+                    // ChargeShot 애니메이션을 재생합니다.
+                    _animator.Play(AniName_ChargeShot, 0, 0);
+                    _fullyCharged = false;
+                }
+                else
+                {
+                    // Shot 애니메이션을 재생합니다.
+                    _animator.Play(AniName_Shot, 0, 0);
+                }
+            }
+            _renderer.color = PlayerColor = Color.white;
+        }
+        // 빛나는 시간이 끝난 직후
+        else if (endLight == false)
+        {
+            float nTime = GetCurrentAnimationPlaytime();
+            float fTime = nTime - Mathf.Floor(nTime);
+
+
+            //
+            if (Jumping)
+            {
+
+            }
+            else if (Falling)
+            {
+
+            }
+            else if (Sliding)
+            {
+
+            }
+            else if (Dashing)
+            {
+                if (IsAnimationPlaying("X10_DashShotLight_3end"))
+                {
+                    _animator.Play("X10_DashShot_3end", 0, fTime);
+                }
+                else if (IsAnimationPlaying("X10_DashShotLight_2run"))
+                {
+                    _animator.Play("X10_DashShot_2run", 0, fTime);
+                }
+                else if (IsAnimationPlaying("X10_DashShotLight_1beg"))
+                {
+                    _animator.Play("X10_DashShot_1beg", 0, fTime);
+                }
+                else
+                {
+                    Debug.Log("Don't know!");
+                }
+            }
+            else if (Moving)
+            {
+                if (IsAnimationPlaying("X09_WalkShotLight_2run"))
+                {
+                    _animator.Play("X09_WalkShot_2run", 0, fTime);
+                }
+                else if (IsAnimationPlaying("X09_WalkShotLight_1beg"))
+                {
+                    _animator.Play("X09_WalkShot_1beg", 0, fTime);
+                }
+                else
+                {
+                    Debug.Log("Don't know!");
+                }
+            }
+            else
+            {
+                // 완전히 차지된 경우
+                if (_fullyCharged)
+                {
+                    // ChargeShot 애니메이션을 재생합니다.
+                    _animator.Play(AniName_ChargeShot, 0, 0);
+                    _fullyCharged = false;
+                }
+                else
+                {
+                    // Shot 애니메이션을 재생합니다.
+                    _animator.Play(AniName_Shot, 0, 0);
+                }
+            }
+            _renderer.color = PlayerColor = Color.white;
+
+
+            // 스위치를 올립니다.
+            endLight = true;
+        }
+
+        // 
+        yield break;
+    }
+
+
     /// <summary>
     /// 차지 코루틴 필드입니다.
     /// </summary>
@@ -877,6 +1073,132 @@ public class XController : PlayerController
     }
 
 
+    /// <summary>
+    /// 대쉬 코루틴 필드입니다.
+    /// </summary>
+    Coroutine _dashCoroutine = null;
+    /// <summary>
+    /// 대쉬 코루틴입니다.
+    /// </summary>
+    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
+    IEnumerator DashCoroutine()
+    {
+        // DashBeg
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        // DashRun
+        if (DashJumping == false)
+        {
+            GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
+            dashBoost.transform.SetParent(groundCheck.transform);
+            if (FacingRight == false)
+            {
+                var newScale = dashBoost.transform.localScale;
+                newScale.x = FacingRight ? newScale.x : -newScale.x;
+                dashBoost.transform.localScale = newScale;
+            }
+            _dashBoostEffect = dashBoost;
+
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        // DashEnd
+        if (DashJumping == false)
+        {
+            StopDashing();
+            StopAirDashing();
+            StopMoving();
+            SoundEffects[3].Stop();
+            SoundEffects[4].Play();
+        }
+
+        // 코루틴을 중지합니다.
+        yield break;
+    }
+
+
+    /// <summary>
+    /// 에어 대쉬 코루틴 필드입니다.
+    /// </summary>
+    Coroutine _airDashCoroutine = null;
+    /// <summary>
+    /// 에어 대쉬 코루틴입니다.
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator AirDashCoroutine()
+    {
+        // AirDashBeg == AirDashRun
+        {
+            GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
+            dashBoost.transform.SetParent(groundCheck.transform);
+            if (FacingRight == false)
+            {
+                var newScale = dashBoost.transform.localScale;
+                newScale.x = FacingRight ? newScale.x : -newScale.x;
+                dashBoost.transform.localScale = newScale;
+            }
+            _dashBoostEffect = dashBoost;
+
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        // AirDashEnd
+        {
+            StopAirDashing();
+        }
+
+        yield break;
+    }
+
+
+    /// <summary>
+    /// 벽 타기 코루틴 필드입니다.
+    /// </summary>
+    Coroutine _slideCoroutine = null;
+    /// <summary>
+    /// 벽 타기 코루틴입니다.
+    /// </summary>
+    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
+    IEnumerator SlideCoroutine()
+    {
+        // SlideBeg
+        {
+            SoundEffects[6].Play();
+        }
+
+        // 코루틴을 중지합니다.
+        yield break;
+    }
+
+
+    /// <summary>
+    /// 벽 점프 코루틴 필드입니다.
+    /// </summary>
+    Coroutine _wallJumpCoroutine = null;
+    /// <summary>
+    /// 벽 점프 코루틴입니다.
+    /// </summary>
+    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
+    IEnumerator WallJumpCoroutine()
+    {
+        // WallJumpBeg
+        {
+            SoundEffects[5].Play();
+        }
+
+        // WallJumpEnd
+        {
+            // UnblockSliding();
+            // _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+        }
+
+        // 코루틴을 중지합니다.
+        yield break;
+    }
+
+
     #endregion
 
 
@@ -908,7 +1230,7 @@ public class XController : PlayerController
         SoundEffects[2].Play();
     }
     /// <summary>
-    /// 
+    /// 플레이어를 왼쪽으로 이동합니다.
     /// </summary>
     protected override void MoveLeft()
     {
@@ -923,7 +1245,7 @@ public class XController : PlayerController
         */
     }
     /// <summary>
-    /// 
+    /// 플레이어를 오른쪽으로 이동합니다.
     /// </summary>
     protected override void MoveRight()
     {
@@ -938,7 +1260,7 @@ public class XController : PlayerController
         */
     }
     /// <summary>
-    /// 
+    /// 플레이어의 이동을 중지합니다.
     /// </summary>
     protected override void StopMoving()
     {
@@ -1010,6 +1332,9 @@ public class XController : PlayerController
     protected override void StopDashing()
     {
         base.StopDashing();
+
+
+        // 대쉬 이펙트를 제거합니다.
         if (_dashBoostEffect != null)
         {
             _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
@@ -1018,7 +1343,10 @@ public class XController : PlayerController
 
 
         // 코루틴을 중지합니다.
-        StopCoroutine(_dashCoroutine);
+        if (_dashCoroutine != null)
+        {
+            StopCoroutine(_dashCoroutine);
+        }
     }
 
 
@@ -1032,23 +1360,22 @@ public class XController : PlayerController
         base.Slide();
 
 
-        /**
         // 코루틴을 시작합니다.
         _slideCoroutine = StartCoroutine(SlideCoroutine());
-        */
     }
     /// <summary>
-    /// 
+    /// 플레이어의 벽 타기를 중지합니다.
     /// </summary>
     protected override void StopSliding()
     {
         base.StopSliding();
 
 
-        /**
         // 코루틴을 중지합니다.
-        StopCoroutine(_slideCoroutine);
-        */
+        if (_slideCoroutine != null)
+        {
+            StopCoroutine(_slideCoroutine);
+        }
     }
 
 
@@ -1062,26 +1389,24 @@ public class XController : PlayerController
         base.WallJump();
 
 
-        /**
         // 코루틴을 시작합니다.
         _wallJumpCoroutine = StartCoroutine(WallJumpCoroutine());
-        */
     }
     /// <summary>
-    /// 
+    /// 플레이어의 벽 점프를 중지합니다.
     /// </summary>
     protected override void StopWallJumping()
     {
         base.StopWallJumping();
 
 
-        /**
         // 코루틴을 중지합니다.
-        StopCoroutine(_wallJumpCoroutine);
-        */
+        if (_wallJumpCoroutine != null)
+        {
+            StopCoroutine(_wallJumpCoroutine);
+            _wallJumpCoroutine = null;
+        }
     }
-
-
     /// <summary>
     /// 플레이어가 대쉬 점프하게 합니다.
     /// </summary>
@@ -1090,7 +1415,7 @@ public class XController : PlayerController
         base.DashJump();
 
 
-        // 
+        // 대쉬 점프를 합니다.
         SoundEffects[3].Stop();
         SoundEffects[1].Play();
         if (_dashBoostEffect != null)
@@ -1130,6 +1455,17 @@ public class XController : PlayerController
             StopCoroutine(_airDashCoroutine);
             _airDashCoroutine = null;
         }
+    }
+    /// <summary>
+    /// 플레이어가 벽에서 대쉬 점프하게 합니다.
+    /// </summary>
+    protected override void WallDashJump()
+    {
+        base.WallDashJump();
+
+
+        // 코루틴을 시작합니다.
+        _wallJumpCoroutine = StartCoroutine(WallJumpCoroutine());
     }
 
 
@@ -1245,18 +1581,6 @@ public class XController : PlayerController
             && color1.g == color2.g
             && color1.b == color2.b
             && color1.a == color2.a);
-    }
-
-
-    [Obsolete("")]
-    /// <summary>
-    /// 코루틴을 중지합니다. 코루틴이 null이면 아무것도 하지 않습니다.
-    /// </summary>
-    /// <param name="coroutine"></param>
-    void StopCoroutine_dep(Coroutine coroutine)
-    {
-        if (coroutine != null)
-            base.StopCoroutine(coroutine);
     }
 
 
@@ -1388,53 +1712,6 @@ public class XController : PlayerController
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("Shooting을 대신 사용하십시오.")]
-    /// <summary>
-    /// 샷이 발동중이라면 참입니다. (Note) Shooting 프로퍼티와 하는 일이 같습니다.
-    /// </summary>
-    bool ShotTriggered
-    {
-        get { return _shooting; }
-        set { _animator.SetBool("Shooting", _shooting = value); }
-    }
-
-
-    [Obsolete("ChargeCoroutine()으로 대체되었습니다.")]
-    /// <summary>
-    /// 차지 코루틴입니다.
-    /// </summary>
-    /// <returns>코루틴 열거자입니다.</returns>
-    IEnumerator CoroutineCharge()
-    {
-        float startTime = 0;
-        while (_chargeTime >= 0)
-        {
-            if (_chargeTime < chargeLevel[1])
-            {
-
-            }
-            else
-            {
-                int cTime = (int)(startTime * 10) % 3;
-                if (cTime != 0)
-                {
-                    PlayerColor = (_chargeTime < chargeLevel[2]) ?
-                        Color.cyan : Color.green;
-                }
-                else
-                {
-                    PlayerColor = Color.white;
-                }
-
-                startTime += Time.fixedDeltaTime;
-            }
-            yield return false;
-        }
-
-        yield return true;
-    }
-
-
     /// <summary>
     /// 
     /// </summary>
@@ -1448,138 +1725,6 @@ public class XController : PlayerController
     {
 
 
-        yield break;
-    }
-
-
-    /// <summary>
-    /// 대쉬 코루틴 필드입니다.
-    /// </summary>
-    Coroutine _dashCoroutine = null;
-    /// <summary>
-    /// 대쉬 코루틴입니다.
-    /// </summary>
-    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
-    IEnumerator DashCoroutine()
-    {
-        // DashBeg
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-
-        // DashRun
-        if (DashJumping == false)
-        {
-            GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
-            dashBoost.transform.SetParent(groundCheck.transform);
-            if (FacingRight == false)
-            {
-                var newScale = dashBoost.transform.localScale;
-                newScale.x = FacingRight ? newScale.x : -newScale.x;
-                dashBoost.transform.localScale = newScale;
-            }
-            _dashBoostEffect = dashBoost;
-
-            yield return new WaitForSeconds(0.3f);
-        }
-
-        // DashEnd
-        if (DashJumping == false)
-        {
-            StopDashing();
-            StopAirDashing();
-
-            StopMoving();
-            SoundEffects[3].Stop();
-            SoundEffects[4].Play();
-        }
-
-        // 코루틴을 중지합니다.
-        yield break;
-    }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    Coroutine _airDashCoroutine = null;
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator AirDashCoroutine()
-    {
-        // AirDashBeg
-        {
-
-        }
-
-        // AirDashRun
-        {
-            yield return new WaitForSeconds(0.3f);
-        }
-
-        // AirDashEnd
-        {
-            StopAirDashing();
-        }
-
-        yield break;
-    }
-
-
-    /// <summary>
-    /// 벽 타기 코루틴 필드입니다.
-    /// </summary>
-//    Coroutine _slideCoroutine = null;
-    [Obsolete("")]
-    /// <summary>
-    /// 벽 타기 코루틴입니다.
-    /// </summary>
-    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
-    IEnumerator SlideCoroutine()
-    {
-        /// <summary>
-        /// 벽 타기 시에 발생합니다.
-        /// </summary>
-        // FE_SlideBeg()
-        {
-            SoundEffects[6].Play();
-        }
-
-        // 코루틴을 중지합니다.
-        yield break;
-    }
-
-
-    /// <summary>
-    /// 벽 점프 코루틴 필드입니다.
-    /// </summary>
-//    Coroutine _wallJumpCoroutine = null;
-    [Obsolete("")]
-    /// <summary>
-    /// 벽 점프 코루틴입니다.
-    /// </summary>
-    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
-    IEnumerator WallJumpCoroutine()
-    {
-        /// <summary>
-        /// 벽 점프 시에 발생합니다.
-        /// </summary>
-        // FE_WallJumpBeg()
-        {
-            SoundEffects[5].Play();
-        }
-        /// <summary>
-        /// 벽 점프가 종료할 때 발생합니다.
-        /// </summary>
-        // FE_WallJumpEnd()
-        {
-            // UnblockSliding();
-            // _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-        }
-
-        // 코루틴을 중지합니다.
         yield break;
     }
 
@@ -1636,148 +1781,6 @@ public class XController : PlayerController
             _moveCoroutine = null;
         }
     }
-
-
-    #endregion
-
-
-
-    #region 구형 정의: 프레임 이벤트 핸들러를 정의합니다.
-    ///////////////////////////////////////////////////////////////////
-    // 점프 및 낙하
-    /**
-    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
-    /// <summary>
-    /// 점프 시작 시에 발생합니다.
-    /// </summary>
-    void FE_JumpBeg()
-    {
-        // 슬라이드를 금지합니다.
-//        BlockSliding();
-//        Invoke("UnblockSliding", 0.1f);
-//        SlideBlocked = true;
-    }
-    */
-    /**
-    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
-    /// <summary>
-    /// 점프 시작이 끝난 후에 발생합니다.
-    /// </summary>
-    void FE_JumpRun()
-    {
-        // 금지한 슬라이딩을 해제합니다.
-//        UnblockSliding();
-//        SlideBlocked = false;
-    }
-    */
-
-
-    ///////////////////////////////////////////////////////////////////
-    // 대쉬
-    /**
-    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
-    /// <summary>
-    /// 대쉬 준비 애니메이션이 시작할 때 발생합니다.
-    /// </summary>
-    void FE_DashBegBeg()
-    {
-
-    }
-    */
-    /**
-    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
-    /// <summary>
-    /// 대쉬 부스트 애니메이션이 시작할 때 발생합니다.
-    /// </summary>
-    void FE_DashRunBeg()
-    {
-        GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
-        dashBoost.transform.SetParent(groundCheck.transform);
-        if (FacingRight == false)
-        {
-            var newScale = dashBoost.transform.localScale;
-            newScale.x = FacingRight ? newScale.x : -newScale.x;
-            dashBoost.transform.localScale = newScale;
-        }
-        _dashBoostEffect = dashBoost;
-    }
-    */
-    /**
-    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
-    /// <summary>
-    /// 플레이어의 대쉬 상태를 종료하도록 요청합니다.
-    /// </summary>
-    void FE_DashRunEnd()
-    {
-        StopDashing();
-        StopAirDashing();
-    }
-    */
-    /**
-    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
-    /// <summary>
-    /// 대쉬가 사용자에 의해 중지될 때 발생합니다.
-    /// </summary>
-    void FE_DashEndBeg()
-    {
-        StopMoving();
-        SoundEffects[3].Stop();
-        SoundEffects[4].Play();
-    }
-    */
-    /**
-    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
-    /// <summary>
-    /// 대쉬 점프 모션이 사용자에 의해 완전히 중지되어 대기 상태로 바뀔 때 발생합니다.
-    /// </summary>
-    void FE_DashEndEnd()
-    {
-    }
-    */
-
-
-    ///////////////////////////////////////////////////////////////////
-    // 벽 타기
-    /**
-    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
-    /// <summary>
-    /// 벽 타기 시에 발생합니다.
-    /// </summary>
-    void FE_SlideBeg()
-    {
-        SoundEffects[6].Play();
-    }
-    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
-    /// <summary>
-    /// 벽 점프 시에 발생합니다.
-    /// </summary>
-    void FE_WallJumpBeg()
-    {
-        SoundEffects[5].Play();
-    }
-    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
-    /// <summary>
-    /// 벽 점프가 종료할 때 발생합니다.
-    /// </summary>
-    void FE_WallJumpEnd()
-    {
-        // UnblockSliding();
-        // _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
-    }
-    */
-
-    ///////////////////////////////////////////////////////////////////
-    // 기타
-    /**
-    [Obsolete("프레임 이벤트 핸들러는 구형 정의입니다. 새 정의로 대체하십시오.")]
-    /// <summary>
-    /// 뭔지 모르겠어요.
-    /// </summary>
-    void FE_Flash()
-    {
-        
-    }
-    */
 
 
     #endregion

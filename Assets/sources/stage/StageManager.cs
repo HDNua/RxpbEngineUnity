@@ -55,6 +55,12 @@ public class StageManager : HDSceneManager
     bool _isFrozen;
 
 
+    /// <summary>
+    /// 게임이 종료되었다면 참입니다.
+    /// </summary>
+    bool _gameEnded = false;
+
+
     #endregion
 
 
@@ -118,6 +124,18 @@ public class StageManager : HDSceneManager
     {
         /// Handy: 하는 일이 없어서 삭제해도 될 것 같습니다.
         /// base.Update();
+        /// 
+
+        if (_gameEnded)
+        {
+            if (_fader.FadeOutEnded)
+            {
+                LoadingSceneManager.LoadLevel("CS03_GaiaFound");
+                // RestartLevel();
+            }
+
+            return;
+        }
 
 
         // 페이드 인 효과가 종료되는 시점에
@@ -126,7 +144,6 @@ public class StageManager : HDSceneManager
             // 준비 애니메이션 재생을 시작합니다.
             _ready.gameObject.SetActive(true);
         }
-
 
 
         if (Input.GetKeyDown(KeyCode.Q))
@@ -219,7 +236,7 @@ public class StageManager : HDSceneManager
         switch (item.Type)
         {
             case "EndGame":
-                LoadingSceneManager.LoadLevel("CS03_GaiaFound");
+                Test_EndGameItemGet();
                 break;
 
             case "1UP":
@@ -255,6 +272,72 @@ public class StageManager : HDSceneManager
     {
         LoadingSceneManager.LoadLevel("Title");
     }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    private void Test_EndGameItemGet()
+    {
+        AudioSource bgmSource = GetComponent<AudioSource>();
+        bgmSource.Stop();
+
+        _player.RequestBlockInput();
+        _timeManager.StageManagerRequested = true;
+        StartCoroutine(EndGameCoroutine());
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator EndGameCoroutine()
+    {
+        AudioSource audioSource = AudioSources[3];
+        audioSource.Play();
+
+        float startTime = 0f;
+        float soundLength = audioSource.clip.length;
+        while (startTime < soundLength)
+        {
+            startTime += Time.unscaledDeltaTime;
+        }
+        _timeManager.StageManagerRequested = false;
+
+
+
+        while (_player.Landed == false)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        audioSource = AudioSources[5];
+        audioSource.Play();
+        while (audioSource.isPlaying)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+
+
+        _player.RequestReturn();
+        yield return new WaitForSeconds(0.2f);
+        AudioSources[7].Play();
+
+        while (_player.Returning == false)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+
+
+        _gameEnded = true;
+        _fader.FadeOut();
+        yield break;
+    }
+
+
+
+
 
 
     #endregion

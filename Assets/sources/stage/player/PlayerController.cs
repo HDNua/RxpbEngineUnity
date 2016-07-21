@@ -240,7 +240,8 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>왼쪽 키가 눌려있다면 참입니다.</returns>
     protected bool IsLeftKeyPressed()
     {
-        return (InputBlocked == false && (Input.GetAxisRaw("Horizontal") < 0));
+        /// return (InputBlocked == false && (Input.GetAxisRaw("Horizontal") < 0));
+        return (InputBlocked == false && Input.GetKey(KeyCode.LeftArrow));
     }
     /// <summary>
     /// 오른쪽 키가 눌려있는지 확인합니다.
@@ -248,7 +249,8 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>오른쪽 키가 눌려있다면 참입니다.</returns>
     protected bool IsRightKeyPressed()
     {
-        return (InputBlocked == false && (Input.GetAxisRaw("Horizontal") > 0));
+        /// return (InputBlocked == false && (Input.GetAxisRaw("Horizontal") > 0));
+        return (InputBlocked == false && Input.GetKey(KeyCode.RightArrow));
     }
     /// <summary>
     /// 위쪽 키가 눌려있는지 확인합니다.
@@ -256,7 +258,8 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>위쪽 키가 눌려있다면 참입니다.</returns>
     protected bool IsUpKeyPressed()
     {
-        return (InputBlocked == false && (Input.GetAxisRaw("Vertical") > 0));
+        /// return (InputBlocked == false && (Input.GetAxisRaw("Vertical") > 0));
+        return (InputBlocked == false && Input.GetKey(KeyCode.UpArrow));
     }
     /// <summary>
     /// 아래쪽 키가 눌려있는지 확인합니다.
@@ -264,8 +267,10 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>아래쪽 키가 눌려있다면 참입니다.</returns>
     protected bool IsDownKeyPressed()
     {
-        return (InputBlocked == false && (Input.GetAxisRaw("Vertical") < 0));
+        /// return (InputBlocked == false && (Input.GetAxisRaw("Vertical") < 0));
+        return (InputBlocked == false && Input.GetKey(KeyCode.DownArrow));
     }
+
 
     #endregion
 
@@ -423,10 +428,10 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 지상에 있다면 true입니다.
     /// </summary>
-    protected bool Landed
+    public bool Landed
     {
         get { return _landed; }
-        set { _animator.SetBool("Landed", _landed = value); }
+        protected set { _animator.SetBool("Landed", _landed = value); }
     }
     /// <summary>
     /// 지상에서 이동하고 있다면 true입니다.
@@ -1580,6 +1585,32 @@ public abstract class PlayerController : MonoBehaviour
     public void RequestFlip()
     {
         Flip();
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public void RequestBlockInput()
+    {
+        BlockInput();
+    }
+
+
+    public bool Returning
+    {
+        get; protected set;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public void RequestReturn()
+    {
+        _animator.Play("X20_Win");
+    }
+
+
+    void ________TESTEST()
+    {
+        Returning = true;
     }
 
 
