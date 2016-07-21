@@ -136,7 +136,7 @@ public class XController : PlayerController
     /// </summary>
     float _chargeTime = 0;
     /// <summary>
-    /// 샷을 발사한 시점으로부터 경과한 시간을 나타냅니다.
+    /// 샷을 발사한 시점으로부터 경과한 시간을 나타냅니다. (FixedUpdate)
     /// </summary>
     float _shotTime = 0;
     /// <summary>
@@ -155,6 +155,10 @@ public class XController : PlayerController
     /// 샷 상태입니다. (Note) 프로퍼티를 거치지 않고 직접 사용하지 마십시오!
     /// </summary>
     float _shotState = 0;
+    /// <summary>
+    /// 샷이 발사된 직후로부터 경과한 시간을 나타냅니다. (Update)
+    /// </summary>
+    float _endShotBeginTime = 0;
 
 
     #endregion
@@ -174,7 +178,14 @@ public class XController : PlayerController
     bool Shooting
     {
         get { return _shooting; }
-        set { _animator.SetBool("Shooting", _shooting = value); }
+        set
+        {
+            _animator.SetBool("Shooting", _shooting = value);
+            if (_shooting == false)
+            {
+                ShotState = 0;
+            }
+        }
     }
     /// <summary>
     /// 샷이 막혀있다면 참입니다.
@@ -557,12 +568,8 @@ public class XController : PlayerController
         }
 
 
-        /// 삭제할 예정입니다.
-        /// _shotPrevIdle = Shooting && IsAnimationPlaying("Idle");
-
-
         // 공격 키가 눌린 경우를 처리합니다.
-        if (IsKeyPressed("Attack"))
+        if (IsKeyPressed("Attack") && ShotBlocked == false)
         {
             if (_shotPressed)
             {
@@ -579,6 +586,10 @@ public class XController : PlayerController
             }
             else
             {
+                if (ShotState != 0 && _endShotBeginTime >= END_SHOOTING_TIME)
+                {
+                    ShotState = 0;
+                }
                 _shotPressed = true;
             }
         }
@@ -597,6 +608,7 @@ public class XController : PlayerController
                 if (chargeTime > CHARGE_LEVEL[2])
                 {
                     _animator.Play("ChargeShot", 0, 0);
+                    ShotBlocked = true;
                 }
                 else
                 {
@@ -655,18 +667,16 @@ public class XController : PlayerController
         {
             // 탄환 객체 인덱스를 업데이트합니다.
             index = 0;
-            ShotBlocked = true;
         }
         else if (_chargeTime < CHARGE_LEVEL[2])
         {
             // 탄환 객체 인덱스를 업데이트합니다.
             index = 1;
-            ShotBlocked = true;
         }
         else
         {
+            // 탄환 객체 인덱스를 업데이트합니다.
             index = 2;
-            ShotBlocked = true;
         }
 
 
@@ -688,6 +698,8 @@ public class XController : PlayerController
             _shotPressed = false;
             _chargeTime = 0;
             _shotTime = 0;
+            _endShotBeginTime = 0;
+            PlayerColor = Color.white;
 
             if (_chargeCoroutine != null)
             {
@@ -706,7 +718,6 @@ public class XController : PlayerController
         SoundEffects[7].Stop();
 
         // 일정 시간 후에 샷 상태를 해제합니다.
-        _endShotBeginTime = 0;
         Invoke("EndShot", END_SHOOTING_TIME);
     }
     /// <summary>
@@ -714,7 +725,6 @@ public class XController : PlayerController
     /// </summary>
     void BeginCharge()
     {
-        /// StartCoroutine(CoroutineCharge());
         _chargeCoroutine = StartCoroutine(ChargeCoroutine());
     }
     /// <summary>
@@ -756,11 +766,6 @@ public class XController : PlayerController
         {
             _chargeEffect2 = CloneObject(effects[6], _chargeEffectPosition);
             _chargeEffect2.transform.SetParent(_chargeEffectPosition);
-
-
-            // 삭제하자
-            // 필드를 업데이트합니다.
-            /// _fullyCharged = true;
         }
         else
         {
@@ -771,6 +776,7 @@ public class XController : PlayerController
     /// </summary>
     void EndShot()
     {
+        /**
         // 샷을 중지하는 조건을 만족한다면 샷을 중지합니다.
         if (_endShotBeginTime >= END_SHOOTING_TIME)
         {
@@ -778,11 +784,11 @@ public class XController : PlayerController
             Shooting = false;
             ShotBlocked = false;
         }
+        */
 
-        PlayerColor = Color.white;
+        Shooting = false;
+        ShotBlocked = false;
     }
-
-    float _endShotBeginTime = 0;
 
 
     /// <summary>
@@ -1389,7 +1395,7 @@ public class XController : PlayerController
     /// </summary>
     void UpdateShotRoutine()
     {
-        // 잠깐... 이거 왜 있는 코드죠?
+        // 아 이거 Shot 애니메이션을 그냥 시작하면 0에서 시작해서 넣은 거네요 이거
         {
             // 샷 애니메이션은 계속 재생합니다.
             if (IsAnimationPlaying("Shot"))
@@ -1405,11 +1411,11 @@ public class XController : PlayerController
 
 
         // 발사 시간에 따라 light 상태를 전환합니다.
-        if (_shotTime < LIGHTING_TIME)
+        if (_endShotBeginTime < LIGHTING_TIME)
         {
             ShotState = 10;
         }
-        else if (_shotTime < END_SHOOTING_TIME)
+        else if (_endShotBeginTime < END_SHOOTING_TIME)
         {
             ShotState = 11;
         }
@@ -1454,10 +1460,6 @@ public class XController : PlayerController
         }
         _clips = dict;
     }
-
-
-    [Obsolete("구형 정의입니다. 다음 커밋에서 삭제할 예정입니다.")]
-    bool _shotPrevIdle;
 
 
 
