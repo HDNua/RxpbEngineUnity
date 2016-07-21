@@ -291,8 +291,8 @@ public class XController : PlayerController
         }
 
 
-        // 애니메이터를 업데이트합니다.
-        UpdateAnimator();
+        /// 애니메이터를 업데이트합니다.
+        /// UpdateAnimator();
 
 
         ///////////////////////////////////////////////////////////////////////////
@@ -362,7 +362,7 @@ public class XController : PlayerController
 
 
         // 애니메이터를 업데이트합니다.
-//        UpdateAnimator();
+        UpdateAnimator();
     }
     /// <summary>
     /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트 합니다.
@@ -635,6 +635,15 @@ public class XController : PlayerController
 
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    void UpdateAnimator()
+    {
+
+    }
+
+
 
 
 
@@ -713,31 +722,6 @@ public class XController : PlayerController
         // 일정 시간 후에 샷 상태를 해제합니다.
         Invoke("EndShot", _endShotTime);
     }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="index"></param>
-    private void CreateBullet(int index)
-    {
-        Transform shotPosition = GetShotPosition();
-        GameObject _bullet = CloneObject(_bullets[index], shotPosition);
-        Vector3 bulletScale = _bullet.transform.localScale;
-        bool toLeft = (Sliding ? FacingRight : !FacingRight);
-
-
-        bulletScale.x *= (toLeft ? -1 : 1); // (FacingRight ? -1 : 1) : (FacingRight ? 1 : -1));
-        _bullet.transform.localScale = bulletScale;
-        _bullet.GetComponent<Rigidbody2D>().velocity
-            = (toLeft ? Vector3.left : Vector3.right) * _shotSpeed;
-
-
-        XBusterScript buster = _bullet.GetComponent<XBusterScript>();
-        buster.MainCamera = stageManager._mainCamera;
-    }
-
-
     /// <summary>
     /// 차지를 시작합니다.
     /// </summary>
@@ -832,9 +816,30 @@ public class XController : PlayerController
 
 
     /// <summary>
-    /// 
+    /// 탄환을 생성합니다.
     /// </summary>
-    /// <returns></returns>
+    /// <param name="index">탄환 타입을 표현하는 인덱스입니다.</param>
+    void CreateBullet(int index)
+    {
+        Transform shotPosition = GetShotPosition();
+        GameObject _bullet = CloneObject(_bullets[index], shotPosition);
+        Vector3 bulletScale = _bullet.transform.localScale;
+        bool toLeft = (Sliding ? FacingRight : !FacingRight);
+
+
+        bulletScale.x *= (toLeft ? -1 : 1);
+        _bullet.transform.localScale = bulletScale;
+        _bullet.GetComponent<Rigidbody2D>().velocity
+            = (toLeft ? Vector3.left : Vector3.right) * _shotSpeed;
+
+
+        XBusterScript buster = _bullet.GetComponent<XBusterScript>();
+        buster.MainCamera = stageManager._mainCamera;
+    }
+    /// <summary>
+    /// 샷이 시작되는 위치를 결정합니다.
+    /// </summary>
+    /// <returns>샷이 시작되는 위치를 반환합니다.</returns>
     Transform GetShotPosition()
     {
         Transform ret = _shotPosition;
@@ -872,164 +877,219 @@ public class XController : PlayerController
     /// <returns></returns>
     IEnumerator UpdateShotAnimator()
     {
-        if (_shotTime > _endShotTime)
-        {
-            _animator.Play(AniName_Idle);
-            yield break;
-        }
-
         const float lightingTime = 0.3f;
         bool endLight = false;
-        
 
-        // 발사 직후 빛나는 시간이라면
-        if (_shotTime < lightingTime)
+        while (_shotTime < _endShotTime)
         {
-            float nTime = GetCurrentAnimationPlaytime();
-            float fTime = nTime - Mathf.Floor(nTime);
+            // 발사 직후 빛나는 시간이라면
+            if (_shotTime < lightingTime)
+            {
+                float nTime = GetCurrentAnimationPlaytime();
+                float fTime = nTime - Mathf.Floor(nTime);
+
+
+                // 
+                if (Jumping)
+                {
+                    if (IsAnimationPlaying("X03_Jump_2run"))
+                    {
+                        _animator.Play("X08_JumpShot_2run", 0, fTime);
+                    }
+                    else if (IsAnimationPlaying("X03_Jump_1beg"))
+                    {
+                        _animator.Play("X08_JumpShot_1beg", 0, fTime);
+                    }
+                    else
+                    {
+                        Debug.Log("Don't know!");
+                    }
+                }
+                // 
+                else if (Falling)
+                {
+                    if (IsAnimationPlaying("X03_Fall_3end"))
+                    {
+
+                    }
+                    else if (IsAnimationPlaying("X03_Fall_2run"))
+                    {
+
+                    }
+                    else if (IsAnimationPlaying("X03_Fall_1beg"))
+                    {
+
+                    }
+                    else
+                    {
+                        Debug.Log("Don't know!");
+                    }
+                }
+                // 
+                else if (Sliding)
+                {
+                    if (IsAnimationPlaying("X11_Slide_2run"))
+                    {
+                        _animator.Play("X12_WallShotLight_2run", 0, fTime);
+                    }
+                    else if (IsAnimationPlaying("X11_Slide_1beg"))
+                    {
+                        _animator.Play("X12_WallShotLight_1beg", 0, fTime);
+                    }
+                    else
+                    {
+                        Debug.Log("Don't know!");
+                    }
+                }
+                // 
+                else if (Dashing)
+                {
+                    if (IsAnimationPlaying("X07_Dash_3end"))
+                    {
+                        _animator.Play("X10_DashShotLight_3end", 0, fTime);
+                    }
+                    else if (IsAnimationPlaying("X07_Dash_2run"))
+                    {
+                        _animator.Play("X10_DashShotLight_2run", 0, fTime);
+                    }
+                    else if (IsAnimationPlaying("X07_Dash_1beg"))
+                    {
+                        _animator.Play("X10_DashShotLight_1beg", 0, fTime);
+                    }
+                    else
+                    {
+                        Debug.Log("Don't know!");
+                    }
+                }
+                // 
+                else if (Moving)
+                {
+                    if (IsAnimationPlaying("X06_Walk_2run"))
+                    {
+                        _animator.Play("X09_WalkShotLight_2run", 0, fTime);
+                    }
+                    else if (IsAnimationPlaying("X06_Walk_1beg"))
+                    {
+                        _animator.Play("X09_WalkShotLight_1beg", 0, fTime);
+                    }
+                    else
+                    {
+                        Debug.Log("Don't know!");
+                    }
+                }
+                else
+                {
+                    // 완전히 차지된 경우
+                    if (_fullyCharged)
+                    {
+                        // ChargeShot 애니메이션을 재생합니다.
+                        _animator.Play(AniName_ChargeShot, 0, 0);
+                        _fullyCharged = false;
+                    }
+                    else
+                    {
+                        // Shot 애니메이션을 재생합니다.
+                        _animator.Play(AniName_Shot, 0, 0);
+                    }
+                }
+                _renderer.color = PlayerColor = Color.white;
+            }
+            // 빛나는 시간이 끝난 직후
+            else if (endLight == false)
+            {
+                float nTime = GetCurrentAnimationPlaytime();
+                float fTime = nTime - Mathf.Floor(nTime);
+
+
+                //
+                if (Jumping)
+                {
+
+                }
+                // 
+                else if (Falling)
+                {
+
+                }
+                // 
+                else if (Sliding)
+                {
+                    if (IsAnimationPlaying("X12_WallShotLight_2run"))
+                    {
+                        _animator.Play("X12_WallShot_2run", 0, fTime);
+                    }
+                    else if (IsAnimationPlaying("X12_WallShotLight_1beg"))
+                    {
+                        _animator.Play("X12_WallShot_1beg", 0, fTime);
+                    }
+                    else
+                    {
+                        Debug.Log("Don't know!");
+                    }
+                }
+                // 
+                else if (Dashing)
+                {
+                    if (IsAnimationPlaying("X10_DashShotLight_3end"))
+                    {
+                        _animator.Play("X10_DashShot_3end", 0, fTime);
+                    }
+                    else if (IsAnimationPlaying("X10_DashShotLight_2run"))
+                    {
+                        _animator.Play("X10_DashShot_2run", 0, fTime);
+                    }
+                    else if (IsAnimationPlaying("X10_DashShotLight_1beg"))
+                    {
+                        _animator.Play("X10_DashShot_1beg", 0, fTime);
+                    }
+                    else
+                    {
+                        Debug.Log("Don't know!");
+                    }
+                }
+                else if (Moving)
+                {
+                    if (IsAnimationPlaying("X09_WalkShotLight_2run"))
+                    {
+                        _animator.Play("X09_WalkShot_2run", 0, fTime);
+                    }
+                    else if (IsAnimationPlaying("X09_WalkShotLight_1beg"))
+                    {
+                        _animator.Play("X09_WalkShot_1beg", 0, fTime);
+                    }
+                    else
+                    {
+                        Debug.Log("Don't know!");
+                    }
+                }
+                else
+                {
+                    // 완전히 차지된 경우
+                    if (_fullyCharged)
+                    {
+                        // ChargeShot 애니메이션을 재생합니다.
+                        _animator.Play(AniName_ChargeShot, 0, 0);
+                        _fullyCharged = false;
+                    }
+                    else
+                    {
+                        // Shot 애니메이션을 재생합니다.
+                        _animator.Play(AniName_Shot, 0, 0);
+                    }
+                }
+                _renderer.color = PlayerColor = Color.white;
+
+
+                // 스위치를 올립니다.
+                endLight = true;
+            }
 
 
             // 
-            if (Jumping)
-            {
-
-            }
-            else if (Falling)
-            {
-
-            }
-            else if (Sliding)
-            {
-
-            }
-            else if (Dashing)
-            {
-                if (IsAnimationPlaying("X07_Dash_3end"))
-                {
-                    _animator.Play("X10_DashShotLight_3end", 0, fTime);
-                }
-                else if (IsAnimationPlaying("X07_Dash_2run"))
-                {
-                    _animator.Play("X10_DashShotLight_2run", 0, fTime);
-                }
-                else if (IsAnimationPlaying("X07_Dash_1beg"))
-                {
-                    _animator.Play("X10_DashShotLight_1beg", 0, fTime);
-                }
-                else
-                {
-                    Debug.Log("Don't know!");
-                }
-            }
-            else if (Moving)
-            {
-                if (IsAnimationPlaying("X06_Walk_2run"))
-                {
-                    _animator.Play("X09_WalkShotLight_2run", 0, fTime);
-                }
-                else if (IsAnimationPlaying("X06_Walk_1beg"))
-                {
-                    _animator.Play("X09_WalkShotLight_1beg", 0, fTime);
-                }
-                else 
-                {
-                    Debug.Log("Don't know!");
-                }
-            }
-            else
-            {
-                // 완전히 차지된 경우
-                if (_fullyCharged)
-                {
-                    // ChargeShot 애니메이션을 재생합니다.
-                    _animator.Play(AniName_ChargeShot, 0, 0);
-                    _fullyCharged = false;
-                }
-                else
-                {
-                    // Shot 애니메이션을 재생합니다.
-                    _animator.Play(AniName_Shot, 0, 0);
-                }
-            }
-            _renderer.color = PlayerColor = Color.white;
-        }
-        // 빛나는 시간이 끝난 직후
-        else if (endLight == false)
-        {
-            float nTime = GetCurrentAnimationPlaytime();
-            float fTime = nTime - Mathf.Floor(nTime);
-
-
-            //
-            if (Jumping)
-            {
-
-            }
-            else if (Falling)
-            {
-
-            }
-            else if (Sliding)
-            {
-
-            }
-            else if (Dashing)
-            {
-                if (IsAnimationPlaying("X10_DashShotLight_3end"))
-                {
-                    _animator.Play("X10_DashShot_3end", 0, fTime);
-                }
-                else if (IsAnimationPlaying("X10_DashShotLight_2run"))
-                {
-                    _animator.Play("X10_DashShot_2run", 0, fTime);
-                }
-                else if (IsAnimationPlaying("X10_DashShotLight_1beg"))
-                {
-                    _animator.Play("X10_DashShot_1beg", 0, fTime);
-                }
-                else
-                {
-                    Debug.Log("Don't know!");
-                }
-            }
-            else if (Moving)
-            {
-                if (IsAnimationPlaying("X09_WalkShotLight_2run"))
-                {
-                    _animator.Play("X09_WalkShot_2run", 0, fTime);
-                }
-                else if (IsAnimationPlaying("X09_WalkShotLight_1beg"))
-                {
-                    _animator.Play("X09_WalkShot_1beg", 0, fTime);
-                }
-                else
-                {
-                    Debug.Log("Don't know!");
-                }
-            }
-            else
-            {
-                // 완전히 차지된 경우
-                if (_fullyCharged)
-                {
-                    // ChargeShot 애니메이션을 재생합니다.
-                    _animator.Play(AniName_ChargeShot, 0, 0);
-                    _fullyCharged = false;
-                }
-                else
-                {
-                    // Shot 애니메이션을 재생합니다.
-                    _animator.Play(AniName_Shot, 0, 0);
-                }
-            }
-            _renderer.color = PlayerColor = Color.white;
-
-
-            // 스위치를 올립니다.
-            endLight = true;
+            yield return new WaitForFixedUpdate();
         }
 
-        // 
+        _animator.Play(AniName_Idle);
         yield break;
     }
 
@@ -1235,14 +1295,6 @@ public class XController : PlayerController
     protected override void MoveLeft()
     {
         base.MoveLeft();
-
-        /**
-        // 코루틴을 시작합니다.
-        if (_moveCoroutine == null)
-        {
-            _moveCoroutine = StartCoroutine(MoveCoroutine());
-        }
-        */
     }
     /// <summary>
     /// 플레이어를 오른쪽으로 이동합니다.
@@ -1250,14 +1302,6 @@ public class XController : PlayerController
     protected override void MoveRight()
     {
         base.MoveRight();
-
-        /**
-        // 코루틴을 시작합니다.
-        if (_moveCoroutine == null)
-        {
-            _moveCoroutine = StartCoroutine(MoveCoroutine());
-        }
-        */
     }
     /// <summary>
     /// 플레이어의 이동을 중지합니다.
@@ -1265,11 +1309,6 @@ public class XController : PlayerController
     protected override void StopMoving()
     {
         base.StopMoving();
-
-        /**
-        // 코루틴을 중지합니다.
-        StopCoroutine(_moveCoroutine);
-        */
     }
 
 
@@ -1282,11 +1321,6 @@ public class XController : PlayerController
     {
         base.Jump();
         SoundEffects[1].Play();
-
-        /**
-        // 코루틴을 시작합니다.
-        _jumpCoroutine = StartCoroutine(JumpCoroutine());
-        */
     }
     /// <summary>
     /// 
@@ -1294,11 +1328,6 @@ public class XController : PlayerController
     protected override void StopJumping()
     {
         base.StopJumping();
-
-        /**
-        // 코루틴을 중지합니다.
-        StopCoroutine(_jumpCoroutine);
-        */
     }
 
 
@@ -1582,15 +1611,6 @@ public class XController : PlayerController
             && color1.b == color2.b
             && color1.a == color2.a);
     }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    void UpdateAnimator()
-    {
-
-    }
     /// <summary>
     /// 
     /// </summary>
@@ -1712,75 +1732,6 @@ public class XController : PlayerController
 
 
     #region 구형 정의를 보관합니다.
-    /// <summary>
-    /// 
-    /// </summary>
-//    Coroutine _jumpCoroutine = null;
-    [Obsolete("")]
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator JumpCoroutine()
-    {
-
-
-        yield break;
-    }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    Coroutine _moveCoroutine = null;
-    [Obsolete("")]
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator MoveCoroutine()
-    {
-        /*
-        // 이미 걷기 애니메이션이 재생중이라면 무시합니다.
-        if (IsAnimationPlaying(AniName_Walk_1beg) || IsAnimationPlaying(AniName_Walk_2run))
-            yield break;
-
-        
-        // 애니메이션 재생을 시작합니다.
-        _animator.Play(AniName_Walk_1beg);
-
-        // 첫 번째 애니메이션 재생이 끝날 때까지 코루틴은 대기합니다.
-        yield return new WaitForSeconds(GetCurrentAnimationLength());
-
-
-        // 첫 번째 애니메이션 재생이 끝나면 두 번째 애니메이션으로 교체합니다.
-        _animator.Play(AniName_Walk_2run);
-        /**
-        if (Moving && !Dashing && !Jumping && !Sliding)
-        {
-            _animator.Play(AniName_Walk_1beg, 0, 0);
-            Debug.Log(AniName_Walk_1beg + " playing");
-        }
-        */
-
-
-        // 코루틴을 종료합니다.
-
-        _moveCoroutine = null;
-        yield break;
-    }
-    [Obsolete("")]
-    /// <summary>
-    /// 
-    /// </summary>
-    void StopMoveCoroutine()
-    {
-        if (_moveCoroutine != null)
-        {
-            StopCoroutine(_moveCoroutine);
-            _moveCoroutine = null;
-        }
-    }
 
 
     #endregion

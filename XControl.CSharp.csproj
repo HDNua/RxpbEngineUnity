@@ -71,6 +71,7 @@
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TileAnimator.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledInitialShaderProperties.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledMap.cs" />
+    <Compile Include="Assets\WalkAnimation.cs" />
     <Compile Include="Assets\_Trashbin\PlayerSelectSceneManager.cs" />
     <Compile Include="Assets\sources\ContinueSceneManager.cs" />
     <Compile Include="Assets\sources\CutsceneManager.cs" />
