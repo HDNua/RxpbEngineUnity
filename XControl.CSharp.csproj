@@ -64,7 +64,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Rotator.cs" />
+    <Compile Include="Assets\SnakeHeadSceneManager.cs" />
     <Compile Include="Assets\StageSelectSceneManager.cs" />
+    <Compile Include="Assets\StateTracker.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\ImportBehaviour.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\SortingLayerExposed.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\SpriteDepthInMap.cs" />

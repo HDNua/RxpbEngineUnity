@@ -31,6 +31,7 @@ public class StageManager : HDSceneManager
 
 
 
+    public float test = 0.1f;
 
 
 
@@ -148,7 +149,6 @@ public class StageManager : HDSceneManager
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            float test = 0.01f;
             _timeManager.TimeScale = _timeManager.TimeScale == test ? 1 : test;
         }
         else if (Input.GetKeyDown(KeyCode.W))
