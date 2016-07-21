@@ -1592,7 +1592,7 @@ public abstract class PlayerController : MonoBehaviour
         Flip();
     }
     /// <summary>
-    /// 
+    /// 플레이어의 입력 방지를 요청합니다.
     /// </summary>
     public void RequestBlockInput()
     {
@@ -1600,12 +1600,15 @@ public abstract class PlayerController : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 테스트 코드에요.
+    /// </summary>
     public bool Returning
     {
         get; protected set;
     }
     /// <summary>
-    /// 
+    /// 테스트 코드랍니다.
     /// </summary>
     public void RequestReturn()
     {

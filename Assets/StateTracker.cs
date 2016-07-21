@@ -13,11 +13,13 @@ public class StateTracker : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
+        /*
         AnimatorClipInfo[] clips = animator.GetCurrentAnimatorClipInfo(0);
         foreach (AnimatorClipInfo clip in clips)
         {
             Debug.Log(_name + ": " + clip.clip.name);
         }
+        */
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
