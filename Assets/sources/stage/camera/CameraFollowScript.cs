@@ -127,7 +127,7 @@ public class CameraFollowScript : MonoBehaviour
     {
         // 일반 필드를 초기화합니다.
         {
-            _camera = Camera.main; /// gameObject.GetComponent<Camera>();
+            _camera = Camera.main;
             _camZ = _camera.transform.position.z;
 
             _map = _database.Map;
@@ -155,7 +155,8 @@ public class CameraFollowScript : MonoBehaviour
 
 
             // 시작 카메라 존을 맞춥니다.
-            _startCameraZone = _cameraZones[0];
+            /// _startCameraZone = _cameraZones[0];
+            _startCameraZone = _database.StageManager.GetCheckpointCameraZone(_database.GameManager.SpawnPositionIndex);
             if (_startCameraZone == null)
                 throw new Exception("시작 카메라 존이 설정되지 않았습니다.");
 

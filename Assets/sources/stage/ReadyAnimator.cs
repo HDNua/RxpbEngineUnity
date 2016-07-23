@@ -50,8 +50,7 @@ public class ReadyAnimator : MonoBehaviour
 
 
         // 플레이어 소환을 요청합니다.
-        stageManager._player.transform.position
-            = stageManager._playerSpawnPos.position;
+        stageManager._player.transform.position = stageManager.PlayerSpawnPosition.position;
         stageManager._player.RequestSpawn();
     }
 

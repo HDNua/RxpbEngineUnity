@@ -24,11 +24,23 @@ public class EnemyScript : MonoBehaviour
 
 
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     public int _health;
+    /// <summary>
+    /// 
+    /// </summary>
     public int _damage;
 
 
+    /// <summary>
+    /// 
+    /// </summary>
     public AudioClip[] audioClips;
+    /// <summary>
+    /// 
+    /// </summary>
     public GameObject[] effects;
 
 
@@ -50,11 +62,23 @@ public class EnemyScript : MonoBehaviour
 
 
     #region 필드를 정의합니다.
-    AudioSource[] soundEffects;
-    public AudioSource[] SoundEffects { get { return soundEffects; } }
+    /// <summary>
+    /// 캐릭터가 사용할 효과음을 사용 가능한 형태로 보관합니다.
+    /// </summary>
+    AudioSource[] _soundEffects;
+    /// <summary>
+    /// 캐릭터가 사용할 효과음을 사용 가능한 형태로 보관합니다.
+    /// </summary>
+    public AudioSource[] SoundEffects { get { return _soundEffects; } }
 
 
+    /// <summary>
+    /// 사망했다면 참입니다.
+    /// </summary>
     bool _isDead;
+    /// <summary>
+    /// 무적 상태라면 참입니다.
+    /// </summary>
     bool _invencible;
 
 
@@ -133,11 +157,11 @@ public class EnemyScript : MonoBehaviour
     protected virtual void Awake()
     {
         _collider = GetComponent<Collider2D>();
-        soundEffects = new AudioSource[audioClips.Length];
+        _soundEffects = new AudioSource[audioClips.Length];
         for (int i = 0, len = audioClips.Length; i < len; ++i)
         {
-            soundEffects[i] = gameObject.AddComponent<AudioSource>();
-            soundEffects[i].clip = audioClips[i];
+            _soundEffects[i] = gameObject.AddComponent<AudioSource>();
+            _soundEffects[i].clip = audioClips[i];
         }
     }
     /// <summary>

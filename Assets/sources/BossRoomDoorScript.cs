@@ -9,7 +9,6 @@ using System.Collections;
 /// </summary>
 public class BossRoomDoorScript : MonoBehaviour
 {
-
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     /// <summary>
     /// 문 개폐시 재생될 효과음 리스트입니다.
@@ -31,6 +30,22 @@ public class BossRoomDoorScript : MonoBehaviour
     /// 문을 여는 소리가 재생되기 시작할 시간입니다.
     /// </summary>
     public float _openSoundPlayTime = 1f;
+
+
+    /// <summary>
+    /// 단 한 번만 사용되는 문이라면 참입니다.
+    /// </summary>
+    public bool _isOneTimeDoor = false;
+
+
+    /// <summary>
+    /// 보스 방 문이라면 참입니다. 진입 시 BossBattleManager에게 스크립트 수행을 요청합니다.
+    /// </summary>
+    public bool _isBossRoomDoor = false;
+    /// <summary>
+    /// 보스 전투 관리자입니다.
+    /// </summary>
+    public BossBattleManager _bossBattleManager;
 
 
     #endregion
@@ -68,11 +83,11 @@ public class BossRoomDoorScript : MonoBehaviour
 
     #region 필드 및 프로퍼티를 정의합니다.
     /// <summary>
-    /// 
+    /// 문이 개방되었다면 참입니다.
     /// </summary>
     bool _opened = false;
     /// <summary>
-    /// 
+    /// 문이 개방되었다면 참입니다.
     /// </summary>
     bool Opened
     {
@@ -85,6 +100,12 @@ public class BossRoomDoorScript : MonoBehaviour
     /// 문을 개방한 플레이어 개체입니다.
     /// </summary>
     PlayerController _player = null;
+
+
+    /// <summary>
+    /// 단 한 번만 사용되는 문이 사용되었다면 참입니다.
+    /// </summary>
+    bool _oneTimeDoorUsed = false;
 
 
     #endregion
@@ -138,12 +159,12 @@ public class BossRoomDoorScript : MonoBehaviour
 
     #region Trigger 관련 메서드를 재정의합니다.
     /// <summary>
-    /// 
+    /// 충돌체가 트리거 내부로 진입했습니다.
     /// </summary>
-    /// <param name="other"></param>
+    /// <param name="other">자신이 아닌 충돌체 개체입니다.</param>
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (Opened)
+        if (Opened || _oneTimeDoorUsed)
             return;
 
         if (other.CompareTag("Player"))
@@ -171,6 +192,11 @@ public class BossRoomDoorScript : MonoBehaviour
     /// </summary>
     public void RequestOpen()
     {
+        if (_isOneTimeDoor)
+        {
+            _oneTimeDoorUsed = true;
+        }
+
         _player.RequestBlockInput();
         StartCoroutine(OpenCoroutine());
     }
@@ -181,13 +207,23 @@ public class BossRoomDoorScript : MonoBehaviour
     {
         Opened = false;
         _audioSources[1].Play();
+
+        if (_isOneTimeDoor)
+        {
+            GetComponent<BoxCollider2D>().isTrigger = false;
+        }
+
+        if (_isBossRoomDoor)
+        {
+            _bossBattleManager.RequestBossBattleScenario();
+        }
     }
 
 
     /// <summary>
-    /// 
+    /// 문 개방 코루틴입니다.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>IEnumerator 반복자를 반환합니다.</returns>
     IEnumerator OpenCoroutine()
     {
         bool openSoundPlayed = false;

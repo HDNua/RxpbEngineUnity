@@ -25,10 +25,6 @@ public class StageManager : HDSceneManager
     /// 현재 조작중인 플레이어입니다.
     /// </summary>
     public PlayerController _player;
-    /// <summary>
-    /// 플레이어가 소환되는 위치입니다.
-    /// </summary>
-    public Transform _playerSpawnPos;
 
 
     /// <summary>
@@ -41,6 +37,16 @@ public class StageManager : HDSceneManager
     /// HUD 개체입니다.
     /// </summary>
     public HUDScript _HUD;
+
+
+    /// <summary>
+    /// 체크포인트 소환 위치 집합입니다.
+    /// </summary>
+    public Transform[] _checkpointSpawnPositions;
+    /// <summary>
+    /// 체크포인트 카메라 존 집합입니다.
+    /// </summary>
+    public CameraZone[] _checkpointCameraZones;
 
 
     /// <summary>
@@ -72,6 +78,12 @@ public class StageManager : HDSceneManager
 
 
     /// <summary>
+    /// 배경 음악 AudioSource입니다.
+    /// </summary>
+    AudioSource _bgmSource;
+
+
+    /// <summary>
     /// 엑스에 대한 PlayerController니다.
     /// </summary>
     PlayerController _playerX;
@@ -81,7 +93,10 @@ public class StageManager : HDSceneManager
     PlayerController _playerZ;
 
 
-
+    /// <summary>
+    /// 플레이어가 소환되는 위치입니다.
+    /// </summary>
+    Transform _playerSpawnPosition;
 
 
     /// <summary>
@@ -133,6 +148,16 @@ public class StageManager : HDSceneManager
     }
 
 
+    /// <summary>
+    /// 플레이어가 소환되는 위치입니다.
+    /// </summary>
+    public Transform PlayerSpawnPosition
+    {
+        get { return _playerSpawnPosition; }
+        set { _playerSpawnPosition = value; }
+    }
+
+
     #endregion
 
 
@@ -156,6 +181,7 @@ public class StageManager : HDSceneManager
         // 필드를 초기화합니다.
         _map = _database.Map;
         _timeManager = _database.TimeManager;
+        _bgmSource = GetComponent<AudioSource>();
 
 
         // 불러온 캐릭터를 잠깐 사용 불가능하게 합니다.
@@ -164,8 +190,11 @@ public class StageManager : HDSceneManager
         _playerX.gameObject.SetActive(false);
         _playerZ.gameObject.SetActive(false);
 
+
         // 맵 데이터를 초기화합니다.
-        _player.transform.position = _playerSpawnPos.transform.position;
+        /// _player.transform.position = _playerSpawnPos.transform.position;
+        _playerSpawnPosition = _checkpointSpawnPositions[_database.GameManager.SpawnPositionIndex];
+
 
         // 페이드인 효과를 처리합니다.
         _fader.FadeIn();
@@ -330,13 +359,14 @@ public class StageManager : HDSceneManager
     }
 
 
+
+
     /// <summary>
     /// 
     /// </summary>
     private void Test_EndGameItemGet()
     {
-        AudioSource bgmSource = GetComponent<AudioSource>();
-        bgmSource.Stop();
+        _bgmSource.Stop();
 
         _player.RequestBlockInput();
         _timeManager.StageManagerRequested = true;
@@ -602,6 +632,27 @@ public class StageManager : HDSceneManager
         GameManager.Instance.RequestIncreaseTryCount();
         _HUD.UpdateTryCountText();
     }
+
+
+    /// <summary>
+    /// 현재 체크포인트의 카메라 존을 획득합니다.
+    /// </summary>
+    /// <param name="checkpointIndex">현재 체크포인트 인덱스입니다.</param>
+    /// <returns>카메라 존입니다.</returns>
+    public CameraZone GetCheckpointCameraZone(int checkpointIndex)
+    {
+        return _checkpointCameraZones[checkpointIndex];
+    }
+
+
+    /// <summary>
+    /// 배경 음악 재생을 중지합니다.
+    /// </summary>
+    public void StopBackgroundMusic()
+    {
+        _bgmSource.Stop();
+    }
+
 
 
     #endregion

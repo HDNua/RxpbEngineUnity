@@ -11,12 +11,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 /// </summary>
 public class GameManager
 {
-    #region 게임 시스템이 공유하는 속성을 정의합니다.
+    #region Singleton을 구현합니다.
     /// <summary>
     /// 게임 관리자입니다.
     /// </summary>
     static GameManager _instance;
-
     /// <summary>
     /// 게임 관리자입니다.
     /// </summary>
@@ -30,6 +29,31 @@ public class GameManager
             }
             return _instance;
         }
+    }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region 게임이 공유하는 필드 및 속성을 정의합니다.
+    /// <summary>
+    /// 게임 데이터 필드입니다.
+    /// </summary>
+    GameData _gameData;
+    /// <summary>
+    /// 게임 데이터 필드입니다.
+    /// </summary>
+    public GameData GameData
+    {
+        get { return _gameData; }
     }
 
 
@@ -53,27 +77,18 @@ public class GameManager
 
 
 
-
-
-
-
-
-
-
-    #region 필드를 정의합니다.
+    #region 스테이지 관련 필드를 정의합니다.
     /// <summary>
-    /// 게임 데이터 필드입니다.
+    /// 
     /// </summary>
-    GameData _gameData;
-
-
+    int _spawnPositionIndex = 0;
     /// <summary>
-    /// 게임 데이터 필드입니다.
+    /// 
     /// </summary>
-    public GameData GameData
+    public int SpawnPositionIndex
     {
-        get { return _gameData; }
-        /// private set { _gameData = value; }
+        get { return _spawnPositionIndex; }
+        set { _spawnPositionIndex = value; }
     }
 
 
@@ -90,7 +105,7 @@ public class GameManager
 
     #region 생성자를 정의합니다.
     /// <summary>
-    /// 
+    /// 게임 관리자입니다.
     /// </summary>
     private GameManager()
     {
@@ -102,6 +117,13 @@ public class GameManager
 
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -271,14 +293,14 @@ public class GameManager
 
 
     /// <summary>
-    /// 
+    /// 시도 횟수 증가를 요청합니다. 보통 1UP 아이템을 먹으면 호출됩니다.
     /// </summary>
     public void RequestIncreaseTryCount()
     {
         GameData.TryCount++;
     }
     /// <summary>
-    /// 
+    /// 시도 횟수 감소를 요청합니다. 보통 사망하면 호출됩니다.
     /// </summary>
     public void RequestDecreaseTryCount()
     {

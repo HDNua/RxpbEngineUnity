@@ -45,7 +45,7 @@ public class CommanderYammarkScript : EnemyScript
     /// </summary>
     protected override void Update()
     {
-        /// base.Update();
+        base.Update();
     }
 
 

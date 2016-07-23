@@ -63,12 +63,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\BossRoomDoorScript.cs" />
-    <Compile Include="Assets\CommanderYammarkScript.cs" />
-    <Compile Include="Assets\Rotator.cs" />
-    <Compile Include="Assets\SnakeHeadSceneManager.cs" />
-    <Compile Include="Assets\StageSelectSceneManager.cs" />
-    <Compile Include="Assets\StateTracker.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\ImportBehaviour.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\SortingLayerExposed.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\SpriteDepthInMap.cs" />
@@ -76,16 +70,23 @@
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledInitialShaderProperties.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledMap.cs" />
     <Compile Include="Assets\_Trashbin\PlayerSelectSceneManager.cs" />
-    <Compile Include="Assets\sources\ContinueSceneManager.cs" />
-    <Compile Include="Assets\sources\CutsceneManager.cs" />
+    <Compile Include="Assets\sources\BossBattleManager.cs" />
+    <Compile Include="Assets\sources\BossRoomDoorScript.cs" />
+    <Compile Include="Assets\sources\CommanderYammarkScript.cs" />
     <Compile Include="Assets\sources\Game\GameData.cs" />
     <Compile Include="Assets\sources\Game\GameManager.cs" />
     <Compile Include="Assets\sources\Game\GameMapStatus.cs" />
-    <Compile Include="Assets\sources\HDSceneManager.cs" />
     <Compile Include="Assets\sources\HandyScriptTemplate.cs" />
-    <Compile Include="Assets\sources\LoadingSceneManager.cs" />
+    <Compile Include="Assets\sources\Rotator.cs" />
+    <Compile Include="Assets\sources\SceneManager\ContinueSceneManager.cs" />
+    <Compile Include="Assets\sources\SceneManager\CutsceneManager.cs" />
+    <Compile Include="Assets\sources\SceneManager\HDSceneManager.cs" />
+    <Compile Include="Assets\sources\SceneManager\LoadingSceneManager.cs" />
+    <Compile Include="Assets\sources\SceneManager\SnakeHeadSceneManager.cs" />
+    <Compile Include="Assets\sources\SceneManager\StageSelectSceneManager.cs" />
+    <Compile Include="Assets\sources\SceneManager\TitleSceneManager.cs" />
     <Compile Include="Assets\sources\ScreenFader.cs" />
-    <Compile Include="Assets\sources\TitleSceneManager.cs" />
+    <Compile Include="Assets\sources\StateTracker.cs" />
     <Compile Include="Assets\sources\stage\CameraZoneBorderParent.cs" />
     <Compile Include="Assets\sources\stage\DataBase.cs" />
     <Compile Include="Assets\sources\stage\DeadZoneScript.cs" />

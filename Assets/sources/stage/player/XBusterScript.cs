@@ -17,6 +17,7 @@ public class XBusterScript : AttackScript
     Collider2D _collider;
     Rigidbody2D _rigidbody;
 
+
     #endregion
 
 
@@ -30,6 +31,7 @@ public class XBusterScript : AttackScript
 
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
     public LayerMask busterUnpassable;
+
 
     #endregion
 

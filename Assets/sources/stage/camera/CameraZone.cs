@@ -10,26 +10,47 @@ using System.Collections;
 public class CameraZone : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
-    public CameraZoneParent _cameraZoneParent;
-
+    /// <summary>
+    /// 
+    /// </summary>
     public bool _isTopBounded;
     public bool _isLeftBounded;
     public bool _isRightBounded;
     public bool _isBottomBounded;
 
 
+    /// <summary>
+    /// 
+    /// </summary>
     public bool _isTopFirst;
     public bool _isLeftFirst;
     public bool _isRightFirst;
     public bool _isBottomFirst;
 
 
+    /// <summary>
+    /// 
+    /// </summary>
     public float _top;
     public float _left;
     public float _right;
     public float _bottom;
 
+
+    /// <summary>
+    /// 
+    /// </summary>
     public int _cameraZoneID;
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool _isCheckpoint = false;
+    /// <summary>
+    /// 
+    /// </summary>
+    public int _checkpointIndex = -1;
 
 
     #endregion
@@ -44,13 +65,39 @@ public class CameraZone : MonoBehaviour
 
 
     #region 필드를 정의합니다.
-//    CameraFollowScript _cameraFollow;
+    /// <summary>
+    /// 
+    /// </summary>
+    CameraZoneParent _cameraZoneParent = null;
+    /// <summary>
+    /// 
+    /// </summary>
+    CameraZoneParent _CameraZoneParent
+    {
+        get
+        {
+            if (_cameraZoneParent == null)
+            {
+                _cameraZoneParent = GetComponentInParent<CameraZoneParent>();
+            }
+            return _cameraZoneParent;
+        }
+    }
 
 
+    /// <summary>
+    ///  
+    /// </summary>
     Camera _mainCamera;
 
 
+    /// <summary>
+    /// 
+    /// </summary>
     BoxCollider2D _boxZone;
+    /// <summary>
+    /// 
+    /// </summary>
     PolygonCollider2D _slopeZone;
 
 
@@ -73,7 +120,6 @@ public class CameraZone : MonoBehaviour
     {
         // 필드를 초기화합니다.
         _mainCamera = Camera.main;
-//        _cameraFollow = _cameraZoneParent.CameraFollow;
 
 
         // 카메라 존 충돌체 획득을 시도합니다.
@@ -153,6 +199,20 @@ public class CameraZone : MonoBehaviour
 
 
     #region Trigger 관련 메서드를 재정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="other"></param>
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            if (_isCheckpoint)
+            {
+                UpdateCheckpoint();
+            }
+        }
+    }
 
 
     #endregion
@@ -201,6 +261,17 @@ public class CameraZone : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    void UpdateCheckpoint()
+    {
+        if (_checkpointIndex < 0)
+            throw new Exception("잘못된 체크포인트 인덱스입니다.");
+        GameManager.Instance.SpawnPositionIndex = _checkpointIndex;
+    }
+
+
     #endregion
 
 
@@ -213,6 +284,11 @@ public class CameraZone : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 소환 위치입니다.
+    /// </summary>
+    public Transform _spawnPosition = null;
 
 
     #endregion

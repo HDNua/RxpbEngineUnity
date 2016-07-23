@@ -147,6 +147,12 @@ public abstract class PlayerController : MonoBehaviour
 
 
     /// <summary>
+    /// 큰 대미지를 받은 것으로 인정되는 값입니다.
+    /// </summary>
+    public int BigDamageValue = 10;
+
+
+    /// <summary>
     /// PlayerController 객체가 사용할 효과 집합입니다.
     /// </summary>
     public GameObject[] effects;
@@ -598,7 +604,11 @@ public abstract class PlayerController : MonoBehaviour
     public bool Damaged
     {
         get { return _damaged; }
-        protected set { _Animator.SetBool("Damaged", _damaged = value); }
+        protected set
+        {
+            _Animator.SetBool("Damaged", _damaged = value);
+            BigDamaged = false;
+        }
     }
     /// <summary>
     /// 무적 상태라면 true입니다.
@@ -676,6 +686,12 @@ public abstract class PlayerController : MonoBehaviour
         get { return _moveRequested; }
         private set { _moveRequested = value; }
     }
+
+
+    /// <summary>
+    /// 큰 대미지를 입었다면 참입니다.
+    /// </summary>
+    public bool BigDamaged { set { _Animator.SetFloat("BigDamaged", value ? 1 : 0); } }
 
 
     #endregion
@@ -1585,6 +1601,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <param name="point">플레이어가 입을 대미지입니다.</param>
     public virtual void Hurt(int point)
     {
+        // 체력을 깎습니다.
         Health -= point;
         if (IsAlive() == false)
         {
@@ -1595,15 +1612,22 @@ public abstract class PlayerController : MonoBehaviour
             Danger = true;
         }
 
+
+        // 상태를 업데이트합니다.
         Damaged = true;
+        if (point >= BigDamageValue)
+        {
+            BigDamaged = true;
+        }
         Invencible = true;
         InputBlocked = true;
-
         StopMoving();
         StopDashing();
         StopJumping();
         StopFalling();
 
+
+        // 플레이어에 대해 넉백 효과를 겁니다.
         float speed = 100;
         Vector2 force = (FacingRight ? Vector2.left : Vector2.right);
         _Rigidbody.velocity = Vector2.zero;
