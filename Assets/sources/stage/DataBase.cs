@@ -54,7 +54,25 @@ public class DataBase : MonoBehaviour
 
 
     #region 프로퍼티를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    public GameManager GameManager
+    {
+        get
+        {
+            return GameManager.Instance;
+        }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
     public PlayerController PlayerX { get { return _playerX; } }
+    /// <summary>
+    /// 
+    /// </summary>
     public PlayerController PlayerZ { get { return _playerZ; } }
 
 
@@ -101,6 +119,7 @@ public class DataBase : MonoBehaviour
         get { return _timeManager; }
     }
 
+
     #endregion
 
 
@@ -113,6 +132,7 @@ public class DataBase : MonoBehaviour
 
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
+    /**
     /// <summary>
     /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
@@ -127,6 +147,7 @@ public class DataBase : MonoBehaviour
     {
 
     }
+    */
 
 
     #endregion
@@ -141,6 +162,12 @@ public class DataBase : MonoBehaviour
 
 
     #region 요청 메서드를 정의합니다.
+    public void Test()
+    {
+        
+
+
+    }
 
 
     #endregion
@@ -155,22 +182,6 @@ public class DataBase : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    public void Freeze()
-    {
-        _pauseMenu.RequestPauseToggle();
-    }
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    public void Unfreeze()
-    {
-        _pauseMenu.RequestPauseToggle();
-    }
 
 
     #endregion

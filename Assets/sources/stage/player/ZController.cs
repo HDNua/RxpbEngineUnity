@@ -39,12 +39,12 @@ public class ZController : PlayerController
     bool Attacking
     {
         get { return _attacking; }
-        set { _animator.SetBool("Attacking", _attacking = value); }
+        set { _Animator.SetBool("Attacking", _attacking = value); }
     }
     bool AttackRequested
     {
         get { return _attackRequested; }
-        set { _animator.SetBool("AttackRequested", _attackRequested = value); }
+        set { _Animator.SetBool("AttackRequested", _attackRequested = value); }
     }
 
     #endregion
@@ -92,7 +92,7 @@ public class ZController : PlayerController
                 dashAfterImage.transform.localScale = daiScale;
                 dashAfterImage.SetActive(false);
                 var daiRenderer = dashAfterImage.GetComponent<SpriteRenderer>();
-                daiRenderer.sprite = _renderer.sprite;
+                daiRenderer.sprite = _Renderer.sprite;
                 dashAfterImage.SetActive(true);
                 DashAfterImageTime = 0;
             }
@@ -160,7 +160,7 @@ public class ZController : PlayerController
         // 캐릭터 변경 키가 눌린 경우
         else if (IsKeyDown("ChangeCharacter"))
         {
-            stageManager.ChangePlayer(stageManager._playerX);
+            stageManager.ChangePlayer(stageManager.PlayerX);
         }
         // 공격 키가 눌린 경우
         else if (IsKeyDown("Attack"))
@@ -213,14 +213,14 @@ public class ZController : PlayerController
                 }
             }
             else if (IsKeyPressed("Jump") == false
-                || _rigidbody.velocity.y <= 0)
+                || _Rigidbody.velocity.y <= 0)
             {
                 Fall();
             }
             else
             {
-                _rigidbody.velocity = new Vector2
-                    (_rigidbody.velocity.x, _rigidbody.velocity.y - _jumpDecSize);
+                _Rigidbody.velocity = new Vector2
+                    (_Rigidbody.velocity.x, _Rigidbody.velocity.y - _jumpDecSize);
             }
         }
         // 떨어지고 있다면
@@ -244,9 +244,9 @@ public class ZController : PlayerController
             }
             else
             {
-                float vy = _rigidbody.velocity.y - _jumpDecSize;
-                _rigidbody.velocity = new Vector2
-                    (_rigidbody.velocity.x, vy > -16 ? vy : -16);
+                float vy = _Rigidbody.velocity.y - _jumpDecSize;
+                _Rigidbody.velocity = new Vector2
+                    (_Rigidbody.velocity.x, vy > -16 ? vy : -16);
             }
         }
         // 대쉬 중이라면
@@ -507,12 +507,12 @@ public class ZController : PlayerController
         base.StopFalling();
         if (_attacking)
         {
-            var curState = _animator.GetCurrentAnimatorStateInfo(0);
+            var curState = _Animator.GetCurrentAnimatorStateInfo(0);
             if (curState.IsName("JumpShot"))
             {
                 var nTime = curState.normalizedTime;
                 var fTime = nTime - Mathf.Floor(nTime);
-                _animator.Play("JumpShotGround", 0, fTime);
+                _Animator.Play("JumpShotGround", 0, fTime);
 
                 StopMoving();
                 BlockMoving();
@@ -744,7 +744,7 @@ public class ZController : PlayerController
         attackRange[2].enabled = false;
 
         // 받은 요청은 삭제합니다.
-        _animator.SetBool("AttackRequested", _attackRequested = false);
+        _Animator.SetBool("AttackRequested", _attackRequested = false);
 
         // 공격 시 불가능한 행동을 막습니다.
         BlockAttacking(); // 공격
@@ -893,7 +893,7 @@ public class ZController : PlayerController
     void FE_WallJumpEnd()
     {
         UnblockSliding();
-        _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
+        _Rigidbody.velocity = new Vector2(0, _Rigidbody.velocity.y);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -903,7 +903,7 @@ public class ZController : PlayerController
     /// </summary>
     void FE_JumpShotBeg()
     {
-        _animator.SetBool("AttackRequested", _attackRequested = false);
+        _Animator.SetBool("AttackRequested", _attackRequested = false);
         BlockAttacking();
         SoundEffects[7].Play();
     }

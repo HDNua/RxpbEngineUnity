@@ -28,7 +28,28 @@ public class GameData
     GameMapStatus[] _mapStatuses = new GameMapStatus[8];
 
 
+    /// <summary>
+    /// 재시도 가능한 횟수를 정의합니다. 기본값은 2, EX아이템 획득 시에는 4입니다.
+    /// </summary>
+    int _tryCount = 2;
+    /// <summary>
+    /// 재시도 가능한 횟수를 정의합니다. 기본값은 2, EX아이템 획득 시에는 4입니다.
+    /// </summary>
+    public int TryCount
+    {
+        get { return _tryCount; }
+        set { _tryCount = value; }
+    }
+
+
     #endregion
+
+
+
+
+
+
+
 
 
 

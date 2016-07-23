@@ -1,24 +1,58 @@
-RXPB v3.5.0.0 Sprite v1.2.1.1
+RXPB v3.6.0.0 EnemyScript v2.0.0 (IMPORTANT)
 
-- 차지 샷에 대해 보다 정확하게 구현함.
+* !!!!! IMPORTANT !!!!!
+  The AnimationClip 'DashFogEffect' used by the Animation component 'EffectDashFog' must be marked as Legacy.
+> Unity 5에서는 Animation Component 대신 Mecanim이라는 애니메이션 시스템을 도입했는데,
+  이때문에 Animation 컴포넌트를 직접적으로 개체에 붙이면 이런 경고가 뜬다.
+  따라서 Unity 개체 선택 화면에서 Animation 컴포넌트를 제거하거나, Debug 모드에서 Legacy 체크를 하는 방법이 있는데
+  후자쪽이 여러모로 불편하므로 그냥 전자를 추천함.
+  
 
-
-- 걸어다니면서 총을 쏘고 있으면 Invoke에 의해 계속 EndShot이 호출되는 것 같다.
-  중간에 총을 안 쏘는 모션인데 총을 쏘고 있고 그럼.
-> Invoke를 이용한 구현을 Coroutine을 이용한 구현으로 변경하여 해결.
-
-
-- 저번에 한 일:
-> CreateBullet(int index), GetShotPosition() 메서드 정의.
->> 또한 GetShotPosition()을 위한 추가적인 Transform 객체 추가.
-> EndShot()의 역할을 Shooting 속성을 내리는 단순한 일로 변경...인데.
->> 이번 버전에서, 시간을 비교한 후 정말로 샷 중지를 해야 할 때만 중지하도록 변경.
+- 차지샷 시작 시 발생하는 효과 개선.
+> 이제 점프 시에 챠지 샷을 발사해도 효과가 더 좋게 나옵니다.
 
 
-- 코드 정리 및 주석 강화.
+! 차지샷 스프라이트의 색깔을 보다 화려하게 바꾸면 더 좋지 않을까 합니다.
 
 
-- 좀 더 잘 구현된 버전을 다시 한 번 커밋.
+! 대쉬할 때 플레이어의 Collider2D가 변해야 한다.
+
+
+- StageManager의 _playerX, _playerZ 필드를, public으로 선언하는 대신
+  DataBase로부터 가져와서 초기화하는 방식으로 변경.
+  
+  
+- 게임 타이틀 이미지(SnakeHead) 크기 변경.
+  
+  
+- GameData 필드 업데이트.
+> TryCount 속성 추가.
+
+
+- HUDScript 정의 변경.
+> 원래 Camera에 붙어있던 것을 HUD 개체로 옮김.
+>> CameraFollow야 Camera 것이 맞는데, PauseUI는 또한 PauseUI 개체로 옮기는 것이 마땅하지 않나 한다.
+
+
+* !!!!! IMPORTANT !!!!!
+  MonoBehaviour 개체의 enabled를 조작해서 화면에 나타나게 하는 대신,
+  gameObject.SetActive(true)를 사용해야 한다. 즉 이래야 함.
+  
+  _HUD.enabled = true; // wrong code
+  _HUD.gameObject.SetActive(true); // good code
+  
+  
+* !!!!! IMPORTANT !!!!!
+  GameManager 디자인을 다시 해서 이전 값을 유지할 수 있게 만듬.
+> 재시도 횟수에 대해 조정 가능하게 됨!
+>> 목숨 아이템 동작 활성화!
+
+
+- 사망 시에 슬라이드 상태였을 경우 슬라이드 연기가 남는 버그 수정.
+
+
+- 보스 구현을 하려던 건데 보스는 이미지만 덜렁 추가하고 사실상 다른 걸 더 많이 했다.
+> 원래 RXPB 3.5.0.0 버전이지만 v3.6.0.0으로 바꾼 건 이거 때문.
 
 
 end.

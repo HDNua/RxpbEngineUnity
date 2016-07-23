@@ -9,14 +9,35 @@ using UnityEngine;
 public class ScreenFader : MonoBehaviour
 {
     #region 필드 및 프로퍼티를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     GUITexture _guiTexture;
+    /// <summary>
+    /// 
+    /// </summary>
     public float fadeSpeed = 1.5f;
 
-    bool fadeInRequested = false;
-    bool fadeOutRequested = false;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _fadeInRequested = false;
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _fadeOutRequested = false;
+
+
+    /// <summary>
+    /// 
+    /// </summary>
     public bool FadeInEnded { get { return (_guiTexture.color == Color.clear); } }
+    /// <summary>
+    /// 
+    /// </summary>
     public bool FadeOutEnded { get { return (_guiTexture.color == Color.black); } }
+
 
     #endregion
 
@@ -37,17 +58,17 @@ public class ScreenFader : MonoBehaviour
     }
     void Update()
     {
-        if (fadeInRequested)
+        if (_fadeInRequested)
         {
             FadeToClear();
             if (_guiTexture.color.a <= 0.05f)
             {
                 _guiTexture.color = Color.clear;
                 _guiTexture.enabled = false;
-                fadeInRequested = false;
+                _fadeInRequested = false;
             }
         }
-        else if (fadeOutRequested)
+        else if (_fadeOutRequested)
         {
             _guiTexture.enabled = true;
             FadeToBlack();
@@ -55,7 +76,7 @@ public class ScreenFader : MonoBehaviour
             if (_guiTexture.color.a >= 0.95f)
             {
                 _guiTexture.color = Color.black;
-                fadeOutRequested = false;
+                _fadeOutRequested = false;
             }
         }
     }
@@ -96,8 +117,8 @@ public class ScreenFader : MonoBehaviour
     /// </summary>
     public void FadeIn()
     {
-        fadeInRequested = true;
-        fadeOutRequested = false;
+        _fadeInRequested = true;
+        _fadeOutRequested = false;
     }
     /// <summary>
     /// 페이드인 효과를 처리합니다.
@@ -113,8 +134,8 @@ public class ScreenFader : MonoBehaviour
     /// </summary>
     public void FadeOut()
     {
-        fadeInRequested = false;
-        fadeOutRequested = true;
+        _fadeInRequested = false;
+        _fadeOutRequested = true;
     }
     /// <summary>
     /// 페이드아웃 효과를 처리합니다.

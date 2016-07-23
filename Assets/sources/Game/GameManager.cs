@@ -9,13 +9,28 @@ using System.Runtime.Serialization.Formatters.Binary;
 /// <summary>
 /// 게임 관리자입니다.
 /// </summary>
-public class GameManager : MonoBehaviour
+public class GameManager
 {
     #region 게임 시스템이 공유하는 속성을 정의합니다.
     /// <summary>
     /// 게임 관리자입니다.
     /// </summary>
-    public static GameManager Instance { get; set; }
+    static GameManager _instance;
+
+    /// <summary>
+    /// 게임 관리자입니다.
+    /// </summary>
+    public static GameManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = new GameManager();
+            }
+            return _instance;
+        }
+    }
 
 
     /// <summary>
@@ -52,6 +67,16 @@ public class GameManager : MonoBehaviour
     GameData _gameData;
 
 
+    /// <summary>
+    /// 게임 데이터 필드입니다.
+    /// </summary>
+    public GameData GameData
+    {
+        get { return _gameData; }
+        /// private set { _gameData = value; }
+    }
+
+
     #endregion
 
 
@@ -63,14 +88,41 @@ public class GameManager : MonoBehaviour
 
 
 
+    #region 생성자를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    private GameManager()
+    {
+        if (_gameData == null)
+        {
+            _gameData = new GameData();
+        }
+    }
+
+
+    #endregion
+
+
+
     #region MonoBehaviour 기본 메서드를 재정의합니다.
+
+
+
+    /**
     /// <summary>
     /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
     void Awake()
     {
-//        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject);
         Instance = this;
+
+
+        if (_gameData == null)
+        {
+            _gameData = new GameData();
+        }
     }
     /// <summary>
     /// MonoBehaviour 개체를 초기화합니다.
@@ -79,6 +131,7 @@ public class GameManager : MonoBehaviour
     {
         
     }
+    */
 
 
     #endregion
@@ -214,6 +267,22 @@ public class GameManager : MonoBehaviour
     public void RequestDeleteData(string filename)
     {
         File.Delete(filename);
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void RequestIncreaseTryCount()
+    {
+        GameData.TryCount++;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public void RequestDecreaseTryCount()
+    {
+        GameData.TryCount--;
     }
 
 

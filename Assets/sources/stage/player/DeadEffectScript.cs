@@ -97,12 +97,12 @@ public class DeadEffectScript : MonoBehaviour
 
     #region 메서드를 정의합니다.
     /// <summary>
-    /// 
+    /// 사망 효과 파티클을 생성합니다.
     /// </summary>
-    /// <param name="type"></param>
-    /// <param name="dir"></param>
-    /// <param name="speed"></param>
-    /// <returns></returns>
+    /// <param name="type">사망 효과 타입입니다.</param>
+    /// <param name="dir">사망 효과 파티클이 퍼져나가는 방향입니다.</param>
+    /// <param name="speed">사망 효과 파티클이 퍼져나가는 속력입니다.</param>
+    /// <returns>새 사망 효과 파티클을 반환합니다.</returns>
     GameObject MakeParticle(GameObject type, Vector2 dir, float speed)
     {
         GameObject particle = Instantiate
@@ -127,12 +127,12 @@ public class DeadEffectScript : MonoBehaviour
     /// </summary>
     public void RequestRun(PlayerController player)
     {
-        if (player == stageManager._playerX)
+        if (player == stageManager.PlayerX)
         {
             p1 = particles[0];
             p2 = particles[1];
         }
-        else if (player == stageManager._playerZ)
+        else if (player == stageManager.PlayerZ)
         {
             p1 = particles[2];
             p2 = particles[3];

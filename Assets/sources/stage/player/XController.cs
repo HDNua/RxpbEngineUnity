@@ -180,7 +180,7 @@ public class XController : PlayerController
         get { return _shooting; }
         set
         {
-            _animator.SetBool("Shooting", _shooting = value);
+            _Animator.SetBool("Shooting", _shooting = value);
             if (_shooting == false)
             {
                 ShotState = 0;
@@ -205,8 +205,22 @@ public class XController : PlayerController
         get { return _shotState; }
         set
         {
-            _animator.SetFloat("ShotState", _shotState = value);
+            _Animator.SetFloat("ShotState", _shotState = value);
         }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _chargeShooting;
+    /// <summary>
+    /// 
+    /// </summary>
+    bool ChargeShooting
+    {
+        get { return _chargeShooting; }
+        set { _Animator.SetBool("ChargeShooting", _chargeShooting = value); }
     }
 
 
@@ -264,7 +278,7 @@ public class XController : PlayerController
                 dashAfterImage.transform.localScale = daiScale;
                 dashAfterImage.SetActive(false);
                 var daiRenderer = dashAfterImage.GetComponent<SpriteRenderer>();
-                daiRenderer.sprite = _renderer.sprite;
+                daiRenderer.sprite = _Renderer.sprite;
                 dashAfterImage.SetActive(true);
                 DashAfterImageTime = 0;
             }
@@ -333,7 +347,7 @@ public class XController : PlayerController
         // 캐릭터 변경 키가 눌린 경우
         else if (IsKeyDown("ChangeCharacter"))
         {
-            stageManager.ChangePlayer(stageManager._playerZ);
+            stageManager.ChangePlayer(stageManager.PlayerZ);
         }
 
 
@@ -369,14 +383,14 @@ public class XController : PlayerController
                 }
             }
             else if (IsKeyPressed("Jump") == false
-                || _rigidbody.velocity.y <= 0)
+                || _Rigidbody.velocity.y <= 0)
             {
                 Fall();
             }
             else
             {
-                _rigidbody.velocity = new Vector2
-                    (_rigidbody.velocity.x, _rigidbody.velocity.y - _jumpDecSize);
+                _Rigidbody.velocity = new Vector2
+                    (_Rigidbody.velocity.x, _Rigidbody.velocity.y - _jumpDecSize);
             }
         }
         // 떨어지고 있다면
@@ -400,9 +414,9 @@ public class XController : PlayerController
             }
             else
             {
-                float vy = _rigidbody.velocity.y - _jumpDecSize;
-                _rigidbody.velocity = new Vector2
-                    (_rigidbody.velocity.x, vy > -16 ? vy : -16);
+                float vy = _Rigidbody.velocity.y - _jumpDecSize;
+                _Rigidbody.velocity = new Vector2
+                    (_Rigidbody.velocity.x, vy > -16 ? vy : -16);
             }
         }
         // 대쉬 중이라면
@@ -439,7 +453,7 @@ public class XController : PlayerController
             else if (IsKeyPressed("Dash") == false)
             {
                 StopDashing();
-                Debug.Log("Dash stopped");
+                /// Debug.Log("Dash stopped");
             }
         }
         // 벽을 타고 있다면
@@ -455,7 +469,7 @@ public class XController : PlayerController
                 StopSliding();
                 Fall();
             }
-            else if (_rigidbody.velocity.y == 0f)
+            else if (_Rigidbody.velocity.y == 0f)
             {
 
             }
@@ -607,12 +621,12 @@ public class XController : PlayerController
             {
                 if (chargeTime > CHARGE_LEVEL[2])
                 {
-                    _animator.Play("ChargeShot", 0, 0);
+                    _Animator.Play("ChargeShot", 0, 0);
                     ShotBlocked = true;
                 }
                 else
                 {
-                    _animator.Play("Shot", 0, 0);
+                    _Animator.Play("Shot", 0, 0);
                 }
             }
         }
@@ -637,7 +651,7 @@ public class XController : PlayerController
         // 플레이어가 차지 중이라면 색을 업데이트합니다.
         if (_chargeTime > 0)
         {
-            _renderer.color = PlayerColor;
+            _Renderer.color = PlayerColor;
         }
     }
 
@@ -804,6 +818,12 @@ public class XController : PlayerController
         bool toLeft = (Sliding ? FacingRight : !FacingRight);
 
         GameObject fireEffect = CloneObject(effects[7 + index], shotPosition);
+        if (index == 2)
+        {
+            fireEffect.transform.position = transform.position;
+        }
+
+
         Vector3 effectScale = fireEffect.transform.localScale;
 
 
@@ -1089,7 +1109,7 @@ public class XController : PlayerController
         SoundEffects[1].Play();
     }
     /// <summary>
-    /// 
+    /// 플레이어의 점프를 중지합니다.
     /// </summary>
     protected override void StopJumping()
     {
@@ -1297,6 +1317,13 @@ public class XController : PlayerController
             SoundEffects[7].Stop();
             _chargeTime = 0;
         }
+
+
+        // 생존 시간에 생성되었던 효과를 제거합니다.
+        if (_slideFogEffect != null)
+        {
+            _slideFogEffect.GetComponent<EffectScript>().RequestDestroy();
+        }
     }
     /// <summary>
     /// 플레이어가 사망합니다.
@@ -1385,8 +1412,8 @@ public class XController : PlayerController
     /// <param name="fTime">다시 재생할 정규화된 시간입니다.</param>
     void ReplayAnimation(float fTime)
     {
-        var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-        _animator.Play(stateInfo.fullPathHash, 0, fTime);
+        var stateInfo = _Animator.GetCurrentAnimatorStateInfo(0);
+        _Animator.Play(stateInfo.fullPathHash, 0, fTime);
     }
 
 
@@ -1400,12 +1427,12 @@ public class XController : PlayerController
             // 샷 애니메이션은 계속 재생합니다.
             if (IsAnimationPlaying("Shot"))
             {
-                _animator.Play("Shot", 0, _shotTime / END_SHOOTING_TIME);
+                _Animator.Play("Shot", 0, _shotTime / END_SHOOTING_TIME);
             }
             // 차지 샷 애니메이션은 계속 재생합니다.
             else if (IsAnimationPlaying("ChargeShot"))
             {
-                _animator.Play("ChargeShot", 0, _shotTime / END_SHOOTING_TIME);
+                _Animator.Play("ChargeShot", 0, _shotTime / END_SHOOTING_TIME);
             }
         }
 
@@ -1453,14 +1480,25 @@ public class XController : PlayerController
     void InitializeAnimatorClips()
     {
         Dictionary<string, AnimatorClipInfo> dict = new Dictionary<string, AnimatorClipInfo>();
-        AnimatorClipInfo[] clipInfos = _animator.GetCurrentAnimatorClipInfo(0);
+        AnimatorClipInfo[] clipInfos = _Animator.GetCurrentAnimatorClipInfo(0);
         foreach (AnimatorClipInfo clipInfo in clipInfos)
         {
             dict[clipInfo.clip.name] = clipInfo;
         }
         _clips = dict;
     }
-
+    [Obsolete("_clips 미사용 경고를 없애기 위해 정의했습니다.")]
+    /// <summary>
+    /// _clips 변수를 사용하는 척합니다.
+    /// </summary>
+    void TestAnimatorClips()
+    {
+        foreach (string clipKey in _clips.Keys)
+        {
+            AnimatorClipInfo clipInfo = _clips[clipKey];
+            Console.WriteLine(clipInfo.clip.length);
+        }
+    }
 
 
 
