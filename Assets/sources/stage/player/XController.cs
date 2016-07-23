@@ -347,7 +347,7 @@ public class XController : PlayerController
         // 캐릭터 변경 키가 눌린 경우
         else if (IsKeyDown("ChangeCharacter"))
         {
-            stageManager.ChangePlayer(stageManager.PlayerZ);
+            /// stageManager.ChangePlayer(stageManager.PlayerZ);
         }
 
 
@@ -545,7 +545,11 @@ public class XController : PlayerController
         // 그 외의 경우
         else
         {
-            if (IsLeftKeyPressed())
+            if (MoveRequested)
+            {
+
+            }
+            else if (IsLeftKeyPressed())
             {
                 if (FacingRight == false && Pushing)
                 {

@@ -64,6 +64,12 @@ public class ItemScript : MonoBehaviour
     public int _itemValue;
 
 
+    /// <summary>
+    /// 아이템이 드롭될 확률입니다. 0에서 100 사이의 값을 가집니다.
+    /// </summary>
+    public int _probability = 50;
+
+
     #endregion
 
 
@@ -131,6 +137,16 @@ public class ItemScript : MonoBehaviour
     {
         get { return _isDropped; }
         set { _isDropped = value; }
+    }
+
+
+    /// <summary>
+    /// 아이템이 드롭될 확률입니다. 0에서 100 사이의 값을 가집니다.
+    /// </summary>
+    public int Probability
+    {
+        get { return _probability; }
+        set { _probability = Mathf.Clamp(value, 0, 100); }
     }
 
 
@@ -235,19 +251,6 @@ public class ItemScript : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("_soundEffectIndexes로 대체되었습니다.")]
-    /// <summary>
-    /// 아이템을 사용했을 때의 효과음입니다.
-    /// </summary>
-    public AudioClip _soundEffect;
-    [Obsolete("SoundEffects로 대체되었습니다.")]
-    /// <summary>
-    /// 아이템을 사용했을 때의 효과음입니다.
-    /// </summary>
-    public AudioClip SoundEffect
-    {
-        get { return _soundEffect; }
-    }
 
 
     #endregion

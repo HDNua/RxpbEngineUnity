@@ -209,14 +209,18 @@ public class EnemyScript : MonoBehaviour
     /// <returns>생성된 아이템을 반환합니다.</returns>
     protected ItemScript CreateItem(ItemScript item)
     {
-        // 아이템 객체를 생성합니다.
-        ItemScript ret = (ItemScript)Instantiate(item, transform.position, transform.rotation);
+        if (UnityEngine.Random.Range(0, 100) < item.Probability)
+        {
+            // 아이템 객체를 생성합니다.
+            ItemScript ret = (ItemScript)Instantiate(item, transform.position, transform.rotation);
 
-        // 속성을 업데이트합니다.
-        ret.IsDropped = true;
+            // 속성을 업데이트합니다.
+            ret.IsDropped = true;
 
-        // 아이템을 반환합니다.
-        return ret;
+            // 아이템을 반환합니다.
+            return ret;
+        }
+        return null;
     }
 
 

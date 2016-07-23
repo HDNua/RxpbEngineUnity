@@ -206,7 +206,7 @@ public class EnemyMettoolScript : EnemyScript
 
         // 사망 시 아이템 드롭 루틴입니다.
         int dropItem = UnityEngine.Random.Range(0, _items.Length);
-        if (dropItem != 0)
+        if (_items[dropItem] != null)
         {
             CreateItem(_items[dropItem]);
         }

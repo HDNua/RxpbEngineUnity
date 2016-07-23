@@ -177,7 +177,6 @@ public class StageManager : HDSceneManager
     {
         /// Handy: 하는 일이 없어서 삭제해도 될 것 같습니다.
         /// base.Update();
-        /// 
 
         if (_gameEnded)
         {
@@ -272,6 +271,7 @@ public class StageManager : HDSceneManager
 
 
     #endregion
+
 
 
 

@@ -63,6 +63,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\BossRoomDoorScript.cs" />
+    <Compile Include="Assets\CommanderYammarkScript.cs" />
     <Compile Include="Assets\Rotator.cs" />
     <Compile Include="Assets\SnakeHeadSceneManager.cs" />
     <Compile Include="Assets\StageSelectSceneManager.cs" />

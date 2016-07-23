@@ -335,79 +335,85 @@ public abstract class PlayerController : MonoBehaviour
 
     #region 주인공의 운동 상태 필드를 정의합니다.
     /// <summary>
-    /// 
+    /// 플레이어가 걷는 속도입니다.
     /// </summary>
     protected float _movingSpeed = 5;
     /// <summary>
-    /// 
+    /// 플레이어가 오른쪽을 보고 있다면 참입니다.
     /// </summary>
     bool _facingRight = true;
 
 
     /// <summary>
-    /// 
+    /// 이동 요청을 받았다면 참입니다.
+    /// </summary>
+    bool _moveRequested = false;
+
+
+    /// <summary>
+    /// 플레이어가 소환중이라면 참입니다.
     /// </summary>
     bool _spawning = true;
     /// <summary>
-    /// 
+    /// 플레이어가 준비중이라면 true입니다.
     /// </summary>
     bool _readying = false;
     /// <summary>
-    /// 
+    /// 지상에 있다면 true입니다.
     /// </summary>
     bool _landed = false;
     /// <summary>
-    /// 
+    /// 지상에서 이동하고 있다면 true입니다.
     /// </summary>
     bool _moving = false;
     /// <summary>
-    /// 
+    /// 벽을 밀고 있다면 true입니다.
     /// </summary>
     bool _pushing = false;
     /// <summary>
-    /// 
+    /// 점프 상태라면 true입니다.
     /// </summary>
     bool _jumping = false;
     /// <summary>
-    /// 
+    /// 떨어지고 있다면 true입니다.
     /// </summary>
     bool _falling = false;
     /// <summary>
-    /// 
+    /// 지상에서 대쉬 중이라면 true입니다.
     /// </summary>
     bool _dashing = false;
     /// <summary>
-    /// 
+    /// 벽을 타고 있다면 true입니다.
     /// </summary>
     bool _sliding = false;
     /// <summary>
-    /// 
+    /// 에어 대쉬중이라면 참입니다.
     /// </summary>
     bool _airDashing = false;
 
 
     /// <summary>
-    /// 
+    /// 대미지를 입었다면 true입니다.
     /// </summary>
     bool _damaged = false;
     /// <summary>
-    /// 
+    /// 무적 상태라면 true입니다.
     /// </summary>
     bool _invencible = false;
     /// <summary>
-    /// 
+    /// 진행된 무적 시간을 반환합니다.
     /// </summary>
     float _invencibleTime;
     /// <summary>
-    /// 
+    /// 플레이어의 색상을 반환합니다.
     /// </summary>
     Color _playerColor = Color.white;
     /// <summary>
-    /// 
+    /// 위험 상태라면 true입니다.
     /// </summary>
     bool _danger = false;
     /// <summary>
-    /// 
+    /// 플레이어가 죽었다면 true입니다.
     /// </summary>
     bool _isDead = false;
 
@@ -621,6 +627,7 @@ public abstract class PlayerController : MonoBehaviour
         protected set
         {
             _Animator.SetBool("Danger", _danger = value);
+            _Animator.SetFloat("DangerState", _danger ? 1 : 0);
         }
     }
     /// <summary>
@@ -658,6 +665,16 @@ public abstract class PlayerController : MonoBehaviour
     public bool IsHealthFull()
     {
         return (_health == _maxHealth);
+    }
+
+
+    /// <summary>
+    /// 이동 요청을 받았다면 참입니다.
+    /// </summary>
+    public bool MoveRequested
+    {
+        get { return _moveRequested; }
+        private set { _moveRequested = value; }
     }
 
 
@@ -1412,9 +1429,7 @@ public abstract class PlayerController : MonoBehaviour
         BlockSliding();
         BlockDashing();
         UnblockAirDashing();
-        _Rigidbody.velocity = new Vector2
-            (FacingRight ? -1.5f * _movingSpeed : 1.5f * _movingSpeed,
-            _jumpSpeed);
+        _Rigidbody.velocity = new Vector2(FacingRight ? -1.5f * _movingSpeed : 1.5f * _movingSpeed, _jumpSpeed);
 
         // 개체의 운동에 따른 효과를 처리합니다.
         CloneObject(effects[3], slideFogPosition);
@@ -1662,6 +1677,51 @@ public abstract class PlayerController : MonoBehaviour
     {
         BlockInput();
     }
+    /// <summary>
+    /// 플레이어의 입력 방지 중지를 요청합니다.
+    /// </summary>
+    public void RequestUnblockInput()
+    {
+        UnblockInput();
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="speed"></param>
+    public void RequestChangeMovingSpeed(float speed)
+    {
+        _movingSpeed = speed;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public void RequestMoveLeft()
+    {
+        MoveRequested = true;
+        MoveLeft();
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public void RequestMoveRight()
+    {
+        MoveRequested = true;
+        MoveRight();
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public void RequestStopMoving()
+    {
+        MoveRequested = false;
+    }
+
+
+
+
+
 
 
     /// <summary>
@@ -1760,14 +1820,7 @@ public abstract class PlayerController : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("성능 개선을 위해 WALLJUMP_END_TIME 상수를 직접 사용하십시오.")]
-    /// <summary>
-    /// 벽 점프가 종료되는 시간입니다.
-    /// </summary>
-    public float WallJumpingEndTime
-    {
-        get { return WALLJUMP_END_TIME; }
-    }
+
 
 
     #endregion
