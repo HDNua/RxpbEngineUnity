@@ -144,16 +144,6 @@ public class PauseMenuManager : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("PauseMenu 요소를 MainCamera에서 PauseMenu 개체로 옮겼습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 정지 화면 UI 객체입니다.
-    /// </summary>
-    public GameObject PauseUI;
-    [Obsolete("TimeManager 프로퍼티로 대체되었습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// UnityEngine.Time 객체 관리자입니다.
-    /// </summary>
-    TimeManager _timeManager;
 
 
     #endregion

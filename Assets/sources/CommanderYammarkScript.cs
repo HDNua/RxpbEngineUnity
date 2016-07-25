@@ -7,7 +7,7 @@ using System.Collections;
 /// <summary>
 /// Commander Yammark 보스 적 스크립트입니다.
 /// </summary>
-public class CommanderYammarkScript : EnemyScript
+public class CommanderYammarkScript : EnemyScript, IBossEnemy
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     /// <summary>
@@ -187,6 +187,26 @@ public class CommanderYammarkScript : EnemyScript
 
 
         yield break;
+    }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+    #region IBossEnemy 인터페이스를 구현합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    void IBossEnemy.Appear()
+    {
+        
     }
 
 

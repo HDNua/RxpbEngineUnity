@@ -53,6 +53,10 @@ public class StageManager : HDSceneManager
     /// 테스트 시간입니다.
     /// </summary>
     public float test = 0.1f;
+    /// <summary>
+    /// 테스트 대미지 값입니다.
+    /// </summary>
+    public int TestDamageValue = 10;
 
 
     #endregion
@@ -233,7 +237,14 @@ public class StageManager : HDSceneManager
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
-            _player.Hurt(39);
+            _player.Hurt(TestDamageValue);
+        }
+        else if (Input.GetKeyDown(KeyCode.R))
+        {
+            while (_player.IsHealthFull() == false)
+            {
+                _player.Heal();
+            }
         }
 
 
@@ -664,6 +675,22 @@ public class StageManager : HDSceneManager
     }
 
 
+    /// <summary>
+    /// 플레이어의 움직임 방지를 요청합니다.
+    /// </summary>
+    public void RequestBlockMoving()
+    {
+        _player.RequestBlockInput();
+    }
+    /// <summary>
+    /// 플레이어의 움직임 방지 중지를 요청합니다.
+    /// </summary>
+    internal void RequestUnblockMoving()
+    {
+        _player.RequestUnblockInput();
+    }
+
+
 
     #endregion
 
@@ -676,16 +703,6 @@ public class StageManager : HDSceneManager
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("UIManager로 대체되었습니다.")]
-    /// <summary>
-    /// HUD 개체입니다.
-    /// </summary>
-    public HUDScript _HUD;
-    [Obsolete("UIManager로 대체되었습니다.")]
-    /// <summary>
-    /// 정지 화면 관리자입니다.
-    /// </summary>
-    public PauseMenuManager _pauseMenuManager;
 
 
     #endregion

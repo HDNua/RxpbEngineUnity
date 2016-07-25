@@ -43,6 +43,13 @@ public class BossBattleManager : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
+    StageManager _stageManager;
+
+
+
+    /// <summary>
+    /// 
+    /// </summary>
     bool _isWarningEnded = false;
     /// <summary>
     /// 
@@ -76,7 +83,7 @@ public class BossBattleManager : MonoBehaviour
     /// </summary>
     void Start()
     {
-
+        _stageManager = _database.StageManager;
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -145,8 +152,6 @@ public class BossBattleManager : MonoBehaviour
     }
 
 
-
-
     #endregion
 
 
@@ -164,7 +169,8 @@ public class BossBattleManager : MonoBehaviour
     /// </summary>
     void Warning()
     {
-        _database.StageManager.StopBackgroundMusic();
+        _stageManager.RequestBlockMoving();
+        _stageManager.StopBackgroundMusic();
         Debug.Log("warning");
     }
     /// <summary>
@@ -174,7 +180,6 @@ public class BossBattleManager : MonoBehaviour
     {
         _isWarningEnded = true;
         _isReady = true;
-
         Debug.Log("begin script: blah blah blah");
 
     }
@@ -183,6 +188,7 @@ public class BossBattleManager : MonoBehaviour
     /// </summary>
     void BeginBattle()
     {
+        _stageManager.RequestUnblockMoving();
         Debug.Log("begin battle");
     }
 
@@ -215,11 +221,8 @@ public class BossBattleManager : MonoBehaviour
     {
         Warning();
         Invoke("BeginScript", 4);
-        Invoke("BeginBossBattle", 5);
+        Invoke("BeginBattle", 5);
     }
-
-
-
 
 
     #endregion

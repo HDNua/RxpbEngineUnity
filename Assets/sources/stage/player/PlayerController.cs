@@ -1520,8 +1520,8 @@ public abstract class PlayerController : MonoBehaviour
         StopSliding();
         BlockMoving();
         BlockAirDashing();
-        _Rigidbody.velocity = new Vector2
-            (FacingRight ? _dashSpeed : -_dashSpeed, 0);
+        BlockJumping();
+        _Rigidbody.velocity = new Vector2(FacingRight ? _dashSpeed : -_dashSpeed, 0);
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = true;
@@ -1613,11 +1613,14 @@ public abstract class PlayerController : MonoBehaviour
         }
 
 
+        bool bigDamaged = false;
+
+
         // 상태를 업데이트합니다.
         Damaged = true;
         if (point >= BigDamageValue)
         {
-            BigDamaged = true;
+            bigDamaged = BigDamaged = true;
         }
         Invencible = true;
         InputBlocked = true;
@@ -1628,11 +1631,59 @@ public abstract class PlayerController : MonoBehaviour
 
 
         // 플레이어에 대해 넉백 효과를 겁니다.
+        /**
         float speed = 100;
         Vector2 force = (FacingRight ? Vector2.left : Vector2.right);
         _Rigidbody.velocity = Vector2.zero;
         _Rigidbody.AddForce(force * speed);
+        */
+
+        if (bigDamaged && IsAlive())
+        {
+            Vector2 force = (FacingRight ? Vector2.left : Vector2.right) * KnockbackSpeed;
+            _Rigidbody.velocity = new Vector2(force.x, KnockbackJumpSize);
+            StartCoroutine(CoroutineKnockback());
+        }
+        else
+        {
+            float speed = 100;
+            Vector2 force = (FacingRight ? Vector2.left : Vector2.right);
+            _Rigidbody.velocity = Vector2.zero;
+            _Rigidbody.AddForce(force * speed);
+        }
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator CoroutineKnockback()
+    {
+        float timer = 0;
+        const float maxTime = 0.361112f;
+
+        while (maxTime > timer)
+        {
+            timer += Time.deltaTime;
+            _Rigidbody.AddForce(Vector2.down * KnockbackJumpDecSize);
+            yield return new WaitForFixedUpdate();
+        }
+
+        yield break;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public float KnockbackSpeed = 3;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float KnockbackJumpSize = 5;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float KnockbackJumpDecSize = 40;
+
+
     /// <summary>
     /// 대미지 상태를 해제합니다.
     /// </summary>

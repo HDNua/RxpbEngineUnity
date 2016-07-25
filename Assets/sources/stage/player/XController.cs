@@ -20,7 +20,7 @@ public class XController : PlayerController
     /// <summary>
     /// 무적 상태가 유지되는 시간입니다.
     /// </summary>
-    const float INVENCIBLE_TIME = 0.361112f;
+    const float END_HURT_TIME = 0.361112f;
 
 
     /// <summary>
@@ -870,7 +870,7 @@ public class XController : PlayerController
 
 
 
-
+    
 
     #region PlayerController 행동 메서드를 위한 코루틴을 정의합니다.
     /// <summary>
@@ -1348,8 +1348,8 @@ public class XController : PlayerController
             SoundEffects[11].Play();
         }
 
-        // END_HURT_LENGTH 시간 후에 대미지를 입은 상태를 종료합니다.
-        Invoke("EndHurt", INVENCIBLE_TIME);
+        // END_HURT_TIME 시간 후에 대미지를 입은 상태를 종료합니다.
+        Invoke("EndHurt", END_HURT_TIME);
     }
     /// <summary>
     /// 대미지 상태를 해제합니다.

@@ -5,11 +5,11 @@ using System.Collections;
 
 
 /// <summary>
-/// 
+/// 보스 HUD 스크립트입니다.
 /// </summary>
 public class BossHUDScript : MonoBehaviour
 {
-    #region 
+    #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     public DataBase _database;
 
     public GameObject _health;

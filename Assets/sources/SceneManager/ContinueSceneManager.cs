@@ -366,11 +366,6 @@ public class ContinueSceneManager : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("GameManager.Instance로 대체되었습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 게임 시스템 관리자입니다.
-    /// </summary>
-    GameManager _gameManager = null;
 
 
     #endregion
