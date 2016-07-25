@@ -26,10 +26,6 @@ public class ContinueSceneManager : MonoBehaviour
 
 
     /// <summary>
-    /// 게임 시스템 관리자입니다.
-    /// </summary>
-    public GameManager _gameManager;
-    /// <summary>
     /// 페이드 인/아웃 효과 관리자입니다.
     /// </summary>
     public ScreenFader _fader;
@@ -68,13 +64,13 @@ public class ContinueSceneManager : MonoBehaviour
 
     #region 필드를 정의합니다.
     /// <summary>
-    /// 
+    /// Scene에서 사용할 효과음을 사용 가능한 형태로 보관합니다.
     /// </summary>
     AudioSource[] _seSources;
 
 
     /// <summary>
-    /// 
+    /// 불러오는 중이라면 참입니다.
     /// </summary>
     bool _loading = false;
 
@@ -120,8 +116,6 @@ public class ContinueSceneManager : MonoBehaviour
 
         // 페이드인 효과를 실행합니다.
         _fader.FadeIn();
-
-
 
         // 필드를 초기화합니다.
         _saveDataCount = PlayerPrefs.GetInt("SaveDataCount", 5);
@@ -216,7 +210,7 @@ public class ContinueSceneManager : MonoBehaviour
 
         // 
         _gameData = gameData;
-        _gameManager.RequestSave(index.ToString(), gameData);
+        GameManager.Instance.RequestSave(index.ToString(), gameData);
         UpdateScene();
 
         // 상태 메시지를 출력합니다.
@@ -228,7 +222,7 @@ public class ContinueSceneManager : MonoBehaviour
     /// <param name="index">삭제할 게임 데이터의 인덱스입니다.</param>
     void DeleteSaveData(int index)
     {
-        _gameManager.RequestDeleteData(index.ToString());
+        GameManager.Instance.RequestDeleteData(index.ToString());
 
         // 
         _gameData = null;
@@ -288,7 +282,7 @@ public class ContinueSceneManager : MonoBehaviour
         string filename = index.ToString();
         if (File.Exists(filename))
         {
-            _gameData = _gameManager.RequestLoad(index.ToString());
+            _gameData = GameManager.Instance.RequestLoad(index.ToString());
         }
         else
         {
@@ -315,7 +309,7 @@ public class ContinueSceneManager : MonoBehaviour
         else
         {
             _loading = true;
-            _gameManager.RequestUpdateData(_gameData);
+            GameManager.Instance.RequestUpdateData(_gameData);
 
             // 
             _seSources[1].Play();
@@ -358,6 +352,25 @@ public class ContinueSceneManager : MonoBehaviour
             _lifeups[i].SetActive(false);
         }
     }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region 구형 정의를 보관합니다.
+    [Obsolete("GameManager.Instance로 대체되었습니다. 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 게임 시스템 관리자입니다.
+    /// </summary>
+    GameManager _gameManager = null;
 
 
     #endregion

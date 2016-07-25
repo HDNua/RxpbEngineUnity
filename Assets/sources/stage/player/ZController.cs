@@ -626,6 +626,9 @@ public class ZController : PlayerController
         }
         Invoke("EndHurt", GetCurrentAnimationLength());
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected override void EndHurt()
     {
         base.EndHurt();
@@ -639,6 +642,7 @@ public class ZController : PlayerController
             dangerVoicePlayed = false;
         }
     }
+
 
     #endregion
 

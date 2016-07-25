@@ -193,7 +193,7 @@ public class EnemyMettoolScript : EnemyScript
 
 
 
-    #region EnemyScript의 메서드를 오버라이드 합니다.
+    #region EnemyScript의 메서드를 오버라이드합니다.
     /// <summary>
     /// 캐릭터가 사망합니다.
     /// </summary>

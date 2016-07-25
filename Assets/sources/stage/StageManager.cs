@@ -34,12 +34,6 @@ public class StageManager : HDSceneManager
 
 
     /// <summary>
-    /// HUD 개체입니다.
-    /// </summary>
-    public HUDScript _HUD;
-
-
-    /// <summary>
     /// 체크포인트 소환 위치 집합입니다.
     /// </summary>
     public Transform[] _checkpointSpawnPositions;
@@ -47,6 +41,12 @@ public class StageManager : HDSceneManager
     /// 체크포인트 카메라 존 집합입니다.
     /// </summary>
     public CameraZone[] _checkpointCameraZones;
+
+
+    /// <summary>
+    /// 사용자 인터페이스 관리자입니다.
+    /// </summary>
+    public UIManager _userInterfaceManager;
 
 
     /// <summary>
@@ -235,6 +235,12 @@ public class StageManager : HDSceneManager
         {
             _player.Hurt(39);
         }
+
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            _userInterfaceManager.RequestPauseToggle();
+        }
     }
 
 
@@ -366,7 +372,8 @@ public class StageManager : HDSceneManager
     /// </summary>
     private void Test_EndGameItemGet()
     {
-        _bgmSource.Stop();
+        RequestStopBackgroundMusic();
+
 
         _player.RequestBlockInput();
         _timeManager.StageManagerRequested = true;
@@ -420,10 +427,14 @@ public class StageManager : HDSceneManager
         _fader.FadeOut();
         yield break;
     }
-
-
-
-
+    /// <summary>
+    /// 
+    /// </summary>
+    void RequestStopBackgroundMusic()
+    {
+        _bgmSource.Stop();
+        _database._bossBattleManager.GetComponent<AudioSource>().Stop();
+    }
 
 
     #endregion
@@ -621,8 +632,7 @@ public class StageManager : HDSceneManager
     /// </summary>
     public void EnableHUD()
     {
-        _HUD._tryCountText.text = "0" + _database.GameManager.GameData.TryCount.ToString();
-        _HUD.gameObject.SetActive(true);
+        _userInterfaceManager.ActivatePlayerHUD();
     }
     /// <summary>
     /// 시도 횟수를 증가시킵니다.
@@ -630,7 +640,7 @@ public class StageManager : HDSceneManager
     void IncreaseTryCount()
     {
         GameManager.Instance.RequestIncreaseTryCount();
-        _HUD.UpdateTryCountText();
+        _userInterfaceManager.UpdateTryCountText();
     }
 
 
@@ -666,6 +676,16 @@ public class StageManager : HDSceneManager
 
 
     #region 구형 정의를 보관합니다.
+    [Obsolete("UIManager로 대체되었습니다.")]
+    /// <summary>
+    /// HUD 개체입니다.
+    /// </summary>
+    public HUDScript _HUD;
+    [Obsolete("UIManager로 대체되었습니다.")]
+    /// <summary>
+    /// 정지 화면 관리자입니다.
+    /// </summary>
+    public PauseMenuManager _pauseMenuManager;
 
 
     #endregion

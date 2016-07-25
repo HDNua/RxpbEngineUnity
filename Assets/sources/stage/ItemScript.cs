@@ -70,6 +70,12 @@ public class ItemScript : MonoBehaviour
     public int _probability = 50;
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool _markedSpecial;
+
+
     #endregion
 
 
@@ -175,6 +181,14 @@ public class ItemScript : MonoBehaviour
     /// </summary>
     void Update()
     {
+        // 특별한 아이템으로 마크되어있다면
+        if (_markedSpecial)
+        {
+            // 사라지지 않게 합니다.
+            return;
+        }
+
+
         // 드롭된 아이템이라면
         if (_isDropped)
         {

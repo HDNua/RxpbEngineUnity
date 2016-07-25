@@ -19,7 +19,13 @@ public class BossBattleManager : MonoBehaviour
     /// <summary>
     /// 보스 캐릭터입니다.
     /// </summary>
-    public EnemyScript _boss;
+    public CommanderYammarkScript _boss;
+
+
+    /// <summary>
+    /// 각입니다.
+    /// </summary>
+    public Transform[] _angle;
 
 
     #endregion
@@ -34,6 +40,23 @@ public class BossBattleManager : MonoBehaviour
 
 
     #region 필드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _isWarningEnded = false;
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool IsWarningEnded
+    {
+        set { _isWarningEnded = value; }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _isReady = false;
 
 
     #endregion
@@ -53,18 +76,75 @@ public class BossBattleManager : MonoBehaviour
     /// </summary>
     void Start()
     {
-        
+
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
     /// </summary>
     void Update()
     {
+        if (_isWarningEnded == false)
+            return;
+
+        if (_isReady)
+        {
+            if (_boss.transform.position.y < _angle[0].position.y)
+            {
+                _boss.transform.position = new Vector2(_boss.transform.position.x, _angle[0].position.y);
+                _isReady = false;
+                GetComponent<AudioSource>().Play();
+                return;
+            }
+            _boss.Rigidbody2D.velocity = Vector2.down * _boss._movingSpeed;
+            return;
+        }
+
+
+
         if (_boss.IsDead)
         {
             EndBattle();
         }
+
+
+
+        Vector2 direction = _boss.Rigidbody2D.velocity;
+        if (direction.x != 0) direction.x = direction.x > 0 ? 1 : -1;
+        if (direction.y != 0) direction.y = direction.y > 0 ? 1 : -1;
+
+
+
+        if (direction == Vector2.down && _boss.transform.position.y < _angle[0].position.y)
+        {
+            _boss.Rigidbody2D.velocity = Vector2.left * _boss._movingSpeed;
+            _boss.transform.position = new Vector2(_boss.transform.position.x, _angle[0].position.y);
+        }
+        else if (direction == Vector2.left && _boss.transform.position.x < _angle[1].position.x)
+        {
+            _boss.Rigidbody2D.velocity = Vector2.up * _boss._movingSpeed;
+            _boss.transform.position = new Vector2(_angle[1].position.x, _boss.transform.position.y);
+        }
+        else if (direction == Vector2.up && _boss.transform.position.y > _angle[2].position.y)
+        {
+            _boss.Rigidbody2D.velocity = Vector2.right * _boss._movingSpeed;
+            _boss.transform.position = new Vector2(_boss.transform.position.x, _angle[2].position.y);
+        }
+        else if (direction == Vector2.right && _boss.transform.position.x > _angle[3].position.x)
+        {
+            _boss.Rigidbody2D.velocity = Vector2.down * _boss._movingSpeed;
+            _boss.transform.position = new Vector2(_angle[3].position.x, _boss.transform.position.y);
+        }
+        else if (direction == Vector2.zero)
+        {
+            _boss.Rigidbody2D.velocity = Vector2.left * _boss._movingSpeed;
+        }
+        else
+        {
+            /// Debug.Log("unknown direction " + direction);
+        }
     }
+
+
 
 
     #endregion
@@ -92,7 +172,11 @@ public class BossBattleManager : MonoBehaviour
     /// </summary>
     void BeginScript()
     {
+        _isWarningEnded = true;
+        _isReady = true;
+
         Debug.Log("begin script: blah blah blah");
+
     }
     /// <summary>
     /// 전투를 시작합니다.
@@ -109,27 +193,6 @@ public class BossBattleManager : MonoBehaviour
     void EndBattle()
     {
         Debug.Log("end of game");
-    }
-
-
-    /// <summary>
-    /// 보스 전투 시나리오 코루틴입니다.
-    /// </summary>
-    /// <returns>각 단계별로 경과되어야 하는 대기 시간을 반환합니다.</returns>
-    IEnumerator BossBattleScenarioCoroutine()
-    {
-        Warning();
-        yield return new WaitForSeconds(8);
-
-        BeginScript();
-        yield return new WaitForSeconds(1);
-
-        BeginBattle();
-        yield return new WaitForSeconds(2);
-
-
-        // 보스 전투 시나리오 실행을 마칩니다.
-        yield break;
     }
 
 
@@ -150,7 +213,9 @@ public class BossBattleManager : MonoBehaviour
     /// </summary>
     public void RequestBossBattleScenario()
     {
-        StartCoroutine(BossBattleScenarioCoroutine());
+        Warning();
+        Invoke("BeginScript", 4);
+        Invoke("BeginBossBattle", 5);
     }
 
 

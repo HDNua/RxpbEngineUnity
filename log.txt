@@ -1,30 +1,24 @@
-RXPB v3.6.0.0 EnemyScript v2.1.1
-
-* !!!!! IMPORTANT !!!!!
-  체크포인트 구현 완료.
-> 카메라 존마다 인덱스를 걸어줘야 한다는 사실에 주의.
-
-
-* !!!!! IMPORTANT !!!!!
-  'Unity Invalid AABB' 오류
-> 뭐 버그다 어쩌다 이런 소리가 많이 나오는데, 내 상황은 Damaged와 BigDamaged를 구현할 때 발생했다.
-  정확히는 AnyState에서 다른 State로 이동할 때 1초 간 Exit Time이 걸려있으면 이 문제가 발생한다.
-  이것을 고쳤더니 프로그램이 올바르게 동작하였다.
-  
-  
-- 에어 대쉬 상태에서 벽 타기를 시도하면 모션이 이상하던 버그 수정.
-
-
-- 버스터가 문을 그냥 통과하는 버그 수정.
-
-
-- 한 번 지나가면 다시 통과할 수 없는 문에 대해서도 구현.
-
-
-- 보스 전투를 관리하는 BossBattleManager 정의.
-
+RXPB v3.6.0.0 EnemyScript v2.1.2
 
 ! 보스 패턴 같은 것을 구현해야 함.
+
+
+! 엑스 애니메이터 변경 요망.
+> 샷 액션이 자꾸 어긋나서, ShotState 애니메이터 필드를 시간초로 바꾸는 게 나아보임.
+
+
+- PauseMenu Component를 MainCamera에서 PauseMenu 개체로 옮김.
+
+
+- UIManager 클래스를 작성하고, PauseMenuManager, HUDScript, BossHUDScript를
+  모두 UIManager의 필드로 놓은 다음 이것을 통해 처리하도록 변경.
+  
+  
+! 에어 대쉬 중에 점프가 가능한 현상 발견.
+> 에어 대쉬 중에 대쉬 점프가 발동한 것으로 보인다.
+
+
+* 카메라 이동 시 가끔 뚝뚝 끊기는 현상 해결.
 
 
 end.

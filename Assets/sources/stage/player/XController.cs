@@ -794,16 +794,6 @@ public class XController : PlayerController
     /// </summary>
     void EndShot()
     {
-        /**
-        // 샷을 중지하는 조건을 만족한다면 샷을 중지합니다.
-        if (_endShotBeginTime >= END_SHOOTING_TIME)
-        {
-            // 샷을 중지합니다.
-            Shooting = false;
-            ShotBlocked = false;
-        }
-        */
-
         Shooting = false;
         ShotBlocked = false;
     }

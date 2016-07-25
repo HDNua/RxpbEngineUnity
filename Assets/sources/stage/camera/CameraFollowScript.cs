@@ -211,7 +211,11 @@ public class CameraFollowScript : MonoBehaviour
 
 
 
+    bool _xTransitionEnded = false;
+    bool _yTransitionEnded = false;
 
+    float _xMin, _xMax;
+    float _yMin, _yMax;
 
 
 
@@ -254,6 +258,64 @@ public class CameraFollowScript : MonoBehaviour
     /// </summary>
     void MoveViewportToPlayer()
     {
+        Vector2 camPos = _camera.transform.position;
+        Vector3 newCamPos;
+        if (_xTransitionEnded && _yTransitionEnded)
+        {
+            _transitioning = false;
+            return;
+        }
+
+        float newCamPosX, newCamPosY;
+        float curX = _player.transform.localPosition.x;
+        float curY = _player.transform.localPosition.y;
+        float dstX = Mathf.Clamp(curX, _xMin, _xMax);
+        float dstY = Mathf.Clamp(curY, _yMin, _yMax);
+
+        // 
+        if (_xTransitionEnded)
+        {
+            newCamPosX = dstX;
+        }
+        else
+        {
+            float difX = dstX - camPos.x;
+            if (Mathf.Abs(difX) < _unit)
+            {
+                difX = 0;
+                _xTransitionEnded = true;
+            }
+            else difX = (difX < 0) ? -_unit : _unit;
+
+            newCamPosX = camPos.x + difX;
+        }
+
+        // 
+        if (_yTransitionEnded)
+        {
+            newCamPosY = dstY;
+        }
+        else
+        {
+            float difY = dstY - camPos.y;
+            if (Mathf.Abs(difY) < _unit)
+            {
+                difY = 0;
+                _yTransitionEnded = true;
+            }
+            else difY = (difY < 0) ? -_unit : _unit;
+
+            newCamPosY = camPos.y + difY;
+        }
+
+
+        // 
+        newCamPos = new Vector3(newCamPosX, newCamPosY, _camZ);
+        _camera.transform.position = newCamPos;
+
+
+
+        /**
         float curX = _player.transform.localPosition.x;
         float curY = _player.transform.localPosition.y;
         float xMin = _currentCameraZone._isLeftBounded ? _currentCameraZone._left : float.MinValue;
@@ -273,12 +335,13 @@ public class CameraFollowScript : MonoBehaviour
         if (Mathf.Abs(difPos.y) < _unit) difY = 0;
 
 
-        Vector3 newCamPos = camPos + new Vector3(difX, difY, 0);
+        newCamPos = camPos + new Vector3(difX, difY, 0);
         _camera.transform.position = newCamPos;
         if (difX == 0f && difY == 0f)
         {
             _transitioning = false;
         }
+        */
     }
 
 
@@ -289,12 +352,18 @@ public class CameraFollowScript : MonoBehaviour
     public void UpdateCameraZone(CameraZone cameraZone, bool beginTransition)
     {
         _currentCameraZone = cameraZone;
+        UpdateCameraZoneBound();
 
         // 카메라 전이 애니메이션을 시작합니다.
         if (beginTransition)
         {
             _transitioning = true;
             _transitioningTime = 0f;
+
+
+            // 
+            _xTransitionEnded = false;
+            _yTransitionEnded = false;
         }
     }
     /// <summary>
@@ -305,6 +374,16 @@ public class CameraFollowScript : MonoBehaviour
     public bool IsInCameraZone(CameraZone cameraZone)
     {
         return _currentCameraZone.GetInstanceID() == cameraZone.GetInstanceID();
+    }
+
+
+
+    void UpdateCameraZoneBound()
+    {
+        _xMin = _currentCameraZone._isLeftBounded ? _currentCameraZone._left : float.MinValue;
+        _xMax = _currentCameraZone._isRightBounded ? _currentCameraZone._right : float.MaxValue;
+        _yMin = _currentCameraZone._isBottomBounded ? _currentCameraZone._bottom : float.MinValue;
+        _yMax = _currentCameraZone._isTopBounded ? _currentCameraZone._top : float.MaxValue;
     }
 
 

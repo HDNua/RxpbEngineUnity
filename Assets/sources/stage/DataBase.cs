@@ -24,8 +24,12 @@ public class DataBase : MonoBehaviour
     public CameraZoneParent _cameraZoneParent;
     public CameraFollowScript _cameraFollow;
     public StageManager _stageManager;
-    public PauseMenu _pauseMenu;
+    public PauseMenuManager _pauseMenu;
     public TimeManager _timeManager;
+
+
+    // 보스 전투 관리자입니다.
+    public BossBattleManager _bossBattleManager;
 
 
     #endregion

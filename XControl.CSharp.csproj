@@ -69,6 +69,7 @@
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TileAnimator.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledInitialShaderProperties.cs" />
     <Compile Include="Assets\Tiled2Unity\Scripts\Runtime\TiledMap.cs" />
+    <Compile Include="Assets\UIManager.cs" />
     <Compile Include="Assets\_Trashbin\PlayerSelectSceneManager.cs" />
     <Compile Include="Assets\sources\BossBattleManager.cs" />
     <Compile Include="Assets\sources\BossRoomDoorScript.cs" />
@@ -100,8 +101,9 @@
     <Compile Include="Assets\sources\stage\TiledGeometryParent.cs" />
     <Compile Include="Assets\sources\stage\TiledGeometryScript.cs" />
     <Compile Include="Assets\sources\stage\TimeManager.cs" />
+    <Compile Include="Assets\sources\stage\UI\BossHUDScript.cs" />
     <Compile Include="Assets\sources\stage\UI\HUDScript.cs" />
-    <Compile Include="Assets\sources\stage\UI\PauseMenu.cs" />
+    <Compile Include="Assets\sources\stage\UI\PauseMenuManager.cs" />
     <Compile Include="Assets\sources\stage\camera\CameraFollowScript.cs" />
     <Compile Include="Assets\sources\stage\camera\CameraZone.cs" />
     <Compile Include="Assets\sources\stage\camera\CameraZoneBorder.cs" />
