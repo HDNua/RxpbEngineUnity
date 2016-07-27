@@ -349,6 +349,15 @@ public class CutsceneManager : MonoBehaviour
             // 배경 음악을 재생합니다.
             case "PlayMusic":
                 index = int.Parse(action[1]);
+                if (action.Length > 2)
+                {
+                    _bgmSource.volume = float.Parse(action[2]);
+                }
+                else
+                {
+                    _bgmSource.volume = 1;
+                }
+
                 _bgmSource.clip = _audioSources[index].clip;
                 _bgmSource.Play();
                 break;
@@ -364,6 +373,15 @@ public class CutsceneManager : MonoBehaviour
                 _time = float.Parse(action[2]);
                 _audioSources[index].Play();
                 yield return new WaitForSeconds(_time);
+                break;
+
+            // 
+            case "FadeOutMusic":
+                while (_bgmSource.volume > 0)
+                {
+                    _bgmSource.volume -= Time.deltaTime;
+                    yield return new WaitForSeconds(0.5f);
+                }
                 break;
         }
 
@@ -455,9 +473,7 @@ public class CutsceneManager : MonoBehaviour
         }
 
 
-
-
-        StopCoroutine(_speechScriptCoroutine);
+        // StopCoroutine(_speechScriptCoroutine);
         _speechScriptCoroutine = null;
         _inputBlocked = false;
 

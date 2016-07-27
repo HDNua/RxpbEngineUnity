@@ -16,6 +16,13 @@ public class ReadyAnimator : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
     #region MonoBehaviour 기본 메서드를 재정의합니다.
     /// <summary>
     /// MonoBehaviour 개체를 초기화합니다.
@@ -27,6 +34,13 @@ public class ReadyAnimator : MonoBehaviour
 
 
     #endregion
+
+
+
+
+
+
+
 
 
 

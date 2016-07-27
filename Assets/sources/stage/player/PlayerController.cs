@@ -1631,13 +1631,6 @@ public abstract class PlayerController : MonoBehaviour
 
 
         // 플레이어에 대해 넉백 효과를 겁니다.
-        /**
-        float speed = 100;
-        Vector2 force = (FacingRight ? Vector2.left : Vector2.right);
-        _Rigidbody.velocity = Vector2.zero;
-        _Rigidbody.AddForce(force * speed);
-        */
-
         if (bigDamaged && IsAlive())
         {
             Vector2 force = (FacingRight ? Vector2.left : Vector2.right) * KnockbackSpeed;

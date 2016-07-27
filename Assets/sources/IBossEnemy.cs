@@ -12,8 +12,4 @@ public interface IBossEnemy
     /// 보스 캐릭터가 등장합니다.
     /// </summary>
     void Appear();
-
-
-
-
 }

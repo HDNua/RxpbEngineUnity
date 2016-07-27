@@ -82,23 +82,17 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void ActivatePlayerHUD()
     {
-        _HUD._tryCountText.text = "0" + _database.GameManager.GameData.TryCount.ToString();
+        /// _HUD._tryCountText.text = "0" + _database.GameManager.GameData.TryCount.ToString();
+        _HUD.UpdateStatusText();
         _HUD.gameObject.SetActive(true);
-    }
-    /// <summary>
-    /// 보스 HUD를 활성화합니다.
-    /// </summary>
-    public void ActivateBossHUD()
-    {
-        _bossHUD._healthText.text = _database._bossBattleManager._boss.Health.ToString();
-        _bossHUD.gameObject.SetActive(true);
     }
     /// <summary>
     /// 시도 횟수 텍스트를 업데이트합니다.
     /// </summary>
     public void UpdateTryCountText()
     {
-        _HUD.UpdateTryCountText();
+        /// _HUD.UpdateTryCountText();
+        _HUD.UpdateStatusText();
     }
     /// <summary>
     /// 보스의 체력 잔량을 업데이트합니다.
@@ -106,6 +100,23 @@ public class UIManager : MonoBehaviour
     public void UpdateBossHealthText()
     {
         _bossHUD._healthText.text = _database._bossBattleManager._boss.Health.ToString();
+    }
+
+
+    /// <summary>
+    /// 보스 HUD를 활성화합니다.
+    /// </summary>
+    public void ActivateBossHUD()
+    {
+        /// _bossHUD._healthText.text = _database._bossBattleManager._boss.Health.ToString();
+        _bossHUD.gameObject.SetActive(true);
+    }
+    /// <summary>
+    /// 보스 HUD를 비활성화합니다.
+    /// </summary>
+    public void DeactivateBossHUD()
+    {
+        _bossHUD.gameObject.SetActive(false);
     }
 
 

@@ -26,6 +26,7 @@ public class DataBase : MonoBehaviour
     public StageManager _stageManager;
     public PauseMenuManager _pauseMenu;
     public TimeManager _timeManager;
+    public UIManager _userInterfaceManager;
 
 
     // 보스 전투 관리자입니다.
@@ -59,7 +60,7 @@ public class DataBase : MonoBehaviour
 
     #region 프로퍼티를 정의합니다.
     /// <summary>
-    /// 
+    /// 게임 관리자입니다.
     /// </summary>
     public GameManager GameManager
     {
@@ -71,11 +72,11 @@ public class DataBase : MonoBehaviour
 
 
     /// <summary>
-    /// 
+    /// 엑스 PlayerController입니다.
     /// </summary>
     public PlayerController PlayerX { get { return _playerX; } }
     /// <summary>
-    /// 
+    /// 제로 PlayerController입니다.
     /// </summary>
     public PlayerController PlayerZ { get { return _playerZ; } }
 
@@ -121,6 +122,15 @@ public class DataBase : MonoBehaviour
     public TimeManager TimeManager
     {
         get { return _timeManager; }
+    }
+
+
+    /// <summary>
+    /// 사용자 인터페이스 관리자입니다.
+    /// </summary>
+    public UIManager UIManager
+    {
+        get { return _userInterfaceManager; }
     }
 
 

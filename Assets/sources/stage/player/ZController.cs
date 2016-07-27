@@ -190,7 +190,7 @@ public class ZController : PlayerController
     }
     void FixedUpdate()
     {
-        UpdateState();
+        /// UpdateState();
 
         if (FixedUpdateController() == false)
         {

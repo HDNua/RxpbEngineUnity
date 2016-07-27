@@ -11,9 +11,15 @@ public class CommanderYammarkScript : EnemyScript, IBossEnemy
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     /// <summary>
-    /// 
+    /// 캐릭터의 이동 속도입니다.
     /// </summary>
     public float _movingSpeed = 5;
+
+
+    /// <summary>
+    /// 캐릭터가 등장할 지점입니다.
+    /// </summary>
+    public Transform _appearPoint;
 
 
     #endregion
@@ -47,9 +53,9 @@ public class CommanderYammarkScript : EnemyScript, IBossEnemy
 
     #region 프로퍼티를 정의합니다.
     /// <summary>
-    /// 
+    /// 충돌체 컴포넌트입니다.
     /// </summary>
-    public Rigidbody2D Rigidbody2D
+    public Rigidbody2D _Rigidbody2D
     {
         get { return _rigidbody; }
     }
@@ -186,6 +192,10 @@ public class CommanderYammarkScript : EnemyScript, IBossEnemy
 
 
 
+
+
+        // 캐릭터가 사망합니다.
+        base.Dead();
         yield break;
     }
 
@@ -202,7 +212,7 @@ public class CommanderYammarkScript : EnemyScript, IBossEnemy
 
     #region IBossEnemy 인터페이스를 구현합니다.
     /// <summary>
-    /// 
+    /// 보스 캐릭터가 등장합니다.
     /// </summary>
     void IBossEnemy.Appear()
     {
