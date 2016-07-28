@@ -932,7 +932,7 @@ public abstract class PlayerController : MonoBehaviour
 
             if (_type != 1)
             {
-                Debug.Log("UpdateLanding: OnGround");
+///                Debug.Log("UpdateLanding: OnGround");
                 _type = 1;
             }
         }
@@ -942,7 +942,7 @@ public abstract class PlayerController : MonoBehaviour
 
             if (_type != 2)
             {
-                Debug.Log("UpdateLanding: Jumping || Falling");
+///                Debug.Log("UpdateLanding: Jumping || Falling");
                 _type = 2;
             }
         }
@@ -952,17 +952,17 @@ public abstract class PlayerController : MonoBehaviour
             if (rayB && !rayF)
             {
                 pos.y -= rayB.distance / transform.localScale.y;
-                print("case if!");
+///                print("case if!");
             }
             else if (!rayB && rayF)
             {
                 pos.y -= rayF.distance / transform.localScale.y;
-                print("case elif!");
+///                print("case elif!");
             }
             else
             {
                 pos.y -= Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
-                print("case else!");
+///                print("case else!");
             }
             transform.position = pos;
             _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, 0);
@@ -970,7 +970,7 @@ public abstract class PlayerController : MonoBehaviour
 
             if (_type != 3)
             {
-                Debug.Log("UpdateLanding: rayB || rayF");
+///                Debug.Log("UpdateLanding: rayB || rayF");
                 _type = 3;
             }
         }
@@ -980,7 +980,7 @@ public abstract class PlayerController : MonoBehaviour
 
             if (_type != 4)
             {
-                Debug.Log("UpdateLanding: else");
+///                Debug.Log("UpdateLanding: else");
                 _type = 4;
             }
         }

@@ -64,6 +64,10 @@ public class XController : PlayerController
     /// </summary>
     public Transform _shotPosition;
     /// <summary>
+    /// 좌우 이동 시 버스터 샷이 생성되는 위치입니다.
+    /// </summary>
+    public Transform _walkShotPosition;
+    /// <summary>
     /// 대쉬 시 버스터 샷이 생성되는 위치입니다.
     /// </summary>
     public Transform _dashShotPosition;
@@ -136,10 +140,6 @@ public class XController : PlayerController
     /// </summary>
     float _chargeTime = 0;
     /// <summary>
-    /// 샷을 발사한 시점으로부터 경과한 시간을 나타냅니다. (FixedUpdate)
-    /// </summary>
-    float _shotTime = 0;
-    /// <summary>
     /// 샷이 막혀있다면 참입니다.
     /// </summary>
     bool _shotBlocked = false;
@@ -152,13 +152,20 @@ public class XController : PlayerController
 
 
     /// <summary>
-    /// 샷 상태입니다. (Note) 프로퍼티를 거치지 않고 직접 사용하지 마십시오!
+    /// 
     /// </summary>
-    float _shotState = 0;
+    float _shotTime2 = 0;
     /// <summary>
-    /// 샷이 발사된 직후로부터 경과한 시간을 나타냅니다. (Update)
+    /// 
     /// </summary>
-    float _endShotBeginTime = 0;
+    float ShotTime2
+    {
+        get { return _shotTime2; }
+        set
+        {
+            _Animator.SetFloat("ShotTime", _shotTime2 = value);
+        }
+    }
 
 
     #endregion
@@ -181,10 +188,13 @@ public class XController : PlayerController
         set
         {
             _Animator.SetBool("Shooting", _shooting = value);
+
+            /**
             if (_shooting == false)
             {
                 ShotState = 0;
             }
+            */
         }
     }
     /// <summary>
@@ -194,19 +204,6 @@ public class XController : PlayerController
     {
         get { return _shotBlocked; }
         private set { _shotBlocked = value; }
-    }
-
-
-    /// <summary>
-    /// 샷 상태입니다.
-    /// </summary>
-    float ShotState
-    {
-        get { return _shotState; }
-        set
-        {
-            _Animator.SetFloat("ShotState", _shotState = value);
-        }
     }
 
 
@@ -354,7 +351,7 @@ public class XController : PlayerController
 
 
         // 시간 필드를 업데이트합니다.
-        _endShotBeginTime += Time.deltaTime;
+        /// _endShotBeginTime += Time.deltaTime;
     }
     /// <summary>
     /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트 합니다.
@@ -606,10 +603,13 @@ public class XController : PlayerController
             }
             else
             {
+                /**
                 if (ShotState != 0 && _endShotBeginTime >= END_SHOOTING_TIME)
                 {
                     ShotState = 0;
                 }
+                */
+
                 _shotPressed = true;
             }
         }
@@ -623,16 +623,21 @@ public class XController : PlayerController
 
 
             // 이전 애니메이션이 Idle인 경우의 처리입니다.
-            if (IsAnimationPlaying("Idle"))
+            if (IsAnimationPlaying("Idle")
+                || IsAnimationPlaying("FallEnd")
+                || IsAnimationPlaying("Shot")
+                || IsAnimationPlaying("ChargeShot"))
             {
                 if (chargeTime > CHARGE_LEVEL[2])
                 {
                     _Animator.Play("ChargeShot", 0, 0);
                     ShotBlocked = true;
+                    /// print("Shot time: " + GetCurrentAnimationLength());
                 }
                 else
                 {
                     _Animator.Play("Shot", 0, 0);
+                    /// print("Shot time: " + GetCurrentAnimationLength());
                 }
             }
         }
@@ -642,8 +647,22 @@ public class XController : PlayerController
         }
         else
         {
-            ShotState = 0;
+            /// ShotState = 0;
         }
+
+
+        /**
+        if (IsAnimationPlaying("Shot"))
+        {
+            print("Shot time: " + GetCurrentAnimationLength());
+        }
+        else if (IsAnimationPlaying("ChargeShot"))
+        {
+            print("ChargeShot time: " + GetCurrentAnimationLength());
+        }
+        */
+
+        ShotTime2 += Time.fixedDeltaTime;
     }
     /// <summary>
     /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
@@ -719,8 +738,11 @@ public class XController : PlayerController
             // 필드를 초기화합니다.
             _shotPressed = false;
             _chargeTime = 0;
-            _shotTime = 0;
-            _endShotBeginTime = 0;
+
+            /// _shotTime = 0;
+            /// _endShotBeginTime = 0;
+            ShotTime2 = 0;
+
             PlayerColor = Color.white;
 
             if (_chargeCoroutine != null)
@@ -733,7 +755,8 @@ public class XController : PlayerController
         }
 
         // 버스터 탄환을 생성하고 초기화합니다.
-        CreateBullet(index);
+        /// CreateBullet(index);
+        StartCoroutine(CreateBulletCoroutine(index));
 
         // 효과음을 재생합니다.
         SoundEffects[8 + index].Play();
@@ -798,11 +821,60 @@ public class XController : PlayerController
     /// </summary>
     void EndShot()
     {
-        Shooting = false;
-        ShotBlocked = false;
+        if (ShotTime2 >= END_SHOOTING_TIME)
+        {
+            Shooting = false;
+            ShotBlocked = false;
+        }
     }
 
 
+    /// <summary>
+    /// 탄환 생성 코루틴입니다.
+    /// </summary>
+    /// <param name="index">탄환 인덱스입니다.</param>
+    /// <returns></returns>
+    IEnumerator CreateBulletCoroutine(int index)
+    {
+        // 사용할 변수를 선언합니다.
+        Transform shotPosition = GetShotPosition();
+        bool toLeft = (Sliding ? FacingRight : !FacingRight);
+
+
+        // 탄환 발사 효과에 대해 먼저 생성하고 처리합니다.
+        GameObject fireEffect = CloneObject(effects[7 + index], shotPosition);
+        if (index == 2)
+        {
+            fireEffect.transform.position = transform.position;
+        }
+        Vector3 effectScale = fireEffect.transform.localScale;
+        effectScale.x *= (toLeft ? -1 : 1);
+        fireEffect.transform.localScale = effectScale;
+        fireEffect.transform.parent = shotPosition.transform;
+
+
+        // 2단계 차지샷이라면 잠시 대기합니다.
+        if (index == 2)
+        {
+            yield return new WaitForSeconds(0.15f);
+        }
+
+
+        // 버스터 컴포넌트를 발사체에 붙입니다.
+        GameObject _bullet = CloneObject(_bullets[index], shotPosition);
+
+        // 위치를 조정합니다.
+        Vector3 bulletScale = _bullet.transform.localScale;
+        bulletScale.x *= (toLeft ? -1 : 1);
+        _bullet.transform.localScale = bulletScale;
+        _bullet.GetComponent<Rigidbody2D>().velocity
+            = (toLeft ? Vector3.left : Vector3.right) * _shotSpeed;
+
+        // 탄환 속성을 업데이트 합니다.
+        XBusterScript buster = _bullet.GetComponent<XBusterScript>();
+        buster.MainCamera = stageManager._mainCamera;
+        yield break;
+    }
     /// <summary>
     /// 탄환을 생성합니다.
     /// </summary>
@@ -815,12 +887,12 @@ public class XController : PlayerController
         Vector3 bulletScale = _bullet.transform.localScale;
         bool toLeft = (Sliding ? FacingRight : !FacingRight);
 
+
         GameObject fireEffect = CloneObject(effects[7 + index], shotPosition);
         if (index == 2)
         {
             fireEffect.transform.position = transform.position;
         }
-
 
         Vector3 effectScale = fireEffect.transform.localScale;
 
@@ -860,6 +932,10 @@ public class XController : PlayerController
         else if (Dashing)
         {
             ret = _dashShotPosition;
+        }
+        else if (Moving)
+        {
+            ret = _walkShotPosition;
         }
         return ret;
     }
@@ -928,7 +1004,6 @@ public class XController : PlayerController
     {
         // DashBeg
         {
-            /// Debug.Log(_animator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
             yield return new WaitForSeconds(0.1f);
         }
 
@@ -1440,6 +1515,7 @@ public class XController : PlayerController
     /// </summary>
     void UpdateShotRoutine()
     {
+        /**
         // 아 이거 Shot 애니메이션을 그냥 시작하면 0에서 시작해서 넣은 거네요 이거
         {
             // 샷 애니메이션은 계속 재생합니다.
@@ -1471,6 +1547,7 @@ public class XController : PlayerController
 
         // 샷 발사 시간을 업데이트합니다.
         _shotTime += Time.fixedDeltaTime;
+        */
     }
 
 
@@ -1518,6 +1595,36 @@ public class XController : PlayerController
         }
     }
 
+
+    [Obsolete("ShotTime2로 대체되었습니다.")]
+    /// <summary>
+    /// 샷을 발사한 시점으로부터 경과한 시간을 나타냅니다. (FixedUpdate)
+    /// </summary>
+    float _shotTime = 0;
+    [Obsolete("ShotTime2로 대체되었습니다.")]
+    /// <summary>
+    /// 샷 상태입니다. (Note) 프로퍼티를 거치지 않고 직접 사용하지 마십시오!
+    /// </summary>
+    float _shotState = 0;
+    [Obsolete("ShotTime2로 대체되었습니다.")]
+    /// <summary>
+    /// 샷이 발사된 직후로부터 경과한 시간을 나타냅니다. (Update)
+    /// </summary>
+    float _endShotBeginTime = 0;
+
+
+    [Obsolete("ShotTime2로 대체되었습니다.")]
+    /// <summary>
+    /// 샷 상태입니다.
+    /// </summary>
+    float ShotState
+    {
+        get { return _shotState; }
+        set
+        {
+            _Animator.SetFloat("ShotState", _shotState = value);
+        }
+    }
 
 
     #endregion
