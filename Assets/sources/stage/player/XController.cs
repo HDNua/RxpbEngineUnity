@@ -255,6 +255,8 @@ public class XController : PlayerController
     /// </summary>
     protected override void Update()
     {
+        UpdateState();
+
         if (UpdateController() == false)
         {
             return;
@@ -657,6 +659,8 @@ public class XController : PlayerController
         {
             _Renderer.color = PlayerColor;
         }
+
+        UpdateState();
     }
 
 
@@ -1344,8 +1348,28 @@ public class XController : PlayerController
         // 플레이어가 생존해있다면
         if (IsAlive())
         {
-            Voices[4].Play();
-            SoundEffects[11].Play();
+            // 대미지 음성 및 효과음을 재생합니다.
+            if (BigDamaged)
+            {
+                Voices[5].Play();
+                SoundEffects[11].Play();
+            }
+            else
+            {
+                Voices[4].Play();
+                SoundEffects[11].Play();
+            }
+
+
+            // 발생한 효과를 제거합니다.
+            if (_slideFogEffect != null)
+            {
+                _slideFogEffect.GetComponent<EffectScript>().RequestDestroy();
+            }
+            if (_dashBoostEffect != null)
+            {
+                _dashBoostEffect.GetComponent<EffectScript>().RequestDestroy();
+            }
         }
 
         // END_HURT_TIME 시간 후에 대미지를 입은 상태를 종료합니다.

@@ -691,7 +691,10 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 큰 대미지를 입었다면 참입니다.
     /// </summary>
-    public bool BigDamaged { set { _Animator.SetFloat("BigDamaged", value ? 1 : 0); } }
+    public bool BigDamaged {
+        get { return _Animator.GetFloat("BigDamaged") == 1 ? true : false; }
+        set { _Animator.SetFloat("BigDamaged", value ? 1 : 0); }
+    }
 
 
     #endregion
@@ -893,6 +896,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>플레이어가 땅에 닿아있다면 참입니다.</returns>
     bool UpdateLanding()
     {
+        /**
         RaycastHit2D rayB = Physics2D.Raycast(groundCheckBack.position, Vector2.down, groundCheckRadius, whatIsGround);
         RaycastHit2D rayF = Physics2D.Raycast(groundCheckFront.position, Vector2.down, groundCheckRadius, whatIsGround);
 
@@ -917,7 +921,75 @@ public abstract class PlayerController : MonoBehaviour
             Landed = false;
         }
         return Landed;
+        */
+
+        RaycastHit2D rayB = Physics2D.Raycast(groundCheckBack.position, Vector2.down, groundCheckRadius, whatIsGround);
+        RaycastHit2D rayF = Physics2D.Raycast(groundCheckFront.position, Vector2.down, groundCheckRadius, whatIsGround);
+
+        if (OnGround())
+        {
+            Landed = true;
+
+            if (_type != 1)
+            {
+                Debug.Log("UpdateLanding: OnGround");
+                _type = 1;
+            }
+        }
+        else if (Jumping || Falling)
+        {
+            Landed = false;
+
+            if (_type != 2)
+            {
+                Debug.Log("UpdateLanding: Jumping || Falling");
+                _type = 2;
+            }
+        }
+        else if (rayB || rayF)
+        {
+            Vector3 pos = transform.position;
+            if (rayB && !rayF)
+            {
+                pos.y -= rayB.distance / transform.localScale.y;
+                print("case if!");
+            }
+            else if (!rayB && rayF)
+            {
+                pos.y -= rayF.distance / transform.localScale.y;
+                print("case elif!");
+            }
+            else
+            {
+                pos.y -= Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
+                print("case else!");
+            }
+            transform.position = pos;
+            _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, 0);
+            Landed = true;
+
+            if (_type != 3)
+            {
+                Debug.Log("UpdateLanding: rayB || rayF");
+                _type = 3;
+            }
+        }
+        else
+        {
+            Landed = false;
+
+            if (_type != 4)
+            {
+                Debug.Log("UpdateLanding: else");
+                _type = 4;
+            }
+        }
+        return Landed;
     }
+
+    int _type = 0;
+    public Transform _point;
+
     /// <summary>
     /// 플레이어의 물리 상태를 갱신합니다.
     /// </summary>
@@ -1613,14 +1685,11 @@ public abstract class PlayerController : MonoBehaviour
         }
 
 
-        bool bigDamaged = false;
-
-
         // 상태를 업데이트합니다.
         Damaged = true;
         if (point >= BigDamageValue)
         {
-            bigDamaged = BigDamaged = true;
+            BigDamaged = true;
         }
         Invencible = true;
         InputBlocked = true;
@@ -1631,7 +1700,7 @@ public abstract class PlayerController : MonoBehaviour
 
 
         // 플레이어에 대해 넉백 효과를 겁니다.
-        if (bigDamaged && IsAlive())
+        if (BigDamaged && IsAlive())
         {
             Vector2 force = (FacingRight ? Vector2.left : Vector2.right) * KnockbackSpeed;
             _Rigidbody.velocity = new Vector2(force.x, KnockbackJumpSize);

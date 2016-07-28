@@ -93,8 +93,11 @@ public class EnemyMettoolScript : EnemyScript
 
         // 자신과 가장 가까운 바닥으로 y 좌표를 옮깁니다.
         RaycastHit2D groundRay = Physics2D.Raycast(groundCheck.position, Vector2.down, 10f, whatIsGround);
-        float initY = groundRay.point.y + (_boxCollider2D.size.y / 2 * transform.localScale.y);
-        transform.position = new Vector3(groundRay.point.x, initY);
+        /// float initY = transform.  groundRay.point.y + (_boxCollider2D.size.y / 2 * transform.localScale.y);
+        /// transform.position = new Vector3(groundRay.point.x, initY);
+        Vector2 newPos = transform.position;
+        newPos.y -= Mathf.Abs(_boxCollider2D.bounds.min.y - groundRay.point.y); // / transform.localScale.y;
+        transform.position = newPos;
 
         // 방황 코루틴을 시작합니다.
         // StartCoroutine(WalkAround());
