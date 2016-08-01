@@ -152,11 +152,11 @@ public class XController : PlayerController
 
 
     /// <summary>
-    /// 
+    /// 샷을 발사한 이후로 경과한 시간입니다.
     /// </summary>
     float _shotTime2 = 0;
     /// <summary>
-    /// 
+    /// 샷을 발사한 이후로 경과한 시간입니다.
     /// </summary>
     float ShotTime2
     {
@@ -188,13 +188,6 @@ public class XController : PlayerController
         set
         {
             _Animator.SetBool("Shooting", _shooting = value);
-
-            /**
-            if (_shooting == false)
-            {
-                ShotState = 0;
-            }
-            */
         }
     }
     /// <summary>
@@ -208,11 +201,11 @@ public class XController : PlayerController
 
 
     /// <summary>
-    /// 
+    /// 차지 샷 중이라면 참입니다.
     /// </summary>
     bool _chargeShooting;
     /// <summary>
-    /// 
+    /// 차지 샷 중이라면 참입니다.
     /// </summary>
     bool ChargeShooting
     {
@@ -252,7 +245,7 @@ public class XController : PlayerController
     /// </summary>
     protected override void Update()
     {
-        UpdateState();
+        /// UpdateState();
 
         if (UpdateController() == false)
         {
@@ -348,10 +341,6 @@ public class XController : PlayerController
         {
             /// stageManager.ChangePlayer(stageManager.PlayerZ);
         }
-
-
-        // 시간 필드를 업데이트합니다.
-        /// _endShotBeginTime += Time.deltaTime;
     }
     /// <summary>
     /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트 합니다.
@@ -360,7 +349,7 @@ public class XController : PlayerController
     /// </summary>
     void FixedUpdate()
     {
-        UpdateState();
+        /// UpdateState();
 
         if (FixedUpdateController() == false)
         {
@@ -452,7 +441,6 @@ public class XController : PlayerController
             else if (IsKeyPressed("Dash") == false)
             {
                 StopDashing();
-                /// Debug.Log("Dash stopped");
             }
         }
         // 벽을 타고 있다면
@@ -603,13 +591,6 @@ public class XController : PlayerController
             }
             else
             {
-                /**
-                if (ShotState != 0 && _endShotBeginTime >= END_SHOOTING_TIME)
-                {
-                    ShotState = 0;
-                }
-                */
-
                 _shotPressed = true;
             }
         }
@@ -632,12 +613,10 @@ public class XController : PlayerController
                 {
                     _Animator.Play("ChargeShot", 0, 0);
                     ShotBlocked = true;
-                    /// print("Shot time: " + GetCurrentAnimationLength());
                 }
                 else
                 {
                     _Animator.Play("Shot", 0, 0);
-                    /// print("Shot time: " + GetCurrentAnimationLength());
                 }
             }
         }
@@ -645,22 +624,6 @@ public class XController : PlayerController
         {
             UpdateShotRoutine();
         }
-        else
-        {
-            /// ShotState = 0;
-        }
-
-
-        /**
-        if (IsAnimationPlaying("Shot"))
-        {
-            print("Shot time: " + GetCurrentAnimationLength());
-        }
-        else if (IsAnimationPlaying("ChargeShot"))
-        {
-            print("ChargeShot time: " + GetCurrentAnimationLength());
-        }
-        */
 
         ShotTime2 += Time.fixedDeltaTime;
     }
@@ -738,13 +701,8 @@ public class XController : PlayerController
             // 필드를 초기화합니다.
             _shotPressed = false;
             _chargeTime = 0;
-
-            /// _shotTime = 0;
-            /// _endShotBeginTime = 0;
             ShotTime2 = 0;
-
             PlayerColor = Color.white;
-
             if (_chargeCoroutine != null)
             {
                 StopCoroutine(_chargeCoroutine);
@@ -1515,39 +1473,7 @@ public class XController : PlayerController
     /// </summary>
     void UpdateShotRoutine()
     {
-        /**
-        // 아 이거 Shot 애니메이션을 그냥 시작하면 0에서 시작해서 넣은 거네요 이거
-        {
-            // 샷 애니메이션은 계속 재생합니다.
-            if (IsAnimationPlaying("Shot"))
-            {
-                _Animator.Play("Shot", 0, _shotTime / END_SHOOTING_TIME);
-            }
-            // 차지 샷 애니메이션은 계속 재생합니다.
-            else if (IsAnimationPlaying("ChargeShot"))
-            {
-                _Animator.Play("ChargeShot", 0, _shotTime / END_SHOOTING_TIME);
-            }
-        }
 
-
-        // 발사 시간에 따라 light 상태를 전환합니다.
-        if (_endShotBeginTime < LIGHTING_TIME)
-        {
-            ShotState = 10;
-        }
-        else if (_endShotBeginTime < END_SHOOTING_TIME)
-        {
-            ShotState = 11;
-        }
-        else
-        {
-            ShotState = 0;
-        }
-
-        // 샷 발사 시간을 업데이트합니다.
-        _shotTime += Time.fixedDeltaTime;
-        */
     }
 
 
@@ -1592,37 +1518,6 @@ public class XController : PlayerController
         {
             AnimatorClipInfo clipInfo = _clips[clipKey];
             Console.WriteLine(clipInfo.clip.length);
-        }
-    }
-
-
-    [Obsolete("ShotTime2로 대체되었습니다.")]
-    /// <summary>
-    /// 샷을 발사한 시점으로부터 경과한 시간을 나타냅니다. (FixedUpdate)
-    /// </summary>
-    float _shotTime = 0;
-    [Obsolete("ShotTime2로 대체되었습니다.")]
-    /// <summary>
-    /// 샷 상태입니다. (Note) 프로퍼티를 거치지 않고 직접 사용하지 마십시오!
-    /// </summary>
-    float _shotState = 0;
-    [Obsolete("ShotTime2로 대체되었습니다.")]
-    /// <summary>
-    /// 샷이 발사된 직후로부터 경과한 시간을 나타냅니다. (Update)
-    /// </summary>
-    float _endShotBeginTime = 0;
-
-
-    [Obsolete("ShotTime2로 대체되었습니다.")]
-    /// <summary>
-    /// 샷 상태입니다.
-    /// </summary>
-    float ShotState
-    {
-        get { return _shotState; }
-        set
-        {
-            _Animator.SetFloat("ShotState", _shotState = value);
         }
     }
 

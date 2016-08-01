@@ -184,6 +184,7 @@ public class BossBattleManager : MonoBehaviour
     {
         _warning = false;
         _appearing = true;
+        StartCoroutine(CoroutineAppearing());
     }
     /// <summary>
     /// 
@@ -192,6 +193,7 @@ public class BossBattleManager : MonoBehaviour
     {
         _appearing = false;
         _scripting = true;
+        StartCoroutine(CoroutineScripting());
     }
     /// <summary>
     /// 
@@ -200,6 +202,7 @@ public class BossBattleManager : MonoBehaviour
     {
         _scripting = false;
         _readying = true;
+        StartCoroutine(CoroutineReadying());
     }
     /// <summary>
     /// 
@@ -208,6 +211,10 @@ public class BossBattleManager : MonoBehaviour
     {
         _readying = false;
         _fighting = true;
+
+        _stageManager.RequestUnblockMoving();
+        GetComponent<AudioSource>().Play();
+        StartCoroutine(CoroutineFighting());
     }
 
 
@@ -249,8 +256,14 @@ public class BossBattleManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator CoroutineAppearing()
     {
+        _boss._Rigidbody2D.velocity = new Vector2(0, -_boss._movingSpeed);
+        while (_boss.transform.position.y > _angle[0].position.y)
+        {
+            yield return null;
+        }
+        _boss._Rigidbody2D.velocity = Vector2.zero;
 
-
+        Script();
         yield break;
     }
     /// <summary>
@@ -261,6 +274,7 @@ public class BossBattleManager : MonoBehaviour
     {
 
 
+        Ready();
         yield break;
     }
     /// <summary>
@@ -269,8 +283,9 @@ public class BossBattleManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator CoroutineReadying()
     {
+        
 
-
+        Fight();
         yield break;
     }
     /// <summary>
@@ -279,7 +294,44 @@ public class BossBattleManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator CoroutineFighting()
     {
+        float movingSpeed = _boss._movingSpeed;
+        while (_boss.IsAlive())
+        {
+            // RightDown -> LeftDown
+            _boss._Rigidbody2D.velocity = new Vector2(-movingSpeed, 0);
+            while (_boss.transform.position.x > _angle[1].position.x)
+            {
+                yield return null;
+            }
+            _boss.transform.position = new Vector3(_angle[1].position.x, _boss.transform.position.y, _boss.transform.position.z);
 
+
+            // LeftDown -> LeftUp
+            _boss._Rigidbody2D.velocity = new Vector2(0, movingSpeed);
+            while (_boss.transform.position.y < _angle[2].position.y)
+            {
+                yield return null;
+            }
+            _boss.transform.position = new Vector3(_boss.transform.position.x, _angle[2].position.y, _boss.transform.position.z);
+
+
+            // LeftUp -> RightUp
+            _boss._Rigidbody2D.velocity = new Vector2(movingSpeed, 0);
+            while (_boss.transform.position.x < _angle[3].position.x)
+            {
+                yield return null;
+            }
+            _boss.transform.position = new Vector3(_angle[3].position.x, _boss.transform.position.y, _boss.transform.position.z);
+
+
+            // RightUp -> RightDown
+            _boss._Rigidbody2D.velocity = new Vector2(0, -_boss._movingSpeed);
+            while (_boss.transform.position.y > _angle[0].position.y)
+            {
+                yield return null;
+            }
+            _boss.transform.position = new Vector3(_boss.transform.position.x, _angle[0].position.y, _boss.transform.position.z);
+        }
 
         yield break;
     }

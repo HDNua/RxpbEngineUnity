@@ -198,7 +198,7 @@ public class StageSelectSceneManager : MonoBehaviour
         {
             // 커서의 위치를 변경합니다.
             _cursor.transform.position = _stagePoints[index].transform.position;
-            _nextLevelName = "01_Intro"; // _stagePoints[index].name;
+            _nextLevelName = "02_CommanderYammark"; // _stagePoints[index].name;
 
             // 회전 테스트
         }

@@ -115,6 +115,10 @@ public class StageManager : HDSceneManager
     bool _gameEnded = false;
 
 
+
+    int _gameEndValue = -1;
+
+
     #endregion
 
 
@@ -215,7 +219,17 @@ public class StageManager : HDSceneManager
         {
             if (_fader.FadeOutEnded)
             {
-                LoadingSceneManager.LoadLevel("CS03_GaiaFound");
+                switch (_gameEndValue)
+                {
+                    case 2:
+                        LoadingSceneManager.LoadLevel("CS03_GaiaFound");
+                        break;
+
+                    default:
+                        LoadingSceneManager.LoadLevel("StageSelect");
+                        break;
+                }
+
                 // RestartLevel();
             }
 
@@ -338,7 +352,7 @@ public class StageManager : HDSceneManager
         switch (item.Type)
         {
             case "EndGame":
-                Test_EndGameItemGet();
+                Test_EndGameItemGet(player, item);
                 break;
 
             case "1UP":
@@ -381,9 +395,14 @@ public class StageManager : HDSceneManager
     /// <summary>
     /// 
     /// </summary>
-    private void Test_EndGameItemGet()
+    /// <param name="player">플레이어 객체입니다.</param>
+    /// <param name="item">플레이어가 사용한 아이템입니다.</param>
+    private void Test_EndGameItemGet(PlayerController player, ItemScript item)
     {
         RequestStopBackgroundMusic();
+
+
+        _gameEndValue = item.Value;
 
 
         _player.RequestBlockInput();

@@ -19,13 +19,6 @@ public class CutsceneManager : MonoBehaviour
 
 
 
-
-
-
-
-
-
-
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
     public GameObject _textObject;
     public AudioClip[] _audioClips;
@@ -64,8 +57,8 @@ public class CutsceneManager : MonoBehaviour
     bool _scriptEndRequested = false; // 스크립트 skip이 요청되었습니다.
 
     // 대사 스크립트 코루틴에 대한 포인터입니다.
-    Coroutine _speechScriptCoroutine = null;
-//    Coroutine _actionScriptCoroutine = null;
+    /// Coroutine _speechScriptCoroutine = null;
+    /// Coroutine _actionScriptCoroutine = null;
 
 
     #endregion
@@ -262,7 +255,8 @@ public class CutsceneManager : MonoBehaviour
     void ShowNextSubscript()
     {
         _guiText.text = "";
-        _speechScriptCoroutine = StartCoroutine("ShowSubscriptChar");
+        /// _speechScriptCoroutine = StartCoroutine("ShowSubscriptChar");
+        StartCoroutine("ShowSubscriptChar");
     }
     /// <summary>
     /// 액션을 수행합니다.
@@ -273,7 +267,7 @@ public class CutsceneManager : MonoBehaviour
         if (_actionScriptIndex < _actionScriptList.Count)
         {
             _guiText.text = "";
-            // _actionScriptCoroutine = StartCoroutine("ActWithCoroutine");
+            /// _actionScriptCoroutine = StartCoroutine("ActWithCoroutine");
             StartCoroutine("ActWithCoroutine");
         }
     }
@@ -473,10 +467,9 @@ public class CutsceneManager : MonoBehaviour
         }
 
 
-        // StopCoroutine(_speechScriptCoroutine);
-        _speechScriptCoroutine = null;
+        /// StopCoroutine(_speechScriptCoroutine);
+        /// _speechScriptCoroutine = null;
         _inputBlocked = false;
-
         _speechScriptPlaying = false;
     }
 

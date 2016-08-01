@@ -74,6 +74,8 @@ public class TiledGeometryScript : MonoBehaviour
 
 
         // 평평한 지형 충돌체의 처리입니다.
+        float scaleX = _database.Map.transform.localScale.x;
+        float scaleY = _database.Map.transform.localScale.y;
         EdgeCollider2D groundEdge, leftEdge, rightEdge, bottomEdge;
         if (_flatGroundCollider != null)
         {
@@ -130,8 +132,11 @@ public class TiledGeometryScript : MonoBehaviour
             // 스케일을 맞춥니다.
             for (int i = 0, len = points.Length; i < len; ++i)
             {
-                points[i].x = points[i].x / 0.02008f / transform.localScale.x;
-                points[i].y = points[i].y / 0.02008f / transform.localScale.y;
+                /// v3.6.3. 나중에 삭제합시다.
+                /// points[i].x = points[i].x / 0.02008f / transform.localScale.x;
+                /// points[i].y = points[i].y / 0.02008f / transform.localScale.y;
+                points[i].x = points[i].x / scaleX / transform.localScale.x;
+                points[i].y = points[i].y / scaleY / transform.localScale.y;
             }
 
 

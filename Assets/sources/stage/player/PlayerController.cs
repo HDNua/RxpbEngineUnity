@@ -929,22 +929,10 @@ public abstract class PlayerController : MonoBehaviour
         if (OnGround())
         {
             Landed = true;
-
-            if (_type != 1)
-            {
-///                Debug.Log("UpdateLanding: OnGround");
-                _type = 1;
-            }
         }
         else if (Jumping || Falling)
         {
             Landed = false;
-
-            if (_type != 2)
-            {
-///                Debug.Log("UpdateLanding: Jumping || Falling");
-                _type = 2;
-            }
         }
         else if (rayB || rayF)
         {
@@ -952,44 +940,25 @@ public abstract class PlayerController : MonoBehaviour
             if (rayB && !rayF)
             {
                 pos.y -= rayB.distance / transform.localScale.y;
-///                print("case if!");
             }
             else if (!rayB && rayF)
             {
                 pos.y -= rayF.distance / transform.localScale.y;
-///                print("case elif!");
             }
             else
             {
                 pos.y -= Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
-///                print("case else!");
             }
             transform.position = pos;
             _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, 0);
             Landed = true;
-
-            if (_type != 3)
-            {
-///                Debug.Log("UpdateLanding: rayB || rayF");
-                _type = 3;
-            }
         }
         else
         {
             Landed = false;
-
-            if (_type != 4)
-            {
-///                Debug.Log("UpdateLanding: else");
-                _type = 4;
-            }
         }
         return Landed;
     }
-
-    int _type = 0;
-    public Transform _point;
-
     /// <summary>
     /// 플레이어의 물리 상태를 갱신합니다.
     /// </summary>

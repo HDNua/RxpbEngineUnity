@@ -120,7 +120,7 @@ public class CameraZone : MonoBehaviour
     {
         // 필드를 초기화합니다.
         _mainCamera = Camera.main;
-
+        NewMap map = _CameraZoneParent._sceneManager._database.Map;
 
         // 카메라 존 충돌체 획득을 시도합니다.
         _boxZone = GetComponent<BoxCollider2D>();
@@ -140,10 +140,10 @@ public class CameraZone : MonoBehaviour
             Vector2[] points = GetTetragonPoints(_slopeZone.points);
             float originX = transform.localPosition.x, originY = transform.localPosition.y;
 
-            _top = (originY + Mathf.Max(points[0].y, points[1].y)) * 0.02008f;
-            _left = (originX + Mathf.Min(points[0].x, points[2].x)) * 0.02008f;
-            _right = (originX + Mathf.Max(points[1].x, points[3].x)) * 0.02008f;
-            _bottom = (originY + Mathf.Min(points[2].y, points[3].y)) * 0.02008f;
+            _top = (originY + Mathf.Max(points[0].y, points[1].y)) * map.transform.localScale.x; // 0.02008f;
+            _left = (originX + Mathf.Min(points[0].x, points[2].x)) * map.transform.localScale.y; // 0.02008f;
+            _right = (originX + Mathf.Max(points[1].x, points[3].x)) * map.transform.localScale.y; // 0.02008f;
+            _bottom = (originY + Mathf.Min(points[2].y, points[3].y)) * map.transform.localScale.x; // 0.02008f;
         }
         // 그 외의 경우 예외 처리합니다.
         else

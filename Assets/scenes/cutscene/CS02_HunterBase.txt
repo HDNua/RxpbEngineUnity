@@ -65,4 +65,4 @@
 ]
 (SceneFadeOut 1)
 (WaitForSeconds 1.5)
-(Load 01_Intro)
+(Load 03)

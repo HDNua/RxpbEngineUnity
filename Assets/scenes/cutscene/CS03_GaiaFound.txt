@@ -52,4 +52,4 @@
 ]
 (SceneFadeOut 1)
 (WaitForSeconds 1.5)
-(Load StageSelect)
+(Load Title)

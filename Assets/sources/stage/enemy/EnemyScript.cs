@@ -9,8 +9,15 @@ using System;
 public class EnemyScript : MonoBehaviour
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     Collider2D _collider;
+    /// <summary>
+    /// 
+    /// </summary>
     public Collider2D Collider { get { return _collider; } }
+
 
     #endregion
 
@@ -25,21 +32,21 @@ public class EnemyScript : MonoBehaviour
 
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     /// <summary>
-    /// 
+    /// 캐릭터의 체력입니다.
     /// </summary>
     public int _health;
     /// <summary>
-    /// 
+    /// 캐릭터와 충돌했을 때 플레이어가 입을 대미지입니다.
     /// </summary>
     public int _damage;
 
 
     /// <summary>
-    /// 
+    /// 캐릭터가 사용할 효과음 집합입니다.
     /// </summary>
     public AudioClip[] audioClips;
     /// <summary>
-    /// 
+    /// 캐릭터가 사용할 효과 집합입니다.
     /// </summary>
     public GameObject[] effects;
 
