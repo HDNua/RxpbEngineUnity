@@ -17,7 +17,17 @@ public class LoadingSceneManager : MonoBehaviour
     public ScreenFader fader;
 
 
+    public UnityEngine.UI.Text _text;
+
+
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -29,6 +39,13 @@ public class LoadingSceneManager : MonoBehaviour
 
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -62,6 +79,13 @@ public class LoadingSceneManager : MonoBehaviour
 
 
 
+
+
+
+
+
+
+
     #region 메서드를 정의합니다.
     /// <summary>
     /// 불러오기 코루틴입니다.
@@ -71,26 +95,37 @@ public class LoadingSceneManager : MonoBehaviour
     {
         // 비동기 불러오기를 시작합니다.
         AsyncOperation async = SceneManager.LoadSceneAsync(loadingLevelName);
+//        async.allowSceneActivation = false; // 
+        /// 
 
         // 비동기 불러오기가 완료될 때까지 fader의 동작을 관리합니다.
         while (async.isDone == false)
         {
+            /**
             if (async.progress >= 0.8f)
             {
                 if (fadeRequested == false)
                 {
                     if (fader != null)
                     {
-                        fader.FadeOut();
+                        // fader.FadeOut();
                     }
                     fadeRequested = true;
                 }
             }
-            yield return true;
+            */
+
+            if (async.progress >= 0.9f)
+                break;
+
+            _text.text = async.progress.ToString();
+            yield return null;
         }
 
-        // 
-        async.allowSceneActivation = true;
+        _text.text = "Load Ended!";
+        //        async.allowSceneActivation = true;
+        SceneManager.LoadScene(loadingLevelName);
+        // yield return async;
     }
 
     /// <summary>
@@ -99,6 +134,9 @@ public class LoadingSceneManager : MonoBehaviour
     /// <param name="levelName">불러올 장면의 이름입니다.</param>
     public static void LoadLevel(string levelName)
     {
+        /// SceneManager.LoadScene(levelName);
+        /// return;
+
         loadingLevelName = levelName;
         loadRequested = true;
 

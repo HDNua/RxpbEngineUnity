@@ -65,4 +65,4 @@
 ]
 (SceneFadeOut 1)
 (WaitForSeconds 1.5)
-(Load 03)
+(Load 00_TestStage)
