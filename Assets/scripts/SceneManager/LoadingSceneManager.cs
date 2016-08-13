@@ -17,6 +17,9 @@ public class LoadingSceneManager : MonoBehaviour
     public ScreenFader fader;
 
 
+    /// <summary>
+    /// 진행 상황을 텍스트로 보여주는 개체입니다.
+    /// </summary>
     public UnityEngine.UI.Text _text;
 
 
@@ -32,10 +35,14 @@ public class LoadingSceneManager : MonoBehaviour
 
 
     #region 필드를 정의합니다.
-    bool fadeRequested = false;
-
-    static bool loadRequested = false;
-    static string loadingLevelName = null;
+    /// <summary>
+    /// 불러오기가 요청되었습니다.
+    /// </summary>
+    static bool _loadRequested = false;
+    /// <summary>
+    /// 불러올 장면의 이름입니다.
+    /// </summary>
+    static string _loadingLevelName = null;
 
 
     #endregion
@@ -64,13 +71,13 @@ public class LoadingSceneManager : MonoBehaviour
     void Update()
     {
         // 불러오기 요청이 확인되면
-        if (loadRequested)
+        if (_loadRequested)
         {
             // 불러오기 코루틴을 시작합니다.
             StartCoroutine(LoadMain());
 
             // 확인된 요청에 대한 스위치를 닫습니다.
-            loadRequested = false;
+            _loadRequested = false;
         }
     }
 
@@ -94,39 +101,32 @@ public class LoadingSceneManager : MonoBehaviour
     IEnumerator LoadMain()
     {
         // 비동기 불러오기를 시작합니다.
-        AsyncOperation async = SceneManager.LoadSceneAsync(loadingLevelName);
-//        async.allowSceneActivation = false; // 
-        /// 
+        AsyncOperation async = SceneManager.LoadSceneAsync(_loadingLevelName);
 
         // 비동기 불러오기가 완료될 때까지 fader의 동작을 관리합니다.
         while (async.isDone == false)
         {
-            /**
-            if (async.progress >= 0.8f)
+            if (async.progress >= 0.9f)
             {
-                if (fadeRequested == false)
+                break;
+            }
+            else if (_fadeRequested == false)
+            {
+                if (async.progress >= 0.6f)
                 {
-                    if (fader != null)
-                    {
-                        // fader.FadeOut();
-                    }
-                    fadeRequested = true;
+                    fader.FadeOut();
+                    _fadeRequested = true;
                 }
             }
-            */
 
-            if (async.progress >= 0.9f)
-                break;
-
-            _text.text = async.progress.ToString();
+            /// _text.text = async.progress.ToString();
             yield return null;
         }
 
-        _text.text = "Load Ended!";
-        //        async.allowSceneActivation = true;
-        SceneManager.LoadScene(loadingLevelName);
-        // yield return async;
+        /// _text.text = "Load Ended!";
+        SceneManager.LoadScene(_loadingLevelName);
     }
+
 
     /// <summary>
     /// 장면을 불러옵니다.
@@ -134,15 +134,25 @@ public class LoadingSceneManager : MonoBehaviour
     /// <param name="levelName">불러올 장면의 이름입니다.</param>
     public static void LoadLevel(string levelName)
     {
-        /// SceneManager.LoadScene(levelName);
-        /// return;
-
-        loadingLevelName = levelName;
-        loadRequested = true;
-
-        // 구형 정의를 새로운 정의로 업데이트 합니다.
-        SceneManager.LoadScene("Loading"); // Application.LoadLevel("Loading");
+        _loadingLevelName = levelName;
+        _loadRequested = true;
+        SceneManager.LoadScene("Loading");
     }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region 구형 정의를 보관합니다.
+    bool _fadeRequested = false;
 
 
     #endregion

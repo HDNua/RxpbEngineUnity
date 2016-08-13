@@ -1508,6 +1508,7 @@ public abstract class PlayerController : MonoBehaviour
         StopSliding();
         BlockDashing();
         BlockJumping();
+        BlockAirDashing();
         _movingSpeed = _dashSpeed;
         _Rigidbody.velocity = new Vector2(0, _jumpSpeed);
 
