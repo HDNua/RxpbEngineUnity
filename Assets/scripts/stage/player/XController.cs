@@ -217,10 +217,88 @@ public class XController : PlayerController
     #endregion
 
 
+    readonly int[] SwapIndexesFrom =
+        {
+            0xE02820, 0x602818, 0xD07858, 0xD8A888,
+            0x30C0A0, 0x188868, 0x204860,
+            0xB8C0D0, 0x9098A8, 0x506078, 0x283038,
+            0x3880D8, 0x3068C8, 0x2040A8, 0x203078,
+            0xE86828, 0x803820, 0xD88060, 0xF8E0C8,
+            0xA0F8F8, 0x40C8A8, 0x184058,
+            0xF0F8F8, 0xB0B8C8, 0x485870, 0x182028,
+            0x88D8F8, 0x68A8F8, 0x2048B0, 0x182888,
+        };
+    readonly int[] SwapIndexesTo1 =
+        {
+            0xE02820, 0x602818, 0xD07858, 0xD8A888,
+            0xF0D898, 0xC8A040, 0x804040,
+            0xD0C0B8, 0xA89890, 0x685040, 0x283038,
+            0xD88830, 0xC86818, 0x984810, 0x703010,
+            0xE02820, 0x602818, 0xD07858, 0xD8A888,
+            0xF0D898, 0xC8A040, 0x804040,
+            0xD0C0B8, 0xA89890, 0x685040, 0x283038,
+            0xD88830, 0xC86818, 0x984810, 0x703010,
+        };
 
 
+    Texture2D _colorSwapTexture;
+    Color[] _spriteColors;
+    void InitColorSwapTextures()
+    {
+        Texture2D colorSwapTex = new Texture2D(SwapIndexesFrom.Length, 1, TextureFormat.RGBA32, false, false);
+        colorSwapTex.filterMode = FilterMode.Point;
+
+        for (int i = 0; i < colorSwapTex.width; ++i)
+            colorSwapTex.SetPixel(i, 0, new Color(0,0,0,0));
+        colorSwapTex.Apply();
+
+        _Renderer.material.SetTexture("_SwapTex", colorSwapTex);
+        // _Renderer.sortingLayerName = "Player";
+
+        _spriteColors = new Color[colorSwapTex.width];
+        _colorSwapTexture = colorSwapTex;
+    }
+
+    public static Color ColorFromInt(int c, float alpha = 1.0f)
+    {
+        int r = (c >> 16) & 0x000000FF;
+        int g = (c >> 8) & 0x000000FF;
+        int b = c & 0x000000FF;
+
+        Color ret = ColorFromIntRGB(r, g, b);
+        ret.a = alpha;
+
+        return ret;
+    }
+
+    public static Color ColorFromIntRGB(int r, int g, int b)
+    {
+        return new Color((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, 1.0f);
+    }
 
 
+    void ChangeColor(int index)
+    {
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        for (int i = 0; i < SwapIndexesFrom.Length; ++i)
+        {
+            Color color = ColorFromInt(SwapIndexesFrom[i]);
+            _colorSwapTexture.SetPixel(i, 0, color);
+        }
+        _colorSwapTexture.SetPixel(index, 0, Color.green);
+        _colorSwapTexture.Apply();
+
+        // _Renderer.color = color;
+    }
+
+    public int _testChangeColor;
+    void TestChangeColor()
+    {
+        if (Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            ChangeColor(_testChangeColor);
+        }
+    }
 
 
 
@@ -238,6 +316,9 @@ public class XController : PlayerController
     /// </summary>
     void Start()
     {
+        InitColorSwapTextures();
+
+
 
     }
     /// <summary>
@@ -251,6 +332,9 @@ public class XController : PlayerController
         {
             return;
         }
+
+        TestChangeColor();
+
 
         // 화면 갱신에 따른 변화를 추적합니다.
         if (Dashing) // 대쉬 상태에서 잔상을 만듭니다.

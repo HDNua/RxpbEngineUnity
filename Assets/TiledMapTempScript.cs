@@ -19,6 +19,7 @@ public class TiledMapTempScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.Keypad4))
         {
             SceneManager.LoadScene("04");
@@ -31,5 +32,6 @@ public class TiledMapTempScript : MonoBehaviour
         {
             SceneManager.LoadScene("06");
         }
+        */
     }
 }

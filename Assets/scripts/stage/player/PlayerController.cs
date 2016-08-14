@@ -754,6 +754,10 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void LateUpdate()
     {
+        // NOTE
+        return;
+
+
         if (IsAlive() && Invencible && Damaged == false)
         {
             _Renderer.color = _playerColor;

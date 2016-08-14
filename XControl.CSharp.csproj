@@ -135,14 +135,14 @@
     <None Include="Assets\Tiled2Unity\Shaders\shaTiledMap.shader" />
     <None Include="Assets\Tiled2Unity\Textures\_ReadMe.txt" />
     <None Include="Assets\Tiled2Unity\Tiled2Unity.export.txt" />
-    <None Include="Assets\resources\materials\NewShader.shader" />
     <None Include="Assets\scenes\cutscene\CS00_PreviousStory.txt" />
     <None Include="Assets\scenes\cutscene\CS01_Prologue.txt" />
     <None Include="Assets\scenes\cutscene\CS02_HunterBase.txt" />
     <None Include="Assets\scenes\cutscene\CS03_GaiaFound.txt" />
     <None Include="Assets\scenes\cutscene\CS04_RegeneratorComplete.txt" />
     <None Include="Assets\scenes\cutscene\CS05_GreyLab.txt" />
-    <None Include="Assets\shaders\FirstShader.shader" />
+    <None Include="Assets\shaders\ShaderX.shader" />
+    <None Include="Assets\shaders\ShaderX2.shader" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>
