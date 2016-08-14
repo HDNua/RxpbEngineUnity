@@ -73,7 +73,7 @@
                 fixed4 colorTexture = tex2D(_MainTex, uv);
                 if (_AlphaSplitEnabled)
                 {
-                    colorTexture.a = tex2D(_AlphaTex, uv).r;
+                    colorTexture.a = tex2D(_AlphaTex, uv).b;
                 }
                 return colorTexture;
             }

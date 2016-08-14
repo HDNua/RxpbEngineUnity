@@ -217,6 +217,18 @@ public class XController : PlayerController
     #endregion
 
 
+
+
+
+
+
+
+
+
+    #region Color 테스트
+    /// <summary>
+    /// 
+    /// </summary>
     readonly int[] SwapIndexesFrom =
         {
             0xE02820, 0x602818, 0xD07858, 0xD8A888,
@@ -228,6 +240,9 @@ public class XController : PlayerController
             0xF0F8F8, 0xB0B8C8, 0x485870, 0x182028,
             0x88D8F8, 0x68A8F8, 0x2048B0, 0x182888,
         };
+    /// <summary>
+    /// 
+    /// </summary>
     readonly int[] SwapIndexesTo1 =
         {
             0xE02820, 0x602818, 0xD07858, 0xD8A888,
@@ -241,15 +256,24 @@ public class XController : PlayerController
         };
 
 
+    /// <summary>
+    /// 
+    /// </summary>
     Texture2D _colorSwapTexture;
+    /// <summary>
+    /// 
+    /// </summary>
     Color[] _spriteColors;
+    /// <summary>
+    /// 
+    /// </summary>
     void InitColorSwapTextures()
     {
-        Texture2D colorSwapTex = new Texture2D(SwapIndexesFrom.Length, 1, TextureFormat.RGBA32, false, false);
+        Texture2D colorSwapTex = new Texture2D(256, 1, TextureFormat.RGBA32, false, false);
         colorSwapTex.filterMode = FilterMode.Point;
 
         for (int i = 0; i < colorSwapTex.width; ++i)
-            colorSwapTex.SetPixel(i, 0, new Color(0,0,0,0));
+            colorSwapTex.SetPixel(i, 0, new Color(0, 0, 0, 0));
         colorSwapTex.Apply();
 
         _Renderer.material.SetTexture("_SwapTex", colorSwapTex);
@@ -258,7 +282,12 @@ public class XController : PlayerController
         _spriteColors = new Color[colorSwapTex.width];
         _colorSwapTexture = colorSwapTex;
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="c"></param>
+    /// <param name="alpha"></param>
+    /// <returns></returns>
     public static Color ColorFromInt(int c, float alpha = 1.0f)
     {
         int r = (c >> 16) & 0x000000FF;
@@ -270,28 +299,48 @@ public class XController : PlayerController
 
         return ret;
     }
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="r"></param>
+    /// <param name="g"></param>
+    /// <param name="b"></param>
+    /// <returns></returns>
     public static Color ColorFromIntRGB(int r, int g, int b)
     {
         return new Color((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, 1.0f);
     }
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
     void ChangeColor(int index)
     {
         SpriteRenderer renderer = GetComponent<SpriteRenderer>();
         for (int i = 0; i < SwapIndexesFrom.Length; ++i)
         {
-            Color color = ColorFromInt(SwapIndexesFrom[i]);
-            _colorSwapTexture.SetPixel(i, 0, color);
+            int fromIndex = SwapIndexesFrom[i];
+            int toIndex = SwapIndexesTo1[i];
+            Color color = ColorFromInt(toIndex);
+            _colorSwapTexture.SetPixel(fromIndex & 0xFF, 0, color);
         }
-        _colorSwapTexture.SetPixel(index, 0, Color.green);
-        _colorSwapTexture.Apply();
 
+
+        // _colorSwapTexture.SetPixel(index, 0, Color.green);
+        _colorSwapTexture.Apply();
         // _Renderer.color = color;
     }
 
+
+    /// <summary>
+    /// 
+    /// </summary>
     public int _testChangeColor;
+    /// <summary>
+    /// 
+    /// </summary>
     void TestChangeColor()
     {
         if (Input.GetKeyDown(KeyCode.Keypad1))
@@ -299,6 +348,70 @@ public class XController : PlayerController
             ChangeColor(_testChangeColor);
         }
     }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    void UpdateColor()
+    {
+        if (_testChangeColor == 1)
+        {
+            Texture2D texture = _Renderer.sprite.texture;
+            Color[] colors = texture.GetPixels();
+            Color[] pixels = new Color[colors.Length];
+            int k = 0;
+
+            for (int i = 0, len = colors.Length; i < len; ++i)
+            {
+                Color color = colors[i];
+                if (color.a == 1)
+                {
+                    for (int j = 0, jlen = SwapIndexesFrom.Length; j < jlen; ++j)
+                    {
+                        Color colorDst = ColorFromInt(SwapIndexesFrom[j]);
+
+                        if (Mathf.Approximately(color.r, colorDst.r) &&
+                            Mathf.Approximately(color.g, colorDst.g) &&
+                            Mathf.Approximately(color.b, colorDst.b) &&
+                            Mathf.Approximately(color.a, colorDst.a))
+                        {
+                            pixels[k] = ColorFromInt(SwapIndexesTo1[j]);
+                            break;
+                        }
+                    }
+                    k++;
+                }
+                else
+                {
+                    pixels[k++] = color;
+                }
+            }
+
+
+
+            Texture2D cloneTexture = new Texture2D(texture.width, texture.height);
+            cloneTexture.SetPixels(pixels);
+            cloneTexture.Apply();
+
+            MaterialPropertyBlock block = new MaterialPropertyBlock();
+            block.SetTexture("_MainTex", cloneTexture);
+            _Renderer.SetPropertyBlock(block);
+        }
+        else
+        {
+
+        }
+    }
+
+
+    #endregion
+
+
+
+
+
+
 
 
 
@@ -317,9 +430,6 @@ public class XController : PlayerController
     void Start()
     {
         InitColorSwapTextures();
-
-
-
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -727,6 +837,8 @@ public class XController : PlayerController
         }
 
         UpdateState();
+
+        UpdateColor();
     }
 
 
