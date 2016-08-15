@@ -115,6 +115,7 @@
     <Compile Include="Assets\scripts\stage\player\AttackScript.cs" />
     <Compile Include="Assets\scripts\stage\player\DeadEffectScript.cs" />
     <Compile Include="Assets\scripts\stage\player\PlayerController.cs" />
+    <Compile Include="Assets\scripts\stage\player\XBodyColors.cs" />
     <Compile Include="Assets\scripts\stage\player\XBusterScript.cs" />
     <Compile Include="Assets\scripts\stage\player\XController.cs" />
     <Compile Include="Assets\scripts\stage\player\ZController.cs" />
@@ -141,7 +142,6 @@
     <None Include="Assets\scenes\cutscene\CS03_GaiaFound.txt" />
     <None Include="Assets\scenes\cutscene\CS04_RegeneratorComplete.txt" />
     <None Include="Assets\scenes\cutscene\CS05_GreyLab.txt" />
-    <None Include="Assets\scripts\stage\player\test.txt" />
     <None Include="Assets\shaders\ShaderX.shader" />
     <None Include="Assets\shaders\ShaderX2.shader" />
   </ItemGroup>

@@ -757,7 +757,7 @@ public abstract class PlayerController : MonoBehaviour
         // NOTE
         return;
 
-
+        /**
         if (IsAlive() && Invencible && Damaged == false)
         {
             _Renderer.color = _playerColor;
@@ -766,6 +766,7 @@ public abstract class PlayerController : MonoBehaviour
         {
             _Renderer.color = Color.white;
         }
+        */
     }
 
 
