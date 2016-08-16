@@ -85,6 +85,35 @@ public class EffectScript : MonoBehaviour
         }
     }
 
+
+
+    bool _requested = false;
+    Color _currentColor;
+    Color[] _currentPalette = null;
+    /// <summary>
+    /// 
+    /// </summary>
+    void LateUpdate()
+    {
+        if (_currentPalette != null)
+        {
+            /// UpdateTextureColor();
+        }
+
+
+        if (_requested)
+        {
+            UpdateTextureColor(_currentColor);
+        }
+    }
+
+    private void UpdateTextureColor(Color _currentColor)
+    {
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        renderer.color = _currentColor;
+    }
+
+
     #endregion
 
 
@@ -110,6 +139,63 @@ public class EffectScript : MonoBehaviour
 
 
 
+
+
+
+    #region 보조 메서드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    void UpdateTextureColor()
+    {
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        Texture2D texture = renderer.sprite.texture;
+        Color[] colors = texture.GetPixels();
+        Color[] pixels = new Color[colors.Length];
+        Color[] DefaultPalette = RXColors.XDefaultChargeEffectColorPalette;
+
+
+        // 모든 픽셀을 돌면서 색상을 업데이트합니다.
+        for (int pixelIndex = 0, pixelCount = colors.Length; pixelIndex < pixelCount; ++pixelIndex)
+        {
+            Color color = colors[pixelIndex];
+            pixels[pixelIndex] = color;
+            if (color.a == 1)
+            {
+                for (int targetIndex = 0, targetPixelCount = DefaultPalette.Length; targetIndex < targetPixelCount; ++targetIndex)
+                {
+                    Color colorDst = DefaultPalette[targetIndex];
+                    if (Mathf.Approximately(color.r, colorDst.r) &&
+                        Mathf.Approximately(color.g, colorDst.g) &&
+                        Mathf.Approximately(color.b, colorDst.b) &&
+                        Mathf.Approximately(color.a, colorDst.a))
+                    {
+                        pixels[pixelIndex] = _currentPalette[targetIndex];
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                pixels[pixelIndex] = color;
+            }
+        }
+
+
+        // 텍스쳐를 복제하고 새 픽셀 팔레트로 덮어씌웁니다.
+        Texture2D cloneTexture = new Texture2D(texture.width, texture.height);
+        cloneTexture.filterMode = FilterMode.Point;
+        cloneTexture.SetPixels(pixels);
+        cloneTexture.Apply();
+
+        // 새 텍스쳐를 렌더러에 반영합니다.
+        MaterialPropertyBlock block = new MaterialPropertyBlock();
+        block.SetTexture("_MainTex", cloneTexture);
+        renderer.SetPropertyBlock(block);
+    }
+
+
+    #endregion
 
 
 
@@ -171,6 +257,24 @@ public class EffectScript : MonoBehaviour
         AttachSound(audioClip);
         PlayEffectSound();
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="colorPalette"></param>
+    public void RequestUpdateTexture(Color[] colorPalette)
+    {
+        _currentPalette = colorPalette;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="color"></param>
+    public void RequestUpdateTexture(Color color)
+    {
+        _currentColor = color;
+        _requested = true;
+    }
+
 
     #endregion
 }

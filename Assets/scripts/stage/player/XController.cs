@@ -215,6 +215,16 @@ public class XController : PlayerController
     }
 
 
+    /// <summary>
+    /// 현재 무기 상태입니다. 0은 기본입니다.
+    /// </summary>
+    int _weaponState = 0;
+    /// <summary>
+    /// 현재 색상 팔레트입니다.
+    /// </summary>
+    Color[] _currentPalette;
+
+
     #endregion
 
 
@@ -239,8 +249,7 @@ public class XController : PlayerController
     /// </summary>
     void Start()
     {
-        /// DEPRECATED: 다음 커밋에서 삭제할 예정입니다.
-        /// InitColorSwapTextures();
+
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -661,120 +670,8 @@ public class XController : PlayerController
         UpdateState();
 
 
-        /**
-        Handy: 다음 커밋에서 삭제할 예정입니다.
-
-        // 플레이어가 차지 중이라면 색을 업데이트합니다.
-        if (_chargeTime > 0)
-        {
-            _Renderer.color = PlayerColor;
-        }
-
-        // UpdateState();
-        */
-
         // 엑스의 색상을 업데이트합니다.
         UpdateColor();
-    }
-
-
-
-
-    /// <summary>
-    /// 현재 무기 상태입니다. 0은 기본입니다.
-    /// </summary>
-    int _weaponState = 0;
-    /// <summary>
-    /// 현재 색상 팔레트입니다.
-    /// </summary>
-    Color[] _currentPalette;
-
-
-    /// <summary>
-    /// 무기를 변경합니다.
-    /// </summary>
-    /// <param name="weaponIndex"></param>
-    void ChangeWeapon(int weaponIndex)
-    {
-        Color[] targetPalette;
-        switch (weaponIndex)
-        {
-            case 1:
-                targetPalette = XBodyColors.Weapon1Palette;
-                Shot();
-                break;
-
-            default:
-                targetPalette = XBodyColors.DefaultPalette;
-                break;
-        }
-
-        _weaponState = weaponIndex;
-        _currentPalette = targetPalette;
-    }
-
-
-    /// <summary>
-    /// 엑스의 색상을 업데이트합니다.
-    /// </summary>
-    void UpdateColor()
-    {
-        if (_weaponState != 0)
-        {
-            UpdateColor(_currentPalette);
-        }
-    }
-    /// <summary>
-    /// 엑스의 색상을 주어진 팔레트로 업데이트합니다.
-    /// </summary>
-    /// <param name="_currentPalette">현재 팔레트입니다.</param>
-    void UpdateColor(Color[] currentPalette)
-    {
-        Texture2D texture = _Renderer.sprite.texture;
-        Color[] colors = texture.GetPixels();
-        Color[] pixels = new Color[colors.Length];
-        /// int k = 0;
-
-
-        Color[] DefaultPalette = XBodyColors.DefaultPalette;
-        /// Color[] Weapon1Palette = XBodyColors.Weapon1Palette;
-
-
-        // 모든 픽셀을 돌면서 색상을 업데이트합니다.
-        for (int pixelIndex = 0, pixelCount = colors.Length; pixelIndex < pixelCount; ++pixelIndex)
-        {
-            Color color = colors[pixelIndex];
-            if (color.a == 1)
-            {
-                for (int targetIndex = 0, targetPixelCount = DefaultPalette.Length; targetIndex < targetPixelCount; ++targetIndex)
-                {
-                    Color colorDst = DefaultPalette[targetIndex]; // ColorFromInt(SwapIndexesFrom[targetIndex]);
-                    if (Mathf.Approximately(color.r, colorDst.r) &&
-                        Mathf.Approximately(color.g, colorDst.g) &&
-                        Mathf.Approximately(color.b, colorDst.b) &&
-                        Mathf.Approximately(color.a, colorDst.a))
-                    {
-                        pixels[pixelIndex] = currentPalette[targetIndex]; // ColorFromInt(SwapIndexesTo1[targetIndex]);
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                pixels[pixelIndex] = color;
-            }
-        }
-
-
-        // 텍스쳐를 복제하고 새 픽셀 팔레트로 덮어씌웁니다.
-        Texture2D cloneTexture = new Texture2D(texture.width, texture.height);
-        cloneTexture.SetPixels(pixels);
-        cloneTexture.Apply();
-
-        // 새 텍스쳐를 렌더러에 반영합니다.
-        MaterialPropertyBlock block = new MaterialPropertyBlock();
-        block.SetTexture("_MainTex", cloneTexture);
-        _Renderer.SetPropertyBlock(block);
     }
 
 
@@ -1053,6 +950,43 @@ public class XController : PlayerController
     /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
     IEnumerator ChargeCoroutine()
     {
+        /// float startTime = 0;
+        float waitTime = 0.3f;
+
+        while (_chargeTime >= 0)
+        {
+            if (_chargeTime < CHARGE_LEVEL[1])
+            {
+
+            }
+            else
+            {
+                /// int cTime = (int)(startTime * 10) % 3;
+                if (PlayerColor == Color.white)
+                {
+                    PlayerColor = (_chargeTime < CHARGE_LEVEL[2]) ?
+                        Color.cyan : Color.green;
+                        // RXColors.XNormalChargeEffectColorPalette1[0] : RXColors.XNormalChargeEffectColorPalette2[0];
+                    // waitTime = 0.2f;
+                }
+                else
+                {
+                    PlayerColor = Color.white;
+                    // waitTime = 0.1f;
+                }
+                /// startTime += Time.fixedDeltaTime;
+            }
+            // yield return new WaitForSeconds(waitTime);
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+            yield return new WaitForEndOfFrame();
+
+            // yield return new WaitForEndOfFrame();
+            // yield return new WaitForEndOfFrame();
+        }
+        yield break;
+
+        /*
         float startTime = 0;
         while (_chargeTime >= 0)
         {
@@ -1079,6 +1013,7 @@ public class XController : PlayerController
         }
 
         yield return null;
+        */
     }
 
 
@@ -1575,21 +1510,6 @@ public class XController : PlayerController
 
     #region 보조 메서드를 정의합니다.
     /// <summary>
-    /// 두 색상이 서로 같은 색인지 확인합니다.
-    /// </summary>
-    /// <param name="color1">비교할 색입니다.</param>
-    /// <param name="color2">비교할 색입니다.</param>
-    /// <returns>두 색의 rgba 값이 서로 같으면 참입니다.</returns>
-    bool IsSameColor(Color color1, Color color2)
-    {
-        return (color1.r == color2.r
-            && color1.g == color2.g
-            && color1.b == color2.b
-            && color1.a == color2.a);
-    }
-
-
-    /// <summary>
     /// 재생중인 애니메이션을 특정 시점부터 다시 재생합니다.
     /// </summary>
     /// <param name="fTime">다시 재생할 정규화된 시간입니다.</param>
@@ -1606,6 +1526,159 @@ public class XController : PlayerController
     void UpdateShotRoutine()
     {
 
+    }
+
+
+    /// <summary>
+    /// 무기를 변경합니다.
+    /// </summary>
+    /// <param name="weaponIndex"></param>
+    void ChangeWeapon(int weaponIndex)
+    {
+        Color[] targetPalette;
+        switch (weaponIndex)
+        {
+            case 1:
+                targetPalette = RXColors.Weapon1Palette;
+                Shot();
+                break;
+
+            default:
+                targetPalette = RXColors.DefaultPalette;
+                break;
+        }
+
+        _weaponState = weaponIndex;
+        _currentPalette = targetPalette;
+    }
+
+
+    /// <summary>
+    /// 엑스의 색상을 업데이트합니다.
+    /// </summary>
+    void UpdateColor()
+    {
+        // 웨폰을 장착한 상태라면
+        if (_weaponState != 0)
+        {
+            // 바디 색상을 맞춥니다.
+            UpdateBodyColor(_currentPalette);
+        }
+
+
+        // 플레이어가 차지 중이라면 색을 업데이트합니다.
+        if (_chargeTime > 0)
+        {
+            // 렌더러 색상을 업데이트합니다.
+            _Renderer.color = PlayerColor;
+
+            // 차지 효과 색상을 업데이트 합니다.
+            if (_chargeEffect2 != null)
+            {
+                UpdateTextureColor(_chargeEffect2, RXColors.XNormalChargeEffectColorPalette2);
+                UpdateTextureColor(_chargeEffect1, RXColors.XNormalChargeEffectColorPalette2);
+            }
+            else if (_chargeEffect1 != null)
+            {
+                UpdateTextureColor(_chargeEffect1, RXColors.XNormalChargeEffectColorPalette1);
+            }
+        }
+        else
+        {
+            _Renderer.color = Color.white;
+        }
+    }
+
+
+    /// <summary>
+    /// 엑스의 색상을 주어진 팔레트로 업데이트합니다.
+    /// </summary>
+    /// <param name="_currentPalette">현재 팔레트입니다.</param>
+    void UpdateBodyColor(Color[] currentPalette)
+    {
+        Texture2D texture = _Renderer.sprite.texture;
+        Color[] colors = texture.GetPixels();
+        Color[] pixels = new Color[colors.Length];
+        Color[] DefaultPalette = RXColors.DefaultPalette;
+
+
+        // 모든 픽셀을 돌면서 색상을 업데이트합니다.
+        for (int pixelIndex = 0, pixelCount = colors.Length; pixelIndex < pixelCount; ++pixelIndex)
+        {
+            Color color = colors[pixelIndex];
+            if (color.a == 1)
+            {
+                for (int targetIndex = 0, targetPixelCount = DefaultPalette.Length; targetIndex < targetPixelCount; ++targetIndex)
+                {
+                    Color colorDst = DefaultPalette[targetIndex];
+                    if (Mathf.Approximately(color.r, colorDst.r) &&
+                        Mathf.Approximately(color.g, colorDst.g) &&
+                        Mathf.Approximately(color.b, colorDst.b) &&
+                        Mathf.Approximately(color.a, colorDst.a))
+                    {
+                        pixels[pixelIndex] = currentPalette[targetIndex];
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                pixels[pixelIndex] = color;
+            }
+        }
+
+
+        // 텍스쳐를 복제하고 새 픽셀 팔레트로 덮어씌웁니다.
+        Texture2D cloneTexture = new Texture2D(texture.width, texture.height);
+        cloneTexture.filterMode = FilterMode.Point;
+        cloneTexture.SetPixels(pixels);
+        cloneTexture.Apply();
+
+        // 새 텍스쳐를 렌더러에 반영합니다.
+        MaterialPropertyBlock block = new MaterialPropertyBlock();
+        block.SetTexture("_MainTex", cloneTexture);
+        _Renderer.SetPropertyBlock(block);
+    }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+    #region 정적 보조 메서드를 정의합니다.
+    /// <summary>
+    /// 두 색상이 서로 같은 색인지 확인합니다.
+    /// </summary>
+    /// <param name="color1">비교할 색입니다.</param>
+    /// <param name="color2">비교할 색입니다.</param>
+    /// <returns>두 색의 rgba 값이 서로 같으면 참입니다.</returns>
+    static bool IsSameColor(Color color1, Color color2)
+    {
+        return (color1.r == color2.r
+            && color1.g == color2.g
+            && color1.b == color2.b
+            && color1.a == color2.a);
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="chargeEffect"></param>
+    /// <param name="colorPalette"></param>
+    void UpdateTextureColor(GameObject chargeEffect, Color[] colorPalette)
+    {
+        EffectScript effect = chargeEffect.GetComponent<EffectScript>();
+        // effect.RequestUpdateTexture(colorPalette);
+
+        Color color = (_chargeTime < CHARGE_LEVEL[2]) ? Color.cyan : Color.green;
+        effect.RequestUpdateTexture(color);
     }
 
 
@@ -1650,140 +1723,6 @@ public class XController : PlayerController
         {
             AnimatorClipInfo clipInfo = _clips[clipKey];
             Console.WriteLine(clipInfo.clip.length);
-        }
-    }
-
-
-    [Obsolete("XBodyColors class로 이동하였습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    static readonly int[] SwapIndexesFrom =
-        {
-            0xE02820, 0x602818, 0xD07858, 0xD8A888,
-            0x30C0A0, 0x188868, 0x204860,
-            0xB8C0D0, 0x9098A8, 0x506078, 0x283038,
-            0x3880D8, 0x3068C8, 0x2040A8, 0x203078,
-            0xE86828, 0x803820, 0xD88060, 0xF8E0C8,
-            0xA0F8F8, 0x40C8A8, 0x184058,
-            0xF0F8F8, 0xB0B8C8, 0x485870, 0x182028,
-            0x88D8F8, 0x68A8F8, 0x2048B0, 0x182888,
-        };
-    [Obsolete("XBodyColors class로 이동하였습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    static readonly int[] SwapIndexesTo1 =
-        {
-            0xE02820, 0x602818, 0xD07858, 0xD8A888,
-            0xF0D898, 0xC8A040, 0x804040,
-            0xD0C0B8, 0xA89890, 0x685040, 0x283038,
-            0xD88830, 0xC86818, 0x984810, 0x703010,
-            0xE02820, 0x602818, 0xD07858, 0xD8A888,
-            0xF0D898, 0xC8A040, 0x804040,
-            0xD0C0B8, 0xA89890, 0x685040, 0x283038,
-            0xD88830, 0xC86818, 0x984810, 0x703010,
-        };
-
-
-    [Obsolete("XBodyColors class로 이동하였습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    Texture2D _colorSwapTexture;
-    [Obsolete("XBodyColors class로 이동하였습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    Color[] _spriteColors;
-    [Obsolete("XBodyColors class로 이동하였습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    void InitColorSwapTextures()
-    {
-        Texture2D colorSwapTex = new Texture2D(256, 1, TextureFormat.RGBA32, false, false);
-        colorSwapTex.filterMode = FilterMode.Point;
-
-        for (int i = 0; i < colorSwapTex.width; ++i)
-            colorSwapTex.SetPixel(i, 0, new Color(0, 0, 0, 0));
-        colorSwapTex.Apply();
-
-        _Renderer.material.SetTexture("_SwapTex", colorSwapTex);
-        // _Renderer.sortingLayerName = "Player";
-
-        _spriteColors = new Color[colorSwapTex.width];
-        _colorSwapTexture = colorSwapTex;
-    }
-
-
-    [Obsolete("XBodyColors class로 이동하였습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="c"></param>
-    /// <param name="alpha"></param>
-    /// <returns></returns>
-    public static Color ColorFromInt(int c, float alpha = 1.0f)
-    {
-        int r = (c >> 16) & 0x000000FF;
-        int g = (c >> 8) & 0x000000FF;
-        int b = c & 0x000000FF;
-
-        Color ret = ColorFromIntRGB(r, g, b);
-        ret.a = alpha;
-
-        return ret;
-    }
-    [Obsolete("XBodyColors class로 이동하였습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="r"></param>
-    /// <param name="g"></param>
-    /// <param name="b"></param>
-    /// <returns></returns>
-    public static Color ColorFromIntRGB(int r, int g, int b)
-    {
-        return new Color((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, 1.0f);
-    }
-    [Obsolete("XBodyColors class로 이동하였습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="index"></param>
-    void ChangeColor(int index)
-    {
-        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-        for (int i = 0; i < SwapIndexesFrom.Length; ++i)
-        {
-            int fromIndex = SwapIndexesFrom[i];
-            int toIndex = SwapIndexesTo1[i];
-            Color color = ColorFromInt(toIndex);
-            _colorSwapTexture.SetPixel(fromIndex & 0xFF, 0, color);
-        }
-
-
-        // _colorSwapTexture.SetPixel(index, 0, Color.green);
-        _colorSwapTexture.Apply();
-        // _Renderer.color = color;
-    }
-
-
-    [Obsolete("관련 코드가 XBodyColors class로 이동하였습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    public int _testChangeColor;
-    [Obsolete("관련 코드가 XBodyColors class로 이동하였습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    void TestChangeColor()
-    {
-        if (Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            ChangeColor(_testChangeColor);
         }
     }
 

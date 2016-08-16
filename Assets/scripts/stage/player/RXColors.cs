@@ -6,13 +6,13 @@ using System.Collections;
 /// <summary>
 /// 엑스 캐릭터의 바디 색상을 관리합니다.
 /// </summary>
-public static class XBodyColors
+public static class RXColors
 {
     #region 상수를 정의합니다.
     /// <summary>
     /// 기본 색상 값 배열입니다.
     /// </summary>
-    static readonly int[] DEFAULT_COLOR_PALETTE =
+    static readonly int[] X_DEFAULT_COLOR_PALETTE =
         {
             0xE02820, 0x602818, 0xD07858, 0xD8A888,
             0x30C0A0, 0x188868, 0x204860,
@@ -26,7 +26,7 @@ public static class XBodyColors
     /// <summary>
     /// 무기 1 색상 값 배열입니다.
     /// </summary>
-    static readonly int[] WEAPON1_COLOR_PALETTE =
+    static readonly int[] X_WEAPON1_COLOR_PALETTE =
         {
             0xE02820, 0x602818, 0xD07858, 0xD8A888,
             0xF0D898, 0xC8A040, 0x804040,
@@ -37,6 +37,29 @@ public static class XBodyColors
             0xD0C0B8, 0xA89890, 0x685040, 0x283038,
             0xD88830, 0xC86818, 0x984810, 0x703010,
         };
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    static readonly int[] X_DEFAULT_CHARGE_COLOR_PALETTE =
+    {
+        0x3068C8, 0x3880D8, 0x9098A8, 0xB8C0D0
+    };
+    /// <summary>
+    /// 
+    /// </summary>
+    static readonly int[] X_NORMAL1_CHARGE_COLOR_PALETTE =
+    {
+        0x4898F8, 0x58B8F8, 0xC0F0F8, 0xB8C0D0
+    };
+    /// <summary>
+    /// 
+    /// </summary>
+    static readonly int[] X_NORMAL2_CHARGE_COLOR_PALETTE =
+    {
+        0x38E888, 0x48F8A8, 0x80B8A8, 0xB8F8E8
+    };
 
 
     #endregion
@@ -73,6 +96,39 @@ public static class XBodyColors
     {
         get { return _weapon1Palette; }
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    static readonly Color[] _XDefaultChargeEffectColorPalette;
+    /// <summary>
+    /// 
+    /// </summary>
+    public static Color[] XDefaultChargeEffectColorPalette
+    {
+        get { return _XDefaultChargeEffectColorPalette; }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    static readonly Color[] _XNormalChargeEffectColorPalette1;
+    /// <summary>
+    /// 
+    /// </summary>
+    public static Color[] XNormalChargeEffectColorPalette1
+    {
+        get { return _XNormalChargeEffectColorPalette1; }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    static readonly Color[] _XNormalChargeEffectColorPalette2;
+    /// <summary>
+    /// 
+    /// </summary>
+    public static Color[] XNormalChargeEffectColorPalette2
+    {
+        get { return _XNormalChargeEffectColorPalette2; }
+    }
 
 
     #endregion
@@ -90,21 +146,39 @@ public static class XBodyColors
     /// <summary>
     /// 엑스 캐릭터의 바디 색상을 관리합니다.
     /// </summary>
-    static XBodyColors()
+    static RXColors()
     {
-        int PALETTE_COUNT = DEFAULT_COLOR_PALETTE.Length;
+        // 사용할 변수를 선언합니다.
+        int PALETTE_COUNT = X_DEFAULT_COLOR_PALETTE.Length;
+        Color[] defaultPalette;
+        Color[] weapon1Palette;
 
-        Color[] defaultPalette = new Color[PALETTE_COUNT];
-        Color[] weapon1Palette = new Color[PALETTE_COUNT];
 
+        // 팔레트를 초기화합니다.
+        defaultPalette = new Color[PALETTE_COUNT];
+        weapon1Palette = new Color[PALETTE_COUNT];
         for (int i = 0; i < PALETTE_COUNT; ++i)
         {
-            defaultPalette[i] = ColorFromInt(DEFAULT_COLOR_PALETTE[i]);
-            weapon1Palette[i] = ColorFromInt(WEAPON1_COLOR_PALETTE[i]);
+            defaultPalette[i] = ColorFromInt(X_DEFAULT_COLOR_PALETTE[i]);
+            weapon1Palette[i] = ColorFromInt(X_WEAPON1_COLOR_PALETTE[i]);
         }
-
         _defaultPalette = defaultPalette;
         _weapon1Palette = weapon1Palette;
+
+
+        // 
+        Color[] p1 = new Color[4];
+        Color[] p2 = new Color[4];
+        Color[] p3 = new Color[4];
+        for (int i = 0; i < 4; ++i)
+        {
+            p1[i] = ColorFromInt(X_DEFAULT_CHARGE_COLOR_PALETTE[i]);
+            p2[i] = ColorFromInt(X_NORMAL1_CHARGE_COLOR_PALETTE[i]);
+            p3[i] = ColorFromInt(X_NORMAL2_CHARGE_COLOR_PALETTE[i]);
+        }
+        _XDefaultChargeEffectColorPalette = p1;
+        _XNormalChargeEffectColorPalette1 = p2;
+        _XNormalChargeEffectColorPalette2 = p3;
     }
 
 

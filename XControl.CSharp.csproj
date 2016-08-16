@@ -115,7 +115,7 @@
     <Compile Include="Assets\scripts\stage\player\AttackScript.cs" />
     <Compile Include="Assets\scripts\stage\player\DeadEffectScript.cs" />
     <Compile Include="Assets\scripts\stage\player\PlayerController.cs" />
-    <Compile Include="Assets\scripts\stage\player\XBodyColors.cs" />
+    <Compile Include="Assets\scripts\stage\player\RXColors.cs" />
     <Compile Include="Assets\scripts\stage\player\XBusterScript.cs" />
     <Compile Include="Assets\scripts\stage\player\XController.cs" />
     <Compile Include="Assets\scripts\stage\player\ZController.cs" />
