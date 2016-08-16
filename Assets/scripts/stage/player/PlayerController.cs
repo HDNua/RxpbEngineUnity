@@ -12,12 +12,33 @@ public abstract class PlayerController : MonoBehaviour
 {
     #region 상수를 정의합니다.
     /// <summary>
+    /// 1/30 프레임 간의 시간입니다.
+    /// </summary>
+    public const float TIME_30FPS = 0.0333333f;
+    /// <summary>
+    /// 1/60 프레임 간의 시간입니다.
+    /// </summary>
+    public const float TIME_60FPS = 0.0166667f;
+
+
+    /// <summary>
+    /// 무적 상태가 유지되는 시간입니다.
+    /// </summary>
+    protected const float END_HURT_TIME = 0.361112f;
+    /// <summary>
     /// 벽 점프가 종료되는 시간입니다.
     /// </summary>
     protected const float WALLJUMP_END_TIME = 0.138888f;
 
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -411,10 +432,6 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     float _invencibleTime;
     /// <summary>
-    /// 플레이어의 색상을 반환합니다.
-    /// </summary>
-    Color _playerColor = Color.white;
-    /// <summary>
     /// 위험 상태라면 true입니다.
     /// </summary>
     bool _danger = false;
@@ -446,8 +463,21 @@ public abstract class PlayerController : MonoBehaviour
     protected float DashAfterImageInterval
     {
         get { return _dashAfterImageInterval; }
-        // set { _dashAfterImageInterval = value; }
     }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public float KnockbackSpeed = 3;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float KnockbackJumpSize = 5;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float KnockbackJumpDecSize = 40;
 
 
     /// <summary>
@@ -647,16 +677,6 @@ public abstract class PlayerController : MonoBehaviour
     {
         get { return _isDead; }
         private set { _isDead = value; }
-    }
-
-
-    /// <summary>
-    /// 플레이어의 색상을 반환합니다.
-    /// </summary>
-    public Color PlayerColor
-    {
-        get { return _playerColor; }
-        protected set { _playerColor = value; }
     }
 
 
@@ -1690,9 +1710,9 @@ public abstract class PlayerController : MonoBehaviour
         }
     }
     /// <summary>
-    /// 
+    /// 넉백에 대한 코루틴입니다.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>코루틴 열거자입니다.</returns>
     IEnumerator CoroutineKnockback()
     {
         float timer = 0;
@@ -1707,18 +1727,6 @@ public abstract class PlayerController : MonoBehaviour
 
         yield break;
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    public float KnockbackSpeed = 3;
-    /// <summary>
-    /// 
-    /// </summary>
-    public float KnockbackJumpSize = 5;
-    /// <summary>
-    /// 
-    /// </summary>
-    public float KnockbackJumpDecSize = 40;
 
 
     /// <summary>
@@ -1736,28 +1744,62 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>코루틴 열거자입니다.</returns>
     IEnumerator CoroutineInvencible()
     {
+        bool invencibleColorState = false;
+        InvencibleTime = 0;
+        while (InvencibleTime < 1)
+        {
+            InvencibleTime += Time.deltaTime;
+
+            if (invencibleColorState)
+            {
+                TESTEST1();
+            }
+            else
+            {
+                TESTEST2();
+            }
+            invencibleColorState = !invencibleColorState;
+            yield return new WaitForSeconds(TIME_30FPS);
+        }
+        Invencible = false;
+        TESTEST3();
+        yield break;
+
+        /**
         InvencibleTime = 0;
         while (InvencibleTime < 1)
         {
             InvencibleTime += Time.deltaTime;
             if ((int)(InvencibleTime * 10) % 2 == 0)
             {
-                _playerColor = Color.clear;
+                /// _playerColor = Color.clear;
+                TESTEST1();
             }
             else
             {
-                _playerColor = Color.white;
+                /// _playerColor = Color.white;
+                TESTEST2();
             }
-            yield return false;
+            /// yield return false;
+            yield return new WaitForEndOfFrame();
         }
         Invencible = false;
-        _playerColor = Color.white;
+        /// _playerColor = Color.white;
+        TESTEST3();
+
+
         yield return true;
+        */
     }
 
 
     #endregion
 
+
+
+    protected virtual void TESTEST1() { }
+    protected virtual void TESTEST2() { }
+    protected virtual void TESTEST3() { }
 
 
 
@@ -1932,6 +1974,22 @@ public abstract class PlayerController : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 플레이어의 색상을 반환합니다.
+    /// </summary>
+    Color _playerColor = Color.white;
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 플레이어의 색상을 반환합니다.
+    /// </summary>
+    public Color PlayerColor
+    {
+        get { return _playerColor; }
+        protected set { _playerColor = value; }
+    }
+
+
 
 
 

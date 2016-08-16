@@ -18,12 +18,6 @@ public class XController : PlayerController
 
 
     /// <summary>
-    /// 무적 상태가 유지되는 시간입니다.
-    /// </summary>
-    const float END_HURT_TIME = 0.361112f;
-
-
-    /// <summary>
     /// 샷 발사 시에 반짝이는 시간입니다.
     /// </summary>
     const float LIGHTING_TIME = 0.05f;
@@ -731,7 +725,10 @@ public class XController : PlayerController
             _shotPressed = false;
             _chargeTime = 0;
             ShotTime2 = 0;
-            PlayerColor = Color.white;
+
+            /// PlayerColor = Color.white;
+            ResetBodyColor();
+
             if (_chargeCoroutine != null)
             {
                 StopCoroutine(_chargeCoroutine);
@@ -950,70 +947,48 @@ public class XController : PlayerController
     /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
     IEnumerator ChargeCoroutine()
     {
-        /// float startTime = 0;
-        float waitTime = 0.3f;
+        bool chargedColor = false;
 
         while (_chargeTime >= 0)
         {
             if (_chargeTime < CHARGE_LEVEL[1])
             {
-
+                yield return null;
             }
             else
             {
+                if (chargedColor)
+                {
+                    Color[] palette = (_chargeTime < CHARGE_LEVEL[2]) ?
+                        RXColors.XCharge1Palette : RXColors.XCharge2Palette;
+                    /// UpdateBodyColor(palette);
+                    _currentPalette = palette;
+                }
+                else
+                {
+                    ResetBodyColor();
+                }
+                chargedColor = !chargedColor;
+
+                /*
+                다음 커밋에서 삭제할 예정입니다.
+                
                 /// int cTime = (int)(startTime * 10) % 3;
                 if (PlayerColor == Color.white)
                 {
-                    PlayerColor = (_chargeTime < CHARGE_LEVEL[2]) ?
-                        Color.cyan : Color.green;
+                    // PlayerColor = (_chargeTime < CHARGE_LEVEL[2]) ? Color.cyan : Color.green;
                         // RXColors.XNormalChargeEffectColorPalette1[0] : RXColors.XNormalChargeEffectColorPalette2[0];
-                    // waitTime = 0.2f;
                 }
                 else
                 {
                     PlayerColor = Color.white;
-                    // waitTime = 0.1f;
                 }
-                /// startTime += Time.fixedDeltaTime;
+                */
             }
-            // yield return new WaitForSeconds(waitTime);
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
-            yield return new WaitForEndOfFrame();
-
             // yield return new WaitForEndOfFrame();
-            // yield return new WaitForEndOfFrame();
+            yield return new WaitForSeconds(TIME_30FPS);
         }
         yield break;
-
-        /*
-        float startTime = 0;
-        while (_chargeTime >= 0)
-        {
-            if (_chargeTime < CHARGE_LEVEL[1])
-            {
-
-            }
-            else
-            {
-                int cTime = (int)(startTime * 10) % 3;
-                if (cTime != 0)
-                {
-                    PlayerColor = (_chargeTime < CHARGE_LEVEL[2]) ?
-                        Color.cyan : Color.green;
-                }
-                else
-                {
-                    PlayerColor = Color.white;
-                }
-
-                startTime += Time.fixedDeltaTime;
-            }
-            yield return null;
-        }
-
-        yield return null;
-        */
     }
 
 
@@ -1539,12 +1514,12 @@ public class XController : PlayerController
         switch (weaponIndex)
         {
             case 1:
-                targetPalette = RXColors.Weapon1Palette;
+                targetPalette = RXColors.XWeapon1Palette;
                 Shot();
                 break;
 
             default:
-                targetPalette = RXColors.DefaultPalette;
+                targetPalette = RXColors.XDefaultPalette;
                 break;
         }
 
@@ -1559,33 +1534,34 @@ public class XController : PlayerController
     void UpdateColor()
     {
         // 웨폰을 장착한 상태라면
-        if (_weaponState != 0)
+        if (_currentPalette != null)
         {
             // 바디 색상을 맞춥니다.
             UpdateBodyColor(_currentPalette);
         }
 
-
         // 플레이어가 차지 중이라면 색을 업데이트합니다.
         if (_chargeTime > 0)
         {
             // 렌더러 색상을 업데이트합니다.
-            _Renderer.color = PlayerColor;
+            /// _Renderer.color = PlayerColor;
+
+
 
             // 차지 효과 색상을 업데이트 합니다.
             if (_chargeEffect2 != null)
             {
-                UpdateTextureColor(_chargeEffect2, RXColors.XNormalChargeEffectColorPalette2);
-                UpdateTextureColor(_chargeEffect1, RXColors.XNormalChargeEffectColorPalette2);
+                UpdateChargeEffectColor(_chargeEffect2, RXColors.XNormalChargeEffectColorPalette2);
+                UpdateChargeEffectColor(_chargeEffect1, RXColors.XNormalChargeEffectColorPalette2);
             }
             else if (_chargeEffect1 != null)
             {
-                UpdateTextureColor(_chargeEffect1, RXColors.XNormalChargeEffectColorPalette1);
+                UpdateChargeEffectColor(_chargeEffect1, RXColors.XNormalChargeEffectColorPalette1);
             }
         }
         else
         {
-            _Renderer.color = Color.white;
+            /// _Renderer.color = Color.white;
         }
     }
 
@@ -1599,7 +1575,7 @@ public class XController : PlayerController
         Texture2D texture = _Renderer.sprite.texture;
         Color[] colors = texture.GetPixels();
         Color[] pixels = new Color[colors.Length];
-        Color[] DefaultPalette = RXColors.DefaultPalette;
+        Color[] DefaultPalette = RXColors.XDefaultPalette;
 
 
         // 모든 픽셀을 돌면서 색상을 업데이트합니다.
@@ -1639,6 +1615,28 @@ public class XController : PlayerController
         block.SetTexture("_MainTex", cloneTexture);
         _Renderer.SetPropertyBlock(block);
     }
+    /// <summary>
+    /// 차지 효과 개체의 색상표를 업데이트합니다.
+    /// </summary>
+    /// <param name="chargeEffect">차지 효과 개체입니다.</param>
+    /// <param name="colorPalette">차지 효과 개체의 새 색상표입니다.</param>
+    void UpdateChargeEffectColor(GameObject chargeEffect, Color[] colorPalette)
+    {
+        EffectScript effect = chargeEffect.GetComponent<EffectScript>();
+        Color color = (_chargeTime < CHARGE_LEVEL[2]) ? Color.cyan : Color.green;
+        effect.RequestUpdateTexture(color);
+    }
+    /// <summary>
+    /// 엑스의 바디 색상표를 현재 웨폰 상태로 되돌립니다.
+    /// </summary>
+    void ResetBodyColor()
+    {
+        _currentPalette = GetPalette(_weaponState);
+    }
+    
+
+
+
 
 
     #endregion
@@ -1665,20 +1663,24 @@ public class XController : PlayerController
             && color1.b == color2.b
             && color1.a == color2.a);
     }
-
-
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="chargeEffect"></param>
-    /// <param name="colorPalette"></param>
-    void UpdateTextureColor(GameObject chargeEffect, Color[] colorPalette)
+    /// <param name="weaponState"></param>
+    /// <returns></returns>
+    static Color[] GetPalette(int weaponState)
     {
-        EffectScript effect = chargeEffect.GetComponent<EffectScript>();
-        // effect.RequestUpdateTexture(colorPalette);
-
-        Color color = (_chargeTime < CHARGE_LEVEL[2]) ? Color.cyan : Color.green;
-        effect.RequestUpdateTexture(color);
+        Color[] palette;
+        switch (weaponState)
+        {
+            case 1:
+                palette = RXColors.XWeapon1Palette;
+                break;
+            default:
+                palette = null;
+                break;
+        }
+        return palette;
     }
 
 
@@ -1699,6 +1701,8 @@ public class XController : PlayerController
     /// 애니메이션 클립 정보를 담은 사전 객체입니다.
     /// </summary>
     Dictionary<string, AnimatorClipInfo> _clips;
+    
+
     [Obsolete("후에 사용할지도 모르죠?")]
     /// <summary>
     /// 애니메이션 클립 정보를 초기화합니다.
@@ -1724,6 +1728,39 @@ public class XController : PlayerController
             AnimatorClipInfo clipInfo = _clips[clipKey];
             Console.WriteLine(clipInfo.clip.length);
         }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override void TESTEST1()
+    {
+        _currentPalette = RXColors.InvenciblePalette;
+        // UpdateBodyColor();
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override void TESTEST2()
+    {
+        ResetBodyColor();
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override void TESTEST3()
+    {
+        ResetBodyColor();
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public void RequestUpdateBodyColor(Color[] palette)
+    {
+        _currentPalette = palette;
     }
 
 
