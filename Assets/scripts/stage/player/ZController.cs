@@ -78,7 +78,7 @@ public class ZController : PlayerController
         if (Dashing) // 대쉬 상태에서 잔상을 만듭니다.
         {
             // 대쉬 잔상을 일정 간격으로 만들기 위한 조건 분기입니다.
-            if (DashAfterImageTime < DashAfterImageInterval)
+            if (DashAfterImageTime < DASH_AFTERIMAGE_LIFETIME)
             {
                 DashAfterImageTime += Time.deltaTime;
             }

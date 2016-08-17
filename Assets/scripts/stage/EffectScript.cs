@@ -26,18 +26,55 @@ public class EffectScript : MonoBehaviour
 
 
     #region 필드 및 프로퍼티를 정의합니다.
+    /// <summary>
+    /// 효과 종료가 요청되었습니다.
+    /// </summary>
     bool _endRequested = false;
-    bool _destroyRequested = false;
+    /// <summary>
+    /// 효과 개체 종료가 요청되었습니다.
+    /// </summary>
     public bool EndRequested
     {
         get { return _endRequested; }
         private set { _animator.SetBool("EndRequested", _endRequested = value); }
     }
+    /// <summary>
+    /// 효과 개체 삭제가 요청되었습니다.
+    /// </summary>
+    bool _destroyRequested = false;
+    /// <summary>
+    /// 효과 개체 삭제가 요청되었습니다.
+    /// </summary>
     public bool DestroyRequested
     {
         get { return _destroyRequested; }
         private set { _destroyRequested = value; }
     }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _colorChangeRequested = false;
+    /// <summary>
+    /// 
+    /// </summary>
+    Color _currentColor;
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _paletteChangeRequested = false;
+    /// <summary>
+    /// 
+    /// </summary>
+    Color[] _defaultPalette = null;
+    /// <summary>
+    /// 
+    /// </summary>
+    Color[] _currentPalette = null;
+
 
     #endregion
 
@@ -84,33 +121,19 @@ public class EffectScript : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-
-
-    bool _requested = false;
-    Color _currentColor;
-    Color[] _currentPalette = null;
     /// <summary>
     /// 
     /// </summary>
     void LateUpdate()
     {
-        if (_currentPalette != null)
+        if (_paletteChangeRequested)
         {
-            /// UpdateTextureColor();
+            UpdateTextureColor();
         }
-
-
-        if (_requested)
+        if (_colorChangeRequested)
         {
             UpdateTextureColor(_currentColor);
         }
-    }
-
-    private void UpdateTextureColor(Color _currentColor)
-    {
-        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-        renderer.color = _currentColor;
     }
 
 
@@ -144,7 +167,7 @@ public class EffectScript : MonoBehaviour
 
     #region 보조 메서드를 정의합니다.
     /// <summary>
-    /// 
+    /// 필드 색상표를 바탕으로 텍스쳐 색상을 업데이트합니다.
     /// </summary>
     void UpdateTextureColor()
     {
@@ -152,7 +175,7 @@ public class EffectScript : MonoBehaviour
         Texture2D texture = renderer.sprite.texture;
         Color[] colors = texture.GetPixels();
         Color[] pixels = new Color[colors.Length];
-        Color[] DefaultPalette = RXColors.XDefaultChargeEffectColorPalette;
+        /// Color[] _defaultPalette = RXColors.XDefaultChargeEffectColorPalette;
 
 
         // 모든 픽셀을 돌면서 색상을 업데이트합니다.
@@ -162,9 +185,9 @@ public class EffectScript : MonoBehaviour
             pixels[pixelIndex] = color;
             if (color.a == 1)
             {
-                for (int targetIndex = 0, targetPixelCount = DefaultPalette.Length; targetIndex < targetPixelCount; ++targetIndex)
+                for (int targetIndex = 0, targetPixelCount = _defaultPalette.Length; targetIndex < targetPixelCount; ++targetIndex)
                 {
-                    Color colorDst = DefaultPalette[targetIndex];
+                    Color colorDst = _defaultPalette[targetIndex];
                     if (Mathf.Approximately(color.r, colorDst.r) &&
                         Mathf.Approximately(color.g, colorDst.g) &&
                         Mathf.Approximately(color.b, colorDst.b) &&
@@ -196,6 +219,13 @@ public class EffectScript : MonoBehaviour
 
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -257,14 +287,8 @@ public class EffectScript : MonoBehaviour
         AttachSound(audioClip);
         PlayEffectSound();
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="colorPalette"></param>
-    public void RequestUpdateTexture(Color[] colorPalette)
-    {
-        _currentPalette = colorPalette;
-    }
+
+
     /// <summary>
     /// 
     /// </summary>
@@ -272,7 +296,46 @@ public class EffectScript : MonoBehaviour
     public void RequestUpdateTexture(Color color)
     {
         _currentColor = color;
-        _requested = true;
+        _colorChangeRequested = true;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="defaultPalette"></param>
+    /// <param name="targetPalette"></param>
+    public void RequestUpdateTexture(Color[] defaultPalette, Color[] targetPalette)
+    {
+        _defaultPalette = defaultPalette;
+        _currentPalette = targetPalette;
+        _paletteChangeRequested = true;
+    }
+
+
+    #endregion
+
+
+
+    #region 구형 정의를 보관합니다.
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="_currentColor"></param>
+    private void UpdateTextureColor(Color _currentColor)
+    {
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        renderer.color = _currentColor;
+    }
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="colorPalette"></param>
+    public void RequestUpdateTexture(Color[] colorPalette)
+    {
+        _defaultPalette = null;
+        _currentPalette = colorPalette;
+        _paletteChangeRequested = true;
     }
 
 

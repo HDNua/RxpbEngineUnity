@@ -24,11 +24,20 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 무적 상태가 유지되는 시간입니다.
     /// </summary>
+    protected const float INVENCIBLE_TIME_LENGTH = 1f;
+    /// <summary>
+    /// 대미지를 입은 상태가 유지되는 시간입니다.
+    /// </summary>
     protected const float END_HURT_TIME = 0.361112f;
     /// <summary>
     /// 벽 점프가 종료되는 시간입니다.
     /// </summary>
     protected const float WALLJUMP_END_TIME = 0.138888f;
+    /// <summary>
+    /// 대쉬 잔상이 유지되는 최대 시간입니다.
+    /// </summary>
+    protected const float DASH_AFTERIMAGE_LIFETIME = 0.05f;
+
 
 
     #endregion
@@ -442,21 +451,20 @@ public abstract class PlayerController : MonoBehaviour
 
 
     /// <summary>
-    /// 
+    /// 대쉬 잔상이 유지된 시간입니다.
     /// </summary>
     float _dashAfterImageTime = 0;
     /// <summary>
-    /// 
-    /// </summary>
-    float _dashAfterImageInterval = 0.05f;
-    /// <summary>
-    /// 
+    /// 대쉬 잔상이 유지된 시간입니다.
     /// </summary>
     protected float DashAfterImageTime
     {
         get { return _dashAfterImageTime; }
         set { _dashAfterImageTime = value; }
     }
+
+
+    /**
     /// <summary>
     /// 
     /// </summary>
@@ -464,18 +472,19 @@ public abstract class PlayerController : MonoBehaviour
     {
         get { return _dashAfterImageInterval; }
     }
+    */
 
 
     /// <summary>
-    /// 
+    /// 넉백 스피드입니다.
     /// </summary>
     public float KnockbackSpeed = 3;
     /// <summary>
-    /// 
+    /// 넉백 시 점프량입니다.
     /// </summary>
     public float KnockbackJumpSize = 5;
     /// <summary>
-    /// 
+    /// 넉백으로 점프한 경우의 Y축 감소량입니다.
     /// </summary>
     public float KnockbackJumpDecSize = 40;
 
@@ -1746,9 +1755,9 @@ public abstract class PlayerController : MonoBehaviour
     {
         bool invencibleColorState = false;
         InvencibleTime = 0;
-        while (InvencibleTime < 1)
+        while (InvencibleTime < INVENCIBLE_TIME_LENGTH)
         {
-            InvencibleTime += Time.deltaTime;
+            InvencibleTime += TIME_30FPS + Time.deltaTime;
 
             if (invencibleColorState)
             {
@@ -1764,32 +1773,6 @@ public abstract class PlayerController : MonoBehaviour
         Invencible = false;
         TESTEST3();
         yield break;
-
-        /**
-        InvencibleTime = 0;
-        while (InvencibleTime < 1)
-        {
-            InvencibleTime += Time.deltaTime;
-            if ((int)(InvencibleTime * 10) % 2 == 0)
-            {
-                /// _playerColor = Color.clear;
-                TESTEST1();
-            }
-            else
-            {
-                /// _playerColor = Color.white;
-                TESTEST2();
-            }
-            /// yield return false;
-            yield return new WaitForEndOfFrame();
-        }
-        Invencible = false;
-        /// _playerColor = Color.white;
-        TESTEST3();
-
-
-        yield return true;
-        */
     }
 
 
@@ -1974,22 +1957,6 @@ public abstract class PlayerController : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 플레이어의 색상을 반환합니다.
-    /// </summary>
-    Color _playerColor = Color.white;
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 플레이어의 색상을 반환합니다.
-    /// </summary>
-    public Color PlayerColor
-    {
-        get { return _playerColor; }
-        protected set { _playerColor = value; }
-    }
-
-
 
 
 

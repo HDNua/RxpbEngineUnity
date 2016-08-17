@@ -152,7 +152,7 @@ public class XController : PlayerController
     /// <summary>
     /// 샷을 발사한 이후로 경과한 시간입니다.
     /// </summary>
-    float ShotTime2
+    float ShotTime
     {
         get { return _shotTime2; }
         set
@@ -243,7 +243,7 @@ public class XController : PlayerController
     /// </summary>
     void Start()
     {
-
+        ShotTime = 100;
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -262,7 +262,7 @@ public class XController : PlayerController
         if (Dashing) // 대쉬 상태에서 잔상을 만듭니다.
         {
             // 대쉬 잔상을 일정 간격으로 만들기 위한 조건 분기입니다.
-            if (DashAfterImageTime < DashAfterImageInterval)
+            if (DashAfterImageTime < DASH_AFTERIMAGE_LIFETIME)
             {
                 DashAfterImageTime += Time.deltaTime;
             }
@@ -275,10 +275,15 @@ public class XController : PlayerController
                     daiScale.x *= -1;
                 dashAfterImage.transform.localScale = daiScale;
                 dashAfterImage.SetActive(false);
+
+                // 
                 var daiRenderer = dashAfterImage.GetComponent<SpriteRenderer>();
                 daiRenderer.sprite = _Renderer.sprite;
                 dashAfterImage.SetActive(true);
                 DashAfterImageTime = 0;
+
+                // 
+                UpdateEffectColor(dashAfterImage, RXColors.XDefaultPalette, RXColors.XDashEffectColorPalette);
             }
         }
 
@@ -350,24 +355,26 @@ public class XController : PlayerController
         // 테스트 코드입니다.
         else if (Input.GetKeyDown(KeyCode.A))
         {
-            ChangeWeapon(1);
+            ChangeWeapon(_weaponState == 1 ? 0 : 1);
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            ChangeWeapon(2);
+            ChangeWeapon(_weaponState == 2 ? 0 : 2);
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            ChangeWeapon(3);
+            ChangeWeapon(_weaponState == 3 ? 0 : 3);
         }
         else if (Input.GetKeyDown(KeyCode.V))
         {
-            ChangeWeapon(4);
+            ChangeWeapon(_weaponState == 4 ? 0 : 4);
         }
+        /**
         else if (Input.GetKeyDown(KeyCode.X))
         {
             ChangeWeapon(0);
         }
+        */
     }
     /// <summary>
     /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트 합니다.
@@ -652,7 +659,7 @@ public class XController : PlayerController
             UpdateShotRoutine();
         }
 
-        ShotTime2 += Time.fixedDeltaTime;
+        ShotTime += Time.fixedDeltaTime;
     }
     /// <summary>
     /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
@@ -724,9 +731,7 @@ public class XController : PlayerController
             // 필드를 초기화합니다.
             _shotPressed = false;
             _chargeTime = 0;
-            ShotTime2 = 0;
-
-            /// PlayerColor = Color.white;
+            ShotTime = 0;
             ResetBodyColor();
 
             if (_chargeCoroutine != null)
@@ -739,7 +744,6 @@ public class XController : PlayerController
         }
 
         // 버스터 탄환을 생성하고 초기화합니다.
-        /// CreateBullet(index);
         StartCoroutine(CreateBulletCoroutine(index));
 
         // 효과음을 재생합니다.
@@ -805,7 +809,7 @@ public class XController : PlayerController
     /// </summary>
     void EndShot()
     {
-        if (ShotTime2 >= END_SHOOTING_TIME)
+        if (ShotTime >= END_SHOOTING_TIME)
         {
             Shooting = false;
             ShotBlocked = false;
@@ -961,7 +965,6 @@ public class XController : PlayerController
                 {
                     Color[] palette = (_chargeTime < CHARGE_LEVEL[2]) ?
                         RXColors.XCharge1Palette : RXColors.XCharge2Palette;
-                    /// UpdateBodyColor(palette);
                     _currentPalette = palette;
                 }
                 else
@@ -969,23 +972,7 @@ public class XController : PlayerController
                     ResetBodyColor();
                 }
                 chargedColor = !chargedColor;
-
-                /*
-                다음 커밋에서 삭제할 예정입니다.
-                
-                /// int cTime = (int)(startTime * 10) % 3;
-                if (PlayerColor == Color.white)
-                {
-                    // PlayerColor = (_chargeTime < CHARGE_LEVEL[2]) ? Color.cyan : Color.green;
-                        // RXColors.XNormalChargeEffectColorPalette1[0] : RXColors.XNormalChargeEffectColorPalette2[0];
-                }
-                else
-                {
-                    PlayerColor = Color.white;
-                }
-                */
             }
-            // yield return new WaitForEndOfFrame();
             yield return new WaitForSeconds(TIME_30FPS);
         }
         yield break;
@@ -1515,7 +1502,7 @@ public class XController : PlayerController
         {
             case 1:
                 targetPalette = RXColors.XWeapon1Palette;
-                Shot();
+                // Shot();
                 break;
 
             default:
@@ -1543,11 +1530,6 @@ public class XController : PlayerController
         // 플레이어가 차지 중이라면 색을 업데이트합니다.
         if (_chargeTime > 0)
         {
-            // 렌더러 색상을 업데이트합니다.
-            /// _Renderer.color = PlayerColor;
-
-
-
             // 차지 효과 색상을 업데이트 합니다.
             if (_chargeEffect2 != null)
             {
@@ -1561,7 +1543,7 @@ public class XController : PlayerController
         }
         else
         {
-            /// _Renderer.color = Color.white;
+
         }
     }
 
@@ -1622,9 +1604,16 @@ public class XController : PlayerController
     /// <param name="colorPalette">차지 효과 개체의 새 색상표입니다.</param>
     void UpdateChargeEffectColor(GameObject chargeEffect, Color[] colorPalette)
     {
+        /**
         EffectScript effect = chargeEffect.GetComponent<EffectScript>();
         Color color = (_chargeTime < CHARGE_LEVEL[2]) ? Color.cyan : Color.green;
         effect.RequestUpdateTexture(color);
+        */
+
+        EffectScript effect = chargeEffect.GetComponent<EffectScript>();
+        Color[] palette = (_chargeTime < CHARGE_LEVEL[2]) ?
+            RXColors.XNormalChargeEffectColorPalette1 : RXColors.XNormalChargeEffectColorPalette2;
+        effect.RequestUpdateTexture(RXColors.XDefaultChargeEffectColorPalette, palette);
     }
     /// <summary>
     /// 엑스의 바디 색상표를 현재 웨폰 상태로 되돌립니다.
@@ -1633,10 +1622,6 @@ public class XController : PlayerController
     {
         _currentPalette = GetPalette(_weaponState);
     }
-    
-
-
-
 
 
     #endregion
@@ -1663,11 +1648,13 @@ public class XController : PlayerController
             && color1.b == color2.b
             && color1.a == color2.a);
     }
+
+
     /// <summary>
-    /// 
+    /// 현재 웨폰 상태에 해당하는 팔레트를 가져옵니다.
     /// </summary>
-    /// <param name="weaponState"></param>
-    /// <returns></returns>
+    /// <param name="weaponState">현재 웨폰 상태입니다.</param>
+    /// <returns>현재 웨폰 상태에 해당하는 팔레트를 가져옵니다.</returns>
     static Color[] GetPalette(int weaponState)
     {
         Color[] palette;
@@ -1681,6 +1668,19 @@ public class XController : PlayerController
                 break;
         }
         return palette;
+    }
+
+
+    /// <summary>
+    /// 효과 개체의 색을 색상표를 바탕으로 업데이트합니다.
+    /// </summary>
+    /// <param name="effectObject">대상 효과 개체입니다.</param>
+    /// <param name="defaultPalette">기본 효과 색상표입니다.</param>
+    /// <param name="targetPalette">대상 효과 색상표입니다.</param>
+    static void UpdateEffectColor(GameObject effectObject, Color[] defaultPalette, Color[] targetPalette)
+    {
+        EffectScript effectScript = effectObject.GetComponent<EffectScript>();
+        effectScript.RequestUpdateTexture(defaultPalette, targetPalette);
     }
 
 

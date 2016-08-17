@@ -9,7 +9,7 @@ public static class RXColors
 {
     #region 공용 색상표를 정의합니다.
     /// <summary>
-    /// 
+    /// 무적 상태 색상표입니다.
     /// </summary>
     static readonly int[] INVENCIBLE_COLOR_PALETTE =
     {
@@ -28,9 +28,16 @@ public static class RXColors
 
 
 
+
+
+
+
+
+
+
     #region 엑스 색상표를 정의합니다.
     /// <summary>
-    /// 기본 색상 값 배열입니다.
+    /// 엑스의 기본 색상표입니다.
     /// </summary>
     static readonly int[] X_DEFAULT_COLOR_PALETTE =
     {
@@ -46,7 +53,7 @@ public static class RXColors
 
 
     /// <summary>
-    /// 
+    /// 엑스가 1단계 차지할 때의 색상표입니다.
     /// </summary>
     static readonly int[] X_CHARGE1_COLOR_PALETTE =
     {
@@ -60,7 +67,7 @@ public static class RXColors
         0x5CBAFF, 0x4D94F5, 0x356DD9, 0x2B51AB,
     };
     /// <summary>
-    /// 
+    /// 엑스가 2단계 차지할 때의 색상표입니다.
     /// </summary>
     static readonly int[] X_CHARGE2_COLOR_PALETTE =
     {
@@ -72,6 +79,33 @@ public static class RXColors
         0x40F0D0, 0x109878, 0x188050,
         0xB8F8E8, 0x80B8A8, 0x287058, 0x209040,
         0x48F8A8, 0x38E888, 0x20C860, 0x18A040,
+    };
+
+
+    /// <summary>
+    /// 엑스가 대쉬할 때 잔상 효과의 색상표입니다.
+    /// </summary>
+    static readonly int[] X_DASHAFTERIMAGE_COLOR_PALETTE =
+    {
+        0x1840A0, 0x1840A0, 0x1840A0, 0x1840A0,
+        0x1840A0, 0x1840A0, 0x1840A0, 
+        0x1840A0, 0x1840A0, 0x1840A0, 0x1840A0,
+        0x1840A0, 0x1840A0, 0x1840A0, 0x1840A0,
+        0x1840A0, 0x1840A0, 0x1840A0, 0x1840A0,
+        0x1840A0, 0x1840A0, 0x1840A0, 
+        0x1840A0, 0x1840A0, 0x1840A0, 0x1840A0,
+        0x1840A0, 0x1840A0, 0x1840A0, 0x1840A0,
+
+        /*
+        0x001060, 0x001060, 0x001060, 0x001060,
+        0x001060, 0x001060, 0x001060,
+        0x001060, 0x001060, 0x001060, 0x001060,
+        0x001060, 0x001060, 0x001060, 0x001060,
+        0x001060, 0x001060, 0x001060, 0x001060,
+        0x001060, 0x001060, 0x001060,
+        0x001060, 0x001060, 0x001060, 0x001060,
+        0x001060, 0x001060, 0x001060, 0x001060,
+        */
     };
 
 
@@ -132,7 +166,7 @@ public static class RXColors
 
     #region 필드 및 프로퍼티를 정의합니다.
     /// <summary>
-    /// 
+    /// 무적 색상 팔레트입니다.
     /// </summary>
     public static Color[] InvenciblePalette { get; private set; }
 
@@ -140,51 +174,45 @@ public static class RXColors
     /// <summary>
     /// 기본 색상 팔레트입니다.
     /// </summary>
-    public static Color[] XDefaultPalette
-    {
-        get; private set; // { return _defaultPalette; }
-    }
+    public static Color[] XDefaultPalette { get; private set; }
+
+
     /// <summary>
-    /// 
+    /// 차지 1단계 바디 색상표입니다.
     /// </summary>
     public static Color[] XCharge1Palette { get; private set; }
     /// <summary>
-    /// 
+    /// 차지 2단계 바디 색상표입니다.
     /// </summary>
     public static Color[] XCharge2Palette { get; private set; }
-
-
     /// <summary>
     /// 무기1 색상 팔레트입니다.
     /// </summary>
-    public static Color[] XWeapon1Palette
-    {
-        get; private set; // { return _weapon1Palette; }
-    }
-
+    public static Color[] XWeapon1Palette { get; private set; }
 
 
     /// <summary>
     /// 엑스 기본 차지 효과 색상입니다.
     /// </summary>
-    public static Color[] XDefaultChargeEffectColorPalette
-    {
-        get; private set; // { return _XDefaultChargeEffectColorPalette; }
-    }
+    public static Color[] XDefaultChargeEffectColorPalette { get; private set; }
     /// <summary>
     /// 엑스 기본 차지 효과 1 색상입니다.
     /// </summary>
-    public static Color[] XNormalChargeEffectColorPalette1
-    {
-        get; private set; // { return _XNormalChargeEffectColorPalette1; }
-    }
+    public static Color[] XNormalChargeEffectColorPalette1 { get; private set; }
     /// <summary>
     /// 엑스 기본 차지 효과 2 색상입니다.
     /// </summary>
-    public static Color[] XNormalChargeEffectColorPalette2
-    {
-        get; private set; // { return _XNormalChargeEffectColorPalette2; }
-    }
+    public static Color[] XNormalChargeEffectColorPalette2 { get; private set; }
+
+
+    /// <summary>
+    /// 엑스 대쉬 효과 색상표입니다.
+    /// </summary>
+    public static Color[] XDashEffectColorPalette { get; private set; }
+    /// <summary>
+    /// 제로 대쉬 효과 색상표입니다.
+    /// </summary>
+    public static Color[] ZDashEffectColorPalette { get; private set; }
 
 
     #endregion
@@ -207,33 +235,40 @@ public static class RXColors
         // 사용할 변수를 선언합니다.
         int PALETTE_COUNT = X_DEFAULT_COLOR_PALETTE.Length;
         Color[] invenciblePalette;
+        Color[] xDefaultPalette;
         Color[] xCharge1Palette;
         Color[] xCharge2Palette;
-        Color[] xDefaultPalette;
+        Color[] xDashEffectColorPalette;
         Color[] xWeapon1Palette;
 
         // 팔레트를 초기화합니다.
         invenciblePalette = new Color[PALETTE_COUNT];
+        xDefaultPalette = new Color[PALETTE_COUNT];
+        xDashEffectColorPalette = new Color[PALETTE_COUNT];
+
         xCharge1Palette = new Color[PALETTE_COUNT];
         xCharge2Palette = new Color[PALETTE_COUNT];
-        xDefaultPalette = new Color[PALETTE_COUNT];
         xWeapon1Palette = new Color[PALETTE_COUNT];
         for (int i = 0; i < PALETTE_COUNT; ++i)
         {
             invenciblePalette[i] = ColorFromInt(INVENCIBLE_COLOR_PALETTE[i]);
+            xDefaultPalette[i] = ColorFromInt(X_DEFAULT_COLOR_PALETTE[i]);
+            xDashEffectColorPalette[i] = ColorFromInt(X_DASHAFTERIMAGE_COLOR_PALETTE[i]);
+
             xCharge1Palette[i] = ColorFromInt(X_CHARGE1_COLOR_PALETTE[i]);
             xCharge2Palette[i] = ColorFromInt(X_CHARGE2_COLOR_PALETTE[i]);
-            xDefaultPalette[i] = ColorFromInt(X_DEFAULT_COLOR_PALETTE[i]);
             xWeapon1Palette[i] = ColorFromInt(X_WEAPON1_COLOR_PALETTE[i]);
         }
         InvenciblePalette = invenciblePalette;
+        XDefaultPalette = xDefaultPalette;
+        XDashEffectColorPalette = xDashEffectColorPalette;
+
         XCharge1Palette = xCharge1Palette;
         XCharge2Palette = xCharge2Palette;
-        XDefaultPalette = xDefaultPalette;
         XWeapon1Palette = xWeapon1Palette;
 
 
-        // 
+        // 차지 효과 색상표를 초기화합니다.
         Color[] p1 = new Color[4];
         Color[] p2 = new Color[4];
         Color[] p3 = new Color[4];
@@ -296,31 +331,6 @@ public static class RXColors
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("자동 구현 프로퍼티로 대체되었습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 기본 색상 팔레트입니다.
-    /// </summary>
-    static readonly Color[] _defaultPalette;
-    [Obsolete("자동 구현 프로퍼티로 대체되었습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 무기1 색상 팔레트입니다.
-    /// </summary>
-    static readonly Color[] _weapon1Palette;
-    [Obsolete("자동 구현 프로퍼티로 대체되었습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    static readonly Color[] _XDefaultChargeEffectColorPalette;
-    [Obsolete("자동 구현 프로퍼티로 대체되었습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    static readonly Color[] _XNormalChargeEffectColorPalette1;
-    [Obsolete("자동 구현 프로퍼티로 대체되었습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    static readonly Color[] _XNormalChargeEffectColorPalette2;
 
 
     #endregion
