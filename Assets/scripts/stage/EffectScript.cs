@@ -55,10 +55,6 @@ public class EffectScript : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    bool _colorChangeRequested = false;
-    /// <summary>
-    /// 
-    /// </summary>
     Color _currentColor;
 
 
@@ -130,10 +126,12 @@ public class EffectScript : MonoBehaviour
         {
             UpdateTextureColor();
         }
+        /**
         if (_colorChangeRequested)
         {
             UpdateTextureColor(_currentColor);
         }
+        */
     }
 
 
@@ -292,15 +290,6 @@ public class EffectScript : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="color"></param>
-    public void RequestUpdateTexture(Color color)
-    {
-        _currentColor = color;
-        _colorChangeRequested = true;
-    }
-    /// <summary>
-    /// 
-    /// </summary>
     /// <param name="defaultPalette"></param>
     /// <param name="targetPalette"></param>
     public void RequestUpdateTexture(Color[] defaultPalette, Color[] targetPalette)
@@ -320,22 +309,21 @@ public class EffectScript : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="_currentColor"></param>
-    private void UpdateTextureColor(Color _currentColor)
-    {
-        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-        renderer.color = _currentColor;
-    }
+    bool _colorChangeRequested = false;
     [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="colorPalette"></param>
-    public void RequestUpdateTexture(Color[] colorPalette)
+    /// <param name="color"></param>
+    public void RequestUpdateTexture(Color color)
     {
-        _defaultPalette = null;
-        _currentPalette = colorPalette;
-        _paletteChangeRequested = true;
+        _currentColor = color;
+        _colorChangeRequested = true;
+
+        if (_colorChangeRequested)
+        {
+            Console.WriteLine("test");
+        }
     }
 
 
