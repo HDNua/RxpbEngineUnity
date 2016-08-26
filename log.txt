@@ -1,6 +1,6 @@
-RXPB v3.8.0
+RXPB v3.8.0 EnemyScript v3.0.0
 
-- Unity 엔진 업데이트에 따른 프로젝트 버전 업데이트.
+- 적 캐릭터를 다수 추가할 예정.
 
 
 end.
