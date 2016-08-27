@@ -516,10 +516,10 @@ public class XController : PlayerController
             }
             else if (_Velocity.y == 0f)
             {
-                Log("Update.DefaultInputCheck: Sliding: TEST");
+                /// L_og("Update.DefaultInputCheck: Sliding: TEST");
             }
 
-///            Log("Update.DefaultInputCheck: Sliding: End");
+            /// L_og("Update.DefaultInputCheck: Sliding: End");
         }
         // 벽을 밀고 있다면
         else if (Pushing)
@@ -532,7 +532,7 @@ public class XController : PlayerController
             {
                 Slide();
             }
-///            Log("Update.DefaultInputCheck: Pushing: TEST");
+            /// L_og("Update.DefaultInputCheck: Pushing: TEST");
         }
         // 그 외의 경우
         else
@@ -559,7 +559,7 @@ public class XController : PlayerController
             // 대쉬 중에 공중에 뜬 경우
             else if (Landed == false)
             {
-                if (SlideBlocked)
+                if (SlideBlocked && WallJumping)
                 {
 
                 }
@@ -585,12 +585,12 @@ public class XController : PlayerController
         // 움직임이 막힌 상태라면
         else if (MoveBlocked)
         {
-///            Log("FixedUpdate: CheckUserInput: MoveBlocked: ?");
+            /// L_og("FixedUpdate: CheckUserInput: MoveBlocked: ?");
         }
         // 벽 점프 중이라면
         else if (SlideBlocked)
         {
-///            Log("FixedUpdate: CheckUserInput: SlideBlocked: ?");
+            /// L_og("FixedUpdate: CheckUserInput: SlideBlocked: ?");
         }
         // 그 외의 경우
         else
@@ -603,11 +603,11 @@ public class XController : PlayerController
                 if (FacingRight == false && Pushing)
                 {
                     StopMoving();
-///                    Log("FixedUpdate: CheckUserInput: else: IsLeftKeyPressed: first if");
+                    /// L_og("FixedUpdate: CheckUserInput: else: IsLeftKeyPressed: first if");
                 }
                 else
                 {
-                    Log("FixedUpdate: CheckUserInput: else: IsLeftKeyPressed: before (v={0})", _Velocity);
+                    /// L_og("FixedUpdate: CheckUserInput: else: IsLeftKeyPressed: before (v={0})", _Velocity);
                     if (Sliding)
                     {
                         StopSliding();
@@ -617,9 +617,9 @@ public class XController : PlayerController
                     {
                         MoveLeft();
                     }
-                    Log("FixedUpdate: CheckUserInput: else: IsLeftKeyPressed: after (v={0})", _Velocity);
+                    /// L_og("FixedUpdate: CheckUserInput: else: IsLeftKeyPressed: after (v={0})", _Velocity);
                 }
-                Log("FixedUpdate: CheckUserInput: else: IsLeftKeyPressed: end (v={0})", _Velocity);
+                /// L_og("FixedUpdate: CheckUserInput: else: IsLeftKeyPressed: end (v={0})", _Velocity);
             }
             else if (IsRightKeyPressed())
             {

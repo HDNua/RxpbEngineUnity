@@ -935,8 +935,6 @@ public abstract class PlayerController : MonoBehaviour
                 }
                 transform.position = pos;
                 _Velocity = new Vector2(_Velocity.x, 0);
-
-                /// Log("UpdateLanding: Vy set to 0");
                 Landed = true;
             }
         }
@@ -953,8 +951,7 @@ public abstract class PlayerController : MonoBehaviour
     void UpdatePhysicsState(Collision2D collision)
     {
         int layer = collision.collider.gameObject.layer;
-
-        bool touchedGround = false;
+        /// bool touchedGround = false;
 
         // 땅과 접촉한 경우의 처리입니다.
         if (IsSameLayer(layer, whatIsGround))
@@ -969,7 +966,7 @@ public abstract class PlayerController : MonoBehaviour
                 groundEdgeSet.Remove(groundCollider);
             }
 
-            touchedGround = true;
+            /// touchedGround = true;
         }
 
 
@@ -979,7 +976,7 @@ public abstract class PlayerController : MonoBehaviour
             bool isTouchingWall = IsTouchingWall(collision);
             bool isKeyPressedValid = FacingRight ? IsRightKeyPressed() : IsLeftKeyPressed();
             Pushing = isTouchingWall && isKeyPressedValid;
-            Log("pushing is updated: tw={0}, kpv={1}, v=({2}), tg={3}", isTouchingWall, isKeyPressedValid, _Velocity, touchedGround);
+            /// L_og("pushing is updated: tw={0}, kpv={1}, v=({2}), tg={3}", isTouchingWall, isKeyPressedValid, _Velocity, touchedGround);
         }
     }
 
@@ -1325,7 +1322,7 @@ public abstract class PlayerController : MonoBehaviour
         if (_Velocity.y > 0)
         {
             _Velocity = new Vector2(_Velocity.x, 0);
-            Log("Fall: Vy set to 0");
+            /// L_og("Fall: Vy set to 0");
         }
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
@@ -1434,7 +1431,7 @@ public abstract class PlayerController : MonoBehaviour
         // 개체의 운동 상태를 갱신합니다.
         UnblockDashing();
         _Velocity = new Vector2(_Velocity.x, 0);
-        Log("StopSliding: Vy set to 0");
+        /// L_og("StopSliding: Vy set to 0");
 
         // 개체의 운동에 따른 효과를 처리합니다.
         if (_slideFogEffect != null)
@@ -1496,6 +1493,7 @@ public abstract class PlayerController : MonoBehaviour
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = true;
+        WallJumping = true;
 
         // 일정 시간 후에 개체의 운동 중단을 요청하는 메서드를 호출합니다.
         Invoke("StopWallJumping", WALLJUMP_END_TIME);
@@ -1505,8 +1503,12 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void StopWallJumping()
     {
+        // 개체의 운동 상태를 갱신합니다.
         UnblockSliding();
         _Velocity = new Vector2(0, _Velocity.y);
+
+        // 개체의 운동 상태가 갱신되었음을 알립니다.
+        WallJumping = false;
     }
     /// <summary>
     /// 플레이어가 대쉬 점프하게 합니다.
@@ -1538,7 +1540,6 @@ public abstract class PlayerController : MonoBehaviour
         Jumping = true;
         Dashing = true;
         DashJumping = true;
-
 
         // 일정 시간 후에 개체의 운동 중단을 요청하는 메서드를 호출합니다.
         Invoke("UnblockSliding", WALLJUMP_END_TIME);
@@ -1573,6 +1574,7 @@ public abstract class PlayerController : MonoBehaviour
         Jumping = true;
         Dashing = true;
         DashJumping = true;
+        WallJumping = true;
 
         // 일정 시간 후에 개체의 운동 중단을 요청하는 메서드를 호출합니다.
         Invoke("StopWallJumping", WALLJUMP_END_TIME);
@@ -1590,7 +1592,7 @@ public abstract class PlayerController : MonoBehaviour
         BlockAirDashing();
         BlockJumping();
         _Velocity = new Vector2(FacingRight ? _dashSpeed : -_dashSpeed, 0);
-        Log("AirDash: Vy set to 0");
+        /// L_og("AirDash: Vy set to 0");
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = true;
@@ -1954,14 +1956,14 @@ public abstract class PlayerController : MonoBehaviour
 
 
     /// <summary>
-    /// 속도를 가져옵니다.
+    /// 플레이어의 속도(RigidBody2D.velocity)입니다.
     /// </summary>
     public Vector2 _Velocity
     {
         get { return _Rigidbody.velocity; }
         set
         {
-///            Log("_Rigidbody updated from ({0}) to ({1})", _Rigidbody.velocity, value);
+            /// L_og("_Rigidbody updated from ({0}) to ({1})", _Rigidbody.velocity, value);
             _Rigidbody.velocity = value;
         }
     }
@@ -2004,7 +2006,7 @@ public abstract class PlayerController : MonoBehaviour
             pos.y -= Mathf.Min(rayB.distance, rayF.distance);
             transform.position = pos;
             _Velocity = new Vector2(_Velocity.x, 0);
-            Log("UpdateLanding_dep: Vy set to 0");
+            /// L_og("UpdateLanding_dep: Vy set to 0");
             Landed = true;
         }
         else
