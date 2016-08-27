@@ -464,17 +464,6 @@ public abstract class PlayerController : MonoBehaviour
     }
 
 
-    /**
-    /// <summary>
-    /// 
-    /// </summary>
-    protected float DashAfterImageInterval
-    {
-        get { return _dashAfterImageInterval; }
-    }
-    */
-
-
     /// <summary>
     /// 넉백 스피드입니다.
     /// </summary>
@@ -783,19 +772,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void LateUpdate()
     {
-        // NOTE
-        return;
 
-        /**
-        if (IsAlive() && Invencible && Damaged == false)
-        {
-            _Renderer.color = _playerColor;
-        }
-        else
-        {
-            _Renderer.color = Color.white;
-        }
-        */
     }
 
 
@@ -839,10 +816,10 @@ public abstract class PlayerController : MonoBehaviour
         // 사망했다면
         else if (IsDead)
         {
+            // 페이더가 종료되는 경우에
             if (stageManager._fader.FadeOutEnded)
             {
-                // 구형 정의를 새로운 정의로 업데이트 합니다.
-                /// stageManager.RestartLevel();
+                // 스테이지를 재시작합니다.
                 RequestRestart();
             }
             return false;
@@ -930,7 +907,6 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>플레이어가 땅에 닿아있다면 참입니다.</returns>
     bool UpdateLanding()
     {
-        /**
         RaycastHit2D rayB = Physics2D.Raycast(groundCheckBack.position, Vector2.down, groundCheckRadius, whatIsGround);
         RaycastHit2D rayF = Physics2D.Raycast(groundCheckFront.position, Vector2.down, groundCheckRadius, whatIsGround);
 
@@ -944,48 +920,29 @@ public abstract class PlayerController : MonoBehaviour
         }
         else if (rayB || rayF)
         {
-            Vector3 pos = transform.position;
-            pos.y -= Mathf.Min(rayB.distance, rayF.distance);
-            transform.position = pos;
-            _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, 0);
-            Landed = true;
-        }
-        else
-        {
-            Landed = false;
-        }
-        return Landed;
-        */
-
-        RaycastHit2D rayB = Physics2D.Raycast(groundCheckBack.position, Vector2.down, groundCheckRadius, whatIsGround);
-        RaycastHit2D rayF = Physics2D.Raycast(groundCheckFront.position, Vector2.down, groundCheckRadius, whatIsGround);
-
-        if (OnGround())
-        {
-            Landed = true;
-        }
-        else if (Jumping || Falling)
-        {
-            Landed = false;
-        }
-        else if (rayB || rayF)
-        {
-            Vector3 pos = transform.position;
-            if (rayB && !rayF)
+            if (Sliding)
             {
-                pos.y -= rayB.distance / transform.localScale.y;
-            }
-            else if (!rayB && rayF)
-            {
-                pos.y -= rayF.distance / transform.localScale.y;
+
             }
             else
             {
-                pos.y -= Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
+                Vector3 pos = transform.position;
+                if (rayB && !rayF)
+                {
+                    pos.y -= rayB.distance / transform.localScale.y;
+                }
+                else if (!rayB && rayF)
+                {
+                    pos.y -= rayF.distance / transform.localScale.y;
+                }
+                else
+                {
+                    pos.y -= Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
+                }
+                transform.position = pos;
+                _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, 0);
+                Landed = true;
             }
-            transform.position = pos;
-            _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, 0);
-            Landed = true;
         }
         else
         {
@@ -1317,12 +1274,16 @@ public abstract class PlayerController : MonoBehaviour
         // 개체의 운동 상태를 갱신합니다.
         BlockJumping();
         BlockDashing();
+        BlockSliding(); // 잠시동안 벽 타기를 막습니다.
         UnblockAirDashing();
         _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, _jumpSpeed);
         // _rigidbody.velocity = new Vector2(0, jumpSpeed);
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = true;
+
+        // 일정 시간 후에 개체의 운동 중단을 요청하는 메서드를 호출합니다.
+        Invoke("UnblockSliding", WALLJUMP_END_TIME);
     }
     /// <summary>
     /// 플레이어의 점프를 중지합니다.
@@ -1532,6 +1493,14 @@ public abstract class PlayerController : MonoBehaviour
         Invoke("StopWallJumping", WALLJUMP_END_TIME);
     }
     /// <summary>
+    /// 플레이어의 벽 점프를 중지합니다.
+    /// </summary>
+    protected virtual void StopWallJumping()
+    {
+        UnblockSliding();
+        _Rigidbody.velocity = new Vector2(0, _Rigidbody.velocity.y);
+    }
+    /// <summary>
     /// 플레이어가 대쉬 점프하게 합니다.
     /// </summary>
     protected virtual void DashJump()
@@ -1542,14 +1511,38 @@ public abstract class PlayerController : MonoBehaviour
         StopSliding();
         BlockDashing();
         BlockJumping();
+        BlockSliding(); // 잠시동안 벽 타기를 막습니다.
         BlockAirDashing();
         _movingSpeed = _dashSpeed;
-        _Rigidbody.velocity = new Vector2(0, _jumpSpeed);
+
+        // 이 값이 0인 건, 대쉬 키만 눌린 상태에서 점프를 했을 때
+        // 이전 값을 유지하는 경우 제자리 점프를 하지 않기 때문입니다.
+        float vx = 0;
+        if (IsLeftKeyPressed() || IsRightKeyPressed())
+        {
+            // 다음 커밋에서, FacingRight를 업데이트하십시오.
+            vx = _facingRight ? _dashSpeed : -_dashSpeed; // _Rigidbody.velocity.x;
+        }
+        _Rigidbody.velocity = new Vector2(vx, _jumpSpeed);
+
+        /**
+        if (Dashing)
+        {
+            _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, _jumpSpeed);
+        }
+        else
+        {
+            _Rigidbody.velocity = new Vector2(0, _jumpSpeed);
+        }
+        */
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = true;
         Dashing = true;
         DashJumping = true;
+
+        // 일정 시간 후에 개체의 운동 중단을 요청하는 메서드를 호출합니다.
+        Invoke("UnblockSliding", WALLJUMP_END_TIME);
     }
     /// <summary>
     /// 플레이어의 대쉬 점프를 중지합니다.
@@ -1628,14 +1621,6 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void UnblockAirDashing()
     {
         AirDashBlocked = false; // ClearAirDashCount();
-    }
-    /// <summary>
-    /// 플레이어의 벽 점프를 중지합니다.
-    /// </summary>
-    protected virtual void StopWallJumping()
-    {
-        UnblockSliding();
-        _Rigidbody.velocity = new Vector2(0, _Rigidbody.velocity.y);
     }
 
 
@@ -1955,9 +1940,50 @@ public abstract class PlayerController : MonoBehaviour
 
 
 
+    /// <summary>
+    /// 디버그 스트림에 형식화된 문자열을 출력합니다.
+    /// </summary>
+    /// <param name="format">형식 문자열입니다.</param>
+    /// <param name="args">형식 문자열의 인자 목록입니다.</param>
+    public static void Log(string format, params object[] args)
+    {
+        Debug.Log(string.Format(format, args));
+    }
+
 
     #region 구형 정의를 보관합니다.
+    [Obsolete("UpdateLanding의 이전 버전입니다.")]
+    /// <summary>
+    /// 땅에 닿았다면 true를 반환합니다.
+    /// </summary>
+    /// <returns>땅에 닿았다면 true를 반환합니다.</returns>
+    bool UpdateLanding_dep()
+    {
+        RaycastHit2D rayB = Physics2D.Raycast(groundCheckBack.position, Vector2.down, groundCheckRadius, whatIsGround);
+        RaycastHit2D rayF = Physics2D.Raycast(groundCheckFront.position, Vector2.down, groundCheckRadius, whatIsGround);
 
+        if (OnGround())
+        {
+            Landed = true;
+        }
+        else if (Jumping || Falling)
+        {
+            Landed = false;
+        }
+        else if (rayB || rayF)
+        {
+            Vector3 pos = transform.position;
+            pos.y -= Mathf.Min(rayB.distance, rayF.distance);
+            transform.position = pos;
+            _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, 0);
+            Landed = true;
+        }
+        else
+        {
+            Landed = false;
+        }
+        return Landed;
+    }
 
 
     #endregion

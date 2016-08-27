@@ -55,12 +55,6 @@ public class EffectScript : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    Color _currentColor;
-
-
-    /// <summary>
-    /// 
-    /// </summary>
     bool _paletteChangeRequested = false;
     /// <summary>
     /// 
@@ -305,26 +299,6 @@ public class EffectScript : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    bool _colorChangeRequested = false;
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="color"></param>
-    public void RequestUpdateTexture(Color color)
-    {
-        _currentColor = color;
-        _colorChangeRequested = true;
-
-        if (_colorChangeRequested)
-        {
-            Console.WriteLine("test");
-        }
-    }
 
 
     #endregion

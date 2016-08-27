@@ -398,6 +398,9 @@ public class XController : PlayerController
             {
                 if (SlideBlocked)
                 {
+                    // 슬라이드가 막힌 경우에는 그냥 떨어집니다.
+                    _Rigidbody.velocity = new Vector2
+                        (_Rigidbody.velocity.x, _Rigidbody.velocity.y - _jumpDecSize);
                 }
                 else
                 {
@@ -521,7 +524,20 @@ public class XController : PlayerController
 
 
         // 방향 키 입력에 대해 처리합니다.
+        /**
+        // 움직임이 막힌 상태라면
+        if (MoveBlocked)
+        {
+            Log("MB");
+        }
+        // 벽 점프 중이라면
+        else if (SlideBlocked && !Jumping)
+        {
+            Log("SB");
+        }
         // 대쉬 중이라면
+        else 
+        */
         if (Dashing)
         {
             if (AirDashing)
@@ -533,9 +549,10 @@ public class XController : PlayerController
             {
                 if (SlideBlocked)
                 {
-
+                    Log("SB?");
                 }
-                else if (IsLeftKeyPressed())
+                else
+                if (IsLeftKeyPressed())
                 {
                     MoveLeft();
                 }
@@ -556,12 +573,12 @@ public class XController : PlayerController
         // 움직임이 막힌 상태라면
         else if (MoveBlocked)
         {
-
+            Log("MB");
         }
         // 벽 점프 중이라면
         else if (SlideBlocked)
         {
-
+            Log("SB");
         }
         // 그 외의 경우
         else
@@ -660,6 +677,10 @@ public class XController : PlayerController
         }
 
         ShotTime += Time.fixedDeltaTime;
+
+
+
+        /// Log("(H:{0}, V:{1})", _Rigidbody.velocity.x, _Rigidbody.velocity.y);
     }
     /// <summary>
     /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
