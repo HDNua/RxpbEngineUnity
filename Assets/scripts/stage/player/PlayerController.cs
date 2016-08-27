@@ -179,7 +179,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 큰 대미지를 받은 것으로 인정되는 값입니다.
     /// </summary>
-    public int BigDamageValue = 10;
+    public int _bigDamageValue = 10;
 
 
     /// <summary>
@@ -198,6 +198,12 @@ public abstract class PlayerController : MonoBehaviour
     /// 벽 타기 시 연기가 발생하는 위치입니다.
     /// </summary>
     public Transform slideFogPosition;
+
+
+    /// <summary>
+    /// 플레이어가 오른쪽을 보고 있다면 참입니다.
+    /// </summary>
+    public bool _facingRight = true;
 
 
     #endregion
@@ -374,10 +380,6 @@ public abstract class PlayerController : MonoBehaviour
     /// 플레이어가 걷는 속도입니다.
     /// </summary>
     protected float _movingSpeed = 5;
-    /// <summary>
-    /// 플레이어가 오른쪽을 보고 있다면 참입니다.
-    /// </summary>
-    bool _facingRight = true;
 
 
     /// <summary>
@@ -390,10 +392,6 @@ public abstract class PlayerController : MonoBehaviour
     /// 플레이어가 소환중이라면 참입니다.
     /// </summary>
     bool _spawning = true;
-    /// <summary>
-    /// 플레이어가 준비중이라면 true입니다.
-    /// </summary>
-    bool _readying = false;
     /// <summary>
     /// 지상에 있다면 true입니다.
     /// </summary>
@@ -515,11 +513,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 플레이어가 준비중이라면 true입니다.
     /// </summary>
-    protected bool Readying
-    {
-        get { return _readying; }
-        private set { _readying = value; }
-    }
+    protected bool Readying { get; private set; }
     /// <summary>
     /// 지상에 있다면 true입니다.
     /// </summary>
@@ -721,7 +715,7 @@ public abstract class PlayerController : MonoBehaviour
 
 
 
-
+    public Vector2 _velocity;
 
 
 
@@ -764,7 +758,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void Update()
     {
-
+        _velocity = _Rigidbody.velocity;
     }
     /// <summary>
     /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
@@ -827,7 +821,7 @@ public abstract class PlayerController : MonoBehaviour
         // 사망 직전이라면
         else if (IsAlive() == false)
         {
-            _Rigidbody.velocity = Vector2.zero;
+            _Velocity = Vector2.zero;
             return false;
         }
         // 대미지를 입은 상태라면
@@ -870,7 +864,7 @@ public abstract class PlayerController : MonoBehaviour
         // 사망 직전이라면
         else if (IsAlive() == false)
         {
-            _Rigidbody.velocity = Vector2.zero;
+            _Velocity = Vector2.zero;
             return false;
         }
         // 대미지를 입은 상태라면
@@ -940,7 +934,9 @@ public abstract class PlayerController : MonoBehaviour
                     pos.y -= Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
                 }
                 transform.position = pos;
-                _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, 0);
+                _Velocity = new Vector2(_Velocity.x, 0);
+
+                /// Log("UpdateLanding: Vy set to 0");
                 Landed = true;
             }
         }
@@ -958,6 +954,8 @@ public abstract class PlayerController : MonoBehaviour
     {
         int layer = collision.collider.gameObject.layer;
 
+        bool touchedGround = false;
+
         // 땅과 접촉한 경우의 처리입니다.
         if (IsSameLayer(layer, whatIsGround))
         {
@@ -970,13 +968,18 @@ public abstract class PlayerController : MonoBehaviour
             {
                 groundEdgeSet.Remove(groundCollider);
             }
+
+            touchedGround = true;
         }
+
 
         // 벽과 접촉한 경우의 처리입니다.
         if (IsSameLayer(layer, whatIsWall))
         {
-            Pushing = IsTouchingWall(collision) && (FacingRight ?
-                IsRightKeyPressed() : IsLeftKeyPressed());
+            bool isTouchingWall = IsTouchingWall(collision);
+            bool isKeyPressedValid = FacingRight ? IsRightKeyPressed() : IsLeftKeyPressed();
+            Pushing = isTouchingWall && isKeyPressedValid;
+            Log("pushing is updated: tw={0}, kpv={1}, v=({2}), tg={3}", isTouchingWall, isKeyPressedValid, _Velocity, touchedGround);
         }
     }
 
@@ -1112,7 +1115,7 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void Spawn()
     {
         Spawning = true;
-        _Rigidbody.velocity = new Vector2(0, -_spawnSpeed);
+        _Velocity = new Vector2(0, -_spawnSpeed);
     }
     /// <summary>
     /// 플레이어를 소환 상태에서 준비 상태로 전환합니다.
@@ -1224,10 +1227,10 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void MoveLeft()
     {
-        if (_facingRight)
+        if (FacingRight)
             Flip();
 
-        _Rigidbody.velocity = new Vector2(-_movingSpeed, _Rigidbody.velocity.y);
+        _Velocity = new Vector2(-_movingSpeed, _Velocity.y);
         Moving = true;
     }
     /// <summary>
@@ -1235,9 +1238,9 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void MoveRight()
     {
-        if (_facingRight == false)
+        if (FacingRight == false)
             Flip();
-        _Rigidbody.velocity = new Vector2(_movingSpeed, _Rigidbody.velocity.y);
+        _Velocity = new Vector2(_movingSpeed, _Velocity.y);
         Moving = true;
     }
     /// <summary>
@@ -1245,7 +1248,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void StopMoving()
     {
-        _Rigidbody.velocity = new Vector2(0, _Rigidbody.velocity.y);
+        _Velocity = new Vector2(0, _Velocity.y);
         Moving = false;
     }
     /// <summary>
@@ -1276,8 +1279,7 @@ public abstract class PlayerController : MonoBehaviour
         BlockDashing();
         BlockSliding(); // 잠시동안 벽 타기를 막습니다.
         UnblockAirDashing();
-        _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, _jumpSpeed);
-        // _rigidbody.velocity = new Vector2(0, jumpSpeed);
+        _Velocity = new Vector2(_Velocity.x, _jumpSpeed);
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = true;
@@ -1319,7 +1321,12 @@ public abstract class PlayerController : MonoBehaviour
         // 개체의 운동 상태를 갱신합니다.
         BlockJumping();
         BlockDashing();
-        _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, 0);
+
+        if (_Velocity.y > 0)
+        {
+            _Velocity = new Vector2(_Velocity.x, 0);
+            Log("Fall: Vy set to 0");
+        }
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = false;
@@ -1351,8 +1358,8 @@ public abstract class PlayerController : MonoBehaviour
         BlockDashing();
         BlockAirDashing();
         _movingSpeed = _dashSpeed;
-        _Rigidbody.velocity = new Vector2
-            (_facingRight ? _dashSpeed : -_dashSpeed, _Rigidbody.velocity.y);
+        _Velocity = new Vector2
+            (FacingRight ? _dashSpeed : -_dashSpeed, _Velocity.y);
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = true;
@@ -1366,7 +1373,7 @@ public abstract class PlayerController : MonoBehaviour
         UnblockMoving();
         UnblockDashing();
         _movingSpeed = _walkSpeed;
-        _Rigidbody.velocity = new Vector2(0, _Rigidbody.velocity.y);
+        _Velocity = new Vector2(0, _Velocity.y);
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = false;
@@ -1403,7 +1410,7 @@ public abstract class PlayerController : MonoBehaviour
         BlockDashing();
         UnblockJumping();
         UnblockAirDashing();
-        _Rigidbody.velocity = new Vector2(0, -_slideSpeed);
+        _Velocity = new Vector2(0, -_slideSpeed);
 
         // 개체의 운동에 따른 효과를 처리합니다.
         GameObject slideFog = CloneObject(effects[2], slideFogPosition);
@@ -1426,7 +1433,8 @@ public abstract class PlayerController : MonoBehaviour
     {
         // 개체의 운동 상태를 갱신합니다.
         UnblockDashing();
-        _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, 0);
+        _Velocity = new Vector2(_Velocity.x, 0);
+        Log("StopSliding: Vy set to 0");
 
         // 개체의 운동에 따른 효과를 처리합니다.
         if (_slideFogEffect != null)
@@ -1481,7 +1489,7 @@ public abstract class PlayerController : MonoBehaviour
         BlockSliding();
         BlockDashing();
         UnblockAirDashing();
-        _Rigidbody.velocity = new Vector2(FacingRight ? -1.5f * _movingSpeed : 1.5f * _movingSpeed, _jumpSpeed);
+        _Velocity = new Vector2(FacingRight ? -1.5f * _movingSpeed : 1.5f * _movingSpeed, _jumpSpeed);
 
         // 개체의 운동에 따른 효과를 처리합니다.
         CloneObject(effects[3], slideFogPosition);
@@ -1498,7 +1506,7 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void StopWallJumping()
     {
         UnblockSliding();
-        _Rigidbody.velocity = new Vector2(0, _Rigidbody.velocity.y);
+        _Velocity = new Vector2(0, _Velocity.y);
     }
     /// <summary>
     /// 플레이어가 대쉬 점프하게 합니다.
@@ -1515,31 +1523,22 @@ public abstract class PlayerController : MonoBehaviour
         BlockAirDashing();
         _movingSpeed = _dashSpeed;
 
-        // 이 값이 0인 건, 대쉬 키만 눌린 상태에서 점프를 했을 때
-        // 이전 값을 유지하는 경우 제자리 점프를 하지 않기 때문입니다.
+
+        // 대쉬 키만 눌린 상태에서 점프를 했을 때
+        // 0으로 속도를 초기화하여 제자리 점프를 하게끔 합니다.
         float vx = 0;
         if (IsLeftKeyPressed() || IsRightKeyPressed())
         {
-            // 다음 커밋에서, FacingRight를 업데이트하십시오.
-            vx = _facingRight ? _dashSpeed : -_dashSpeed; // _Rigidbody.velocity.x;
+            vx = FacingRight ? _dashSpeed : -_dashSpeed;
         }
-        _Rigidbody.velocity = new Vector2(vx, _jumpSpeed);
+        _Velocity = new Vector2(vx, _jumpSpeed);
 
-        /**
-        if (Dashing)
-        {
-            _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, _jumpSpeed);
-        }
-        else
-        {
-            _Rigidbody.velocity = new Vector2(0, _jumpSpeed);
-        }
-        */
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = true;
         Dashing = true;
         DashJumping = true;
+
 
         // 일정 시간 후에 개체의 운동 중단을 요청하는 메서드를 호출합니다.
         Invoke("UnblockSliding", WALLJUMP_END_TIME);
@@ -1564,7 +1563,7 @@ public abstract class PlayerController : MonoBehaviour
         BlockSliding();
         BlockAirDashing();
         _movingSpeed = _dashSpeed;
-        _Rigidbody.velocity = new Vector2
+        _Velocity = new Vector2
             (FacingRight ? -1.5f * _movingSpeed : 1.5f * _movingSpeed, _jumpSpeed);
 
         // 개체의 운동에 따른 효과를 처리합니다.
@@ -1590,7 +1589,8 @@ public abstract class PlayerController : MonoBehaviour
         BlockMoving();
         BlockAirDashing();
         BlockJumping();
-        _Rigidbody.velocity = new Vector2(FacingRight ? _dashSpeed : -_dashSpeed, 0);
+        _Velocity = new Vector2(FacingRight ? _dashSpeed : -_dashSpeed, 0);
+        Log("AirDash: Vy set to 0");
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = true;
@@ -1676,7 +1676,7 @@ public abstract class PlayerController : MonoBehaviour
 
         // 상태를 업데이트합니다.
         Damaged = true;
-        if (point >= BigDamageValue)
+        if (point >= _bigDamageValue)
         {
             BigDamaged = true;
         }
@@ -1692,14 +1692,14 @@ public abstract class PlayerController : MonoBehaviour
         if (BigDamaged && IsAlive())
         {
             Vector2 force = (FacingRight ? Vector2.left : Vector2.right) * KnockbackSpeed;
-            _Rigidbody.velocity = new Vector2(force.x, KnockbackJumpSize);
+            _Velocity = new Vector2(force.x, KnockbackJumpSize);
             StartCoroutine(CoroutineKnockback());
         }
         else
         {
             float speed = 100;
             Vector2 force = (FacingRight ? Vector2.left : Vector2.right);
-            _Rigidbody.velocity = Vector2.zero;
+            _Velocity = Vector2.zero;
             _Rigidbody.AddForce(force * speed);
         }
     }
@@ -1887,7 +1887,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected void Flip()
     {
-        _facingRight = !_facingRight;
+        FacingRight = !FacingRight;
         Vector3 theScale = transform.localScale;
         theScale.x *= -1;
         transform.localScale = theScale;
@@ -1940,6 +1940,8 @@ public abstract class PlayerController : MonoBehaviour
 
 
 
+
+    #region 디버그용 메서드를 정의합니다.
     /// <summary>
     /// 디버그 스트림에 형식화된 문자열을 출력합니다.
     /// </summary>
@@ -1949,6 +1951,32 @@ public abstract class PlayerController : MonoBehaviour
     {
         Debug.Log(string.Format(format, args));
     }
+
+
+    /// <summary>
+    /// 속도를 가져옵니다.
+    /// </summary>
+    public Vector2 _Velocity
+    {
+        get { return _Rigidbody.velocity; }
+        set
+        {
+///            Log("_Rigidbody updated from ({0}) to ({1})", _Rigidbody.velocity, value);
+            _Rigidbody.velocity = value;
+        }
+    }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
 
 
     #region 구형 정의를 보관합니다.
@@ -1975,7 +2003,8 @@ public abstract class PlayerController : MonoBehaviour
             Vector3 pos = transform.position;
             pos.y -= Mathf.Min(rayB.distance, rayF.distance);
             transform.position = pos;
-            _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, 0);
+            _Velocity = new Vector2(_Velocity.x, 0);
+            Log("UpdateLanding_dep: Vy set to 0");
             Landed = true;
         }
         else
@@ -1984,6 +2013,14 @@ public abstract class PlayerController : MonoBehaviour
         }
         return Landed;
     }
+
+
+    [Obsolete("Readying 프로퍼티로 대체되었습니다. 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 플레이어가 준비중이라면 true입니다.
+    /// </summary>
+    bool _readying = false;
+
 
 
     #endregion
