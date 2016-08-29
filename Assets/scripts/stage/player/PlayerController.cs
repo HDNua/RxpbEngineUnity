@@ -395,7 +395,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 지상에 있다면 true입니다.
     /// </summary>
-    bool _landed = false;
+    public bool _landed = false;
     /// <summary>
     /// 지상에서 이동하고 있다면 true입니다.
     /// </summary>
@@ -904,9 +904,72 @@ public abstract class PlayerController : MonoBehaviour
         RaycastHit2D rayB = Physics2D.Raycast(groundCheckBack.position, Vector2.down, groundCheckRadius, whatIsGround);
         RaycastHit2D rayF = Physics2D.Raycast(groundCheckFront.position, Vector2.down, groundCheckRadius, whatIsGround);
 
+
         if (OnGround())
         {
+            /*
+            Handy: 다음 커밋에서 삭제할 예정입니다.
+
+            // 경사면에 있다면
+            if (rayB.normal.normalized != rayF.normal.normalized)
+            {
+                RaycastHit2D ray = rayB.distance < rayF.distance ? rayB : rayF;
+                float rayAngle = Vector2.Angle(Vector2.zero, ray.normal);
+                _Velocity = new Vector2(_Velocity.x, Mathf.Abs(_Velocity.x) * Mathf.Sin(Mathf.Deg2Rad * rayAngle));
+            }
+
+            */
+
+
+            // 절차:
+            // 1. 캐릭터에서 수직으로 내린 직선에 맞는 경사면의 법선 벡터를 구한다.
+            // 2. 법선 벡터와 이동 방향 벡터가 이루는 각도가 예각이면 내려오는 것
+            //    법선 벡터와 이동 방향 벡터가 이루는 각도가 둔각이면 올라가는 것
+
+
+
+
+
+
+
+            if (rayB.normal.normalized != rayF.normal.normalized)
+            {
+                bool isTouchingSlopeFromB = rayB.normal.x == 0;
+                Transform pos = isTouchingSlopeFromB ? groundCheckBack : groundCheckFront;
+                RaycastHit2D ray = isTouchingSlopeFromB ? rayB : rayF;
+
+                Vector2 from = Vector2.right; // FacingRight ? Vector2.right : Vector2.left;
+                float rayAngle = Vector2.Angle(from, ray.normal);
+                Log("rayAngle({0}, {1}): {2}", from, ray.normal, rayAngle);
+
+
+                if (Jumping)
+                {
+
+                }
+                // 예각이라면 내려갑니다.
+                else if (rayAngle < 90)
+                {
+                    _Velocity = new Vector2(_Velocity.x, -Mathf.Abs(_Velocity.x) * Mathf.Tan(Mathf.Deg2Rad * rayAngle));
+                    /// _Velocity = new Vector2(_Velocity.x, Mathf.Abs(_Velocity.x) * Mathf.Tan(Mathf.Deg2Rad * rayAngle));
+                    Log("예각!");
+                }
+                // 둔각이라면 올라갑니다.
+                else if (rayAngle > 90)
+                {
+                    _Velocity = new Vector2(_Velocity.x, Mathf.Abs(_Velocity.x) / Mathf.Tan(Mathf.Deg2Rad * rayAngle));
+                    Log("둔각!");
+                    /// Log("둔각! {0}", Mathf.Abs(_Velocity.x) * Mathf.Tan(Mathf.Deg2Rad * rayAngle));
+                }
+                // 90도라면
+                else
+                {
+
+                }
+                Log("{0}/{1}", rayB.distance, rayF.distance);
+            }
             Landed = true;
+            /// Log("OnGround");
         }
         else if (Jumping || Falling)
         {
@@ -918,23 +981,64 @@ public abstract class PlayerController : MonoBehaviour
             {
 
             }
+            else if (AirDashing)
+            {
+
+            }
+
+            // TODO: 나중에 수정해야 하지 않나 합니다.
+            else if (Spawning)
+            {
+
+            }
+
             else
             {
+                /*
+                Handy: 다음 커밋에서 삭제할 예정입니다.
+
                 Vector3 pos = transform.position;
+                float difY;
                 if (rayB && !rayF)
                 {
-                    pos.y -= rayB.distance / transform.localScale.y;
+                    difY = rayB.distance / transform.localScale.y;
+                    pos.y -= difY;
                 }
                 else if (!rayB && rayF)
                 {
-                    pos.y -= rayF.distance / transform.localScale.y;
+                    difY = rayF.distance / transform.localScale.y;
+                    pos.y -= difY;
                 }
                 else
                 {
-                    pos.y -= Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
+                    difY = Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
+                    pos.y -= difY;
+                }
+                /// transform.position = pos;
+                /// _Velocity = new Vector2(_Velocity.x,  -Mathf.Abs(_Velocity.x) * Mathf.Sin(Mathf.Deg2Rad * 60));
+                */
+
+
+
+                Vector3 pos = transform.position;
+                float difY;
+                if (rayB && !rayF)
+                {
+                    difY = rayB.distance / transform.localScale.y;
+                    pos.y -= difY;
+                }
+                else if (!rayB && rayF)
+                {
+                    difY = rayF.distance / transform.localScale.y;
+                    pos.y -= difY;
+                }
+                else
+                {
+                    difY = Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
+                    pos.y -= difY;
                 }
                 transform.position = pos;
-                _Velocity = new Vector2(_Velocity.x, 0);
+                _Velocity = new Vector2(_Velocity.x, -Mathf.Abs(_Velocity.x) * Mathf.Sin(Mathf.Deg2Rad * 60));
                 Landed = true;
             }
         }
@@ -951,7 +1055,7 @@ public abstract class PlayerController : MonoBehaviour
     void UpdatePhysicsState(Collision2D collision)
     {
         int layer = collision.collider.gameObject.layer;
-        /// bool touchedGround = false;
+
 
         // 땅과 접촉한 경우의 처리입니다.
         if (IsSameLayer(layer, whatIsGround))
@@ -965,8 +1069,6 @@ public abstract class PlayerController : MonoBehaviour
             {
                 groundEdgeSet.Remove(groundCollider);
             }
-
-            /// touchedGround = true;
         }
 
 
@@ -976,7 +1078,6 @@ public abstract class PlayerController : MonoBehaviour
             bool isTouchingWall = IsTouchingWall(collision);
             bool isKeyPressedValid = FacingRight ? IsRightKeyPressed() : IsLeftKeyPressed();
             Pushing = isTouchingWall && isKeyPressedValid;
-            /// L_og("pushing is updated: tw={0}, kpv={1}, v=({2}), tg={3}", isTouchingWall, isKeyPressedValid, _Velocity, touchedGround);
         }
     }
 
@@ -1322,7 +1423,6 @@ public abstract class PlayerController : MonoBehaviour
         if (_Velocity.y > 0)
         {
             _Velocity = new Vector2(_Velocity.x, 0);
-            /// L_og("Fall: Vy set to 0");
         }
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
@@ -1431,7 +1531,6 @@ public abstract class PlayerController : MonoBehaviour
         // 개체의 운동 상태를 갱신합니다.
         UnblockDashing();
         _Velocity = new Vector2(_Velocity.x, 0);
-        /// L_og("StopSliding: Vy set to 0");
 
         // 개체의 운동에 따른 효과를 처리합니다.
         if (_slideFogEffect != null)
@@ -1592,7 +1691,6 @@ public abstract class PlayerController : MonoBehaviour
         BlockAirDashing();
         BlockJumping();
         _Velocity = new Vector2(FacingRight ? _dashSpeed : -_dashSpeed, 0);
-        /// L_og("AirDash: Vy set to 0");
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = true;
@@ -1963,7 +2061,6 @@ public abstract class PlayerController : MonoBehaviour
         get { return _Rigidbody.velocity; }
         set
         {
-            /// L_og("_Rigidbody updated from ({0}) to ({1})", _Rigidbody.velocity, value);
             _Rigidbody.velocity = value;
         }
     }
@@ -2006,7 +2103,6 @@ public abstract class PlayerController : MonoBehaviour
             pos.y -= Mathf.Min(rayB.distance, rayF.distance);
             transform.position = pos;
             _Velocity = new Vector2(_Velocity.x, 0);
-            /// L_og("UpdateLanding_dep: Vy set to 0");
             Landed = true;
         }
         else
@@ -2015,14 +2111,6 @@ public abstract class PlayerController : MonoBehaviour
         }
         return Landed;
     }
-
-
-    [Obsolete("Readying 프로퍼티로 대체되었습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 플레이어가 준비중이라면 true입니다.
-    /// </summary>
-    bool _readying = false;
-
 
 
     #endregion

@@ -1,11 +1,6 @@
-RXPB v3.8.0 EnemyScript v3.0.3 (IMPORTANT)
+RXPB v3.8.0 EnemyScript v3.1.0
 
-* !!!!! IMPORTANT !!!!!
-  WallJumping 프로퍼티를 도입함으로써 벽 타기 관련 문제를 크게 해결.
-  
-  
-- Log 호출관련 코드를 주석 처리함.
-!> 다음 커밋에서 모두 진짜로 삭제할 것.
+- 법선을 이용한 경사면 판정 테스트중.
 
 
 end.

@@ -2,6 +2,8 @@
 using System.Collections;
 using System;
 
+
+
 /// <summary>
 /// 엑스 캐릭터의 바디 색상을 관리합니다.
 /// </summary>
@@ -123,32 +125,53 @@ public static class RXColors
         0xD0C0B8, 0xA89890, 0x685040, 0x283038,
         0xD88830, 0xC86818, 0x984810, 0x703010,
     };
+    /// <summary>
+    /// 무기 2 색상 값 배열입니다.
+    /// </summary>
+    static readonly int[] X_WEAPON2_COLOR_PALETTE =
+    {
+        0xE02121, 0x602111, 0xD07051, 0xD0A081, 0xE0D180, 0xE08140, 0x703121, 0xB0C1D0, 0x9090A0, 0x506071, 0x203131, 0x60B151, 0x208140, 0x107031, 0x005020,
+        0xE02121, 0x602111, 0xD07051, 0xD0A081, 0xE0D180, 0xE08140, 0x703121, 0xB0C1D0, 0x9090A0, 0x506071, 0x203131, 0x60B151, 0x208140, 0x107031, 0x005020,
+    };
+    /// <summary>
+    /// 무기 3 색상 값 배열입니다.
+    /// </summary>
+    static readonly int[] X_WEAPON3_COLOR_PALETTE =
+    {
+        0xE02121, 0x602111, 0xD07051, 0xD0A081, 0x20D1F0, 0x2081B0, 0x205160, 0xC0C0D0, 0x9090A0, 0x506071, 0x203131, 0xE061B1, 0xD04070, 0xA03151, 0x601120,
+        0xE02121, 0x602111, 0xD07051, 0xD0A081, 0x20D1F0, 0x2081B0, 0x205160, 0xC0C0D0, 0x9090A0, 0x506071, 0x203131, 0xE061B1, 0xD04070, 0xA03151, 0x601120,
+    };
+    /// <summary>
+    /// 무기 4 색상 값 배열입니다.
+    /// </summary>
+    static readonly int[] X_WEAPON4_COLOR_PALETTE =
+    {
+        0xE02820, 0x602818, 0xD07858, 0xD8A888, 0xF0F0F0, 0xA0A0A0, 0x505058, 0xD0C0B8, 0xA89890, 0x685040, 0x283038, 0xE05858, 0xE03030, 0xA00008, 0x580008,
+        0xE02820, 0x602818, 0xD07858, 0xD8A888, 0xF0F0F0, 0xA0A0A0, 0x505058, 0xD0C0B8, 0xA89890, 0x685040, 0x283038, 0xE05858, 0xE03030, 0xA00008, 0x580008,
+    };
 
 
     /// <summary>
-    /// 
+    /// 엑스의 기본 차지 색상 팔레트입니다.
     /// </summary>
     static readonly int[] X_DEFAULT_CHARGE_COLOR_PALETTE =
     {
         0x3068C8, 0x3880D8, 0x9098A8, 0xB8C0D0
     };
     /// <summary>
-    /// 
+    /// 엑스의 기본 차지 1단계 색상 팔레트입니다.
     /// </summary>
     static readonly int[] X_NORMAL1_CHARGE_COLOR_PALETTE =
     {
         0x4898F8, 0x58B8F8, 0xC0F0F8, 0xB8C0D0
     };
     /// <summary>
-    /// 
+    /// 엑스의 기본 차지 2단계 색상 팔레트입니다.
     /// </summary>
     static readonly int[] X_NORMAL2_CHARGE_COLOR_PALETTE =
     {
         0x38E888, 0x48F8A8, 0x80B8A8, 0xB8F8E8
     };
-
-
-
 
 
     #endregion
@@ -185,10 +208,24 @@ public static class RXColors
     /// 차지 2단계 바디 색상표입니다.
     /// </summary>
     public static Color[] XCharge2Palette { get; private set; }
+
+
     /// <summary>
     /// 무기1 색상 팔레트입니다.
     /// </summary>
     public static Color[] XWeapon1Palette { get; private set; }
+    /// <summary>
+    /// 무기2 색상 팔레트입니다.
+    /// </summary>
+    public static Color[] XWeapon2Palette { get; private set; }
+    /// <summary>
+    /// 무기3 색상 팔레트입니다.
+    /// </summary>
+    public static Color[] XWeapon3Palette { get; private set; }
+    /// <summary>
+    /// 무기4 색상 팔레트입니다.
+    /// </summary>
+    public static Color[] XWeapon4Palette { get; private set; }
 
 
     /// <summary>
@@ -240,32 +277,54 @@ public static class RXColors
         Color[] xCharge2Palette;
         Color[] xDashEffectColorPalette;
         Color[] xWeapon1Palette;
+        Color[] xWeapon2Palette;
+        Color[] xWeapon3Palette;
+        Color[] xWeapon4Palette;
+
 
         // 팔레트를 초기화합니다.
         invenciblePalette = new Color[PALETTE_COUNT];
         xDefaultPalette = new Color[PALETTE_COUNT];
         xDashEffectColorPalette = new Color[PALETTE_COUNT];
 
+
         xCharge1Palette = new Color[PALETTE_COUNT];
         xCharge2Palette = new Color[PALETTE_COUNT];
         xWeapon1Palette = new Color[PALETTE_COUNT];
+        xWeapon2Palette = new Color[PALETTE_COUNT];
+        xWeapon3Palette = new Color[PALETTE_COUNT];
+        xWeapon4Palette = new Color[PALETTE_COUNT];
         for (int i = 0; i < PALETTE_COUNT; ++i)
         {
+            // 기본 색상표를 초기화합니다.
             invenciblePalette[i] = ColorFromInt(INVENCIBLE_COLOR_PALETTE[i]);
             xDefaultPalette[i] = ColorFromInt(X_DEFAULT_COLOR_PALETTE[i]);
             xDashEffectColorPalette[i] = ColorFromInt(X_DASHAFTERIMAGE_COLOR_PALETTE[i]);
 
+
+            // 차지 색상표를 초기화합니다.
             xCharge1Palette[i] = ColorFromInt(X_CHARGE1_COLOR_PALETTE[i]);
             xCharge2Palette[i] = ColorFromInt(X_CHARGE2_COLOR_PALETTE[i]);
+
+
+            // 웨폰 색상표를 초기화합니다.
             xWeapon1Palette[i] = ColorFromInt(X_WEAPON1_COLOR_PALETTE[i]);
+            xWeapon2Palette[i] = ColorFromInt(X_WEAPON2_COLOR_PALETTE[i]);
+            xWeapon3Palette[i] = ColorFromInt(X_WEAPON3_COLOR_PALETTE[i]);
+            xWeapon4Palette[i] = ColorFromInt(X_WEAPON4_COLOR_PALETTE[i]);
         }
         InvenciblePalette = invenciblePalette;
         XDefaultPalette = xDefaultPalette;
         XDashEffectColorPalette = xDashEffectColorPalette;
 
+
         XCharge1Palette = xCharge1Palette;
         XCharge2Palette = xCharge2Palette;
         XWeapon1Palette = xWeapon1Palette;
+        XWeapon2Palette = xWeapon2Palette;
+        XWeapon3Palette = xWeapon3Palette;
+        XWeapon4Palette = xWeapon4Palette;
+
 
 
         // 차지 효과 색상표를 초기화합니다.
@@ -327,6 +386,13 @@ public static class RXColors
 
 
     #endregion
+
+
+
+
+
+
+
 
 
 

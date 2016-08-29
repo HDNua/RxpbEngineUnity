@@ -212,7 +212,7 @@ public class XController : PlayerController
     /// <summary>
     /// 현재 무기 상태입니다. 0은 기본입니다.
     /// </summary>
-    int _weaponState = 0;
+    public int _weaponState = 0;
     /// <summary>
     /// 현재 색상 팔레트입니다.
     /// </summary>
@@ -250,8 +250,6 @@ public class XController : PlayerController
     /// </summary>
     protected override void Update()
     {
-///        Log("Update.Beg: ({0}, {1})", _Velocity.x, _Velocity.y);
-
         base.Update();
         /// UpdateState();
 
@@ -372,15 +370,10 @@ public class XController : PlayerController
         {
             ChangeWeapon(_weaponState == 4 ? 0 : 4);
         }
-        /**
-        else if (Input.GetKeyDown(KeyCode.X))
+        else if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             ChangeWeapon(0);
         }
-        */
-
-
-///        Log("Update.End: ({0}, {1})", _Velocity.x, _Velocity.y);
     }
     /// <summary>
     /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트 합니다.
@@ -389,7 +382,6 @@ public class XController : PlayerController
     /// </summary>
     void FixedUpdate()
     {
-///        Log("FixedUpdate.Beg: ({0}, {1})", _Velocity.x, _Velocity.y);
         /// UpdateState();
 
         if (FixedUpdateController() == false)
@@ -434,8 +426,6 @@ public class XController : PlayerController
             {
                 // StopFalling();
                 Land();
-
-///                Log("Update.DefaultInputCheck: Falling: if (Landed)");
             }
             else if (Pushing)
             {
@@ -449,19 +439,12 @@ public class XController : PlayerController
                 {
                     Slide();
                 }
-
-///                Log("Update.DefaultInputCheck: Falling: else if (Pushing)");
             }
             else
             {
                 float vy = _Velocity.y - _jumpDecSize;
-                _Velocity = new Vector2
-                    (_Velocity.x, vy > -16 ? vy : -16);
-
-///                Log("Update.DefaultInputCheck: Falling: else");
+                _Velocity = new Vector2(_Velocity.x, vy > -16 ? vy : -16);
             }
-
-///            Log("Update.DefaultInputCheck: Falling: End");
         }
         // 대쉬 중이라면
         else if (Dashing)
@@ -498,8 +481,6 @@ public class XController : PlayerController
             {
                 StopDashing();
             }
-
-///            Log("Update.DefaultInputCheck: Dashing: End");
         }
         // 벽을 타고 있다면
         else if (Sliding)
@@ -516,10 +497,7 @@ public class XController : PlayerController
             }
             else if (_Velocity.y == 0f)
             {
-                /// L_og("Update.DefaultInputCheck: Sliding: TEST");
             }
-
-            /// L_og("Update.DefaultInputCheck: Sliding: End");
         }
         // 벽을 밀고 있다면
         else if (Pushing)
@@ -532,7 +510,6 @@ public class XController : PlayerController
             {
                 Slide();
             }
-            /// L_og("Update.DefaultInputCheck: Pushing: TEST");
         }
         // 그 외의 경우
         else
@@ -540,10 +517,8 @@ public class XController : PlayerController
             if (Landed == false)
             {
                 Fall();
-///                Log("Update.DefaultInputCheck: What are you doing?");
             }
 
-///            Log("Update.DefaultInputCheck: End of Landed check");
             UnblockSliding();
         }
 
@@ -585,12 +560,10 @@ public class XController : PlayerController
         // 움직임이 막힌 상태라면
         else if (MoveBlocked)
         {
-            /// L_og("FixedUpdate: CheckUserInput: MoveBlocked: ?");
         }
         // 벽 점프 중이라면
         else if (SlideBlocked)
         {
-            /// L_og("FixedUpdate: CheckUserInput: SlideBlocked: ?");
         }
         // 그 외의 경우
         else
@@ -603,11 +576,9 @@ public class XController : PlayerController
                 if (FacingRight == false && Pushing)
                 {
                     StopMoving();
-                    /// L_og("FixedUpdate: CheckUserInput: else: IsLeftKeyPressed: first if");
                 }
                 else
                 {
-                    /// L_og("FixedUpdate: CheckUserInput: else: IsLeftKeyPressed: before (v={0})", _Velocity);
                     if (Sliding)
                     {
                         StopSliding();
@@ -617,9 +588,7 @@ public class XController : PlayerController
                     {
                         MoveLeft();
                     }
-                    /// L_og("FixedUpdate: CheckUserInput: else: IsLeftKeyPressed: after (v={0})", _Velocity);
                 }
-                /// L_og("FixedUpdate: CheckUserInput: else: IsLeftKeyPressed: end (v={0})", _Velocity);
             }
             else if (IsRightKeyPressed())
             {
@@ -640,7 +609,6 @@ public class XController : PlayerController
             {
                 StopMoving();
             }
-///            Log("FixedUpdate: CheckUserInput: else: ?");
         }
 
 
@@ -697,7 +665,6 @@ public class XController : PlayerController
         }
 
         ShotTime += Time.fixedDeltaTime;
-///        Log("FixedUpdate.End: ({0}, {1})", _Velocity.x, _Velocity.y);
     }
     /// <summary>
     /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
@@ -705,18 +672,12 @@ public class XController : PlayerController
     /// </summary>
     protected override void LateUpdate()
     {
-///        Log("LateUpdate.Beg: ({0}, {1})", _Velocity.x, _Velocity.y);
-
-
         base.LateUpdate();
         UpdateState();
 
 
         // 엑스의 색상을 업데이트합니다.
         UpdateColor();
-
-
-///        Log("LateUpdate.End: ({0}, {1})", _Velocity.x, _Velocity.y);
     }
 
 
@@ -810,7 +771,7 @@ public class XController : PlayerController
     void Charge()
     {
         // 차지 효과음 재생에 관한 코드입니다.
-        if (_chargeTime < CHARGE_LEVEL[0]) // chargeLevel[1] - 0.1f
+        if (_chargeTime < CHARGE_LEVEL[0])
         {
 
         }
@@ -1546,7 +1507,18 @@ public class XController : PlayerController
         {
             case 1:
                 targetPalette = RXColors.XWeapon1Palette;
-                // Shot();
+                break;
+
+            case 2:
+                targetPalette = RXColors.XWeapon2Palette;
+                break;
+
+            case 3:
+                targetPalette = RXColors.XWeapon3Palette;
+                break;
+
+            case 4:
+                targetPalette = RXColors.XWeapon4Palette;
                 break;
 
             default:
@@ -1707,6 +1679,19 @@ public class XController : PlayerController
             case 1:
                 palette = RXColors.XWeapon1Palette;
                 break;
+
+            case 2:
+                palette = RXColors.XWeapon2Palette;
+                break;
+
+            case 3:
+                palette = RXColors.XWeapon3Palette;
+                break;
+
+            case 4:
+                palette = RXColors.XWeapon4Palette;
+                break;
+
             default:
                 palette = null;
                 break;
