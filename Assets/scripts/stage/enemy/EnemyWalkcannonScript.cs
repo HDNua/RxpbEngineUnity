@@ -1,0 +1,314 @@
+﻿using UnityEngine;
+using System;
+using System.Collections;
+
+
+
+/// <summary>
+/// Walkcannon 적 캐릭터를 정의합니다.
+/// </summary>
+public class EnemyWalkcannonScript : EnemyScript
+{
+    #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
+    Rigidbody2D _rigidbody;
+    BoxCollider2D _boxCollider2D;
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region Unity에서 접근 가능한 공용 객체를 정의합니다.
+    /// <summary>
+    /// 자신의 밑에 지면이 존재하는지 검사하기 위해 사용합니다.
+    /// </summary>
+    public Transform groundCheck;
+    /// <summary>
+    /// 자신이 진행하는 방향에 벽이 존재하는지 검사하기 위해 사용합니다.
+    /// </summary>
+    public Transform pushCheck;
+    /// <summary>
+    /// 무엇이 벽인지를 결정합니다. 기본값은 "Wall, MapBlock"입니다.
+    /// </summary>
+    public LayerMask whatIsWall;
+    /// <summary>
+    /// 무엇이 땅인지를 결정합니다. 기본값은 "Ground"입니다.
+    /// </summary>
+    public LayerMask whatIsGround;
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region 캐릭터의 상태 필드 및 프로퍼티를 정의합니다.
+    /// <summary>
+    /// 캐릭터가 움직이는 속도를 정의합니다.
+    /// </summary>
+    public float movingSpeed;
+
+    /// <summary>
+    /// 캐릭터가 오른쪽을 보고 있다면 참입니다.
+    /// </summary>
+    bool _facingRight = false;
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region MonoBehaviour 기본 메서드를 재정의합니다.
+    /// <summary>
+    /// MonoBehaviour 개체를 초기화합니다.
+    /// </summary>
+    protected override void Start()
+    {
+        base.Start();
+
+
+        // 필드를 초기화합니다.
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _boxCollider2D = GetComponent<BoxCollider2D>();
+
+        // 자신과 가장 가까운 바닥으로 y 좌표를 옮깁니다.
+        RaycastHit2D groundRay = Physics2D.Raycast(groundCheck.position, Vector2.down, 10f, whatIsGround);
+        /// float initY = transform.  groundRay.point.y + (_boxCollider2D.size.y / 2 * transform.localScale.y);
+        /// transform.position = new Vector3(groundRay.point.x, initY);
+        Vector2 newPos = transform.position;
+        newPos.y -= Mathf.Abs(_boxCollider2D.bounds.min.y - groundRay.point.y); // / transform.localScale.y;
+        transform.position = newPos;
+
+        // 방황 코루틴을 시작합니다.
+        // StartCoroutine(WalkAround());
+
+        MoveLeft();
+    }
+    /// <summary>
+    /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트합니다.
+    /// </summary>
+    protected override void Update()
+    {
+        base.Update();
+
+
+        // 땅에서 떨어지려고 한다면 즉시 전환합니다.
+        RaycastHit2D groundRay = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, whatIsGround);
+        if (groundRay == false)
+        {
+            if (_facingRight)
+            {
+                MoveLeft();
+            }
+            else
+            {
+                MoveRight();
+            }
+        }
+
+        // 벽에 닿는다면 방향을 즉시 전환합니다.
+        Vector3 direction = _facingRight ? Vector3.right : Vector3.left;
+        RaycastHit2D pushRay = Physics2D.Raycast
+            (pushCheck.position, direction, 0.1f, whatIsWall);
+        if (pushRay)
+        {
+            if (_facingRight)
+            {
+                MoveLeft();
+            }
+            else
+            {
+                MoveRight();
+            }
+        }
+    }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region Collider2D의 기본 메서드를 재정의합니다.
+    /// <summary>
+    /// 충돌체가 여전히 트리거 내부에 있습니다.
+    /// </summary>
+    /// <param name="other">자신이 아닌 충돌체 개체입니다.</param>
+    void OnTriggerStay2D(Collider2D other)
+    {
+        // 트리거가 발동한 상대 충돌체가 플레이어라면 대미지를 입힙니다.
+        if (other.CompareTag("Player"))
+        {
+            GameObject pObject = other.gameObject;
+            PlayerController player = pObject.GetComponent<PlayerController>();
+
+
+            // 플레이어가 무적 상태이거나 죽었다면
+            if (player.Invencible || player.IsDead)
+            {
+                // 아무 것도 하지 않습니다.
+
+            }
+            // 그 외의 경우
+            else
+            {
+                // 플레이어에게 대미지를 입힙니다.
+                player.Hurt(Damage);
+            }
+        }
+    }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region EnemyScript의 메서드를 오버라이드합니다.
+    /// <summary>
+    /// 캐릭터가 사망합니다.
+    /// </summary>
+    public override void Dead()
+    {
+        // 폭발 효과를 생성하고 효과음을 재생합니다.
+        SoundEffects[0].Play();
+        Instantiate(effects[0], transform.position, transform.rotation);
+
+
+        // 사망 시 아이템 드롭 루틴입니다.
+        int dropItem = UnityEngine.Random.Range(0, _items.Length);
+        if (_items[dropItem] != null)
+        {
+            CreateItem(_items[dropItem]);
+        }
+
+
+        // 캐릭터가 사망합니다.
+        base.Dead();
+    }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region 보조 메서드를 정의합니다.
+    /// <summary>
+    /// 왼쪽으로 이동합니다.
+    /// </summary>
+    void MoveLeft()
+    {
+        if (_facingRight)
+            Flip();
+        _rigidbody.velocity = new Vector2(-movingSpeed, 0);
+        // _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
+    }
+    /// <summary>
+    /// 오른쪽으로 이동합니다.
+    /// </summary>
+    void MoveRight()
+    {
+        if (_facingRight == false)
+            Flip();
+        _rigidbody.velocity = new Vector2(movingSpeed, 0);
+        // _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
+    }
+    /// <summary>
+    /// 방향을 바꿉니다.
+    /// </summary>
+    void Flip()
+    {
+        if (_facingRight)
+        {
+            _rigidbody.transform.localScale = new Vector3
+                (-_rigidbody.transform.localScale.x, _rigidbody.transform.localScale.y);
+        }
+        else
+        {
+            _rigidbody.transform.localScale = new Vector3
+                (-_rigidbody.transform.localScale.x, _rigidbody.transform.localScale.y);
+        }
+        _facingRight = !_facingRight;
+    }
+    /// <summary>
+    /// 주변을 방황합니다.
+    /// </summary>
+    /// <returns>StartCoroutine 호출에 적합한 값을 반환합니다.</returns>
+    IEnumerator WalkAround()
+    {
+        while (_health != 0)
+        {
+            int random = UnityEngine.Random.Range(0, 2);
+            if (random == 1)
+            {
+                MoveLeft();
+            }
+            else
+            {
+                MoveRight();
+            }
+            yield return new WaitForSeconds(3);
+        }
+    }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region 구형 정의를 보관합니다.
+    [Obsolete("뭔진 알겠는데 이거 빼도 되지 않나요?")]
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool canJump;
+
+
+    #endregion
+}

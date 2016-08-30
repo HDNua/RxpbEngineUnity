@@ -10,11 +10,11 @@ public class EnemyScript : MonoBehaviour
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
     /// <summary>
-    /// 
+    /// 충돌체입니다.
     /// </summary>
     Collider2D _collider;
     /// <summary>
-    /// 
+    /// 충돌체입니다.
     /// </summary>
     public Collider2D Collider { get { return _collider; } }
 
@@ -223,7 +223,7 @@ public class EnemyScript : MonoBehaviour
 
 
 
-    #region 보조 메서드를 정의합니다.
+    #region 메서드를 정의합니다.
     /// <summary>
     /// 캐릭터를 죽입니다.
     /// </summary>

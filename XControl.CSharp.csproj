@@ -112,6 +112,7 @@
     <Compile Include="Assets\scripts\stage\camera\CameraZoneParent.cs" />
     <Compile Include="Assets\scripts\stage\enemy\EnemyMettoolScript.cs" />
     <Compile Include="Assets\scripts\stage\enemy\EnemyScript.cs" />
+    <Compile Include="Assets\scripts\stage\enemy\EnemyWalkcannonScript.cs" />
     <Compile Include="Assets\scripts\stage\player\AttackScript.cs" />
     <Compile Include="Assets\scripts\stage\player\DeadEffectScript.cs" />
     <Compile Include="Assets\scripts\stage\player\PlayerController.cs" />

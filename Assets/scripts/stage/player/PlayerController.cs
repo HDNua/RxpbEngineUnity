@@ -39,7 +39,6 @@ public abstract class PlayerController : MonoBehaviour
     protected const float DASH_AFTERIMAGE_LIFETIME = 0.05f;
 
 
-
     #endregion
 
 
@@ -907,40 +906,18 @@ public abstract class PlayerController : MonoBehaviour
 
         if (OnGround())
         {
-            /*
-            Handy: 다음 커밋에서 삭제할 예정입니다.
-
-            // 경사면에 있다면
-            if (rayB.normal.normalized != rayF.normal.normalized)
-            {
-                RaycastHit2D ray = rayB.distance < rayF.distance ? rayB : rayF;
-                float rayAngle = Vector2.Angle(Vector2.zero, ray.normal);
-                _Velocity = new Vector2(_Velocity.x, Mathf.Abs(_Velocity.x) * Mathf.Sin(Mathf.Deg2Rad * rayAngle));
-            }
-
-            */
-
-
             // 절차:
             // 1. 캐릭터에서 수직으로 내린 직선에 맞는 경사면의 법선 벡터를 구한다.
             // 2. 법선 벡터와 이동 방향 벡터가 이루는 각도가 예각이면 내려오는 것
             //    법선 벡터와 이동 방향 벡터가 이루는 각도가 둔각이면 올라가는 것
-
-
-
-
-
-
-
             if (rayB.normal.normalized != rayF.normal.normalized)
             {
                 bool isTouchingSlopeFromB = rayB.normal.x == 0;
                 Transform pos = isTouchingSlopeFromB ? groundCheckBack : groundCheckFront;
                 RaycastHit2D ray = isTouchingSlopeFromB ? rayB : rayF;
 
-                Vector2 from = Vector2.right; // FacingRight ? Vector2.right : Vector2.left;
+                Vector2 from = FacingRight ? Vector2.right : Vector2.left;
                 float rayAngle = Vector2.Angle(from, ray.normal);
-                Log("rayAngle({0}, {1}): {2}", from, ray.normal, rayAngle);
 
 
                 if (Jumping)
@@ -950,26 +927,20 @@ public abstract class PlayerController : MonoBehaviour
                 // 예각이라면 내려갑니다.
                 else if (rayAngle < 90)
                 {
-                    _Velocity = new Vector2(_Velocity.x, -Mathf.Abs(_Velocity.x) * Mathf.Tan(Mathf.Deg2Rad * rayAngle));
-                    /// _Velocity = new Vector2(_Velocity.x, Mathf.Abs(_Velocity.x) * Mathf.Tan(Mathf.Deg2Rad * rayAngle));
-                    Log("예각!");
+                    _Velocity = new Vector2(_Velocity.x, -Mathf.Abs(_Velocity.x) /*-Mathf.Abs(_Velocity.x) * Mathf.Tan(Mathf.Deg2Rad * rayAngle)*/);
                 }
                 // 둔각이라면 올라갑니다.
                 else if (rayAngle > 90)
                 {
-                    _Velocity = new Vector2(_Velocity.x, Mathf.Abs(_Velocity.x) / Mathf.Tan(Mathf.Deg2Rad * rayAngle));
-                    Log("둔각!");
-                    /// Log("둔각! {0}", Mathf.Abs(_Velocity.x) * Mathf.Tan(Mathf.Deg2Rad * rayAngle));
+                    _Velocity = new Vector2(_Velocity.x, Mathf.Abs(_Velocity.x) /*Mathf.Abs(_Velocity.x) / Mathf.Tan(Mathf.Deg2Rad * rayAngle)*/);
                 }
                 // 90도라면
                 else
                 {
 
                 }
-                Log("{0}/{1}", rayB.distance, rayF.distance);
             }
             Landed = true;
-            /// Log("OnGround");
         }
         else if (Jumping || Falling)
         {

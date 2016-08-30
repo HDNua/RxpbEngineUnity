@@ -416,8 +416,6 @@ public class XController : PlayerController
                 _Velocity = new Vector2
                     (_Velocity.x, _Velocity.y - _jumpDecSize);
             }
-
-///            Log("Update.DefaultInputCheck: Jumping: End");
         }
         // 떨어지고 있다면
         else if (Falling)
