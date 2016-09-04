@@ -9,7 +9,10 @@ using UnityEngine;
 public class ReadyAnimator : MonoBehaviour
 {
     #region 필드를 정의합니다.
-    StageManager stageManager;
+    /// <summary>
+    /// 
+    /// </summary>
+    public StageManager _stageManager;
 
 
     #endregion
@@ -29,7 +32,7 @@ public class ReadyAnimator : MonoBehaviour
     /// </summary>
     void Start()
     {
-        stageManager = GetComponentInParent<StageManager>();
+        /// _stageManager = GetComponentInParent<StageManager>();
     }
 
 
@@ -50,7 +53,7 @@ public class ReadyAnimator : MonoBehaviour
     /// </summary>
     void FE_PlayReadyVoice()
     {
-        stageManager.AudioSources[0].Play();
+        _stageManager.AudioSources[0].Play();
     }
     /// <summary>
     /// 플레이어를 소환합니다.
@@ -58,14 +61,12 @@ public class ReadyAnimator : MonoBehaviour
     void FE_SpawnPlayer()
     {
         // HUD를 활성화 합니다.
-        /// stageManager._HUD.Health.SetActive(true);
-        /// stageManager._HUD.HealthBar.SetActive(true);
-        stageManager.EnableHUD();
+        _stageManager.EnableHUD();
 
 
         // 플레이어 소환을 요청합니다.
-        stageManager._player.transform.position = stageManager.PlayerSpawnPosition.position;
-        stageManager._player.RequestSpawn();
+        _stageManager._player.transform.position = _stageManager.PlayerSpawnPosition.position;
+        _stageManager._player.RequestSpawn();
     }
 
 

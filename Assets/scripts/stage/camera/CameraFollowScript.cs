@@ -28,6 +28,12 @@ public class CameraFollowScript : MonoBehaviour
     public GameObject _cameraZoneBorderParent;
 
 
+    /// <summary>
+    /// 카메라 뷰 박스입니다.
+    /// </summary>
+    public BoxCollider2D _cameraViewBox;
+
+
     #endregion
 
 
@@ -88,7 +94,28 @@ public class CameraFollowScript : MonoBehaviour
     float _unit = 0.3f;
 
 
+    /// <summary>
+    /// X 전이가 끝났다면 참입니다.
+    /// </summary>
+    bool _xTransitionEnded = false;
+    /// <summary>
+    /// Y 전이가 끝났다면 참입니다.
+    /// </summary>
+    bool _yTransitionEnded = false;
+
+
+    /// <summary>
+    /// X 방향 카메라 존 범위입니다.
+    /// </summary>
+    float _xMin, _xMax;
+    /// <summary>
+    /// Y 방향 카메라 존 범위입니다.
+    /// </summary>
+    float _yMin, _yMax;
+
+
     #endregion
+
 
 
 
@@ -163,6 +190,10 @@ public class CameraFollowScript : MonoBehaviour
             /// _currentCameraZone = _startCameraZone;
             UpdateCameraZone(_startCameraZone, false);
         }
+
+
+        // 
+        InitializeCameraViewBox();
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -211,11 +242,7 @@ public class CameraFollowScript : MonoBehaviour
 
 
 
-    bool _xTransitionEnded = false;
-    bool _yTransitionEnded = false;
 
-    float _xMin, _xMax;
-    float _yMin, _yMax;
 
 
 
@@ -312,36 +339,6 @@ public class CameraFollowScript : MonoBehaviour
         // 
         newCamPos = new Vector3(newCamPosX, newCamPosY, _camZ);
         _camera.transform.position = newCamPos;
-
-
-
-        /**
-        float curX = _player.transform.localPosition.x;
-        float curY = _player.transform.localPosition.y;
-        float xMin = _currentCameraZone._isLeftBounded ? _currentCameraZone._left : float.MinValue;
-        float xMax = _currentCameraZone._isRightBounded ? _currentCameraZone._right : float.MaxValue;
-        float yMin = _currentCameraZone._isBottomBounded ? _currentCameraZone._bottom : float.MinValue;
-        float yMax = _currentCameraZone._isTopBounded ? _currentCameraZone._top : float.MaxValue;
-        float dstX = Mathf.Clamp(curX, xMin, xMax);
-        float dstY = Mathf.Clamp(curY, yMin, yMax);
-
-        Vector3 dstPos = new Vector3(dstX, dstY, _camZ);
-        Vector3 camPos = _camera.transform.position;
-        Vector3 difPos = dstPos - camPos;
-
-        float difX = difPos.x < 0 ? -_unit : _unit;
-        float difY = difPos.y < 0 ? -_unit : _unit;
-        if (Mathf.Abs(difPos.x) < _unit) difX = 0;
-        if (Mathf.Abs(difPos.y) < _unit) difY = 0;
-
-
-        newCamPos = camPos + new Vector3(difX, difY, 0);
-        _camera.transform.position = newCamPos;
-        if (difX == 0f && difY == 0f)
-        {
-            _transitioning = false;
-        }
-        */
     }
 
 
@@ -377,7 +374,9 @@ public class CameraFollowScript : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// 
+    /// </summary>
     void UpdateCameraZoneBound()
     {
         _xMin = _currentCameraZone._isLeftBounded ? _currentCameraZone._left : float.MinValue;
@@ -386,6 +385,16 @@ public class CameraFollowScript : MonoBehaviour
         _yMax = _currentCameraZone._isTopBounded ? _currentCameraZone._top : float.MaxValue;
     }
 
+
+    void InitializeCameraViewBox()
+    {
+        // 카메라 뷰 박스의 크기를 초기화합니다.
+        float frustumHeight = Mathf.Abs(2.0f * _camera.transform.position.z * Mathf.Tan(_camera.fieldOfView * 0.5f * Mathf.Deg2Rad));
+        float frustumWidth = Mathf.Abs(frustumHeight * _camera.aspect);
+        _cameraViewBox.size = new Vector2(frustumWidth, frustumHeight);
+        _cameraViewBox.transform.position = new Vector3
+            (_camera.transform.position.x, _camera.transform.position.y, 0);
+    }
 
 
     #endregion
@@ -399,8 +408,6 @@ public class CameraFollowScript : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("")]
-    public BoxCollider2D _cameraViewBox;
     [Obsolete("")]
     public CameraZone _currentCameraZone_Unity = null;
 

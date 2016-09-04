@@ -115,7 +115,9 @@ public class StageManager : HDSceneManager
     bool _gameEnded = false;
 
 
-
+    /// <summary>
+    /// 
+    /// </summary>
     int _gameEndValue = -1;
 
 

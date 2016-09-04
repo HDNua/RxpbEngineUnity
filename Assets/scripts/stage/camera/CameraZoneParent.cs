@@ -15,9 +15,9 @@ public class CameraZoneParent : MonoBehaviour
     /// </summary>
     public StageManager _sceneManager;
     /// <summary>
-    /// CameraFollow 객체입니다.
+    /// 데이터베이스입니다.
     /// </summary>
-    public CameraFollowScript _cameraFollow;
+    public DataBase _database;
 
 
     #endregion
@@ -32,7 +32,10 @@ public class CameraZoneParent : MonoBehaviour
 
 
     #region 필드를 정의합니다.
-
+    /// <summary>
+    /// CameraFollow 스크립트입니다.
+    /// </summary>
+    CameraFollowScript _cameraFollow;
 
 
     #endregion
@@ -79,13 +82,7 @@ public class CameraZoneParent : MonoBehaviour
     /// </summary>
     void Start()
     {
-        /**
-        CameraZone[] children = GetComponentsInChildren<CameraZone>();
-        foreach (CameraZone child in children)
-        {
-            child._cameraZoneParent = this;
-        }
-        */
+        _cameraFollow = _database.CameraFollow;
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -122,13 +119,18 @@ public class CameraZoneParent : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("StageManager.Player로 대체되었습니다.")]
+    [Obsolete("StageManager.Player로 대체되었습니다. 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
     /// 플레이어 객체입니다.
     /// </summary>
-    public PlayerController _player;
+    public PlayerController _player_dep;
 
 
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// CameraFollow 객체입니다.
+    /// </summary>
+    public CameraFollowScript _cameraFollow_dep;
 
 
     #endregion

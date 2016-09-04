@@ -123,6 +123,7 @@
     <Compile Include="Assets\scripts\stage\player\ZSaberScript.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Tiled2Unity\Imported\01_IntroStage_v2.tiled2unity.xml" />
     <None Include="Assets\Tiled2Unity\Imported\TEST_100x100_01.tiled2unity.xml" />
     <None Include="Assets\Tiled2Unity\Imported\_ReadMe.txt" />
     <None Include="Assets\Tiled2Unity\Imported\map.tiled2unity.xml" />

@@ -863,7 +863,7 @@ public class XController : PlayerController
 
         // 탄환 속성을 업데이트 합니다.
         XBusterScript buster = _bullet.GetComponent<XBusterScript>();
-        buster.MainCamera = stageManager._mainCamera;
+        buster.MainCamera = stageManager.MainCamera; // ._mainCamera;
         yield break;
     }
     /// <summary>
@@ -903,7 +903,7 @@ public class XController : PlayerController
 
         // 버스터 컴포넌트를 발사체에 붙입니다.
         XBusterScript buster = _bullet.GetComponent<XBusterScript>();
-        buster.MainCamera = stageManager._mainCamera;
+        buster.MainCamera = stageManager.MainCamera; // ._mainCamera;
     }
     /// <summary>
     /// 샷이 시작되는 위치를 결정합니다.
