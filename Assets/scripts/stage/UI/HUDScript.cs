@@ -191,50 +191,6 @@ public class HUDScript : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 체력 게이지입니다.
-    /// </summary>
-    public GameObject _healthGage;
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 체력 바입니다.
-    /// </summary>
-    public GameObject _healthBar_dep;
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 시도 횟수 보드입니다.
-    /// </summary>
-    public GameObject _tryCountBoard;
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 시도 횟수 텍스트입니다.
-    /// </summary>
-    public UnityEngine.UI.Text _tryCountText;
-
-
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
-    /// </summary>
-    void Update_dep()
-    {
-        PlayerController player = _stageManager._player;
-        if (player != null)
-        {
-            Vector3 healthScale = _healthGage.transform.localScale;
-            healthScale.y = (float)player.Health / player.MaxHealth;
-            _healthGage.transform.localScale = healthScale;
-        }
-    }
-    [Obsolete("UpdateStatusText()로 대체되었습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 시도 횟수 텍스트를 업데이트합니다.
-    /// </summary>
-    public void UpdateTryCountText()
-    {
-        _tryCountText.text = string.Format("{0:D2}", GameManager.Instance.GameData.TryCount);
-    }
 
 
     #endregion

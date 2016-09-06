@@ -284,11 +284,6 @@ public class CameraZone : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 소환 위치입니다.
-    /// </summary>
-    public Transform _spawnPosition = null;
 
 
     #endregion

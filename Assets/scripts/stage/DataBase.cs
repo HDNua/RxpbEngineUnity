@@ -22,7 +22,6 @@ public class DataBase : MonoBehaviour
 
     // 공용 맵 요소입니다.
     public NewMap _map;
-    public CameraZoneParent _cameraZoneParent;
     public CameraFollowScript _cameraFollow;
     public StageManager _stageManager;
     public PauseMenuManager _pauseMenu;
@@ -97,13 +96,6 @@ public class DataBase : MonoBehaviour
         get { return _frictionlessWall; }
     }
     /// <summary>
-    /// 카메라 존의 부모 객체입니다.
-    /// </summary>
-    public CameraZoneParent CameraZoneParent
-    {
-        get { return _cameraZoneParent; }
-    }
-    /// <summary>
     /// CameraFollow 객체입니다.
     /// </summary>
     public CameraFollowScript CameraFollow
@@ -158,8 +150,6 @@ public class DataBase : MonoBehaviour
         // 빈 필드가 존재하는 경우 예외 메시지를 추가합니다.
         if (_map == null)
             exceptionList.Add("DataBase.Map == null");
-        if (_cameraZoneParent == null)
-            exceptionList.Add("DataBase.CameraZoneParent == null");
 
         // 예외 메시지가 하나 이상 존재하는 경우 예외를 발생하고 중지합니다.
         if (exceptionList.Count > 0)
@@ -192,10 +182,11 @@ public class DataBase : MonoBehaviour
 
 
     #region 요청 메서드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     public void Test()
     {
-        
-
 
     }
 
@@ -212,6 +203,52 @@ public class DataBase : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 카메라 존 집합의 부모 개체입니다.
+    /// </summary>
+    public CameraZoneParent _cameraZoneParent;
+
+
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// MonoBehaviour 개체를 초기화합니다.
+    /// </summary>
+    void Start_dep()
+    {
+        // 예외 메시지 리스트를 생성합니다.
+        List<string> exceptionList = new List<string>();
+
+        // 빈 필드가 존재하는 경우 예외 메시지를 추가합니다.
+        if (_map == null)
+            exceptionList.Add("DataBase.Map == null");
+        if (_cameraZoneParent == null)
+            exceptionList.Add("DataBase.CameraZoneParent == null");
+
+        // 예외 메시지가 하나 이상 존재하는 경우 예외를 발생하고 중지합니다.
+        if (exceptionList.Count > 0)
+        {
+            foreach (string msg in exceptionList)
+            {
+                Handy.Log("DataBase Error: {0}", msg);
+            }
+            throw new Exception("데이터베이스 필드 정의 부족");
+        }
+
+
+        // 필드를 정의합니다.
+        _cameraZoneParent = _map.CameraZoneParent;
+    }
+
+
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 카메라 존의 부모 객체입니다.
+    /// </summary>
+    public CameraZoneParent CameraZoneParent
+    {
+        get { return _cameraZoneParent; }
+    }
 
 
     #endregion

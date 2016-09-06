@@ -11,6 +11,9 @@ using System.Collections.Generic;
 public class NewMap : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
+    /// <summary>
+    /// 스테이지 관리자입니다.
+    /// </summary>
     public StageManager _stageManager;
 
 
@@ -26,9 +29,14 @@ public class NewMap : MonoBehaviour
 
 
     #region 필드를 정의합니다.
+    /// <summary>
+    /// 카메라 존 집합의 부모 개체입니다.
+    /// </summary>
+    CameraZoneParent _cameraZoneParent;
 
 
     #endregion
+
 
 
 
@@ -43,6 +51,12 @@ public class NewMap : MonoBehaviour
     /// 현재 활동중인 플레이어를 획득합니다.
     /// </summary>
     public PlayerController Player { get { return _stageManager._player; } }
+
+
+    /// <summary>
+    /// 카메라 존 집합의 부모 개체입니다.
+    /// </summary>
+    public CameraZoneParent CameraZoneParent { get { return _cameraZoneParent; } }
 
 
     #endregion
@@ -66,8 +80,6 @@ public class NewMap : MonoBehaviour
         List<string> exceptionList = new List<string>();
 
         // 빈 필드가 존재하는 경우 예외 메시지를 추가합니다.
-        /// if (_database == null)
-        ///    exceptionList.Add("Map.DataBase == null");
         if (_stageManager == null)
             exceptionList.Add("Map.StageManager == null");
 
@@ -80,6 +92,10 @@ public class NewMap : MonoBehaviour
             }
             throw new Exception("데이터베이스 필드 정의 부족");
         }
+
+
+        // 필드를 초기화합니다.
+        _cameraZoneParent = GetComponentInChildren<CameraZoneParent>();
     }
 
 
@@ -117,8 +133,6 @@ public class NewMap : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("그냥 StageManager 필드 쓰세요. 다음 커밋에서 지웁니다.")]
-    public DataBase _database;
 
 
     #endregion

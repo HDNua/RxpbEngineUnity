@@ -1764,31 +1764,5 @@ public class XController : PlayerController
     }
 
 
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    public void RequestUpdateBodyColor(Color[] palette)
-    {
-        _currentPalette = palette;
-    }
-
-
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 두 색상이 서로 같은 색인지 확인합니다.
-    /// </summary>
-    /// <param name="color1">비교할 색입니다.</param>
-    /// <param name="color2">비교할 색입니다.</param>
-    /// <returns>두 색의 rgba 값이 서로 같으면 참입니다.</returns>
-    static bool IsSameColor(Color color1, Color color2)
-    {
-        return (color1.r == color2.r
-            && color1.g == color2.g
-            && color1.b == color2.b
-            && color1.a == color2.a);
-    }
-
-
     #endregion
 }

@@ -28,6 +28,10 @@ public class HandyImporter_CameraZone : HandyImporter
 
         // 속성을 업데이트합니다.
         component._cameraZoneID = GetIntValue(customProperties, "_cameraZoneID");
+
+        component._isCheckpoint = GetBooleanValue(customProperties, "_Checkpoint");
+        component._checkpointIndex = GetIntValue(customProperties, "_CheckpointIndex");
+
         component._isTopBounded = GetBooleanValue(customProperties, "_isTopBounded");
         component._isTopFirst = GetBooleanValue(customProperties, "_isTopFirst");
         component._isLeftBounded = GetBooleanValue(customProperties, "_isLeftBounded");

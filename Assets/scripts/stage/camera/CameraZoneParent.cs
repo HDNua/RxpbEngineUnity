@@ -141,18 +141,6 @@ public class CameraZoneParent : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("StageManager.Player로 대체되었습니다. 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 플레이어 객체입니다.
-    /// </summary>
-    public PlayerController _player_dep;
-
-
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// CameraFollow 객체입니다.
-    /// </summary>
-    public CameraFollowScript _cameraFollow_dep;
 
 
     #endregion

@@ -123,11 +123,6 @@ public class HDSceneManager : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// Scene에서 사용할 메인 카메라입니다.
-    /// </summary>
-    public Camera _mainCamera_dep;
     
 
     #endregion

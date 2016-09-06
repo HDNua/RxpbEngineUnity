@@ -918,6 +918,7 @@ public abstract class PlayerController : MonoBehaviour
 
                 Vector2 from = FacingRight ? Vector2.right : Vector2.left;
                 float rayAngle = Vector2.Angle(from, ray.normal);
+                float rayAngleRad = Mathf.Deg2Rad * rayAngle;
 
 
                 if (Jumping)
@@ -927,12 +928,24 @@ public abstract class PlayerController : MonoBehaviour
                 // 예각이라면 내려갑니다.
                 else if (rayAngle < 90)
                 {
-                    _Velocity = new Vector2(_Velocity.x, -Mathf.Abs(_Velocity.x) /*-Mathf.Abs(_Velocity.x) * Mathf.Tan(Mathf.Deg2Rad * rayAngle)*/);
+                    /// _Velocity = new Vector2(_Velocity.x, -Mathf.Abs(_Velocity.x) /*-Mathf.Abs(_Velocity.x) * Mathf.Tan(Mathf.Deg2Rad * rayAngle)*/);
+
+                    float sx = _movingSpeed * Mathf.Cos(rayAngleRad);
+                    float sy = _movingSpeed * Mathf.Sin(rayAngleRad);
+                    float vx = FacingRight ? sx : -sx;
+                    float vy = -sy;
+                    _Velocity = new Vector2(vx, vy);
                 }
                 // 둔각이라면 올라갑니다.
                 else if (rayAngle > 90)
                 {
-                    _Velocity = new Vector2(_Velocity.x, Mathf.Abs(_Velocity.x) /*Mathf.Abs(_Velocity.x) / Mathf.Tan(Mathf.Deg2Rad * rayAngle)*/);
+                    /// _Velocity = new Vector2(_Velocity.x, Mathf.Abs(_Velocity.x) /*Mathf.Abs(_Velocity.x) / Mathf.Tan(Mathf.Deg2Rad * rayAngle)*/);
+
+                    float sx = _movingSpeed * Mathf.Cos(rayAngleRad);
+                    float sy = _movingSpeed * Mathf.Sin(rayAngleRad);
+                    float vx = FacingRight ? sx : -sx;
+                    float vy = sy;
+                    _Velocity = new Vector2(vx, vy);
                 }
                 // 90도라면
                 else
@@ -965,32 +978,6 @@ public abstract class PlayerController : MonoBehaviour
 
             else
             {
-                /*
-                Handy: 다음 커밋에서 삭제할 예정입니다.
-
-                Vector3 pos = transform.position;
-                float difY;
-                if (rayB && !rayF)
-                {
-                    difY = rayB.distance / transform.localScale.y;
-                    pos.y -= difY;
-                }
-                else if (!rayB && rayF)
-                {
-                    difY = rayF.distance / transform.localScale.y;
-                    pos.y -= difY;
-                }
-                else
-                {
-                    difY = Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
-                    pos.y -= difY;
-                }
-                /// transform.position = pos;
-                /// _Velocity = new Vector2(_Velocity.x,  -Mathf.Abs(_Velocity.x) * Mathf.Sin(Mathf.Deg2Rad * 60));
-                */
-
-
-
                 Vector3 pos = transform.position;
                 float difY;
                 if (rayB && !rayF)
@@ -2022,6 +2009,20 @@ public abstract class PlayerController : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 테스트 메서드입니다. 주의: 지우지 마십시오! 하위 형식에서 오버라이딩합니다.
+    /// </summary>
+    protected virtual void TESTEST1() { }
+    /// <summary>
+    /// 테스트 메서드입니다. 주의: 지우지 마십시오! 하위 형식에서 오버라이딩합니다.
+    /// </summary>
+    protected virtual void TESTEST2() { }
+    /// <summary>
+    /// 테스트 메서드입니다. 주의: 지우지 마십시오! 하위 형식에서 오버라이딩합니다.
+    /// </summary>
+    protected virtual void TESTEST3() { }
+
+
     #endregion
 
 
@@ -2067,23 +2068,6 @@ public abstract class PlayerController : MonoBehaviour
         }
         return Landed;
     }
-
-
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 테스트 메서드입니다.
-    /// </summary>
-    protected virtual void TESTEST1() { }
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 테스트 메서드입니다.
-    /// </summary>
-    protected virtual void TESTEST2() { }
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 테스트 메서드입니다.
-    /// </summary>
-    protected virtual void TESTEST3() { }
 
 
     #endregion

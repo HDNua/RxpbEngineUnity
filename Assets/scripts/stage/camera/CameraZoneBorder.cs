@@ -239,8 +239,6 @@ public class CameraZoneBorder : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    public CameraZoneParent _cameraZoneParent;
 
 
     #endregion
