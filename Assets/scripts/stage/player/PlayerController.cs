@@ -1836,10 +1836,6 @@ public abstract class PlayerController : MonoBehaviour
 
 
 
-    protected virtual void TESTEST1() { }
-    protected virtual void TESTEST2() { }
-    protected virtual void TESTEST3() { }
-
 
 
 
@@ -2071,6 +2067,23 @@ public abstract class PlayerController : MonoBehaviour
         }
         return Landed;
     }
+
+
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 테스트 메서드입니다.
+    /// </summary>
+    protected virtual void TESTEST1() { }
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 테스트 메서드입니다.
+    /// </summary>
+    protected virtual void TESTEST2() { }
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 테스트 메서드입니다.
+    /// </summary>
+    protected virtual void TESTEST3() { }
 
 
     #endregion

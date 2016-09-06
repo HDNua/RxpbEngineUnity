@@ -903,7 +903,7 @@ public class XController : PlayerController
 
         // 버스터 컴포넌트를 발사체에 붙입니다.
         XBusterScript buster = _bullet.GetComponent<XBusterScript>();
-        buster.MainCamera = stageManager.MainCamera; // ._mainCamera;
+        buster.MainCamera = stageManager.MainCamera;
     }
     /// <summary>
     /// 샷이 시작되는 위치를 결정합니다.
@@ -1618,15 +1618,14 @@ public class XController : PlayerController
     /// <param name="colorPalette">차지 효과 개체의 새 색상표입니다.</param>
     void UpdateChargeEffectColor(GameObject chargeEffect, Color[] colorPalette)
     {
-        /**
+        // 차지 효과 개체를 획득합니다.
         EffectScript effect = chargeEffect.GetComponent<EffectScript>();
-        Color color = (_chargeTime < CHARGE_LEVEL[2]) ? Color.cyan : Color.green;
-        effect.RequestUpdateTexture(color);
-        */
 
-        EffectScript effect = chargeEffect.GetComponent<EffectScript>();
+        // 색상표를 획득합니다.
         Color[] palette = (_chargeTime < CHARGE_LEVEL[2]) ?
             RXColors.XNormalChargeEffectColorPalette1 : RXColors.XNormalChargeEffectColorPalette2;
+
+        // 텍스쳐를 업데이트합니다.
         effect.RequestUpdateTexture(RXColors.XDefaultChargeEffectColorPalette, palette);
     }
     /// <summary>
@@ -1649,21 +1648,6 @@ public class XController : PlayerController
 
 
     #region 정적 보조 메서드를 정의합니다.
-    /// <summary>
-    /// 두 색상이 서로 같은 색인지 확인합니다.
-    /// </summary>
-    /// <param name="color1">비교할 색입니다.</param>
-    /// <param name="color2">비교할 색입니다.</param>
-    /// <returns>두 색의 rgba 값이 서로 같으면 참입니다.</returns>
-    static bool IsSameColor(Color color1, Color color2)
-    {
-        return (color1.r == color2.r
-            && color1.g == color2.g
-            && color1.b == color2.b
-            && color1.a == color2.a);
-    }
-
-
     /// <summary>
     /// 현재 웨폰 상태에 해당하는 팔레트를 가져옵니다.
     /// </summary>
@@ -1728,8 +1712,6 @@ public class XController : PlayerController
     /// 애니메이션 클립 정보를 담은 사전 객체입니다.
     /// </summary>
     Dictionary<string, AnimatorClipInfo> _clips;
-    
-
     [Obsolete("후에 사용할지도 모르죠?")]
     /// <summary>
     /// 애니메이션 클립 정보를 초기화합니다.
@@ -1782,12 +1764,29 @@ public class XController : PlayerController
     }
 
 
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
     /// 
     /// </summary>
     public void RequestUpdateBodyColor(Color[] palette)
     {
         _currentPalette = palette;
+    }
+
+
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 두 색상이 서로 같은 색인지 확인합니다.
+    /// </summary>
+    /// <param name="color1">비교할 색입니다.</param>
+    /// <param name="color2">비교할 색입니다.</param>
+    /// <returns>두 색의 rgba 값이 서로 같으면 참입니다.</returns>
+    static bool IsSameColor(Color color1, Color color2)
+    {
+        return (color1.r == color2.r
+            && color1.g == color2.g
+            && color1.b == color2.b
+            && color1.a == color2.a);
     }
 
 
