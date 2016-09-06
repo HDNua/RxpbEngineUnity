@@ -64,6 +64,11 @@ public class TiledGeometryScript : MonoBehaviour
     {
         // 작업에 필요한 정보를 먼저 획득합니다.
         _parent = GetComponentInParent<TiledGeometryParent>();
+        if (_parent == null)
+        {
+            throw new Exception("TiledGeometryError: Parent == null");
+        }
+
         _database = _parent._database;
         PhysicsMaterial2D material = _database.FrictionlessWall;
 

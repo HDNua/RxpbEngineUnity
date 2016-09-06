@@ -2014,17 +2014,6 @@ public abstract class PlayerController : MonoBehaviour
 
     #region 디버그용 메서드를 정의합니다.
     /// <summary>
-    /// 디버그 스트림에 형식화된 문자열을 출력합니다.
-    /// </summary>
-    /// <param name="format">형식 문자열입니다.</param>
-    /// <param name="args">형식 문자열의 인자 목록입니다.</param>
-    public static void Log(string format, params object[] args)
-    {
-        Debug.Log(string.Format(format, args));
-    }
-
-
-    /// <summary>
     /// 플레이어의 속도(RigidBody2D.velocity)입니다.
     /// </summary>
     public Vector2 _Velocity

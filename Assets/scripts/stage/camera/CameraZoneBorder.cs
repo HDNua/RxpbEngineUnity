@@ -10,19 +10,39 @@ using System.Collections;
 public class CameraZoneBorder : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     public DataBase _database;
+    /// <summary>
+    /// 
+    /// </summary>
     public StageManager _sceneManager;
 
-    [Obsolete()]
-    public CameraZoneParent _cameraZoneParent;
 
+    /// <summary>
+    /// 카메라 존 전이 시작 ID입니다.
+    /// </summary>
     public int _fromID;
+    /// <summary>
+    /// 카메라 존 전이 종료 ID입니다.
+    /// </summary>
     public int _toID;
 
+
+    /// <summary>
+    /// 카메라 존 전이 시작 지점입니다.
+    /// </summary>
     public CameraZone _from;
+    /// <summary>
+    /// 카메라 존 전이 종료 지점입니다.
+    /// </summary>
     public CameraZone _to;
 
-    // 카메라 존 전이 애니메이션을 수행하려면 값을 참으로 설정합니다.
+
+    /// <summary>
+    /// 카메라 존 전이 애니메이션을 수행하려면 값을 참으로 설정합니다.
+    /// </summary>
     public bool _beginTransition;
 
 
@@ -38,17 +58,33 @@ public class CameraZoneBorder : MonoBehaviour
 
 
     #region 필드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     CameraFollowScript _cameraFollow;
 
+
+    /// <summary>
+    /// 
+    /// </summary>
     bool _isHorizontal;
+    /// <summary>
+    /// 
+    /// </summary>
     public float _border;
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    CameraZoneBorderParent _parent;
 
 
     #endregion
 
 
 
-    CameraZoneBorderParent _parent;
+
 
 
 
@@ -63,8 +99,11 @@ public class CameraZoneBorder : MonoBehaviour
     {
         // 필드를 초기화합니다.
         _parent = GetComponentInParent<CameraZoneBorderParent>();
-        /// _cameraFollow = _cameraZoneParent.CameraFollow;
-        _cameraFollow = _parent.CameraFollow; // _database.CameraFollow;
+        if (_parent == null)
+        {
+            throw new Exception("CameraZoneBorderError: CameraZoneBorderParent == null");
+        }
+        _cameraFollow = _parent.CameraFollow;
         _sceneManager = _parent.StageManager;
 
 
@@ -200,6 +239,8 @@ public class CameraZoneBorder : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
+    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    public CameraZoneParent _cameraZoneParent;
 
 
     #endregion
