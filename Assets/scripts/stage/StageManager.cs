@@ -395,7 +395,7 @@ public class StageManager : HDSceneManager
 
 
     /// <summary>
-    /// 
+    /// 종료 아이템을 획득했습니다.
     /// </summary>
     /// <param name="player">플레이어 객체입니다.</param>
     /// <param name="item">플레이어가 사용한 아이템입니다.</param>
@@ -412,11 +412,16 @@ public class StageManager : HDSceneManager
         StartCoroutine(EndGameCoroutine());
     }
     /// <summary>
-    /// 
+    /// 스테이지 종료 아이템 획득 코루틴입니다.
     /// </summary>
     /// <returns></returns>
     IEnumerator EndGameCoroutine()
     {
+        // 다음 커밋에서 삭제할 예정입니다.
+        GameManager.Instance.SpawnPositionIndex = 0;
+
+
+
         AudioSource audioSource = AudioSources[3];
         audioSource.Play();
 
@@ -460,7 +465,7 @@ public class StageManager : HDSceneManager
         yield break;
     }
     /// <summary>
-    /// 
+    /// 배경 음악 재생 중지를 요청합니다.
     /// </summary>
     void RequestStopBackgroundMusic()
     {

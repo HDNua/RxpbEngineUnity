@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/scenes/Stages/00_TestStage.unity
+- path: Assets/scenes/Stages/02_CommanderYammark.unity
   isLoaded: 1
   isActive: 1

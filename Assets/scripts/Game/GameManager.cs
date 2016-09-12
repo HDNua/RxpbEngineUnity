@@ -77,6 +77,13 @@ public class GameManager
 
 
 
+
+
+
+
+
+
+
     #region 스테이지 관련 필드를 정의합니다.
     /// <summary>
     /// 

@@ -903,6 +903,9 @@ public abstract class PlayerController : MonoBehaviour
         RaycastHit2D rayB = Physics2D.Raycast(groundCheckBack.position, Vector2.down, groundCheckRadius, whatIsGround);
         RaycastHit2D rayF = Physics2D.Raycast(groundCheckFront.position, Vector2.down, groundCheckRadius, whatIsGround);
 
+        Debug.DrawRay(groundCheckBack.position, Vector2.down, Color.red);
+        Debug.DrawRay(groundCheckFront.position, Vector2.down, Color.red);
+
 
         if (OnGround())
         {
@@ -913,38 +916,36 @@ public abstract class PlayerController : MonoBehaviour
             if (rayB.normal.normalized != rayF.normal.normalized)
             {
                 bool isTouchingSlopeFromB = rayB.normal.x == 0;
-                Transform pos = isTouchingSlopeFromB ? groundCheckBack : groundCheckFront;
+                /// Transform pos = isTouchingSlopeFromB ? groundCheckBack : groundCheckFront;
                 RaycastHit2D ray = isTouchingSlopeFromB ? rayB : rayF;
 
                 Vector2 from = FacingRight ? Vector2.right : Vector2.left;
                 float rayAngle = Vector2.Angle(from, ray.normal);
                 float rayAngleRad = Mathf.Deg2Rad * rayAngle;
 
+                float sx = _movingSpeed * Mathf.Cos(rayAngleRad);
+                float sy = _movingSpeed * Mathf.Sin(rayAngleRad);
+                float vx = FacingRight ? sx : -sx;
 
-                if (Jumping)
+
+                if (Spawning)
+                {
+                    _Velocity = Vector2.zero;
+                }
+                else if (Jumping)
                 {
 
                 }
                 // 예각이라면 내려갑니다.
                 else if (rayAngle < 90)
                 {
-                    /// _Velocity = new Vector2(_Velocity.x, -Mathf.Abs(_Velocity.x) /*-Mathf.Abs(_Velocity.x) * Mathf.Tan(Mathf.Deg2Rad * rayAngle)*/);
-
-                    float sx = _movingSpeed * Mathf.Cos(rayAngleRad);
-                    float sy = _movingSpeed * Mathf.Sin(rayAngleRad);
-                    float vx = FacingRight ? sx : -sx;
-                    float vy = -sy;
+                    float vy = -sy; /// -sy;
                     _Velocity = new Vector2(vx, vy);
                 }
                 // 둔각이라면 올라갑니다.
                 else if (rayAngle > 90)
                 {
-                    /// _Velocity = new Vector2(_Velocity.x, Mathf.Abs(_Velocity.x) /*Mathf.Abs(_Velocity.x) / Mathf.Tan(Mathf.Deg2Rad * rayAngle)*/);
-
-                    float sx = _movingSpeed * Mathf.Cos(rayAngleRad);
-                    float sy = _movingSpeed * Mathf.Sin(rayAngleRad);
-                    float vx = FacingRight ? sx : -sx;
-                    float vy = sy;
+                    float vy = sy; /// sy;
                     _Velocity = new Vector2(vx, vy);
                 }
                 // 90도라면
@@ -961,6 +962,37 @@ public abstract class PlayerController : MonoBehaviour
         }
         else if (rayB || rayF)
         {
+            /*
+            if (Landed)
+            {
+                Vector3 pos = transform.position;
+                float difY;
+                if (rayB && !rayF)
+                {
+                    difY = rayB.distance / transform.localScale.y;
+                    pos.y -= difY;
+                }
+                else if (!rayB && rayF)
+                {
+                    difY = rayF.distance / transform.localScale.y;
+                    pos.y -= difY;
+                }
+                else
+                {
+                    difY = Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
+                    pos.y -= difY;
+                }
+                transform.position = pos;
+                _Velocity = new Vector2(_Velocity.x, -Mathf.Abs(_Velocity.x) * Mathf.Sin(Mathf.Deg2Rad * 60));
+                Landed = true;
+            }
+            else
+            {
+                Landed = false;
+            }
+            */
+
+
             if (Sliding)
             {
 
@@ -1070,15 +1102,16 @@ public abstract class PlayerController : MonoBehaviour
                 {
                     if (playerBottom >= groundTop)
                     {
+                        Debug.DrawLine(edge.points[0] * 0.02008f, edge.points[1] * 0.02008f, Color.red);
                         return true;
                     }
                 }
                 // 경사면인 경우
                 else
                 {
-                    if (groundBottom <= playerBottom
-                        && playerBottom <= groundTop)
+                    if (groundBottom <= playerBottom && playerBottom <= groundTop)
                     {
+                        Debug.DrawLine(edge.points[0] * 0.02008f, edge.points[1] * 0.02008f, Color.blue);
                         return true;
                     }
                 }
@@ -2004,6 +2037,7 @@ public abstract class PlayerController : MonoBehaviour
         get { return _Rigidbody.velocity; }
         set
         {
+            /// Handy.Log("Velocity from ({0}) to ({1})", _Rigidbody.velocity, value);
             _Rigidbody.velocity = value;
         }
     }

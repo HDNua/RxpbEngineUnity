@@ -406,15 +406,13 @@ public class XController : PlayerController
                     Slide();
                 }
             }
-            else if (IsKeyPressed("Jump") == false
-                || _Velocity.y <= 0)
+            else if (IsKeyPressed("Jump") == false || _Velocity.y <= 0)
             {
                 Fall();
             }
             else
             {
-                _Velocity = new Vector2
-                    (_Velocity.x, _Velocity.y - _jumpDecSize);
+                _Velocity = new Vector2(_Velocity.x, _Velocity.y - _jumpDecSize);
             }
         }
         // 떨어지고 있다면
@@ -430,8 +428,7 @@ public class XController : PlayerController
                 if (SlideBlocked)
                 {
                     float vy = _Velocity.y - _jumpDecSize;
-                    _Velocity = new Vector2
-                        (_Velocity.x, vy > -16 ? vy : -16);
+                    _Velocity = new Vector2(_Velocity.x, vy > -16 ? vy : -16);
                 }
                 else
                 {
@@ -863,7 +860,7 @@ public class XController : PlayerController
 
         // 탄환 속성을 업데이트 합니다.
         XBusterScript buster = _bullet.GetComponent<XBusterScript>();
-        buster.MainCamera = stageManager.MainCamera; // ._mainCamera;
+        buster.MainCamera = stageManager.MainCamera;
         yield break;
     }
     /// <summary>

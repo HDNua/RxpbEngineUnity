@@ -1,27 +1,9 @@
-RXPB v3.8.0 EnemyScript v3.2.1 (IMPORTANT)
-
-* !!!!! IMPORTANT !!!!!
-  배경화면 픽셀 깨지는 것을 막음.
-> 자세한 건 나중에 설명.
-
-
-* !!!!! IMPORTANT !!!!!
-  이전 것을 중요하게 보지 않을 수도 있는데, 이전 커밋도 중요하다.
-> 
-
-
-- Tile Layer의 Sorting Layer를 background로 맞춤으로써
-  대쉬 잔상이 남지 않는 버그 해결.
-
-
-- HandyImporter_CameraZone 업데이트.
-> 체크포인트 관련 필드 업데이트 추가.
-
-
-- 코드 정리 및 주석 강화.
-
+RXPB v3.8.0 EnemyScript v3.2.1.1
 
 ! 경사면 물리 구현하는 척만 하고 제대로 구현되지 않았음.
+
+
+- 임시 저장.
 
 
 end.
