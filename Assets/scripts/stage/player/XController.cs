@@ -461,11 +461,13 @@ public class XController : PlayerController
                     StopAirDashing();
                     Slide();
                 }
+                /*
                 else if (Shooting)
                 {
                     StopAirDashing();
                     Shot();
                 }
+                */
             }
             else if (Landed == false)
             {
@@ -994,6 +996,7 @@ public class XController : PlayerController
             yield return new WaitForSeconds(0.1f);
         }
 
+
         // DashRun
         if (DashJumping == false)
         {
@@ -1010,7 +1013,8 @@ public class XController : PlayerController
             yield return new WaitForSeconds(0.3f);
         }
 
-        // DashEnd
+
+        // DashEnd (사용자 입력 중지가 아닌 기본 대쉬 중지 행동입니다.)
         if (DashJumping == false)
         {
             StopDashing();
@@ -1206,21 +1210,33 @@ public class XController : PlayerController
     /// </summary>
     protected override void StopDashing()
     {
+        bool wasDashing = Dashing;
         base.StopDashing();
 
 
-        // 대쉬 이펙트를 제거합니다.
-        if (_dashBoostEffect != null)
+        if (wasDashing)
         {
-            _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
-            _dashBoostEffect = null;
-        }
+            // 대쉬 이펙트를 제거합니다.
+            if (_dashBoostEffect != null)
+            {
+                _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
+                _dashBoostEffect = null;
+            }
 
 
-        // 코루틴을 중지합니다.
-        if (_dashCoroutine != null)
-        {
-            StopCoroutine(_dashCoroutine);
+            // 코루틴을 중지합니다.
+            if (_dashCoroutine != null)
+            {
+                StopCoroutine(_dashCoroutine);
+                if (DashJumping == false)
+                {
+                    /// StopDashing();
+                    StopAirDashing();
+                    StopMoving();
+                    SoundEffects[3].Stop();
+                    SoundEffects[4].Play();
+                }
+            }
         }
     }
 

@@ -10,7 +10,13 @@ using System.Collections;
 public class EnemyMettoolScript : EnemyScript
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     Rigidbody2D _rigidbody;
+    /// <summary>
+    /// 
+    /// </summary>
     BoxCollider2D _boxCollider2D;
 
 
@@ -29,19 +35,19 @@ public class EnemyMettoolScript : EnemyScript
     /// <summary>
     /// 자신의 밑에 지면이 존재하는지 검사하기 위해 사용합니다.
     /// </summary>
-    public Transform groundCheck;
+    public Transform _groundCheck;
     /// <summary>
     /// 자신이 진행하는 방향에 벽이 존재하는지 검사하기 위해 사용합니다.
     /// </summary>
-    public Transform pushCheck;
+    public Transform _pushCheck;
     /// <summary>
     /// 무엇이 벽인지를 결정합니다. 기본값은 "Wall, MapBlock"입니다.
     /// </summary>
-    public LayerMask whatIsWall;
+    public LayerMask _whatIsWall;
     /// <summary>
-    /// 무엇이 땅인지를 결정합니다. 기본값은 "Ground"입니다.
+    /// 무엇이 땅인지를 결정합니다. 기본값은 "Ground, TiledGeometry"입니다.
     /// </summary>
-    public LayerMask whatIsGround;
+    public LayerMask _whatIsGround;
 
 
     #endregion
@@ -59,7 +65,7 @@ public class EnemyMettoolScript : EnemyScript
     /// <summary>
     /// 캐릭터가 움직이는 속도를 정의합니다.
     /// </summary>
-    public float movingSpeed;
+    public float _movingSpeed = 1;
 
     /// <summary>
     /// 캐릭터가 오른쪽을 보고 있다면 참입니다.
@@ -92,7 +98,7 @@ public class EnemyMettoolScript : EnemyScript
         _boxCollider2D = GetComponent<BoxCollider2D>();
 
         // 자신과 가장 가까운 바닥으로 y 좌표를 옮깁니다.
-        RaycastHit2D groundRay = Physics2D.Raycast(groundCheck.position, Vector2.down, 10f, whatIsGround);
+        RaycastHit2D groundRay = Physics2D.Raycast(_groundCheck.position, Vector2.down, 10f, _whatIsGround);
         /// float initY = transform.  groundRay.point.y + (_boxCollider2D.size.y / 2 * transform.localScale.y);
         /// transform.position = new Vector3(groundRay.point.x, initY);
         Vector2 newPos = transform.position;
@@ -113,7 +119,7 @@ public class EnemyMettoolScript : EnemyScript
 
 
         // 땅에서 떨어지려고 한다면 즉시 전환합니다.
-        RaycastHit2D groundRay = Physics2D.Raycast(groundCheck.position, Vector2.down, 0.1f, whatIsGround);
+        RaycastHit2D groundRay = Physics2D.Raycast(_groundCheck.position, Vector2.down, 0.1f, _whatIsGround);
         if (groundRay == false)
         {
             if (_facingRight)
@@ -129,7 +135,7 @@ public class EnemyMettoolScript : EnemyScript
         // 벽에 닿는다면 방향을 즉시 전환합니다.
         Vector3 direction = _facingRight ? Vector3.right : Vector3.left;
         RaycastHit2D pushRay = Physics2D.Raycast
-            (pushCheck.position, direction, 0.1f, whatIsWall);
+            (_pushCheck.position, direction, 0.1f, _whatIsWall);
         if (pushRay)
         {
             if (_facingRight)
@@ -239,7 +245,7 @@ public class EnemyMettoolScript : EnemyScript
     {
         if (_facingRight)
             Flip();
-        _rigidbody.velocity = new Vector2(-movingSpeed, 0);
+        _rigidbody.velocity = new Vector2(-_movingSpeed, 0);
         // _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
     }
     /// <summary>
@@ -249,7 +255,7 @@ public class EnemyMettoolScript : EnemyScript
     {
         if (_facingRight == false)
             Flip();
-        _rigidbody.velocity = new Vector2(movingSpeed, 0);
+        _rigidbody.velocity = new Vector2(_movingSpeed, 0);
         // _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
     }
     /// <summary>

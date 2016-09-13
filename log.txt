@@ -1,9 +1,26 @@
-RXPB v3.8.0 EnemyScript v3.2.1.1
+RXPB v3.8.0 EnemyScript v3.2.2 (IMPORTANT)
 
 ! 경사면 물리 구현하는 척만 하고 제대로 구현되지 않았음.
+> 잘 되는 것 같기도 하고 애매함.
 
 
-- 임시 저장.
+* !!!!! IMPORTANT & CHALLENGING !!!!!
+  경사면에서 소환될 때 주인공이 흘러내리던 버그 수정.
+
+
+- EnemySpikyMK2Script 추가.
+
+
+- EnemyScript 필드 네이밍 규칙 업데이트.
+
+
+- PlayerController 필드에 대해 네이밍 규칙 업데이트.
+
+
+- 에어 대쉬하면서 샷을 쏠 수 있도록 수정.
+
+
+- 기타 이동 중 잔 버그 해결.
 
 
 end.

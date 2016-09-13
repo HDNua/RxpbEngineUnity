@@ -478,7 +478,7 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 현재 플레이어와 닿아있는 땅 지형의 집합입니다.
     /// </summary>
-    HashSet<EdgeCollider2D> groundEdgeSet = new HashSet<EdgeCollider2D>();
+    HashSet<EdgeCollider2D> _groundEdgeSet = new HashSet<EdgeCollider2D>();
 
 
     #endregion
@@ -708,13 +708,19 @@ public abstract class PlayerController : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 감시용 속도 벡터입니다.
+    /// </summary>
+    public Vector2 _velocity;
+
+
     #endregion
 
 
 
 
 
-    public Vector2 _velocity;
+
 
 
 
@@ -906,6 +912,11 @@ public abstract class PlayerController : MonoBehaviour
         Debug.DrawRay(groundCheckBack.position, Vector2.down, Color.red);
         Debug.DrawRay(groundCheckFront.position, Vector2.down, Color.red);
 
+        if (Handy.DebugPoint) // PlayerController.UpdateLanding
+        {
+            Handy.Log("PlayerController.UpdateLanding");
+        }
+
 
         if (OnGround())
         {
@@ -913,6 +924,10 @@ public abstract class PlayerController : MonoBehaviour
             // 1. 캐릭터에서 수직으로 내린 직선에 맞는 경사면의 법선 벡터를 구한다.
             // 2. 법선 벡터와 이동 방향 벡터가 이루는 각도가 예각이면 내려오는 것
             //    법선 벡터와 이동 방향 벡터가 이루는 각도가 둔각이면 올라가는 것
+            Handy.Log("OnGround()");
+
+
+            // 앞 부분 Ray와 뒤 부분 Ray의 경사각이 다른 경우
             if (rayB.normal.normalized != rayF.normal.normalized)
             {
                 bool isTouchingSlopeFromB = rayB.normal.x == 0;
@@ -928,7 +943,7 @@ public abstract class PlayerController : MonoBehaviour
                 float vx = FacingRight ? sx : -sx;
 
 
-                if (Spawning)
+                if (Readying)
                 {
                     _Velocity = Vector2.zero;
                 }
@@ -939,13 +954,13 @@ public abstract class PlayerController : MonoBehaviour
                 // 예각이라면 내려갑니다.
                 else if (rayAngle < 90)
                 {
-                    float vy = -sy; /// -sy;
+                    float vy = -sy;
                     _Velocity = new Vector2(vx, vy);
                 }
                 // 둔각이라면 올라갑니다.
                 else if (rayAngle > 90)
                 {
-                    float vy = sy; /// sy;
+                    float vy = sy;
                     _Velocity = new Vector2(vx, vy);
                 }
                 // 90도라면
@@ -954,16 +969,45 @@ public abstract class PlayerController : MonoBehaviour
 
                 }
             }
+            else
+            {
+                if (Readying)
+                {
+                    _Velocity = Vector2.zero;
+                }
+                /// Handy.Log("({0}, {1})", rayB.normal, rayF.normal);
+            }
+
             Landed = true;
         }
         else if (Jumping || Falling)
         {
+            Handy.Log("Jumping || Falling");
+
             Landed = false;
         }
         else if (rayB || rayF)
         {
-            /*
-            if (Landed)
+            Handy.Log("rayB || rayF");
+
+
+            if (Sliding)
+            {
+
+            }
+            else if (AirDashing)
+            {
+
+            }
+            else if (Spawning)
+            {
+                
+            }
+            else if (Readying)
+            {
+                _Velocity = new Vector2(0, 0);
+            }
+            else if (Landed)
             {
                 Vector3 pos = transform.position;
                 float difY;
@@ -990,9 +1034,9 @@ public abstract class PlayerController : MonoBehaviour
             {
                 Landed = false;
             }
-            */
 
 
+            /**
             if (Sliding)
             {
 
@@ -1031,6 +1075,7 @@ public abstract class PlayerController : MonoBehaviour
                 _Velocity = new Vector2(_Velocity.x, -Mathf.Abs(_Velocity.x) * Mathf.Sin(Mathf.Deg2Rad * 60));
                 Landed = true;
             }
+            */
         }
         else
         {
@@ -1053,11 +1098,11 @@ public abstract class PlayerController : MonoBehaviour
             EdgeCollider2D groundCollider = collision.collider as EdgeCollider2D;
             if (IsTouchingGround(groundCollider))
             {
-                groundEdgeSet.Add(groundCollider);
+                _groundEdgeSet.Add(groundCollider);
             }
             else
             {
-                groundEdgeSet.Remove(groundCollider);
+                _groundEdgeSet.Remove(groundCollider);
             }
         }
 
@@ -1092,7 +1137,7 @@ public abstract class PlayerController : MonoBehaviour
         if (_Collider.IsTouchingLayers(whatIsGround))
         {
             float playerBottom = _Collider.bounds.min.y;
-            foreach (EdgeCollider2D edge in groundEdgeSet)
+            foreach (EdgeCollider2D edge in _groundEdgeSet)
             {
                 float groundTop = edge.bounds.max.y;
                 float groundBottom = edge.bounds.min.y;
