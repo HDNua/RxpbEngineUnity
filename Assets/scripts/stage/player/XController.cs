@@ -1461,6 +1461,10 @@ public class XController : PlayerController
         base.EndHurt();
 
 
+        // 블록된 행동 상태를 해제합니다.
+        ShotBlocked = false;
+
+
         // 위험한 상태인데 위험 상태 경고 보이스를 재생하지 않았다면 재생합니다.
         if (Danger && _dangerVoicePlayed == false)
         {

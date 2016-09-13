@@ -227,6 +227,10 @@ public class StageManager : HDSceneManager
                         LoadingSceneManager.LoadLevel("CS03_GaiaFound");
                         break;
 
+                    case 3:
+                        LoadingSceneManager.LoadLevel("CS03_GaiaFound");
+                        break;
+
                     default:
                         LoadingSceneManager.LoadLevel("StageSelect");
                         break;

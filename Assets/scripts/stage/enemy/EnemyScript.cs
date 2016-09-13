@@ -89,6 +89,20 @@ public abstract class EnemyScript : MonoBehaviour
     bool _invencible;
 
 
+    /// <summary>
+    /// 적 캐릭터가 소환되는 영역을 지정합니다.
+    /// </summary>
+    EnemySpawnZone _spawnZone;
+    /// <summary>
+    /// 적 캐릭터가 소환되는 영역을 지정합니다.
+    /// </summary>
+    public EnemySpawnZone SpawnZone
+    {
+        get { return _spawnZone; }
+        set { _spawnZone = value; }
+    }
+
+
     #endregion
 
 

@@ -11,11 +11,11 @@ public class EnemyMettoolScript : EnemyScript
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
     /// <summary>
-    /// 
+    /// Rigidbody2D 요소를 가져옵니다.
     /// </summary>
     Rigidbody2D _rigidbody;
     /// <summary>
-    /// 
+    /// BoxCollider2D 요소를 가져옵니다.
     /// </summary>
     BoxCollider2D _boxCollider2D;
 
@@ -118,6 +118,25 @@ public class EnemyMettoolScript : EnemyScript
         base.Update();
 
 
+        // 사용할 변수를 선언합니다.
+        float posX = transform.position.x;
+        float boundLeft = SpawnZone.Left;
+        float boundRight = SpawnZone.Right;
+
+
+        // 영역을 넘어서면 방향을 전환하여 원래대로 복귀합니다.
+        if (posX < boundLeft)
+        {
+            MoveRight();
+        }
+        else if (boundRight < posX)
+        {
+            MoveLeft();
+        }
+
+        /// Handy.Log("Mettool {0}: ({1}, {2}, {3})", this, boundLeft, posX, boundRight);
+
+        /**
         // 땅에서 떨어지려고 한다면 즉시 전환합니다.
         RaycastHit2D groundRay = Physics2D.Raycast(_groundCheck.position, Vector2.down, 0.1f, _whatIsGround);
         if (groundRay == false)
@@ -147,6 +166,7 @@ public class EnemyMettoolScript : EnemyScript
                 MoveRight();
             }
         }
+        */
     }
 
 
@@ -309,11 +329,6 @@ public class EnemyMettoolScript : EnemyScript
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("뭔진 알겠는데 이거 빼도 되지 않나요?")]
-    /// <summary>
-    /// 
-    /// </summary>
-    public bool canJump;
 
 
     #endregion

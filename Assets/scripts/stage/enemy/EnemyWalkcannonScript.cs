@@ -11,11 +11,11 @@ public class EnemyWalkcannonScript : EnemyScript
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
     /// <summary>
-    /// 
+    /// Rigidbody2D 요소를 가져옵니다.
     /// </summary>
     Rigidbody2D _rigidbody;
     /// <summary>
-    /// 
+    /// BoxCollider2D 요소를 가져옵니다.
     /// </summary>
     BoxCollider2D _boxCollider2D;
 

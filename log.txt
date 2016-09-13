@@ -1,26 +1,29 @@
-RXPB v3.8.0 EnemyScript v3.2.2 (IMPORTANT)
+RXPB v3.8.0 EnemyScript v3.3.0 (IMPORTANT)
 
 ! 경사면 물리 구현하는 척만 하고 제대로 구현되지 않았음.
 > 잘 되는 것 같기도 하고 애매함.
 
 
-* !!!!! IMPORTANT & CHALLENGING !!!!!
-  경사면에서 소환될 때 주인공이 흘러내리던 버그 수정.
+* !!!!! IMPORTANT !!!!!
+  두 개의 Trigger는 기본적으로 충돌하지 않습니다!
+  한 쪽 이상을 Rigidbody로 만들면 충돌됩니다.
+  http://answers.unity3d.com/questions/218366/do-2-triggers-collide.html
+  
+  
+* !!!!! IMPORTANT !!!!!
+  더 이상 멧툴이 중간에서 왔다갔다 하지 않습니다.
+> 이동 가능한 영역을 지정하는 것으로 해결.
+> 영역을 벗어나면 적 캐릭터가 삭제됨으로써 메모리 관리에 효율적이게 됨.
+> 영역에 재진입하면 캐릭터가 재생성되므로 보다 게임에 가까워짐.
 
 
-- EnemySpikyMK2Script 추가.
+- CameraViewBoxScript 추가.
 
 
-- EnemyScript 필드 네이밍 규칙 업데이트.
+- EnemySpawnZone 추가.
 
 
-- PlayerController 필드에 대해 네이밍 규칙 업데이트.
-
-
-- 에어 대쉬하면서 샷을 쏠 수 있도록 수정.
-
-
-- 기타 이동 중 잔 버그 해결.
+- 빌드 이전 임시 저장.
 
 
 end.

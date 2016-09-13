@@ -924,7 +924,7 @@ public abstract class PlayerController : MonoBehaviour
             // 1. 캐릭터에서 수직으로 내린 직선에 맞는 경사면의 법선 벡터를 구한다.
             // 2. 법선 벡터와 이동 방향 벡터가 이루는 각도가 예각이면 내려오는 것
             //    법선 벡터와 이동 방향 벡터가 이루는 각도가 둔각이면 올라가는 것
-            Handy.Log("OnGround()");
+            /// Handy.Log("OnGround()");
 
 
             // 앞 부분 Ray와 뒤 부분 Ray의 경사각이 다른 경우
@@ -982,13 +982,13 @@ public abstract class PlayerController : MonoBehaviour
         }
         else if (Jumping || Falling)
         {
-            Handy.Log("Jumping || Falling");
+            /// Handy.Log("Jumping || Falling");
 
             Landed = false;
         }
         else if (rayB || rayF)
         {
-            Handy.Log("rayB || rayF");
+            /// Handy.Log("rayB || rayF");
 
 
             if (Sliding)

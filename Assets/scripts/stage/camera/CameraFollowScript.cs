@@ -35,6 +35,12 @@ public class CameraFollowScript : MonoBehaviour
     public BoxCollider2D _cameraViewBox;
 
 
+    /// <summary>
+    /// 화면을 전환할 때 카메라의 이동 속도를 결정합니다.
+    /// </summary>
+    public float _cameraTransitionSpeedUnit = 0.3f;
+
+
     #endregion
 
 
@@ -89,10 +95,6 @@ public class CameraFollowScript : MonoBehaviour
     /// 카메라 존 변경 시작으로부터 경과한 시간을 나타냅니다.
     /// </summary>
     float _transitioningTime = 0f;
-    /// <summary>
-    /// 화면을 전환할 때 카메라의 이동 속도를 결정합니다.
-    /// </summary>
-    float _unit = 0.3f;
 
 
     /// <summary>
@@ -218,7 +220,7 @@ public class CameraFollowScript : MonoBehaviour
         }
 
 
-        // 
+        // 카메라 뷰 박스를 초기화합니다.
         InitializeCameraViewBox();
     }
     /// <summary>
@@ -333,12 +335,12 @@ public class CameraFollowScript : MonoBehaviour
         else
         {
             float difX = dstX - camPos.x;
-            if (Mathf.Abs(difX) < _unit)
+            if (Mathf.Abs(difX) < _cameraTransitionSpeedUnit)
             {
                 difX = 0;
                 _xTransitionEnded = true;
             }
-            else difX = (difX < 0) ? -_unit : _unit;
+            else difX = (difX < 0) ? -_cameraTransitionSpeedUnit : _cameraTransitionSpeedUnit;
 
             newCamPosX = camPos.x + difX;
         }
@@ -351,12 +353,12 @@ public class CameraFollowScript : MonoBehaviour
         else
         {
             float difY = dstY - camPos.y;
-            if (Mathf.Abs(difY) < _unit)
+            if (Mathf.Abs(difY) < _cameraTransitionSpeedUnit)
             {
                 difY = 0;
                 _yTransitionEnded = true;
             }
-            else difY = (difY < 0) ? -_unit : _unit;
+            else difY = (difY < 0) ? -_cameraTransitionSpeedUnit : _cameraTransitionSpeedUnit;
 
             newCamPosY = camPos.y + difY;
         }
@@ -401,7 +403,7 @@ public class CameraFollowScript : MonoBehaviour
 
 
     /// <summary>
-    /// 
+    /// 카메라 존 경계 값 필드를 초기화합니다.
     /// </summary>
     void UpdateCameraZoneBound()
     {
@@ -412,6 +414,9 @@ public class CameraFollowScript : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 카메라 뷰 박스를 초기화합니다.
+    /// </summary>
     void InitializeCameraViewBox()
     {
         // 카메라 뷰 박스의 크기를 초기화합니다.
@@ -420,6 +425,11 @@ public class CameraFollowScript : MonoBehaviour
         _cameraViewBox.size = new Vector2(frustumWidth, frustumHeight);
         _cameraViewBox.transform.position = new Vector3
             (_camera.transform.position.x, _camera.transform.position.y, 0);
+
+
+        // 카메라 뷰 박스의 Z 위치를 초기화합니다.
+        Vector3 p = _cameraViewBox.transform.position;
+        _cameraViewBox.transform.position = new Vector3(p.x, p.y, 0);
     }
 
 
