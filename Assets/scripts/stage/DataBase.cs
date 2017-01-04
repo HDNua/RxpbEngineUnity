@@ -22,7 +22,6 @@ public class DataBase : MonoBehaviour
 
     // 공용 맵 요소입니다.
     public NewMap _map;
-    public CameraFollowScript _cameraFollow;
     public StageManager _stageManager;
     public PauseMenuManager _pauseMenu;
     public TimeManager _timeManager;
@@ -31,6 +30,25 @@ public class DataBase : MonoBehaviour
 
     // 보스 전투 관리자입니다.
     public BossBattleManager _bossBattleManager;
+
+
+    #endregion
+
+
+
+    #region Unity 개체에 대한 참조를 보관합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    public CameraFollowScript _cameraFollow;
+    /// <summary>
+    /// 카메라 존 집합의 부모 개체입니다.
+    /// </summary>
+    CameraZoneParent _cameraZoneParent;
+    /// <summary>
+    /// 카메라 존 경계 집합의 부모 개체입니다.
+    /// </summary>
+    CameraZoneBorderParent _cameraZoneBorderParent;
 
 
     #endregion
@@ -127,6 +145,19 @@ public class DataBase : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 카메라 존의 부모 객체입니다.
+    /// </summary>
+    public CameraZoneParent CameraZoneParent
+    {
+        get { return _cameraZoneParent; }
+    }
+    public CameraZoneBorderParent CameraZoneBorderParent
+    {
+        get { return _cameraZoneBorderParent; }
+    }
+
+
     #endregion
 
 
@@ -142,7 +173,7 @@ public class DataBase : MonoBehaviour
     /// <summary>
     /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
-    void Start()
+    void Awake()
     {
         // 예외 메시지 리스트를 생성합니다.
         List<string> exceptionList = new List<string>();
@@ -205,13 +236,6 @@ public class DataBase : MonoBehaviour
     #region 구형 정의를 보관합니다.
     [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
-    /// 카메라 존 집합의 부모 개체입니다.
-    /// </summary>
-    public CameraZoneParent _cameraZoneParent;
-
-
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
     /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
     void Start_dep()
@@ -238,16 +262,6 @@ public class DataBase : MonoBehaviour
 
         // 필드를 정의합니다.
         _cameraZoneParent = _map.CameraZoneParent;
-    }
-
-
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 카메라 존의 부모 객체입니다.
-    /// </summary>
-    public CameraZoneParent CameraZoneParent
-    {
-        get { return _cameraZoneParent; }
     }
 
 

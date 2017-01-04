@@ -99,14 +99,9 @@ public class EnemyMettoolScript : EnemyScript
 
         // 자신과 가장 가까운 바닥으로 y 좌표를 옮깁니다.
         RaycastHit2D groundRay = Physics2D.Raycast(_groundCheck.position, Vector2.down, 10f, _whatIsGround);
-        /// float initY = transform.  groundRay.point.y + (_boxCollider2D.size.y / 2 * transform.localScale.y);
-        /// transform.position = new Vector3(groundRay.point.x, initY);
         Vector2 newPos = transform.position;
-        newPos.y -= Mathf.Abs(_boxCollider2D.bounds.min.y - groundRay.point.y); // / transform.localScale.y;
+        newPos.y -= Mathf.Abs(_boxCollider2D.bounds.min.y - groundRay.point.y);
         transform.position = newPos;
-
-        // 방황 코루틴을 시작합니다.
-        // StartCoroutine(WalkAround());
 
         MoveLeft();
     }
@@ -116,7 +111,6 @@ public class EnemyMettoolScript : EnemyScript
     protected override void Update()
     {
         base.Update();
-
 
         // 사용할 변수를 선언합니다.
         float posX = transform.position.x;
@@ -133,40 +127,6 @@ public class EnemyMettoolScript : EnemyScript
         {
             MoveLeft();
         }
-
-        /// Handy.Log("Mettool {0}: ({1}, {2}, {3})", this, boundLeft, posX, boundRight);
-
-        /**
-        // 땅에서 떨어지려고 한다면 즉시 전환합니다.
-        RaycastHit2D groundRay = Physics2D.Raycast(_groundCheck.position, Vector2.down, 0.1f, _whatIsGround);
-        if (groundRay == false)
-        {
-            if (_facingRight)
-            {
-                MoveLeft();
-            }
-            else
-            {
-                MoveRight();
-            }
-        }
-
-        // 벽에 닿는다면 방향을 즉시 전환합니다.
-        Vector3 direction = _facingRight ? Vector3.right : Vector3.left;
-        RaycastHit2D pushRay = Physics2D.Raycast
-            (_pushCheck.position, direction, 0.1f, _whatIsWall);
-        if (pushRay)
-        {
-            if (_facingRight)
-            {
-                MoveLeft();
-            }
-            else
-            {
-                MoveRight();
-            }
-        }
-        */
     }
 
 

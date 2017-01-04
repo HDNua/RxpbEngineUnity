@@ -217,7 +217,7 @@ namespace Tiled2Unity
             this.assetImporter.userData = "tiled2unity";
 
             TextureImporter textureImporter = this.assetImporter as TextureImporter;
-            textureImporter.textureType = TextureImporterType.Advanced;
+            textureImporter.textureType = TextureImporterType.Default;
             textureImporter.npotScale = TextureImporterNPOTScale.None;
             textureImporter.convertToNormalmap = false;
             textureImporter.lightmap = false;

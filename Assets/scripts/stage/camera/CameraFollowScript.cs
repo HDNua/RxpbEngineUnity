@@ -18,18 +18,6 @@ public class CameraFollowScript : MonoBehaviour
 
 
     /// <summary>
-    /// 카메라 존 집합의 부모 객체입니다.
-    /// </summary>
-    public GameObject _cameraZoneParent;
-
-
-    /// <summary>
-    /// 카메라 존 경계 집합의 부모 객체입니다.
-    /// </summary>
-    public GameObject _cameraZoneBorderParent;
-
-
-    /// <summary>
     /// 카메라 뷰 박스입니다.
     /// </summary>
     public BoxCollider2D _cameraViewBox;
@@ -38,7 +26,26 @@ public class CameraFollowScript : MonoBehaviour
     /// <summary>
     /// 화면을 전환할 때 카메라의 이동 속도를 결정합니다.
     /// </summary>
-    public float _cameraTransitionSpeedUnit = 0.3f;
+    public float _cameraTransitionSpeedUnitX = 0.3f;
+    /// <summary>
+    /// 화면을 전환할 때 카메라의 이동 속도를 결정합니다.
+    /// </summary>
+    public float _cameraTransitionSpeedUnitY = 0.3f;
+
+
+    #endregion
+
+
+
+    #region Unity 개체에 대한 참조를 보관합니다.
+    /// <summary>
+    /// 카메라 존 집합의 부모 객체입니다.
+    /// </summary>
+    public CameraZoneParent _cameraZoneParent;
+    /// <summary>
+    /// 카메라 존 경계 집합의 부모 객체입니다.
+    /// </summary>
+    public CameraZoneBorderParent _cameraZoneBorderParent;
 
 
     #endregion
@@ -136,6 +143,20 @@ public class CameraFollowScript : MonoBehaviour
     {
         get { return _currentCameraZone; }
     }
+    /// <summary>
+    /// 카메라 존 집합의 부모 개체를 가져옵니다.
+    /// </summary>
+    public CameraZoneParent CameraZoneParent
+    {
+        get { return _cameraZoneParent; }
+    }
+    /// <summary>
+    /// 카메라 존 경계 집합의 부모 개체를 가져옵니다.
+    /// </summary>
+    public CameraZoneBorderParent CameraZoneBorderParent
+    {
+        get { return _cameraZoneBorderParent; }
+    }
 
 
     #endregion
@@ -161,24 +182,6 @@ public class CameraFollowScript : MonoBehaviour
         // 빈 필드가 존재하는 경우 예외 메시지를 추가합니다.
         if (_database == null)
             exceptionList.Add("CameraFollowScript.DataBase == null");
-        if (_cameraZoneParent == null)
-            exceptionList.Add("CameraFollowScript.CameraZoneParent == null");
-        if (_cameraZoneBorderParent == null)
-            exceptionList.Add("CameraFollowScript.CameraZoneBorderParent == null");
-
-
-        // 예외 메시지가 하나 이상 존재하는 경우 예외를 발생하고 중지합니다.
-        if (exceptionList.Count > 0)
-        {
-            foreach (string msg in exceptionList)
-            {
-                Handy.Log("CameraFollowScript Error: {0}", msg);
-            }
-            throw new Exception("데이터베이스 필드 정의 부족");
-        }
-
-
-
 
         // 일반 필드를 초기화합니다.
         {
@@ -187,7 +190,15 @@ public class CameraFollowScript : MonoBehaviour
 
             _map = _database.Map;
             _player = _map.Player;
-
+        }
+        // 예외 메시지가 하나 이상 존재하는 경우 예외를 발생하고 중지합니다.
+        if (exceptionList.Count > 0)
+        {
+            foreach (string msg in exceptionList)
+            {
+                Handy.Log("CameraFollowScript Error: {0}", msg);
+            }
+            throw new Exception("데이터베이스 필드 정의 부족");
         }
 
 
@@ -335,12 +346,12 @@ public class CameraFollowScript : MonoBehaviour
         else
         {
             float difX = dstX - camPos.x;
-            if (Mathf.Abs(difX) < _cameraTransitionSpeedUnit)
+            if (Mathf.Abs(difX) < _cameraTransitionSpeedUnitX)
             {
                 difX = 0;
                 _xTransitionEnded = true;
             }
-            else difX = (difX < 0) ? -_cameraTransitionSpeedUnit : _cameraTransitionSpeedUnit;
+            else difX = (difX < 0) ? -_cameraTransitionSpeedUnitX : _cameraTransitionSpeedUnitX;
 
             newCamPosX = camPos.x + difX;
         }
@@ -353,12 +364,12 @@ public class CameraFollowScript : MonoBehaviour
         else
         {
             float difY = dstY - camPos.y;
-            if (Mathf.Abs(difY) < _cameraTransitionSpeedUnit)
+            if (Mathf.Abs(difY) < _cameraTransitionSpeedUnitY)
             {
                 difY = 0;
                 _yTransitionEnded = true;
             }
-            else difY = (difY < 0) ? -_cameraTransitionSpeedUnit : _cameraTransitionSpeedUnit;
+            else difY = (difY < 0) ? -_cameraTransitionSpeedUnitY : _cameraTransitionSpeedUnitY;
 
             newCamPosY = camPos.y + difY;
         }
@@ -548,6 +559,13 @@ public class CameraFollowScript : MonoBehaviour
             _transitioning = false;
         }
     }
+
+
+    [Obsolete("_cameraTransitionSpeedUnitX, _cameraTransitionSpeedUnitY로 대체되었습니다.")]
+    /// <summary>
+    /// 화면을 전환할 때 카메라의 이동 속도를 결정합니다.
+    /// </summary>
+    public float _cameraTransitionSpeedUnit = 0.3f;
 
 
     #endregion
