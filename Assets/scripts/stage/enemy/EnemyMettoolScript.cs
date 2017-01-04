@@ -17,7 +17,7 @@ public class EnemyMettoolScript : EnemyScript
     /// <summary>
     /// BoxCollider2D 요소를 가져옵니다.
     /// </summary>
-    BoxCollider2D _boxCollider2D;
+    Collider2D _collider2D;
 
 
     #endregion
@@ -95,12 +95,12 @@ public class EnemyMettoolScript : EnemyScript
 
         // 필드를 초기화합니다.
         _rigidbody = GetComponent<Rigidbody2D>();
-        _boxCollider2D = GetComponent<BoxCollider2D>();
+        _collider2D = GetComponent<Collider2D>();
 
         // 자신과 가장 가까운 바닥으로 y 좌표를 옮깁니다.
         RaycastHit2D groundRay = Physics2D.Raycast(_groundCheck.position, Vector2.down, 10f, _whatIsGround);
         Vector2 newPos = transform.position;
-        newPos.y -= Mathf.Abs(_boxCollider2D.bounds.min.y - groundRay.point.y);
+        newPos.y -= Mathf.Abs(_collider2D.bounds.min.y - groundRay.point.y);
         transform.position = newPos;
 
         MoveLeft();

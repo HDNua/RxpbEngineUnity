@@ -41,14 +41,6 @@ public class DataBase : MonoBehaviour
     /// 
     /// </summary>
     public CameraFollowScript _cameraFollow;
-    /// <summary>
-    /// 카메라 존 집합의 부모 개체입니다.
-    /// </summary>
-    CameraZoneParent _cameraZoneParent;
-    /// <summary>
-    /// 카메라 존 경계 집합의 부모 개체입니다.
-    /// </summary>
-    CameraZoneBorderParent _cameraZoneBorderParent;
 
 
     #endregion
@@ -142,19 +134,6 @@ public class DataBase : MonoBehaviour
     public UIManager UIManager
     {
         get { return _userInterfaceManager; }
-    }
-
-
-    /// <summary>
-    /// 카메라 존의 부모 객체입니다.
-    /// </summary>
-    public CameraZoneParent CameraZoneParent
-    {
-        get { return _cameraZoneParent; }
-    }
-    public CameraZoneBorderParent CameraZoneBorderParent
-    {
-        get { return _cameraZoneBorderParent; }
     }
 
 
@@ -262,6 +241,33 @@ public class DataBase : MonoBehaviour
 
         // 필드를 정의합니다.
         _cameraZoneParent = _map.CameraZoneParent;
+    }
+
+
+    [Obsolete("이 개체는 Unity 개체이므로 직접 연결해야 합니다.")]
+    /// <summary>
+    /// 카메라 존 집합의 부모 개체입니다.
+    /// </summary>
+    CameraZoneParent _cameraZoneParent;
+    [Obsolete("이 개체는 Unity 개체이므로 직접 연결해야 합니다.")]
+    /// <summary>
+    /// 카메라 존 경계 집합의 부모 개체입니다.
+    /// </summary>
+    CameraZoneBorderParent _cameraZoneBorderParent = null;
+
+
+    [Obsolete("이 개체는 Unity 개체이므로 직접 연결해야 합니다.")]
+    /// <summary>
+    /// 카메라 존의 부모 객체입니다.
+    /// </summary>
+    public CameraZoneParent CameraZoneParent
+    {
+        get { return _cameraZoneParent; }
+    }
+    [Obsolete("이 개체는 Unity 개체이므로 직접 연결해야 합니다.")]
+    public CameraZoneBorderParent CameraZoneBorderParent
+    {
+        get { return _cameraZoneBorderParent; }
     }
 
 

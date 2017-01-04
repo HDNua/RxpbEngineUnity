@@ -39,6 +39,10 @@ public abstract class EnemyScript : MonoBehaviour
     /// 캐릭터와 충돌했을 때 플레이어가 입을 대미지입니다.
     /// </summary>
     public int _damage;
+    /// <summary>
+    /// 무적 상태 플래그입니다.
+    /// </summary>
+    public bool _alwaysInvencible = false;
 
 
     /// <summary>
@@ -190,7 +194,10 @@ public abstract class EnemyScript : MonoBehaviour
     /// </summary>
     protected virtual void Start()
     {
-
+        if (_alwaysInvencible)
+        {
+            Invencible = true;
+        }
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트합니다.
