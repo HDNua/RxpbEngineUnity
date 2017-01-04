@@ -10,8 +10,14 @@ using System.Collections;
 public class DeadEffectScript : MonoBehaviour
 {
     #region 상수를 정의합니다.
-    const float firstParticleSpeed = 5;
-    const float secondParticleSpeed = 2;
+    public float smallParticleSpeed = 10;
+    public int smallParticleSpreadCount1 = 4;
+    public int smallParticleSpreadCount2 = 8;
+
+    public float bigParticleSpeed1 = 3;
+    public float bigParticleSpeed2 = 4;
+
+    public float particleInterval = 0.1f;
 
 
     #endregion
@@ -55,43 +61,15 @@ public class DeadEffectScript : MonoBehaviour
     {
 
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    void Update()
-    {
-        if (running == false)
-        {
-            return;
-        }
-
-        if (runTime <= 0)
-        {
-            float speed = firstParticleSpeed;
-            MakeParticle(p1, new Vector2(1, 0), speed);
-            MakeParticle(p1, new Vector2(1, 1), speed);
-            MakeParticle(p1, new Vector2(0, 1), speed);
-            MakeParticle(p1, new Vector2(-1, 1), speed);
-            MakeParticle(p1, new Vector2(-1, 0), speed);
-            MakeParticle(p1, new Vector2(-1, -1), speed);
-            MakeParticle(p1, new Vector2(0, -1), speed);
-            MakeParticle(p1, new Vector2(1, -1), speed);
-
-            speed = secondParticleSpeed;
-            MakeParticle(p2, new Vector2(1, 0.5f), speed);
-            MakeParticle(p2, new Vector2(1, 2f), speed);
-            MakeParticle(p2, new Vector2(-1, 2f), speed);
-            MakeParticle(p2, new Vector2(-1, 0.5f), speed);
-            MakeParticle(p2, new Vector2(-1, -0.5f), speed);
-            MakeParticle(p2, new Vector2(-1, -2f), speed);
-            MakeParticle(p2, new Vector2(1, -2f), speed);
-            MakeParticle(p2, new Vector2(1, -0.5f), speed);
-        }
-        runTime += Time.deltaTime;
-    }
-
 
     #endregion
+
+
+
+
+
+
+
 
 
 
@@ -121,7 +99,94 @@ public class DeadEffectScript : MonoBehaviour
 
         // 플레이어를 투명하게 만듭니다.
         stageManager._player.GetComponent<SpriteRenderer>().enabled = false;
+
+        // 
+        StartCoroutine(DeadEffectCoroutine());
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator DeadEffectCoroutine()
+    {
+        // 
+        float speed = bigParticleSpeed1;
+        MakeParticle(p2, new Vector2(+1.0f, +0.0f), speed);
+        MakeParticle(p2, new Vector2(+1.0f, +1.0f), speed);
+        MakeParticle(p2, new Vector2(+0.0f, +1.0f), speed);
+        MakeParticle(p2, new Vector2(-1.0f, +1.0f), speed);
+        MakeParticle(p2, new Vector2(-1.0f, +0.0f), speed);
+        MakeParticle(p2, new Vector2(-1.0f, -1.0f), speed);
+        MakeParticle(p2, new Vector2(+0.0f, -1.0f), speed);
+        MakeParticle(p2, new Vector2(+1.0f, -1.0f), speed);
+
+        // 
+        speed = smallParticleSpeed;
+        for (int i = 0; i < smallParticleSpreadCount1; ++i)
+        {
+            Vector2 rv1 = UnityEngine.Random.insideUnitCircle;
+            Vector2 rv2 = UnityEngine.Random.insideUnitCircle;
+            Vector2 rv3 = UnityEngine.Random.insideUnitCircle;
+            Vector2 rv4 = UnityEngine.Random.insideUnitCircle;
+
+            rv1.Normalize();
+            rv2.Normalize();
+            rv3.Normalize();
+            rv4.Normalize();
+
+            MakeParticle(p1, rv1, speed);
+            MakeParticle(p1, rv2, speed);
+            MakeParticle(p1, rv3, speed);
+            MakeParticle(p1, rv4, speed);
+
+            yield return new WaitForSeconds(particleInterval);
+        }
+
+        // 
+        speed = bigParticleSpeed2;
+        MakeParticle(p2, new Vector2(+0.3f, +1.0f), speed);
+        MakeParticle(p2, new Vector2(+0.6f, +1.0f), speed);
+        MakeParticle(p2, new Vector2(+1.0f, +0.3f), speed);
+        MakeParticle(p2, new Vector2(+1.0f, +0.6f), speed);
+        MakeParticle(p2, new Vector2(+0.3f, -1.0f), speed);
+        MakeParticle(p2, new Vector2(+0.6f, -1.0f), speed);
+        MakeParticle(p2, new Vector2(+1.0f, -0.3f), speed);
+        MakeParticle(p2, new Vector2(+1.0f, -0.6f), speed);
+        MakeParticle(p2, new Vector2(-0.3f, +1.0f), speed);
+        MakeParticle(p2, new Vector2(-0.6f, +1.0f), speed);
+        MakeParticle(p2, new Vector2(-1.0f, +0.3f), speed);
+        MakeParticle(p2, new Vector2(-1.0f, +0.6f), speed);
+        MakeParticle(p2, new Vector2(-0.3f, -1.0f), speed);
+        MakeParticle(p2, new Vector2(-0.6f, -1.0f), speed);
+        MakeParticle(p2, new Vector2(-1.0f, -0.3f), speed);
+        MakeParticle(p2, new Vector2(-1.0f, -0.6f), speed);
+
+        // 
+        speed = smallParticleSpeed;
+        for (int i = 0; i < smallParticleSpreadCount2; ++i)
+        {
+            Vector2 rv1 = UnityEngine.Random.insideUnitCircle;
+            Vector2 rv2 = UnityEngine.Random.insideUnitCircle;
+            Vector2 rv3 = UnityEngine.Random.insideUnitCircle;
+            Vector2 rv4 = UnityEngine.Random.insideUnitCircle;
+
+            rv1.Normalize();
+            rv2.Normalize();
+            rv3.Normalize();
+            rv4.Normalize();
+
+            MakeParticle(p1, rv1, speed);
+            MakeParticle(p1, rv2, speed);
+            MakeParticle(p1, rv3, speed);
+            MakeParticle(p1, rv4, speed);
+
+            yield return new WaitForSeconds(particleInterval);
+        }
+
+        yield return false;
+    }
+
     /// <summary>
     /// 사망 효과 재생을 요청합니다.
     /// </summary>
@@ -144,6 +209,56 @@ public class DeadEffectScript : MonoBehaviour
 
         transform.position = player.transform.position;
         Run();
+    }
+
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+    #region 구형 정의를 보관합니다.
+    [Obsolete("DeadEffectCoroutine()으로 대체되었습니다.")]
+    /// <summary>
+    /// 
+    /// </summary>
+    void Update_dep()
+    {
+        if (running == false)
+        {
+            return;
+        }
+
+        if (runTime <= 0)
+        {
+            float speed = smallParticleSpeed;
+            MakeParticle(p1, new Vector2(1, 0), speed);
+            MakeParticle(p1, new Vector2(1, 1), speed);
+            MakeParticle(p1, new Vector2(0, 1), speed);
+            MakeParticle(p1, new Vector2(-1, 1), speed);
+            MakeParticle(p1, new Vector2(-1, 0), speed);
+            MakeParticle(p1, new Vector2(-1, -1), speed);
+            MakeParticle(p1, new Vector2(0, -1), speed);
+            MakeParticle(p1, new Vector2(1, -1), speed);
+
+            speed = bigParticleSpeed2;
+            MakeParticle(p2, new Vector2(1, 0.5f), speed);
+            MakeParticle(p2, new Vector2(1, 2f), speed);
+            MakeParticle(p2, new Vector2(-1, 2f), speed);
+            MakeParticle(p2, new Vector2(-1, 0.5f), speed);
+            MakeParticle(p2, new Vector2(-1, -0.5f), speed);
+            MakeParticle(p2, new Vector2(-1, -2f), speed);
+            MakeParticle(p2, new Vector2(1, -2f), speed);
+            MakeParticle(p2, new Vector2(1, -0.5f), speed);
+        }
+
+        runTime += Time.deltaTime;
     }
 
 
