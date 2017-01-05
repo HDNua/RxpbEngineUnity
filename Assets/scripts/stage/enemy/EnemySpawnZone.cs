@@ -19,6 +19,10 @@ public class EnemySpawnZone : MonoBehaviour
     /// 적 캐릭터가 재소환되는 영역이라면 참입니다.
     /// </summary>
     public bool _respawnable = true;
+    /// <summary>
+    /// 왼쪽을 바라보고 있다면 참입니다.
+    /// </summary>
+    public bool _facingRight = false;
 
 
     #endregion
@@ -137,6 +141,12 @@ public class EnemySpawnZone : MonoBehaviour
         {
             _enemyScript = Instantiate(_enemyTemplate, transform.position, transform.rotation) as EnemyScript;
             _enemyScript.SpawnZone = this;
+
+            if (_enemyScript is IFlippableEnemy)
+            {
+                IFlippableEnemy flippable = (IFlippableEnemy)_enemyScript;
+                flippable.FacingRight = _facingRight;
+            }
 
             _onceSpawned = true;
         }

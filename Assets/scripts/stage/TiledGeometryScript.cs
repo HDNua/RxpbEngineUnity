@@ -118,6 +118,7 @@ public class TiledGeometryScript : MonoBehaviour
 
             // bottomEdge
             childObject = new GameObject();
+            childObject.layer = LayerMask.NameToLayer("GeometryBottom");
             childObject.transform.parent = gameObject.transform;
             childObject.transform.localScale = originScale;
             childObject.isStatic = true;
@@ -133,17 +134,12 @@ public class TiledGeometryScript : MonoBehaviour
             points[2] = new Vector2(center.x - extents.x, center.y - extents.y); // 왼쪽 아래
             points[3] = new Vector2(center.x + extents.x, center.y - extents.y); // 오른쪽 아래
 
-
             // 스케일을 맞춥니다.
             for (int i = 0, len = points.Length; i < len; ++i)
             {
-                /// v3.6.3. 나중에 삭제합시다.
-                /// points[i].x = points[i].x / 0.02008f / transform.localScale.x;
-                /// points[i].y = points[i].y / 0.02008f / transform.localScale.y;
                 points[i].x = points[i].x / scaleX / transform.localScale.x;
                 points[i].y = points[i].y / scaleY / transform.localScale.y;
             }
-
 
             // 바닥, 왼쪽, 오른쪽 collider의 꼭짓점을 업데이트합니다.
             groundEdge.points = new Vector2[] { points[0], points[1] };
@@ -204,14 +200,12 @@ public class TiledGeometryScript : MonoBehaviour
             points[2] = slopePoints[2] + edgeOrigin; // 왼쪽 아래
             points[3] = slopePoints[3] + edgeOrigin; // 오른쪽 아래
 
-
             // 스케일을 맞춥니다.
             for (int i = 0, len = points.Length; i < len; ++i)
             {
                 points[i].x = points[i].x / transform.localScale.x;
-                points[i].y = points[i].y / transform.localScale.y;
+                points[i].y = points[i].y / transform.localScale.y + _database.Map.transform.position.y;
             }
-
 
             // 바닥, 왼쪽, 오른쪽 collider의 꼭짓점을 업데이트합니다.
             groundEdge.points = new Vector2[] { points[0], points[1] };

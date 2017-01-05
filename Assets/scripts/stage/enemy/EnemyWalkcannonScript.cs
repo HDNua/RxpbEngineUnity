@@ -7,7 +7,7 @@ using System.Collections;
 /// <summary>
 /// Walkcannon 적 캐릭터를 정의합니다.
 /// </summary>
-public class EnemyWalkcannonScript : EnemyScript
+public class EnemyWalkcannonScript : EnemyScript, IFlippableEnemy
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
     /// <summary>
@@ -65,13 +65,20 @@ public class EnemyWalkcannonScript : EnemyScript
     /// <summary>
     /// 캐릭터가 움직이는 속도를 정의합니다.
     /// </summary>
-    public float movingSpeed;
-
+    public float _movingSpeed = 2;
 
     /// <summary>
     /// 캐릭터가 오른쪽을 보고 있다면 참입니다.
     /// </summary>
     bool _facingRight = false;
+    /// <summary>
+    /// 캐릭터가 오른쪽을 보고 있다면 참입니다.
+    /// </summary>
+    public bool FacingRight
+    {
+        get { return _facingRight; }
+        set { if (_facingRight != value) Flip(); }
+    }
 
 
     #endregion
@@ -227,7 +234,7 @@ public class EnemyWalkcannonScript : EnemyScript
     {
         if (_facingRight)
             Flip();
-        _rigidbody.velocity = new Vector2(-movingSpeed, 0);
+        _rigidbody.velocity = new Vector2(-_movingSpeed, 0);
         // _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
     }
     /// <summary>
@@ -237,13 +244,13 @@ public class EnemyWalkcannonScript : EnemyScript
     {
         if (_facingRight == false)
             Flip();
-        _rigidbody.velocity = new Vector2(movingSpeed, 0);
+        _rigidbody.velocity = new Vector2(_movingSpeed, 0);
         // _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
     }
     /// <summary>
     /// 방향을 바꿉니다.
     /// </summary>
-    void Flip()
+    public void Flip()
     {
         if (_facingRight)
         {

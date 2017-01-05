@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// 
 /// </summary>
-public class EnemyGigadeathScript : EnemyScript
+public class EnemyGigadeathScript : EnemyScript, IFlippableEnemy
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
     /// <summary>
@@ -68,6 +68,14 @@ public class EnemyGigadeathScript : EnemyScript
     /// 캐릭터가 오른쪽을 보고 있다면 참입니다.
     /// </summary>
     bool _facingRight = false;
+    /// <summary>
+    /// 캐릭터가 오른쪽을 보고 있다면 참입니다.
+    /// </summary>
+    public bool FacingRight
+    {
+        get { return _facingRight; }
+        set { if (_facingRight != value) Flip(); }
+    }
 
 
     #endregion
@@ -98,11 +106,6 @@ public class EnemyGigadeathScript : EnemyScript
         Vector2 newPos = transform.position;
         newPos.y -= Mathf.Abs(_collider2D.bounds.min.y - groundRay.point.y);
         transform.position = newPos;
-
-        // 
-        // Shot(_shotPoints[0]);
-        // Shot(_shotPoints[1]);
-        // Shot(_shotPoints[2]);
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트합니다.
@@ -188,6 +191,7 @@ public class EnemyGigadeathScript : EnemyScript
         base.Dead();
     }
 
+
     #endregion
 
 
@@ -203,7 +207,7 @@ public class EnemyGigadeathScript : EnemyScript
     /// <summary>
     /// 방향을 바꿉니다.
     /// </summary>
-    void Flip()
+    public void Flip()
     {
         if (_facingRight)
         {
@@ -219,15 +223,14 @@ public class EnemyGigadeathScript : EnemyScript
     }
 
     /// <summary>
-    /// 
+    /// 탄환을 발사합니다.
     /// </summary>
-    /// <param name="shotPosition"></param>
+    /// <param name="shotPosition">탄환을 발사할 위치입니다.</param>
     public void Shot(Transform shotPosition)
     {
         SoundEffects[1].Play();
         Instantiate(effects[1], shotPosition.position, shotPosition.rotation);
         Instantiate(_bullet, shotPosition.position, shotPosition.rotation);
-        /// Instantiate(_bulletFog, shotPosition);
     }
 
 
@@ -237,7 +240,7 @@ public class EnemyGigadeathScript : EnemyScript
 
     #region 요청 메서드를 정의합니다.
     /// <summary>
-    /// 
+    /// 탄환 발사를 요청합니다.
     /// </summary>
     public void RequestShot()
     {

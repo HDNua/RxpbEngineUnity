@@ -7,7 +7,7 @@ using System.Collections;
 /// <summary>
 /// Spiky MK-II 적 캐릭터를 정의합니다.
 /// </summary>
-public class EnemySpikyMK2Script : EnemyScript
+public class EnemySpikyMK2Script : EnemyScript, IFlippableEnemy
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
     /// <summary>
@@ -66,11 +66,34 @@ public class EnemySpikyMK2Script : EnemyScript
     /// 캐릭터가 움직이는 속도를 정의합니다.
     /// </summary>
     public float _movingSpeed = 8;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _yMovingSpeedMax = 10;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _yMovingAccelaration = 10;
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// float _startTime = 0;
+
 
     /// <summary>
     /// 캐릭터가 오른쪽을 보고 있다면 참입니다.
     /// </summary>
     bool _facingRight = false;
+    /// <summary>
+    /// 캐릭터가 오른쪽을 보고 있다면 참입니다.
+    /// </summary>
+    public bool FacingRight
+    {
+        get { return _facingRight; }
+        set { if (_facingRight != value) Flip(); }
+    }
 
 
     #endregion
@@ -97,11 +120,13 @@ public class EnemySpikyMK2Script : EnemyScript
         _rigidbody = GetComponent<Rigidbody2D>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
 
+        /**
         // 자신과 가장 가까운 바닥으로 y 좌표를 옮깁니다.
         RaycastHit2D groundRay = Physics2D.Raycast(_groundCheck.position, Vector2.down, 10f, _whatIsGround);
         Vector2 newPos = transform.position;
         newPos.y -= Mathf.Abs(_boxCollider2D.bounds.min.y - groundRay.point.y);
         transform.position = newPos;
+        */
 
         MoveLeft();
     }
@@ -119,6 +144,7 @@ public class EnemySpikyMK2Script : EnemyScript
         float boundRight = SpawnZone.Right;
 
 
+        /*
         // 영역을 넘어서면 방향을 전환하여 원래대로 복귀합니다.
         if (posX < boundLeft)
         {
@@ -128,15 +154,24 @@ public class EnemySpikyMK2Script : EnemyScript
         {
             MoveLeft();
         }
+        */
 
+        /*
+        float vx = _rigidbody.velocity.x;
+        float vy = _rigidbody.velocity.y - _yMovingAccelaration * Time.deltaTime;
+        _rigidbody.velocity = new Vector2(vx, vy);
+        */
 
-
-        _startTime += Time.deltaTime;
-        _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, Mathf.Abs(Mathf.Deg2Rad * Mathf.Sin(_startTime)));
-
+        // 
+        /// _startTime += Time.deltaTime;
     }
 
-    public float _startTime = 0;
+    private void FixedUpdate()
+    {
+        float vx = _rigidbody.velocity.x;
+        float vy = _rigidbody.velocity.y - _yMovingAccelaration * Time.fixedDeltaTime;
+        _rigidbody.velocity = new Vector2(vx, vy);
+    }
 
 
     #endregion
@@ -151,6 +186,44 @@ public class EnemySpikyMK2Script : EnemyScript
 
 
     #region Collider2D의 기본 메서드를 재정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="other"></param>
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        // 
+        Vector3 colliderPos = transform.position;
+        Vector3 otherCenter = other.bounds.center;
+
+        if (_boxCollider2D.IsTouchingLayers(_whatIsGround))
+        {
+            /// Handy.Log("BoxCollider is Touching Ground ({0}, {1})", otherCenter, colliderPos);
+
+            if (otherCenter.y < colliderPos.y)
+            {
+                _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, _yMovingSpeedMax);
+            }
+            else
+            {
+                float vx = _rigidbody.velocity.x;
+                float vy = -Mathf.Abs(_rigidbody.velocity.y);
+                _rigidbody.velocity = new Vector2(vx, vy);
+            }
+        }
+        if (_boxCollider2D.IsTouchingLayers(_whatIsWall))
+        {
+            /// Handy.Log("BoxCollider is Touching Wall ({0}, {1})", otherCenter, colliderPos);
+            if (otherCenter.x < colliderPos.x)
+            {
+                MoveRight();
+            }
+            else
+            {
+                MoveLeft();
+            }
+        }
+    }
     /// <summary>
     /// 충돌체가 여전히 트리거 내부에 있습니다.
     /// </summary>
@@ -234,8 +307,7 @@ public class EnemySpikyMK2Script : EnemyScript
     {
         if (_facingRight)
             Flip();
-        _rigidbody.velocity = new Vector2(-_movingSpeed, 0);
-        // _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
+        _rigidbody.velocity = new Vector2(-_movingSpeed, _rigidbody.velocity.y);
     }
     /// <summary>
     /// 오른쪽으로 이동합니다.
@@ -244,13 +316,12 @@ public class EnemySpikyMK2Script : EnemyScript
     {
         if (_facingRight == false)
             Flip();
-        _rigidbody.velocity = new Vector2(_movingSpeed, 0);
-        // _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
+        _rigidbody.velocity = new Vector2(_movingSpeed, _rigidbody.velocity.y);
     }
     /// <summary>
     /// 방향을 바꿉니다.
     /// </summary>
-    void Flip()
+    public void Flip()
     {
         if (_facingRight)
         {

@@ -1,10 +1,14 @@
-RXPB v4.2.0
+RXPB v4.3.0
 
-- 기가데스 적 추가.
-> 기가데스 탄환 또한 EnemyScript로 구현.
+- 인트로 스테이지 레벨 디자인 변경.
 
 
-- 무적 상태의 적에 대해 Invencible 효과가 발생하도록 수정.
+* !!!!! IMPORTANT !!!!!
+  가로 방향 CameraZoneBorder는 반드시 from이 위쪽, to가 아래쪽.
+  
+  
+- Spiky-MK-II 적 행동 업데이트.
+> 이제 포물선을 그리면서 움직입니다.
 
 
 end.

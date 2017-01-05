@@ -7,7 +7,7 @@ using UnityEngine;
 /// <summary>
 /// 기가데스의 탄환을 정의합니다.
 /// </summary>
-public class EnemyGigadeathBulletScript : EnemyScript
+public class EnemyGigadeathBulletScript : EnemyScript, IFlippableEnemy
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
     /// <summary>
@@ -70,6 +70,20 @@ public class EnemyGigadeathBulletScript : EnemyScript
     /// 캐릭터가 오른쪽을 보고 있다면 참입니다.
     /// </summary>
     bool _facingRight = false;
+    /// <summary>
+    /// 캐릭터가 오른쪽을 보고 있다면 참입니다.
+    /// </summary>
+    public bool FacingRight
+    {
+        get { return _facingRight; }
+        set
+        {
+            if (_facingRight != value)
+            {
+                Flip();
+            }
+        }
+    }
 
 
     #endregion
@@ -221,7 +235,7 @@ public class EnemyGigadeathBulletScript : EnemyScript
     /// <summary>
     /// 방향을 바꿉니다.
     /// </summary>
-    void Flip()
+    public void Flip()
     {
         if (_facingRight)
         {
