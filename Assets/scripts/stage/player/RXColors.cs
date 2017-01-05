@@ -7,7 +7,7 @@ using System;
 /// <summary>
 /// 엑스 캐릭터의 바디 색상을 관리합니다.
 /// </summary>
-public static class RXColors
+public static class XColorPalette
 {
     #region 공용 색상표를 정의합니다.
     /// <summary>
@@ -267,7 +267,7 @@ public static class RXColors
     /// <summary>
     /// 엑스 캐릭터의 바디 색상표를 초기화합니다.
     /// </summary>
-    static RXColors()
+    static XColorPalette()
     {
         // 사용할 변수를 선언합니다.
         int PALETTE_COUNT = X_DEFAULT_COLOR_PALETTE.Length;

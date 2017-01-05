@@ -209,6 +209,8 @@ public abstract class EnemyScript : MonoBehaviour
             Dead();
         }
     }
+    protected virtual void FixedUpdate() { }
+    protected virtual void LateUpdate() { }
 
 
     #endregion

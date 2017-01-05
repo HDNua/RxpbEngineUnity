@@ -284,7 +284,7 @@ public class XController : PlayerController
                 DashAfterImageTime = 0;
 
                 // 
-                UpdateEffectColor(dashAfterImage, RXColors.XDefaultPalette, RXColors.XDashEffectColorPalette);
+                UpdateEffectColor(dashAfterImage, XColorPalette.XDefaultPalette, XColorPalette.XDashEffectColorPalette);
             }
         }
 
@@ -966,7 +966,7 @@ public class XController : PlayerController
                 if (chargedColor)
                 {
                     Color[] palette = (_chargeTime < CHARGE_LEVEL[2]) ?
-                        RXColors.XCharge1Palette : RXColors.XCharge2Palette;
+                        XColorPalette.XCharge1Palette : XColorPalette.XCharge2Palette;
                     _currentPalette = palette;
                 }
                 else
@@ -1521,23 +1521,23 @@ public class XController : PlayerController
         switch (weaponIndex)
         {
             case 1:
-                targetPalette = RXColors.XWeapon1Palette;
+                targetPalette = XColorPalette.XWeapon1Palette;
                 break;
 
             case 2:
-                targetPalette = RXColors.XWeapon2Palette;
+                targetPalette = XColorPalette.XWeapon2Palette;
                 break;
 
             case 3:
-                targetPalette = RXColors.XWeapon3Palette;
+                targetPalette = XColorPalette.XWeapon3Palette;
                 break;
 
             case 4:
-                targetPalette = RXColors.XWeapon4Palette;
+                targetPalette = XColorPalette.XWeapon4Palette;
                 break;
 
             default:
-                targetPalette = RXColors.XDefaultPalette;
+                targetPalette = XColorPalette.XDefaultPalette;
                 break;
         }
 
@@ -1564,12 +1564,12 @@ public class XController : PlayerController
             // 차지 효과 색상을 업데이트 합니다.
             if (_chargeEffect2 != null)
             {
-                UpdateChargeEffectColor(_chargeEffect2, RXColors.XNormalChargeEffectColorPalette2);
-                UpdateChargeEffectColor(_chargeEffect1, RXColors.XNormalChargeEffectColorPalette2);
+                UpdateChargeEffectColor(_chargeEffect2, XColorPalette.XNormalChargeEffectColorPalette2);
+                UpdateChargeEffectColor(_chargeEffect1, XColorPalette.XNormalChargeEffectColorPalette2);
             }
             else if (_chargeEffect1 != null)
             {
-                UpdateChargeEffectColor(_chargeEffect1, RXColors.XNormalChargeEffectColorPalette1);
+                UpdateChargeEffectColor(_chargeEffect1, XColorPalette.XNormalChargeEffectColorPalette1);
             }
         }
         else
@@ -1588,7 +1588,7 @@ public class XController : PlayerController
         Texture2D texture = _Renderer.sprite.texture;
         Color[] colors = texture.GetPixels();
         Color[] pixels = new Color[colors.Length];
-        Color[] DefaultPalette = RXColors.XDefaultPalette;
+        Color[] DefaultPalette = XColorPalette.XDefaultPalette;
 
 
         // 모든 픽셀을 돌면서 색상을 업데이트합니다.
@@ -1640,10 +1640,10 @@ public class XController : PlayerController
 
         // 색상표를 획득합니다.
         Color[] palette = (_chargeTime < CHARGE_LEVEL[2]) ?
-            RXColors.XNormalChargeEffectColorPalette1 : RXColors.XNormalChargeEffectColorPalette2;
+            XColorPalette.XNormalChargeEffectColorPalette1 : XColorPalette.XNormalChargeEffectColorPalette2;
 
         // 텍스쳐를 업데이트합니다.
-        effect.RequestUpdateTexture(RXColors.XDefaultChargeEffectColorPalette, palette);
+        effect.RequestUpdateTexture(XColorPalette.XDefaultChargeEffectColorPalette, palette);
     }
     /// <summary>
     /// 엑스의 바디 색상표를 현재 웨폰 상태로 되돌립니다.
@@ -1676,19 +1676,19 @@ public class XController : PlayerController
         switch (weaponState)
         {
             case 1:
-                palette = RXColors.XWeapon1Palette;
+                palette = XColorPalette.XWeapon1Palette;
                 break;
 
             case 2:
-                palette = RXColors.XWeapon2Palette;
+                palette = XColorPalette.XWeapon2Palette;
                 break;
 
             case 3:
-                palette = RXColors.XWeapon3Palette;
+                palette = XColorPalette.XWeapon3Palette;
                 break;
 
             case 4:
-                palette = RXColors.XWeapon4Palette;
+                palette = XColorPalette.XWeapon4Palette;
                 break;
 
             default:
@@ -1762,7 +1762,7 @@ public class XController : PlayerController
     /// </summary>
     protected override void TESTEST1()
     {
-        _currentPalette = RXColors.InvenciblePalette;
+        _currentPalette = XColorPalette.InvenciblePalette;
         // UpdateBodyColor();
     }
     /// <summary>
