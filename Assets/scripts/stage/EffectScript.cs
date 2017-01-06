@@ -120,12 +120,6 @@ public class EffectScript : MonoBehaviour
         {
             UpdateTextureColor();
         }
-        /**
-        if (_colorChangeRequested)
-        {
-            UpdateTextureColor(_currentColor);
-        }
-        */
     }
 
 
@@ -141,6 +135,9 @@ public class EffectScript : MonoBehaviour
 
 
     #region 프레임 이벤트 핸들러를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     void FE_EndEffect()
     {
         RequestDestroy();

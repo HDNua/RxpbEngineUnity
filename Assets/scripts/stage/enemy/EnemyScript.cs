@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 using System;
-
+using System.Collections;
 
 
 /// <summary>
@@ -8,6 +8,25 @@ using System;
 /// </summary>
 public abstract class EnemyScript : MonoBehaviour
 {
+    #region 상수를 정의합니다.
+    /// <summary>
+    /// 1/30 프레임 간의 시간입니다.
+    /// </summary>
+    public const float TIME_30FPS = 0.0333333f;
+    /// <summary>
+    /// 1/60 프레임 간의 시간입니다.
+    /// </summary>
+    public const float TIME_60FPS = 0.0166667f;
+    /// <summary>
+    /// 무적 시간입니다.
+    /// </summary>
+    public float INVENCIBLE_TIME_LENGTH = 1f;
+
+
+    #endregion
+
+
+
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
     /// <summary>
     /// 충돌체입니다.
@@ -16,15 +35,10 @@ public abstract class EnemyScript : MonoBehaviour
     /// <summary>
     /// 충돌체입니다.
     /// </summary>
-    public Collider2D Collider { get { return _collider; } }
+    protected Collider2D _Collider { get { return _collider; } }
 
 
     #endregion
-
-
-
-
-
 
 
 
@@ -91,6 +105,12 @@ public abstract class EnemyScript : MonoBehaviour
     /// 무적 상태라면 참입니다.
     /// </summary>
     bool _invencible;
+
+
+    /// <summary>
+    /// 캐릭터가 오른쪽을 보고 있다면 참입니다.
+    /// </summary>
+    bool _facingRight;
 
 
     /// <summary>
@@ -209,8 +229,21 @@ public abstract class EnemyScript : MonoBehaviour
             Dead();
         }
     }
+    /// <summary>
+    /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트 합니다.
+    /// 물리 효과가 적용된 오브젝트를 조정할 때 사용됩니다.
+    /// (Update는 불규칙한 호출이기 때문에 물리엔진 충돌검사가 제대로 되지 않을 수 있습니다.)
+    /// </summary>
     protected virtual void FixedUpdate() { }
-    protected virtual void LateUpdate() { }
+    /// <summary>
+    /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
+    /// 주로 오브젝트를 따라가게 설정한 카메라는 LastUpdate를 사용합니다.
+    /// </summary>
+    protected virtual void LateUpdate()
+    {
+        // 색상표를 사용하는 개체인 경우 이 메서드를 오버라이드하고 다음 문장을 호출합니다.
+        // UpdateColor();
+    }
 
 
     #endregion
@@ -275,6 +308,181 @@ public abstract class EnemyScript : MonoBehaviour
             return ret;
         }
         return null;
+    }
+
+
+    #endregion
+
+
+
+
+
+    #region IFlippableEnemy를 구현합니다.
+    /// <summary>
+    /// 캐릭터가 오른쪽을 보고 있다면 참입니다.
+    /// </summary>
+    public bool FacingRight
+    {
+        get { return _facingRight; }
+        set { if (_facingRight != value) Flip(); }
+    }
+    /// <summary>
+    /// 방향을 바꿉니다.
+    /// </summary>
+    public void Flip()
+    {
+        if (_facingRight)
+        {
+            transform.localScale = new Vector3
+                (-transform.localScale.x, transform.localScale.y);
+        }
+        else
+        {
+            transform.localScale = new Vector3
+                (-transform.localScale.x, transform.localScale.y);
+        }
+        _facingRight = !_facingRight;
+    }
+
+    #endregion
+
+
+
+    #region 컬러 팔레트 관련 메서드를 정의합니다.
+    /// <summary>
+    /// 현재 색상 팔레트입니다.
+    /// </summary>
+    Color[] _currentPalette = null;
+    /// <summary>
+    /// 기본 색상 팔레트입니다.
+    /// </summary>
+    Color[] _defaultPalette = null;
+    /// <summary>
+    /// 기본 색상 팔레트를 설정합니다.
+    /// </summary>
+    protected Color[] DefaultPalette
+    {
+        set { _defaultPalette = value; }
+    }
+
+
+    /// <summary>
+    /// 색상을 업데이트합니다.
+    /// </summary>
+    protected void UpdateColor()
+    {
+        if (_currentPalette != null)
+        {
+            // 바디 색상을 맞춥니다.
+            UpdateBodyColor(_currentPalette);
+        }
+    }
+    /// <summary>
+    /// 색상을 주어진 팔레트로 업데이트합니다.
+    /// </summary>
+    /// <param name="_currentPalette">현재 팔레트입니다.</param>
+    void UpdateBodyColor(Color[] currentPalette)
+    {
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        Texture2D texture = renderer.sprite.texture;
+
+        // !!!!! IMPORTANT !!!!!
+        // 1. 텍스쳐 파일은 Read/Write 속성이 Enabled여야 합니다.
+        // 2. 반드시 Generate Mip Maps 속성을 켜십시오.
+        Color[] colors = texture.GetPixels();
+        Color[] pixels = new Color[colors.Length];
+        Color[] DefaultPalette = _defaultPalette;
+
+        // 모든 픽셀을 돌면서 색상을 업데이트합니다.
+        for (int pixelIndex = 0, pixelCount = colors.Length; pixelIndex < pixelCount; ++pixelIndex)
+        {
+            Color color = colors[pixelIndex];
+            if (color.a == 1)
+            {
+                for (int targetIndex = 0, targetPixelCount = DefaultPalette.Length; targetIndex < targetPixelCount; ++targetIndex)
+                {
+                    Color colorDst = DefaultPalette[targetIndex];
+                    if (Mathf.Approximately(color.r, colorDst.r) &&
+                        Mathf.Approximately(color.g, colorDst.g) &&
+                        Mathf.Approximately(color.b, colorDst.b) &&
+                        Mathf.Approximately(color.a, colorDst.a))
+                    {
+                        pixels[pixelIndex] = currentPalette[targetIndex];
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                pixels[pixelIndex] = color;
+            }
+        }
+
+        // 텍스쳐를 복제하고 새 픽셀 팔레트로 덮어씌웁니다.
+        Texture2D cloneTexture = new Texture2D(texture.width, texture.height);
+        cloneTexture.filterMode = FilterMode.Point;
+        cloneTexture.SetPixels(pixels);
+        cloneTexture.Apply();
+
+        // 새 텍스쳐를 렌더러에 반영합니다.
+        MaterialPropertyBlock block = new MaterialPropertyBlock();
+        block.SetTexture("_MainTex", cloneTexture);
+        renderer.SetPropertyBlock(block);
+    }
+    /// <summary>
+    /// 무적 상태에 대한 코루틴입니다.
+    /// </summary>
+    /// <returns>코루틴 열거자입니다.</returns>
+    protected IEnumerator CoroutineInvencible()
+    {
+        float invencibleTime = 0;
+        bool invencibleColorState = false;
+        while (invencibleTime < INVENCIBLE_TIME_LENGTH)
+        {
+            invencibleTime += TIME_30FPS + Time.deltaTime;
+
+            if (invencibleColorState)
+            {
+                UpdateColorWithInvenciblePalette();
+            }
+            else
+            {
+                UpdateColorWithoutInvenciblePalette();
+            }
+            invencibleColorState = !invencibleColorState;
+            yield return new WaitForSeconds(TIME_30FPS);
+        }
+        Invencible = false;
+        UpdateColorEndOfInvencibleTime();
+        yield break;
+    }
+    /// <summary>
+    /// 무적 상태 팔레트로 색상을 업데이트합니다.
+    /// </summary>
+    void UpdateColorWithInvenciblePalette()
+    {
+        _currentPalette = EnemyColorPalette.InvenciblePalette;
+    }
+    /// <summary>
+    /// 무적 상태가 아닌 팔레트로 색상을 업데이트합니다.
+    /// </summary>
+    void UpdateColorWithoutInvenciblePalette()
+    {
+        ResetBodyColor();
+    }
+    /// <summary>
+    /// 무적 상태가 끝난 후의 색상을 업데이트합니다.
+    /// </summary>
+    void UpdateColorEndOfInvencibleTime()
+    {
+        ResetBodyColor();
+    }
+    /// <summary>
+    /// 바디 색상표를 초기화합니다.
+    /// </summary>
+    void ResetBodyColor()
+    {
+        _currentPalette = _defaultPalette;
     }
 
 

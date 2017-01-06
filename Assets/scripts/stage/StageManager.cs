@@ -60,14 +60,7 @@ public class StageManager : HDSceneManager
 
 
     #endregion
-
-
-
-
-
-
-
-
+    
 
 
     #region 필드를 정의합니다.
@@ -123,14 +116,8 @@ public class StageManager : HDSceneManager
 
     #endregion
 
-
-
-
-
-
-
-
-
+    
+    
     #region 프로퍼티를 정의합니다.
     /// <summary>
     /// 엑스에 대한 PlayerController니다.
@@ -169,12 +156,7 @@ public class StageManager : HDSceneManager
 
 
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -273,15 +255,9 @@ public class StageManager : HDSceneManager
             _userInterfaceManager.RequestPauseToggle();
         }
     }
-
-
+    
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -337,12 +313,7 @@ public class StageManager : HDSceneManager
 
 
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -394,9 +365,7 @@ public class StageManager : HDSceneManager
     {
         LoadingSceneManager.LoadLevel("Title");
     }
-
-
-
+    
 
     /// <summary>
     /// 종료 아이템을 획득했습니다.
@@ -406,12 +375,10 @@ public class StageManager : HDSceneManager
     private void Test_EndGameItemGet(PlayerController player, ItemScript item)
     {
         RequestStopBackgroundMusic();
-
-
+        
         _gameEndValue = item.Value;
 
-
-        _player.RequestBlockInput();
+                _player.RequestBlockInput();
         _timeManager.StageManagerRequested = true;
         StartCoroutine(EndGameCoroutine());
     }
@@ -423,9 +390,7 @@ public class StageManager : HDSceneManager
     {
         // 다음 커밋에서 삭제할 예정입니다.
         GameManager.Instance.SpawnPositionIndex = 0;
-
-
-
+        
         AudioSource audioSource = AudioSources[3];
         audioSource.Play();
 
@@ -478,12 +443,17 @@ public class StageManager : HDSceneManager
     }
 
 
+    /// <summary>
+    /// 현재 조작중인 플레이어의 위치를 반환합니다.
+    /// </summary>
+    /// <returns>현재 조작중인 플레이어의 위치입니다.</returns>
+    public Vector3 GetCurrentPlayerPosition()
+    {
+        return _player.transform.position;
+    }
+
+
     #endregion
-
-
-
-
-
 
 
 
@@ -723,11 +693,7 @@ public class StageManager : HDSceneManager
 
 
     #endregion
-
-
-
-
-
+    
 
 
 

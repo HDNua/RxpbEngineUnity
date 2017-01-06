@@ -140,13 +140,16 @@ public class EnemySpawnZone : MonoBehaviour
         if (_onceSpawned == false || Respawnable)
         {
             _enemyScript = Instantiate(_enemyTemplate, transform.position, transform.rotation) as EnemyScript;
+            _enemyScript.FacingRight = _facingRight;
             _enemyScript.SpawnZone = this;
 
+            /**
             if (_enemyScript is IFlippableEnemy)
             {
                 IFlippableEnemy flippable = (IFlippableEnemy)_enemyScript;
                 flippable.FacingRight = _facingRight;
             }
+            */
 
             _onceSpawned = true;
         }
