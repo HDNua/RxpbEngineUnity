@@ -86,7 +86,6 @@ public class EnemyWalkcannonScript : EnemyScript
     {
         base.Start();
 
-
         // 필드를 초기화합니다.
         _rigidbody = GetComponent<Rigidbody2D>();
         _boxCollider2D = GetComponent<BoxCollider2D>();
@@ -97,7 +96,11 @@ public class EnemyWalkcannonScript : EnemyScript
         newPos.y -= Mathf.Abs(_boxCollider2D.bounds.min.y - groundRay.point.y);
         transform.position = newPos;
 
+        // 초기화를 마무리합니다.
         MoveLeft();
+
+        // 컬러 팔레트를 설정합니다.
+        DefaultPalette = EnemyColorPalette.WalkCannonPalette;
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트합니다.
@@ -123,7 +126,16 @@ public class EnemyWalkcannonScript : EnemyScript
             MoveLeft();
         }
     }
+    /// <summary>
+    /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
+    /// 주로 오브젝트를 따라가게 설정한 카메라는 LastUpdate를 사용합니다.
+    /// </summary>
+    protected override void LateUpdate()
+    {
+        base.LateUpdate();
 
+        UpdateColor();
+    }
 
     #endregion
 
@@ -198,6 +210,17 @@ public class EnemyWalkcannonScript : EnemyScript
 
         // 캐릭터가 사망합니다.
         base.Dead();
+    }
+    /// <summary>
+    /// 캐릭터에게 대미지를 입힙니다.
+    /// </summary>
+    /// <param name="damage">대미지 값입니다.</param>
+    public override void Hurt(int damage)
+    {
+        base.Hurt(damage);
+
+        // 무적 상태 코루틴을 시작합니다.
+        StartCoroutine(CoroutineInvencible());
     }
 
 

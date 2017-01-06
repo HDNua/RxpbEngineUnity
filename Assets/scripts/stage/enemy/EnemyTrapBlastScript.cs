@@ -67,7 +67,7 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
         base.Start();
 
         // 컬러 팔레트를 설정합니다.
-        DefaultPalette = EnemyColorPalette.GigadeathPalette;
+        DefaultPalette = EnemyColorPalette.TrapBlastPalette;
 
         // 등장 효과음을 추가합니다.
         SoundEffects[2].Play();
@@ -86,6 +86,8 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
     protected override void LateUpdate()
     {
         base.LateUpdate();
+
+        UpdateColor();
     }
 
 
