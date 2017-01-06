@@ -23,45 +23,29 @@ public class EnemySpawnZone : MonoBehaviour
     /// 왼쪽을 바라보고 있다면 참입니다.
     /// </summary>
     public bool _facingRight = false;
-
-
+    
     #endregion
 
-
-
-
-
-
-
-
-
+    
 
     #region 필드를 정의합니다.
     /// <summary>
     /// 적 캐릭터가 소환되는 영역입니다.
     /// </summary>
     BoxCollider2D _collider;
-
-
+    
     /// <summary>
     /// 스폰 영역에 존재하는 적에 대한 포인터입니다.
     /// </summary>
     EnemyScript _enemyScript;
-
-
+    
     /// <summary>
     /// 1회 소환된 적이 있다면 참입니다.
     /// </summary>
     bool _onceSpawned = false;
-
-
+    
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -95,12 +79,7 @@ public class EnemySpawnZone : MonoBehaviour
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
@@ -118,16 +97,10 @@ public class EnemySpawnZone : MonoBehaviour
     {
 
     }
-
-
+    
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -139,17 +112,11 @@ public class EnemySpawnZone : MonoBehaviour
     {
         if (_onceSpawned == false || Respawnable)
         {
-            _enemyScript = Instantiate(_enemyTemplate, transform.position, transform.rotation) as EnemyScript;
+            _enemyScript = Instantiate
+                (_enemyTemplate, transform.position, transform.rotation)
+                as EnemyScript;
             _enemyScript.FacingRight = _facingRight;
             _enemyScript.SpawnZone = this;
-
-            /**
-            if (_enemyScript is IFlippableEnemy)
-            {
-                IFlippableEnemy flippable = (IFlippableEnemy)_enemyScript;
-                flippable.FacingRight = _facingRight;
-            }
-            */
 
             _onceSpawned = true;
         }
@@ -164,7 +131,6 @@ public class EnemySpawnZone : MonoBehaviour
             Destroy(_enemyScript.gameObject);
         }
     }
-
-
+    
     #endregion
 }

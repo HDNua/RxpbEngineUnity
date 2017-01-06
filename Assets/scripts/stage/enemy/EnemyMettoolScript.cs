@@ -85,7 +85,8 @@ public class EnemyMettoolScript : EnemyScript
         _collider2D = GetComponent<Collider2D>();
 
         // 자신과 가장 가까운 바닥으로 y 좌표를 옮깁니다.
-        RaycastHit2D groundRay = Physics2D.Raycast(_groundCheck.position, Vector2.down, 10f, _whatIsGround);
+        RaycastHit2D groundRay = Physics2D.Raycast
+            (_groundCheck.position, Vector2.down, 10f, _whatIsGround);
         Vector2 newPos = transform.position;
         newPos.y -= Mathf.Abs(_collider2D.bounds.min.y - groundRay.point.y);
         transform.position = newPos;
@@ -179,7 +180,6 @@ public class EnemyMettoolScript : EnemyScript
         SoundEffects[0].Play();
         Instantiate(effects[0], transform.position, transform.rotation);
 
-
         // 사망 시 아이템 드롭 루틴입니다.
         int dropItem = UnityEngine.Random.Range(0, _items.Length);
         if (_items[dropItem] != null)
@@ -187,9 +187,11 @@ public class EnemyMettoolScript : EnemyScript
             CreateItem(_items[dropItem]);
         }
 
-
         // 캐릭터가 사망합니다.
         base.Dead();
+
+        // 
+        Invoke("RequestDestroy", 3f);
     }
 
 
@@ -213,7 +215,6 @@ public class EnemyMettoolScript : EnemyScript
         if (FacingRight)
             Flip();
         _rigidbody.velocity = new Vector2(-_movingSpeed, 0);
-        // _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
     }
     /// <summary>
     /// 오른쪽으로 이동합니다.
@@ -223,7 +224,6 @@ public class EnemyMettoolScript : EnemyScript
         if (FacingRight == false)
             Flip();
         _rigidbody.velocity = new Vector2(_movingSpeed, 0);
-        // _rigidbody.velocity = new Vector2(-movingSpeed, _rigidbody.velocity.y);
     }
     /// <summary>
     /// 주변을 방황합니다.
@@ -244,6 +244,15 @@ public class EnemyMettoolScript : EnemyScript
             }
             yield return new WaitForSeconds(3);
         }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    void RequestDestroy()
+    {
+        Destroy(gameObject);
     }
 
 

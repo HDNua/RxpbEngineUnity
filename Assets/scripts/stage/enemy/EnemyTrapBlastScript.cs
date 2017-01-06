@@ -17,15 +17,14 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
 
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
     /// <summary>
-    /// 
+    /// 데이터베이스 개체입니다.
     /// </summary>
     public DataBase _database;
     /// <summary>
-    /// 
+    /// 스테이지 관리자 개체입니다.
     /// </summary>
     public StageManager _stageManager;
-
-
+    
     /// <summary>
     /// 탄환 시작 위치입니다.
     /// </summary>
@@ -87,8 +86,6 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
     protected override void LateUpdate()
     {
         base.LateUpdate();
-
-        /// UpdateColor();
     }
 
 

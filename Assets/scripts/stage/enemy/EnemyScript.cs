@@ -58,7 +58,6 @@ public abstract class EnemyScript : MonoBehaviour
     /// </summary>
     public bool _alwaysInvencible = false;
 
-
     /// <summary>
     /// 캐릭터가 사용할 효과음 집합입니다.
     /// </summary>
@@ -67,12 +66,16 @@ public abstract class EnemyScript : MonoBehaviour
     /// 캐릭터가 사용할 효과 집합입니다.
     /// </summary>
     public GameObject[] effects;
-
-
+    
     /// <summary>
     /// 적이 사망할 때 드롭 가능한 아이템의 목록입니다.
     /// </summary>
     public ItemScript[] _items;
+
+    /// <summary>
+    /// 사망 시 효과를 보관하는 개체입니다.
+    /// </summary>
+    public EnemyDeadEffectScript _deadEffect;
 
 
     #endregion
@@ -286,6 +289,13 @@ public abstract class EnemyScript : MonoBehaviour
     public virtual void Dead()
     {
         gameObject.SetActive(false);
+
+        // 사망 효과가 존재하는 적이라면 호출합니다.
+        if (_deadEffect != null)
+        {
+            Instantiate(_deadEffect, transform.position, transform.rotation)
+                .gameObject.SetActive(true);
+        }
     }
 
 

@@ -33,14 +33,18 @@ public class DeadEffectScript : MonoBehaviour
 
 
     #region 필드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     StageManager stageManager;
+    /// <summary>
+    /// 
+    /// </summary>
     GameObject p1;
+    /// <summary>
+    /// 
+    /// </summary>
     GameObject p2;
-
-
-    bool running = false;
-    float runTime = 0;
-
 
     #endregion
 
@@ -55,7 +59,7 @@ public class DeadEffectScript : MonoBehaviour
         stageManager = GetComponentInParent<StageManager>();
     }
     /// <summary>
-    /// 
+    /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
     void Start()
     {
@@ -94,20 +98,20 @@ public class DeadEffectScript : MonoBehaviour
     /// </summary>
     void Run()
     {
-        running = true;
-        runTime = 0;
+        /// running = true;
+        /// runTime = 0;
 
         // 플레이어를 투명하게 만듭니다.
         stageManager._player.GetComponent<SpriteRenderer>().enabled = false;
 
-        // 
+        // 사망 코루틴을 시작합니다.
         StartCoroutine(DeadEffectCoroutine());
     }
 
     /// <summary>
-    /// 
+    /// 사망 코루틴입니다.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>사망 코루틴 IEnumerator를 반환합니다.</returns>
     private IEnumerator DeadEffectCoroutine()
     {
         // 
@@ -210,57 +214,14 @@ public class DeadEffectScript : MonoBehaviour
         transform.position = player.transform.position;
         Run();
     }
-
-
+    
     #endregion
-
-
-
-
-
-
+    
 
 
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("DeadEffectCoroutine()으로 대체되었습니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    void Update_dep()
-    {
-        if (running == false)
-        {
-            return;
-        }
-
-        if (runTime <= 0)
-        {
-            float speed = smallParticleSpeed;
-            MakeParticle(p1, new Vector2(1, 0), speed);
-            MakeParticle(p1, new Vector2(1, 1), speed);
-            MakeParticle(p1, new Vector2(0, 1), speed);
-            MakeParticle(p1, new Vector2(-1, 1), speed);
-            MakeParticle(p1, new Vector2(-1, 0), speed);
-            MakeParticle(p1, new Vector2(-1, -1), speed);
-            MakeParticle(p1, new Vector2(0, -1), speed);
-            MakeParticle(p1, new Vector2(1, -1), speed);
-
-            speed = bigParticleSpeed2;
-            MakeParticle(p2, new Vector2(1, 0.5f), speed);
-            MakeParticle(p2, new Vector2(1, 2f), speed);
-            MakeParticle(p2, new Vector2(-1, 2f), speed);
-            MakeParticle(p2, new Vector2(-1, 0.5f), speed);
-            MakeParticle(p2, new Vector2(-1, -0.5f), speed);
-            MakeParticle(p2, new Vector2(-1, -2f), speed);
-            MakeParticle(p2, new Vector2(1, -2f), speed);
-            MakeParticle(p2, new Vector2(1, -0.5f), speed);
-        }
-
-        runTime += Time.deltaTime;
-    }
-
 
     #endregion
 }

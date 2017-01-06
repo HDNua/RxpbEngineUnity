@@ -279,10 +279,10 @@ public class EffectScript : MonoBehaviour
 
 
     /// <summary>
-    /// 
+    /// 텍스쳐를 업데이트합니다.
     /// </summary>
-    /// <param name="defaultPalette"></param>
-    /// <param name="targetPalette"></param>
+    /// <param name="defaultPalette">기본 색상 팔레트입니다.</param>
+    /// <param name="targetPalette">타겟 색상 팔레트입니다.</param>
     public void RequestUpdateTexture(Color[] defaultPalette, Color[] targetPalette)
     {
         _defaultPalette = defaultPalette;

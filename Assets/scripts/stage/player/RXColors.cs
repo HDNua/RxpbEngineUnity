@@ -299,7 +299,7 @@ public static class XColorPalette
             // 기본 색상표를 초기화합니다.
             invenciblePalette[i] = ColorFromInt(INVENCIBLE_COLOR_PALETTE[i]);
             xDefaultPalette[i] = ColorFromInt(X_DEFAULT_COLOR_PALETTE[i]);
-            xDashEffectColorPalette[i] = ColorFromInt(X_DASHAFTERIMAGE_COLOR_PALETTE[i]);
+            xDashEffectColorPalette[i] = ColorFromInt(X_DASHAFTERIMAGE_COLOR_PALETTE[i], 0.6f);
 
 
             // 차지 색상표를 초기화합니다.
