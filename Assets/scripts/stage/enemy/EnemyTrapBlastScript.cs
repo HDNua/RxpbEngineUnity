@@ -17,15 +17,6 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
 
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
     /// <summary>
-    /// 데이터베이스 개체입니다.
-    /// </summary>
-    public DataBase _database;
-    /// <summary>
-    /// 스테이지 관리자 개체입니다.
-    /// </summary>
-    public StageManager _stageManager;
-    
-    /// <summary>
     /// 탄환 시작 위치입니다.
     /// </summary>
     public Transform _shotPoint;
@@ -35,12 +26,7 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
     public EnemyBulletScript _bullet;
 
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -49,12 +35,7 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -210,10 +191,11 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
         EnemyBulletScript bullet = Instantiate
             (_bullet, shotPosition.position, shotPosition.rotation)
             as EnemyBulletScript;
+        bullet.transform.parent = _StageManager._enemyParent.transform;
 
         // 플레이어의 위치를 향해 발사합니다.
         bullet.FacingRight = FacingRight;
-        bullet.MoveTo(_stageManager.GetCurrentPlayerPosition());
+        bullet.MoveTo(StageManager.Instance.GetCurrentPlayerPosition());
     }
 
     #endregion

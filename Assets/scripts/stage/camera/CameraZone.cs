@@ -120,7 +120,7 @@ public class CameraZone : MonoBehaviour
     {
         // 필드를 초기화합니다.
         _mainCamera = Camera.main;
-        NewMap map = _CameraZoneParent._stageManager._database.Map;
+        Map map = _CameraZoneParent._stageManager._database.Map;
 
         // 카메라 존 충돌체 획득을 시도합니다.
         _boxZone = GetComponent<BoxCollider2D>();

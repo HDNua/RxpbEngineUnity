@@ -51,19 +51,14 @@ public class CameraFollowScript : MonoBehaviour
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 필드를 정의합니다.
     /// <summary>
     /// 맵 객체입니다.
     /// </summary>
-    NewMap _map;
+    Map _map;
 
 
     /// <summary>
@@ -127,12 +122,7 @@ public class CameraFollowScript : MonoBehaviour
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 프로퍼티를 정의합니다.
@@ -164,12 +154,7 @@ public class CameraFollowScript : MonoBehaviour
 
 
 
-
-
-
-
-
-
+    
     #region MonoBehaviour 메서드를 재정의합니다.
     /// <summary>
     /// MonoBehaviour 개체를 초기화 합니다.
@@ -265,24 +250,14 @@ public class CameraFollowScript : MonoBehaviour
 
 
 
-
-
-
-
-
-
+    
     #region Collider2D 메서드를 재정의합니다.
 
 
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 메서드를 정의합니다.
@@ -299,7 +274,8 @@ public class CameraFollowScript : MonoBehaviour
         // 그 외의 경우
         else
         {
-            SetViewportPosition(_player.transform.localPosition.x, _player.transform.localPosition.y);
+            SetViewportPosition
+                (_player.transform.localPosition.x, _player.transform.localPosition.y);
         }
     }
     /// <summary>
@@ -379,8 +355,7 @@ public class CameraFollowScript : MonoBehaviour
         newCamPos = new Vector3(newCamPosX, newCamPosY, _camZ);
         _camera.transform.position = newCamPos;
     }
-
-
+    
     /// <summary>
     /// 카메라 존을 업데이트합니다.
     /// </summary>
@@ -411,8 +386,7 @@ public class CameraFollowScript : MonoBehaviour
     {
         return _currentCameraZone.GetInstanceID() == cameraZone.GetInstanceID();
     }
-
-
+    
     /// <summary>
     /// 카메라 존 경계 값 필드를 초기화합니다.
     /// </summary>
@@ -423,8 +397,7 @@ public class CameraFollowScript : MonoBehaviour
         _yMin = _currentCameraZone._isBottomBounded ? _currentCameraZone._bottom : float.MinValue;
         _yMax = _currentCameraZone._isTopBounded ? _currentCameraZone._top : float.MaxValue;
     }
-
-
+    
     /// <summary>
     /// 카메라 뷰 박스를 초기화합니다.
     /// </summary>
@@ -442,14 +415,9 @@ public class CameraFollowScript : MonoBehaviour
         Vector3 p = _cameraViewBox.transform.position;
         _cameraViewBox.transform.position = new Vector3(p.x, p.y, 0);
     }
-
-
+    
     #endregion
-
-
-
-
-
+    
 
 
 

@@ -21,7 +21,7 @@ public class DataBase : MonoBehaviour
 
 
     // 공용 맵 요소입니다.
-    public NewMap _map;
+    public Map _map;
     public StageManager _stageManager;
     public PauseMenuManager _pauseMenu;
     public TimeManager _timeManager;
@@ -42,6 +42,14 @@ public class DataBase : MonoBehaviour
     /// </summary>
     public CameraFollowScript _cameraFollow;
 
+
+    /// <summary>
+    /// 데이터베이스 개체입니다.
+    /// </summary>
+    public static DataBase Instance
+    {
+        get { return GameObject.FindGameObjectWithTag("Database").GetComponent<DataBase>(); }
+    }
 
     #endregion
 
@@ -94,7 +102,7 @@ public class DataBase : MonoBehaviour
     /// <summary>
     /// 맵 객체입니다.
     /// </summary>
-    public NewMap Map
+    public Map Map
     {
         get { return _map; }
     }

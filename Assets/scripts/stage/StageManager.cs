@@ -15,8 +15,7 @@ public class StageManager : HDSceneManager
     /// Scene 데이터베이스입니다.
     /// </summary>
     public DataBase _database;
-
-
+    
     /// <summary>
     /// 준비 애니메이션 관리자입니다.
     /// </summary>
@@ -25,14 +24,12 @@ public class StageManager : HDSceneManager
     /// 현재 조작중인 플레이어입니다.
     /// </summary>
     public PlayerController _player;
-
-
+    
     /// <summary>
     /// 사망 효과 파티클에 대한 스크립트입니다.
     /// </summary>
     public DeadEffectScript _deadEffect;
-
-
+    
     /// <summary>
     /// 체크포인트 소환 위치 집합입니다.
     /// </summary>
@@ -41,14 +38,12 @@ public class StageManager : HDSceneManager
     /// 체크포인트 카메라 존 집합입니다.
     /// </summary>
     public CameraZone[] _checkpointCameraZones;
-
-
+    
     /// <summary>
     /// 사용자 인터페이스 관리자입니다.
     /// </summary>
     public UIManager _userInterfaceManager;
-
-
+    
     /// <summary>
     /// 테스트 시간입니다.
     /// </summary>
@@ -58,16 +53,40 @@ public class StageManager : HDSceneManager
     /// </summary>
     public int TestDamageValue = 10;
 
+    /// <summary>
+    /// 적 캐릭터 집합의 부모 개체입니다.
+    /// </summary>
+    public GameObject _enemyParent;
 
     #endregion
-    
+
+
+
+
+
+    #region Unity 개체에 대한 참조를 보관합니다.
+    /// <summary>
+    /// 스테이지 관리자입니다.
+    /// </summary>
+    public static StageManager Instance
+    {
+        get
+        {
+            return GameObject.FindGameObjectWithTag("StageManager").GetComponent<StageManager>();
+        }
+    }
+
+    #endregion
+
+
+
 
 
     #region 필드를 정의합니다.
     /// <summary>
     /// 맵 객체입니다.
     /// </summary>
-    NewMap _map;
+    Map _map;
     /// <summary>
     /// UnityEngine.Time 관리자입니다.
     /// </summary>
@@ -255,9 +274,9 @@ public class StageManager : HDSceneManager
             _userInterfaceManager.RequestPauseToggle();
         }
     }
-    
+
     #endregion
-    
+
 
 
 
@@ -664,8 +683,7 @@ public class StageManager : HDSceneManager
     {
         return _checkpointCameraZones[checkpointIndex];
     }
-
-
+    
     /// <summary>
     /// 배경 음악 재생을 중지합니다.
     /// </summary>
@@ -673,8 +691,7 @@ public class StageManager : HDSceneManager
     {
         _bgmSource.Stop();
     }
-
-
+    
     /// <summary>
     /// 플레이어의 움직임 방지를 요청합니다.
     /// </summary>
@@ -685,15 +702,30 @@ public class StageManager : HDSceneManager
     /// <summary>
     /// 플레이어의 움직임 방지 중지를 요청합니다.
     /// </summary>
-    internal void RequestUnblockMoving()
+    public void RequestUnblockMoving()
     {
         _player.RequestUnblockInput();
+    }
+
+    /// <summary>
+    /// 모든 적 개체를 활성화합니다.
+    /// </summary>
+    public void RequestEnableAllEnemy()
+    {
+        _enemyParent.SetActive(true);
+    }
+    /// <summary>
+    /// 모든 적 개체의 활성화를 중지합니다.
+    /// </summary>
+    public void RequestDisableAllEnemy()
+    {
+        _enemyParent.SetActive(false);
     }
 
 
 
     #endregion
-    
+
 
 
 

@@ -14,8 +14,7 @@ public class BossRoomDoorScript : MonoBehaviour
     /// 문 개폐시 재생될 효과음 리스트입니다.
     /// </summary>
     public AudioClip[] _audioClips;
-
-
+    
     /// <summary>
     /// 플레이어가 문을 지나가는 속도입니다.
     /// </summary>
@@ -24,20 +23,17 @@ public class BossRoomDoorScript : MonoBehaviour
     /// 플레이어가 문을 지나가는 시간입니다.
     /// </summary>
     public float _transitioningTime = 2f;
-
-
+    
     /// <summary>
     /// 문을 여는 소리가 재생되기 시작할 시간입니다.
     /// </summary>
     public float _openSoundPlayTime = 1f;
-
-
+    
     /// <summary>
     /// 단 한 번만 사용되는 문이라면 참입니다.
     /// </summary>
     public bool _isOneTimeDoor = false;
-
-
+    
     /// <summary>
     /// 보스 방 문이라면 참입니다. 진입 시 BossBattleManager에게 스크립트 수행을 요청합니다.
     /// </summary>
@@ -46,15 +42,9 @@ public class BossRoomDoorScript : MonoBehaviour
     /// 보스 전투 관리자입니다.
     /// </summary>
     public BossBattleManager _bossBattleManager;
-
-
+    
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -68,15 +58,9 @@ public class BossRoomDoorScript : MonoBehaviour
     /// 애니메이션 관리자입니다.
     /// </summary>
     Animator _animator;
-
-
+    
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -94,27 +78,36 @@ public class BossRoomDoorScript : MonoBehaviour
         get { return _opened; }
         set { _animator.SetBool("Opened", _opened = value); }
     }
-
-
+    
+    /// <summary>
+    /// 문이 개방중이라면 참입니다.
+    /// </summary>
+    bool Opening
+    {
+        get;
+        set;
+    }
+    
     /// <summary>
     /// 문을 개방한 플레이어 개체입니다.
     /// </summary>
     PlayerController _player = null;
-
-
+    
     /// <summary>
     /// 단 한 번만 사용되는 문이 사용되었다면 참입니다.
     /// </summary>
     bool _oneTimeDoorUsed = false;
 
+    /// <summary>
+    /// 스테이지 관리자입니다.
+    /// </summary>
+    StageManager _StageManager
+    {
+        get { return StageManager.Instance; }
+    }
 
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -144,16 +137,10 @@ public class BossRoomDoorScript : MonoBehaviour
     {
 
     }
-
-
+    
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -164,23 +151,53 @@ public class BossRoomDoorScript : MonoBehaviour
     /// <param name="other">자신이 아닌 충돌체 개체입니다.</param>
     void OnTriggerEnter2D(Collider2D other)
     {
+        /**
         if (Opened || _oneTimeDoorUsed)
             return;
 
         if (other.CompareTag("Player"))
         {
             _player = other.GetComponent<PlayerController>();
-            RequestOpen();
+
+            if (_player.Invencible)
+            {
+
+            }
+            else
+            {
+                RequestOpen();
+            }
+        }
+        */
+    }
+    /// <summary>
+    /// 충돌체가 여전히 트리거 내부에 있습니다.
+    /// </summary>
+    /// <param name="other">자신이 아닌 충돌체 개체입니다.</param>
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (Opened || _oneTimeDoorUsed)
+            return;
+        else if (Opening)
+            return;
+
+        // 
+        if (other.CompareTag("Player"))
+        {
+            _player = other.GetComponent<PlayerController>();
+
+            if (_player.Invencible)
+            {
+
+            }
+            else
+            {
+                RequestOpen();
+            }
         }
     }
-
-
+    
     #endregion
-
-
-
-
-
 
 
 
@@ -197,7 +214,9 @@ public class BossRoomDoorScript : MonoBehaviour
             _oneTimeDoorUsed = true;
         }
 
+        // 
         _player.RequestBlockInput();
+        _StageManager.RequestDisableAllEnemy();
         StartCoroutine(OpenCoroutine());
     }
     /// <summary>
@@ -205,20 +224,28 @@ public class BossRoomDoorScript : MonoBehaviour
     /// </summary>
     public void RequestClose()
     {
-        Opened = false;
-        _audioSources[1].Play();
-
         if (_isOneTimeDoor)
         {
             GetComponent<BoxCollider2D>().isTrigger = false;
         }
-
         if (_isBossRoomDoor)
         {
             _bossBattleManager.RequestBossBattleScenario();
         }
-    }
 
+        // 
+        Opened = false;
+        Opening = false;
+
+        _audioSources[1].Play();
+
+        _player.RequestChangeMovingSpeed(_player._walkSpeed);
+        _player.RequestStopMoving();
+        _player.RequestUnblockInput();
+        _player = null;
+
+        _StageManager.RequestEnableAllEnemy();
+    }
 
     /// <summary>
     /// 문 개방 코루틴입니다.
@@ -229,10 +256,12 @@ public class BossRoomDoorScript : MonoBehaviour
         bool openSoundPlayed = false;
         float deltaTime = 0f;
 
-
-        // 
+        // 문 개방을 시작합니다.
         _audioSources[0].Play();
         Opened = true;
+        Opening = true;
+
+        // 플레이어가 이동하기 위해 문을 여는 과정입니다.
         while (_animator.GetCurrentAnimatorStateInfo(0).IsName("BossRoomDoor_4Opened") == false)
         {
             deltaTime += Time.deltaTime;
@@ -250,8 +279,7 @@ public class BossRoomDoorScript : MonoBehaviour
             openSoundPlayed = true;
         }
 
-
-        // 
+        // 플레이어가 이동을 마칠 때까지의 코드입니다.
         _player.RequestChangeMovingSpeed(_transitioningSpeed);
         if (_player.FacingRight)
         {
@@ -263,16 +291,10 @@ public class BossRoomDoorScript : MonoBehaviour
         }
         yield return new WaitForSeconds(_transitioningTime);
 
-
-        // 
-        _player.RequestChangeMovingSpeed(_player._walkSpeed);
-        _player.RequestStopMoving();
-        _player.RequestUnblockInput();
-        _player = null;
+        // 플레이어의 이동이 끝났습니다.
         RequestClose();
         yield break;
     }
-
 
     #endregion
 }

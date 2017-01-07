@@ -79,21 +79,21 @@ public class EffectScript : MonoBehaviour
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
     /// <summary>
-    /// 
+    /// MonoBehaviour 객체를 초기화합니다.
     /// </summary>
     void Awake()
     {
         _animator = GetComponent<Animator>();
     }
     /// <summary>
-    /// 
+    /// MonoBehaviour 객체를 초기화합니다.
     /// </summary>
     void Start()
     {
 
     }
     /// <summary>
-    /// 
+    /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트합니다.
     /// </summary>
     void Update()
     {
@@ -112,7 +112,8 @@ public class EffectScript : MonoBehaviour
         }
     }
     /// <summary>
-    /// 
+    /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
+    /// 주로 오브젝트를 따라가게 설정한 카메라는 LastUpdate를 사용합니다.
     /// </summary>
     void LateUpdate()
     {

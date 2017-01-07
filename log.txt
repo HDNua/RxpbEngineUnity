@@ -1,13 +1,19 @@
-RXPB v4.6.1
+RXPB v5.0.0 (IMPORTANT)
 
-- 대쉬 잔상에 알파 값 추가.
-
-
-- 적 파괴될 때 파편 효과 추가.
-!> 기가데스처럼 덩치 큰 적에 대해 폭발이 더 있어야 함.
+- 트랩 블래스트 등장 효과 추가.
 
 
-- 기가데스와 같이, 다른 적들에 대해서도 피격 색상 변경이 일어나도록 업데이트.
+* !!!!! IMPORTANT !!!!!
+  DataBase와 StageManager, Map 개체를 Singleton으로 구현.
+> 앞으로 모든 개체가 _stageManager 필드를 Unity에서 연결하여 초기화하지 않게 바꾸어야 한다.
+
+
+* !!!!! IMPORTANT !!!!!
+  아이템 드롭 효과 강화.
+> 현재 TiledGeometry를 구현하는 방식 때문에 Start에서만 DrawRay로 _whatIsGround를 감지하게 하면
+  처음에 아직 Ground가 생성되지 않은 상태에서 아이템이 먼저 지형을 감지하는 경우가 있다.
+> 반드시 Update에서 감시하여 항상 Ground를 감지할 수 있게 해야 함.
+  지금 구현은 땅을 감지하기 전까진 Ray만 쏘고, 감지한 이후에는 착륙했는지를 보는 알고리즘.
 
 
 end.

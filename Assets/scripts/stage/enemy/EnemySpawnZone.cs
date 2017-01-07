@@ -66,7 +66,6 @@ public class EnemySpawnZone : MonoBehaviour
         get { return _collider.bounds.max.x; }
     }
 
-
     /// <summary>
     /// 적 캐릭터가 재소환되는 영역이라면 참입니다.
     /// </summary>
@@ -75,11 +74,21 @@ public class EnemySpawnZone : MonoBehaviour
         get { return _respawnable; }
     }
 
+    /// <summary>
+    /// 스테이지 관리자입니다.
+    /// </summary>
+    StageManager _StageManager
+    {
+        get
+        {
+            return transform.parent.GetComponentInParent<StageManager>();
+        }
+    }
 
     #endregion
 
 
-    
+
 
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
@@ -115,6 +124,7 @@ public class EnemySpawnZone : MonoBehaviour
             _enemyScript = Instantiate
                 (_enemyTemplate, transform.position, transform.rotation)
                 as EnemyScript;
+            _enemyScript.transform.parent = _StageManager._enemyParent.transform;
             _enemyScript.FacingRight = _facingRight;
             _enemyScript.SpawnZone = this;
 

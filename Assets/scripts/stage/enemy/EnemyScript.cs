@@ -75,16 +75,11 @@ public abstract class EnemyScript : MonoBehaviour
     /// <summary>
     /// 사망 시 효과를 보관하는 개체입니다.
     /// </summary>
-    public EnemyDeadEffectScript _deadEffect;
+    public ParticleSpreadScript _deadEffect;
 
 
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -132,12 +127,7 @@ public abstract class EnemyScript : MonoBehaviour
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -157,8 +147,7 @@ public abstract class EnemyScript : MonoBehaviour
     {
         get { return _damage; }
     }
-
-
+    
     /// <summary>
     /// 캐릭터가 죽었다면 참입니다.
     /// </summary>
@@ -175,8 +164,7 @@ public abstract class EnemyScript : MonoBehaviour
         get { return _invencible; }
         protected set { _invencible = value; }
     }
-
-
+    
     /// <summary>
     /// 캐릭터가 살아있는지 확인합니다.
     /// </summary>
@@ -186,6 +174,13 @@ public abstract class EnemyScript : MonoBehaviour
         return (0 < Health);
     }
 
+    /// <summary>
+    /// 스테이지 관리자입니다.
+    /// </summary>
+    protected StageManager _StageManager
+    {
+        get { return StageManager.Instance; }
+    }
 
     #endregion
 

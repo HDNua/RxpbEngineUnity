@@ -70,7 +70,8 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
         _collider2D = GetComponent<Collider2D>();
 
         // 자신과 가장 가까운 바닥으로 y 좌표를 옮깁니다.
-        RaycastHit2D groundRay = Physics2D.Raycast(_groundCheck.position, Vector2.down, 10f, _whatIsGround);
+        RaycastHit2D groundRay = Physics2D.Raycast
+            (_groundCheck.position, Vector2.down, 10f, _whatIsGround);
         Vector2 newPos = transform.position;
         newPos.y -= Mathf.Abs(_collider2D.bounds.min.y - groundRay.point.y);
         transform.position = newPos;
@@ -192,9 +193,12 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
     {
         SoundEffects[1].Play();
         Instantiate(effects[1], shotPosition.position, shotPosition.rotation);
+
+        // 
         EnemyBulletScript bullet = Instantiate
             (_bullet, shotPosition.position, shotPosition.rotation)
             as EnemyBulletScript;
+        bullet.transform.parent = _StageManager._enemyParent.transform;
         bullet.MoveTo(FacingRight ? Vector3.right : Vector3.left);
     }
 
