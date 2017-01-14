@@ -22,14 +22,7 @@ public class EnemySpikyMK2Script : EnemyScript
 
     #endregion
 
-
-
-
-
-
-
-
-
+    
 
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
     /// <summary>
@@ -48,16 +41,15 @@ public class EnemySpikyMK2Script : EnemyScript
     /// 무엇이 땅인지를 결정합니다. 기본값은 "Ground, TiledGeometry"입니다.
     /// </summary>
     public LayerMask _whatIsGround;
+    /// <summary>
+    /// 
+    /// </summary>
+    public LayerMask _whatIsGroundBottom;
 
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -77,12 +69,7 @@ public class EnemySpikyMK2Script : EnemyScript
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -99,7 +86,10 @@ public class EnemySpikyMK2Script : EnemyScript
         _boxCollider2D = GetComponent<BoxCollider2D>();
 
         // 초기화를 마무리합니다.
-        MoveLeft();
+        if (FacingRight)
+            MoveRight();
+        else 
+            MoveLeft();
 
         // 컬러 팔레트를 설정합니다.
         DefaultPalette = EnemyColorPalette.SpikyMK2Plaette;
@@ -116,8 +106,79 @@ public class EnemySpikyMK2Script : EnemyScript
     /// </summary>
     protected override void FixedUpdate()
     {
+        Bounds bounds = _Collider.bounds;
+        Vector2 boundLeft = bounds.center - new Vector3(bounds.extents.x, 0);
+        Vector2 boundRight = bounds.center + new Vector3(bounds.extents.x, 0);
+
+        RaycastHit2D wallRayLeft = Physics2D.Raycast
+            (boundLeft, Vector2.left, _movingSpeed, _whatIsWall);
+        RaycastHit2D wallRayRight = Physics2D.Raycast
+            (boundRight, Vector2.right, _movingSpeed, _whatIsWall);
+        RaycastHit2D groundRayLeft = Physics2D.Raycast
+            (boundLeft, Vector2.down, _movingSpeed, _whatIsGround);
+        RaycastHit2D groundRayRight = Physics2D.Raycast
+            (boundRight, Vector2.down, _movingSpeed, _whatIsGround);
+
         float vx = _rigidbody.velocity.x;
         float vy = _rigidbody.velocity.y - _yMovingAccelaration * Time.fixedDeltaTime;
+
+        // 벽 검사
+        if (FacingRight && wallRayRight)
+        {
+            // 
+            if (_Collider.IsTouchingLayers(_whatIsWall))
+            {
+                vx = -Mathf.Abs(vx);
+                Flip();
+            }
+            else if (boundRight.x > wallRayRight.point.x)
+            {
+                vx = -Mathf.Abs(vx);
+                Flip();
+            }
+        }
+        else if (FacingRight == false && wallRayLeft)
+        {
+            // 
+            if (_Collider.IsTouchingLayers(_whatIsWall))
+            {
+                vx = Mathf.Abs(vx);
+                Flip();
+            }
+            else if (boundLeft.x < wallRayLeft.point.x)
+            {
+                vx = Mathf.Abs(vx);
+                Flip();
+            }
+        }
+
+        // 지형 검사
+        if (groundRayLeft || groundRayRight)
+        {
+            float hitPosY = groundRayLeft.point.y;
+            if (groundRayLeft && groundRayRight)
+            {
+                hitPosY = groundRayLeft.distance < groundRayRight.distance ?
+                    groundRayLeft.point.y : groundRayRight.point.y;
+            }
+            else
+            {
+                hitPosY = groundRayLeft ?
+                    groundRayLeft.point.y : groundRayRight.point.y;
+            }
+
+            // 
+            if (_Collider.IsTouchingLayers(_whatIsGroundBottom))
+            {
+                vy = -Mathf.Abs(vy);
+            }
+            else if (_groundCheck.position.y < hitPosY)
+            {
+                vy = _yMovingSpeedMax;
+            }
+        }
+
+        // 
         _rigidbody.velocity = new Vector2(vx, vy);
     }
     /// <summary>
@@ -149,6 +210,7 @@ public class EnemySpikyMK2Script : EnemyScript
     /// <param name="other">자신이 아닌 충돌체 개체입니다.</param>
     private void OnTriggerEnter2D(Collider2D other)
     {
+        /*
         Vector3 colliderPos = transform.position;
         Vector3 otherCenter = other.bounds.center;
 
@@ -178,6 +240,7 @@ public class EnemySpikyMK2Script : EnemyScript
                 MoveLeft();
             }
         }
+        */
     }
     /// <summary>
     /// 충돌체가 여전히 트리거 내부에 있습니다.

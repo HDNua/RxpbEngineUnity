@@ -56,14 +56,7 @@ public class CameraZone : MonoBehaviour
     #endregion
 
 
-
-
-
-
-
-
-
-
+    
     #region 필드를 정의합니다.
     /// <summary>
     /// 
@@ -104,12 +97,7 @@ public class CameraZone : MonoBehaviour
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
@@ -190,15 +178,11 @@ public class CameraZone : MonoBehaviour
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
     #region Trigger 관련 메서드를 재정의합니다.
+    /**
     /// <summary>
     /// 
     /// </summary>
@@ -213,15 +197,10 @@ public class CameraZone : MonoBehaviour
             }
         }
     }
-
-
+    */
+    
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -259,10 +238,9 @@ public class CameraZone : MonoBehaviour
         }
         return ret;
     }
-
-
+    
     /// <summary>
-    /// 
+    /// 체크 포인트를 업데이트합니다.
     /// </summary>
     void UpdateCheckpoint()
     {
@@ -270,15 +248,9 @@ public class CameraZone : MonoBehaviour
             throw new Exception("잘못된 체크포인트 인덱스입니다.");
         GameManager.Instance.SpawnPositionIndex = _checkpointIndex;
     }
-
-
+    
     #endregion
-
-
-
-
-
-
+    
 
 
 

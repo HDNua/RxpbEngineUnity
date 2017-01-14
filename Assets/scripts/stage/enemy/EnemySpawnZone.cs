@@ -81,7 +81,7 @@ public class EnemySpawnZone : MonoBehaviour
     {
         get
         {
-            return transform.parent.GetComponentInParent<StageManager>();
+            return StageManager.Instance;
         }
     }
 

@@ -33,14 +33,7 @@ public class GameManager
 
 
     #endregion
-
-
-
-
-
-
-
-
+    
 
 
     #region 게임이 공유하는 필드 및 속성을 정의합니다.
@@ -55,8 +48,7 @@ public class GameManager
     {
         get { return _gameData; }
     }
-
-
+    
     /// <summary>
     /// 엑스의 최대 체력입니다.
     /// </summary>
@@ -65,47 +57,34 @@ public class GameManager
     /// 제로의 최대 체력입니다.
     /// </summary>
     public int MaxHealthZ { get { return _gameData.MaxHealthZ; } }
-
-
+    
     /// <summary>
     /// 맵 상태 집합입니다.
     /// </summary>
     public GameMapStatus[] MapStatuses { get { return _gameData.MapStatuses; } }
-
-
+    
     #endregion
-
-
-
-
-
-
+    
 
 
 
 
     #region 스테이지 관련 필드를 정의합니다.
     /// <summary>
-    /// 
+    /// 플레이어 소환 위치 인덱스입니다.
     /// </summary>
     int _spawnPositionIndex = 0;
     /// <summary>
-    /// 
+    /// 플레이어 소환 위치 인덱스입니다.
     /// </summary>
     public int SpawnPositionIndex
     {
         get { return _spawnPositionIndex; }
         set { _spawnPositionIndex = value; }
     }
-
-
+    
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -125,12 +104,7 @@ public class GameManager
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -166,12 +140,7 @@ public class GameManager
     #endregion
 
 
-
-
-
-
-
-
+        
 
 
     #region 메서드를 정의합니다.
@@ -184,8 +153,7 @@ public class GameManager
     {
         _gameData.MapStatuses[index] = mapStatus;
     }
-
-
+    
     /// <summary>
     /// 게임 데이터를 저장합니다.
     /// </summary>
@@ -242,16 +210,11 @@ public class GameManager
         // 필드를 업데이트합니다.
         _gameData = gameData;
     }
-
-
+    
     #endregion
 
 
-
-
-
-
-
+    
 
 
     #region 요청 메서드를 정의합니다.
@@ -273,10 +236,10 @@ public class GameManager
         Save(filename, gameData);
     }
     /// <summary>
-         /// 게임을 불러옵니다.
-         /// </summary>
-         /// <param name="filename">게임 데이터 파일의 이름입니다.</param>
-         /// <returns>  </returns>
+    /// 게임을 불러옵니다.
+    /// </summary>
+    /// <param name="filename">게임 데이터 파일의 이름입니다.</param>
+    /// <returns>  </returns>
     public GameData RequestLoad(string filename)
     {
         return Load(filename);
@@ -318,12 +281,7 @@ public class GameManager
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 구형 정의를 보관합니다.

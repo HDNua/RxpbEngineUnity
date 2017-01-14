@@ -152,8 +152,7 @@ public class StageManager : HDSceneManager
     {
         get { return _playerZ; }
     }
-
-
+    
     /// <summary>
     /// 플레이어를 조종할 수 없는 상태라면 참입니다.
     /// </summary>
@@ -162,8 +161,7 @@ public class StageManager : HDSceneManager
         get { return _isFrozen; }
         protected set { _isFrozen = value; }
     }
-
-
+    
     /// <summary>
     /// 플레이어가 소환되는 위치입니다.
     /// </summary>
@@ -172,8 +170,7 @@ public class StageManager : HDSceneManager
         get { return _playerSpawnPosition; }
         set { _playerSpawnPosition = value; }
     }
-
-
+    
     #endregion
     
 
@@ -672,8 +669,7 @@ public class StageManager : HDSceneManager
         GameManager.Instance.RequestIncreaseTryCount();
         _userInterfaceManager.UpdateTryCountText();
     }
-
-
+    
     /// <summary>
     /// 현재 체크포인트의 카메라 존을 획득합니다.
     /// </summary>
@@ -683,6 +679,15 @@ public class StageManager : HDSceneManager
     {
         return _checkpointCameraZones[checkpointIndex];
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="checkpointIndex"></param>
+    public void UpdateCheckpointCameraZone(int checkpointIndex)
+    {
+
+    }
+
     
     /// <summary>
     /// 배경 음악 재생을 중지합니다.
