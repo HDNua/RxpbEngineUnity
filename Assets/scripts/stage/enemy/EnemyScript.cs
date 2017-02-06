@@ -357,7 +357,7 @@ public abstract class EnemyScript : MonoBehaviour
     /// <summary>
     /// 현재 색상 팔레트입니다.
     /// </summary>
-    Color[] _currentPalette = null;
+    protected Color[] _currentPalette = null;
     /// <summary>
     /// 기본 색상 팔레트입니다.
     /// </summary>
@@ -419,7 +419,7 @@ public abstract class EnemyScript : MonoBehaviour
             }
             else
             {
-                pixels[pixelIndex] = color;
+                /// pixels[pixelIndex] = color;
             }
         }
 
