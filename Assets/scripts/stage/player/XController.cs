@@ -568,6 +568,10 @@ public class XController : PlayerController
             if (MoveRequested)
             {
             }
+            else if (IsDownKeyPressed())
+            {
+
+            }
             else if (IsLeftKeyPressed())
             {
                 if (FacingRight == false && Pushing)
