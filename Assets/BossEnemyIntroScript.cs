@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 
@@ -126,15 +127,60 @@ public class BossEnemyIntroScript : EnemyScript, IShootableEnemy
     public GameObject _leftArm;
     public GameObject _rightArm;
 
+    bool _test = true;
+    public Sprite _headHitSprite;
+    public Sprite _bodyHitSprite;
+    public Sprite _leftArmHitSprite;
+    public Sprite _rightArmHitSprite;
+
+    public Sprite _headSprite;
+    public Sprite _bodySprite;
+    public Sprite _leftArmSprite;
+    public Sprite _rightArmSprite;
+
+
     /// <summary>
     /// 
     /// </summary>
     void UpdatePartsColor()
     {
-        UpdateSpriteColor(_head.GetComponent<SpriteRenderer>(), EnemyColorPalette.IntroBossHeadPalette, EnemyColorPalette.InvenciblePalette);
-        UpdateSpriteColor(_body.GetComponent<SpriteRenderer>(), EnemyColorPalette.IntroBossBodyPalette, EnemyColorPalette.InvenciblePalette);
-        UpdateSpriteColor(_leftArm.GetComponent<SpriteRenderer>(), EnemyColorPalette.IntroBossArmPalette, EnemyColorPalette.InvenciblePalette);
-        UpdateSpriteColor(_rightArm.GetComponent<SpriteRenderer>(), EnemyColorPalette.IntroBossArmPalette, EnemyColorPalette.InvenciblePalette);
+        SpriteRenderer headRenderer = _head.GetComponent<SpriteRenderer>();
+        SpriteRenderer bodyRenderer = _body.GetComponent<SpriteRenderer>();
+        SpriteRenderer leftArmRenderer = _leftArm.GetComponent<SpriteRenderer>();
+        SpriteRenderer rightArmRenderer = _rightArm.GetComponent<SpriteRenderer>();
+
+        if (_test)
+        {
+            _headSprite = headRenderer.sprite;
+            headRenderer.sprite = _headHitSprite;
+
+            _bodySprite = bodyRenderer.sprite;
+            bodyRenderer.sprite = _bodyHitSprite;
+
+            _leftArmSprite = leftArmRenderer.sprite;
+            leftArmRenderer.sprite = _leftArmHitSprite;
+
+            _rightArmSprite = rightArmRenderer.sprite;
+            rightArmRenderer.sprite = _rightArmHitSprite;
+        }
+        else
+        {
+            headRenderer.sprite = _headSprite;
+            bodyRenderer.sprite = _bodySprite;
+            leftArmRenderer.sprite = _leftArmSprite;
+            rightArmRenderer.sprite = _rightArmSprite;
+        }
+
+        _test = !_test;
+
+
+
+        /**
+        UpdateSpriteColor(_head.GetComponent<SpriteRenderer>(), EnemyColorPalette.IntroBossHeadPalette, EnemyColorPalette.InvenciblePalette, "HEAD");
+        UpdateSpriteColor(_body.GetComponent<SpriteRenderer>(), EnemyColorPalette.IntroBossBodyPalette, EnemyColorPalette.InvenciblePalette, "BODY");
+        UpdateSpriteColor(_leftArm.GetComponent<SpriteRenderer>(), EnemyColorPalette.IntroBossArmPalette, EnemyColorPalette.InvenciblePalette, "LEFTARM");
+        UpdateSpriteColor(_rightArm.GetComponent<SpriteRenderer>(), EnemyColorPalette.IntroBossArmPalette, EnemyColorPalette.InvenciblePalette, "RIGHTARM");
+        */
     }
 
 
@@ -143,7 +189,7 @@ public class BossEnemyIntroScript : EnemyScript, IShootableEnemy
     /// </summary>
     /// <param name="renderer"></param>
     /// <param name="currentPalette"></param>
-    void UpdateSpriteColor(SpriteRenderer renderer, Color[] defaultPalette, Color[] currentPalette)
+    void UpdateSpriteColor(SpriteRenderer renderer, Color[] defaultPalette, Color[] currentPalette, string prefix)
     {
         Texture2D texture = renderer.sprite.texture;
 
@@ -184,15 +230,25 @@ public class BossEnemyIntroScript : EnemyScript, IShootableEnemy
         cloneTexture.SetPixels(pixels);
         cloneTexture.Apply();
 
-        Graphics.DrawTexture(new Rect(0, 0, 100, 100), cloneTexture);
+        /// Graphics.DrawTexture(new Rect(0, 0, 100, 100), cloneTexture);
 
-        /**
         // 새 텍스쳐를 렌더러에 반영합니다.
         MaterialPropertyBlock block = new MaterialPropertyBlock();
         block.SetTexture("_MainTex", cloneTexture);
         renderer.SetPropertyBlock(block);
-        */
+
+
+        if (_img_cnt < 4)
+        {
+            byte[] img_bytes = cloneTexture.EncodeToPNG();
+            string img_path = string.Format("{0}/{1}_{2}.png", Application.dataPath, prefix, "img");
+            File.WriteAllBytes(img_path, img_bytes);
+
+            _img_cnt++;
+        }
     }
+
+    int _img_cnt = 0;
 
 
     #endregion
