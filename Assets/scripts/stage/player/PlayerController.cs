@@ -205,6 +205,16 @@ public abstract class PlayerController : MonoBehaviour
     public bool _facingRight = true;
 
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public BoxCollider2D _hitBoxNormal;
+    /// <summary>
+    /// 
+    /// </summary>
+    public BoxCollider2D _hitBoxDown;
+
+
     #endregion
 
 
@@ -426,6 +436,12 @@ public abstract class PlayerController : MonoBehaviour
 
 
     /// <summary>
+    /// 앉은 상태라면 참입니다.
+    /// </summary>
+    bool _crouching = false;
+
+
+    /// <summary>
     /// 대미지를 입었다면 true입니다.
     /// </summary>
     bool _damaged = false;
@@ -568,6 +584,16 @@ public abstract class PlayerController : MonoBehaviour
     {
         get { return _sliding; }
         set { _Animator.SetBool("Sliding", _sliding = value); }
+    }
+
+
+    /// <summary>
+    /// 앉은 상태라면 참입니다.
+    /// </summary>
+    protected bool Crouching
+    {
+        get { return _crouching; }
+        set { _Animator.SetBool("Crouching", _crouching = value); }
     }
 
 
@@ -1337,6 +1363,9 @@ public abstract class PlayerController : MonoBehaviour
         StopDashing();
         StopDashJumping();
         UnblockAirDashing();
+
+        // 
+        UpdateHitBox();
     }
     /// <summary>
     /// 플레이어의 입력을 방지합니다.
@@ -1409,6 +1438,7 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void Jump()
     {
         // 개체의 운동 상태를 갱신합니다.
+        StopCrouching();
         BlockJumping();
         BlockDashing();
         BlockSliding(); // 잠시동안 벽 타기를 막습니다.
@@ -1453,6 +1483,7 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void Fall()
     {
         // 개체의 운동 상태를 갱신합니다.
+        StopCrouching();
         BlockJumping();
         BlockDashing();
 
@@ -1496,6 +1527,9 @@ public abstract class PlayerController : MonoBehaviour
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = true;
+
+        // 
+        UpdateHitBox();
     }
     /// <summary>
     /// 플레이어의 대쉬를 중지합니다. (사용자의 입력에 의함)
@@ -1510,6 +1544,9 @@ public abstract class PlayerController : MonoBehaviour
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = false;
+
+        // 
+        UpdateHitBox();
     }
     /// <summary>
     /// 플레이어의 대쉬 요청을 막습니다.
@@ -1660,7 +1697,6 @@ public abstract class PlayerController : MonoBehaviour
         BlockAirDashing();
         _movingSpeed = _dashSpeed;
 
-
         // 대쉬 키만 눌린 상태에서 점프를 했을 때
         // 0으로 속도를 초기화하여 제자리 점프를 하게끔 합니다.
         float vx = 0;
@@ -1678,6 +1714,9 @@ public abstract class PlayerController : MonoBehaviour
 
         // 일정 시간 후에 개체의 운동 중단을 요청하는 메서드를 호출합니다.
         Invoke("UnblockSliding", WALLJUMP_END_TIME);
+
+        // 
+        UpdateHitBox();
     }
     /// <summary>
     /// 플레이어의 대쉬 점프를 중지합니다.
@@ -1687,6 +1726,9 @@ public abstract class PlayerController : MonoBehaviour
         Jumping = false;
         Dashing = false;
         DashJumping = false;
+
+        // 
+        UpdateHitBox();
     }
     /// <summary>
     /// 플레이어가 벽에서 대쉬 점프하게 합니다.
@@ -1713,6 +1755,9 @@ public abstract class PlayerController : MonoBehaviour
 
         // 일정 시간 후에 개체의 운동 중단을 요청하는 메서드를 호출합니다.
         Invoke("StopWallJumping", WALLJUMP_END_TIME);
+
+        // 
+        UpdateHitBox();
     }
     /// <summary>
     /// 플레이어가 에어 대쉬하게 합니다.
@@ -1731,6 +1776,9 @@ public abstract class PlayerController : MonoBehaviour
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = true;
         AirDashing = true;
+
+        // 
+        UpdateHitBox();
     }
     /// <summary>
     /// 플레이어의 에어 대쉬를 중지합니다.
@@ -1743,6 +1791,9 @@ public abstract class PlayerController : MonoBehaviour
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = false;
         AirDashing = false;
+
+        // 
+        UpdateHitBox();
     }
     /// <summary>
     /// 플레이어의 에어 대쉬 요청을 막습니다.
@@ -1757,6 +1808,33 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void UnblockAirDashing()
     {
         AirDashBlocked = false; // ClearAirDashCount();
+    }
+
+
+    /// <summary>
+    /// 플레이어가 앉게 합니다.
+    /// </summary>
+    protected virtual void Crouch()
+    {
+        // 
+        StopMoving();
+
+        // 
+        Crouching = true;
+
+        // 
+        UpdateHitBox();
+    }
+    /// <summary>
+    /// 플레이어 앉기를 중지합니다.
+    /// </summary>
+    protected virtual void StopCrouching()
+    {
+        // 
+        Crouching = false;
+
+        // 
+        UpdateHitBox();
     }
 
 
@@ -2059,6 +2137,35 @@ public abstract class PlayerController : MonoBehaviour
     {
         return Instantiate
             (gObject, transform.position, transform.rotation) as GameObject;
+    }
+
+
+    /// <summary>
+    /// 히트 박스를 변경합니다.
+    /// </summary>
+    protected void ChangeHitBox(bool down)
+    {
+        BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
+        BoxCollider2D hitBox = down ? _hitBoxDown : _hitBoxNormal;
+        boxCollider.offset = hitBox.offset;
+        boxCollider.size = hitBox.size;
+    }
+    /// <summary>
+    /// 히트 박스를 업데이트합니다.
+    /// </summary>
+    protected void UpdateHitBox()
+    {
+        BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
+        BoxCollider2D hitBox = _hitBoxNormal;
+
+        if ((Crouching || Dashing || AirDashing)
+            && (!DashJumping && !WallDashJumping))
+        {
+            hitBox = _hitBoxDown;
+        }
+
+        boxCollider.offset = hitBox.offset;
+        boxCollider.size = hitBox.size;
     }
 
 

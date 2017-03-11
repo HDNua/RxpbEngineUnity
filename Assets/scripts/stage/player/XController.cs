@@ -73,6 +73,10 @@ public class XController : PlayerController
     /// 점프 시 버스터 샷이 생성되는 위치입니다.
     /// </summary>
     public Transform _jumpShotPosition;
+    /// <summary>
+    /// 앉은 상태에서 버스터 샷이 생성되는 위치입니다.
+    /// </summary>
+    public Transform _crouchShotPosition;
 
 
     /// <summary>
@@ -554,6 +558,26 @@ public class XController : PlayerController
 
             }
         }
+        // 앉은 상태라면
+        else if (Crouching)
+        {
+            if (IsDownKeyPressed() == false)
+            {
+                StopCrouching();
+            }
+            else if (IsLeftKeyPressed() && FacingRight)
+            {
+                Flip();
+            }
+            else if (IsRightKeyPressed() && FacingRight == false)
+            {
+                Flip();
+            }
+            else
+            {
+                StopMoving();
+            }
+        }
         // 움직임이 막힌 상태라면
         else if (MoveBlocked)
         {
@@ -565,10 +589,12 @@ public class XController : PlayerController
         // 그 외의 경우
         else
         {
-            if (MoveRequested)
+            if (IsDownKeyPressed() && Landed)
             {
+                Crouch();
+                /// StopMoving();
             }
-            else if (IsDownKeyPressed())
+            else if (MoveRequested)
             {
 
             }
@@ -679,6 +705,9 @@ public class XController : PlayerController
 
         // 엑스의 색상을 업데이트합니다.
         UpdateColor();
+
+        // 충돌 박스를 업데이트합니다.
+        /// UpdateHitBox();
     }
 
 
@@ -926,6 +955,10 @@ public class XController : PlayerController
         else if (Dashing)
         {
             ret = _dashShotPosition;
+        }
+        else if (Crouching)
+        {
+            ret = _crouchShotPosition;
         }
         else if (Moving)
         {
