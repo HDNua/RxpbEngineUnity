@@ -539,8 +539,7 @@ public class XController : PlayerController
                 {
 
                 }
-                else
-                if (IsLeftKeyPressed())
+                else if (IsLeftKeyPressed())
                 {
                     MoveLeft();
                 }

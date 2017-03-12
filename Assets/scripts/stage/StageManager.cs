@@ -21,6 +21,11 @@ public class StageManager : HDSceneManager
     /// </summary>
     public ReadyAnimator _ready;
     /// <summary>
+    /// 
+    /// </summary>
+    public WarningAnimator _warning;
+
+    /// <summary>
     /// 현재 조작중인 플레이어입니다.
     /// </summary>
     public PlayerController _player;
