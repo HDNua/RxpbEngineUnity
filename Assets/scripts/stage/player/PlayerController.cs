@@ -101,8 +101,7 @@ public abstract class PlayerController : MonoBehaviour
     /// 스테이지 관리자입니다.
     /// </summary>
     public StageManager stageManager;
-
-
+    
     /// <summary>
     /// 캐릭터 음성 집합입니다.
     /// </summary>
@@ -111,8 +110,7 @@ public abstract class PlayerController : MonoBehaviour
     /// 캐릭터 효과음 집합입니다.
     /// </summary>
     public AudioClip[] audioClips;
-
-
+    
     /// <summary>
     /// 바닥 검사를 위한 위치 객체입니다.
     /// </summary>
@@ -133,8 +131,7 @@ public abstract class PlayerController : MonoBehaviour
     /// 무엇이 지형인지를 나타내는 마스크입니다. 기본값은 ""입니다.
     /// </summary>
     public LayerMask whatIsGround;
-
-
+    
     /// <summary>
     /// 벽 검사를 위한 충돌체입니다.
     /// </summary>
@@ -147,8 +144,7 @@ public abstract class PlayerController : MonoBehaviour
     /// 무엇이 벽인지를 나타내는 마스크입니다. 기본값은 "Wall"입니다.
     /// </summary>
     public LayerMask whatIsWall;
-
-
+    
     /// <summary>
     /// 걷는 속도입니다.
     /// </summary>
@@ -173,14 +169,12 @@ public abstract class PlayerController : MonoBehaviour
     /// 대쉬 속도입니다.
     /// </summary>
     public float _dashSpeed = 12;
-
-
+    
     /// <summary>
     /// 큰 대미지를 받은 것으로 인정되는 값입니다.
     /// </summary>
     public int _bigDamageValue = 10;
-
-
+    
     /// <summary>
     /// PlayerController 객체가 사용할 효과 집합입니다.
     /// </summary>
@@ -197,32 +191,24 @@ public abstract class PlayerController : MonoBehaviour
     /// 벽 타기 시 연기가 발생하는 위치입니다.
     /// </summary>
     public Transform slideFogPosition;
-
-
+    
     /// <summary>
     /// 플레이어가 오른쪽을 보고 있다면 참입니다.
     /// </summary>
     public bool _facingRight = true;
-
-
+    
     /// <summary>
-    /// 
+    /// 일반 히트 박스입니다.
     /// </summary>
     public BoxCollider2D _hitBoxNormal;
     /// <summary>
-    /// 
+    /// 앉은 상태의 히트 박스입니다.
     /// </summary>
     public BoxCollider2D _hitBoxDown;
 
-
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -253,12 +239,7 @@ public abstract class PlayerController : MonoBehaviour
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -318,15 +299,9 @@ public abstract class PlayerController : MonoBehaviour
         return (InputBlocked == false && Input.GetKey(KeyCode.DownArrow));
     }
 
-
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -343,8 +318,7 @@ public abstract class PlayerController : MonoBehaviour
     /// 위험 상태로 바뀌는 체력의 값입니다.
     /// </summary>
     public int _dangerHealth = 10;
-
-
+    
     /// <summary>
     /// 플레이어의 현재 체력을 확인합니다.
     /// </summary>
@@ -371,32 +345,24 @@ public abstract class PlayerController : MonoBehaviour
     {
         get { return _dangerHealth; }
     }
-
-
+    
     #endregion
 
 
 
 
-
-
-
-
-
-
+    
     #region 주인공의 운동 상태 필드를 정의합니다.
     /// <summary>
     /// 플레이어가 걷는 속도입니다.
     /// </summary>
     protected float _movingSpeed = 5;
-
-
+    
     /// <summary>
     /// 이동 요청을 받았다면 참입니다.
     /// </summary>
     bool _moveRequested = false;
-
-
+    
     /// <summary>
     /// 플레이어가 소환중이라면 참입니다.
     /// </summary>
@@ -433,13 +399,11 @@ public abstract class PlayerController : MonoBehaviour
     /// 에어 대쉬중이라면 참입니다.
     /// </summary>
     bool _airDashing = false;
-
-
+    
     /// <summary>
     /// 앉은 상태라면 참입니다.
     /// </summary>
     bool _crouching = false;
-
 
     /// <summary>
     /// 대미지를 입었다면 true입니다.
@@ -461,8 +425,7 @@ public abstract class PlayerController : MonoBehaviour
     /// 플레이어가 죽었다면 true입니다.
     /// </summary>
     bool _isDead = false;
-
-
+    
     /// <summary>
     /// 대쉬 잔상이 유지된 시간입니다.
     /// </summary>
@@ -475,8 +438,7 @@ public abstract class PlayerController : MonoBehaviour
         get { return _dashAfterImageTime; }
         set { _dashAfterImageTime = value; }
     }
-
-
+    
     /// <summary>
     /// 넉백 스피드입니다.
     /// </summary>
@@ -489,21 +451,14 @@ public abstract class PlayerController : MonoBehaviour
     /// 넉백으로 점프한 경우의 Y축 감소량입니다.
     /// </summary>
     public float KnockbackJumpDecSize = 40;
-
-
+    
     /// <summary>
     /// 현재 플레이어와 닿아있는 땅 지형의 집합입니다.
     /// </summary>
     HashSet<EdgeCollider2D> _groundEdgeSet = new HashSet<EdgeCollider2D>();
-
-
+    
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -585,8 +540,7 @@ public abstract class PlayerController : MonoBehaviour
         get { return _sliding; }
         set { _Animator.SetBool("Sliding", _sliding = value); }
     }
-
-
+    
     /// <summary>
     /// 앉은 상태라면 참입니다.
     /// </summary>
@@ -595,8 +549,7 @@ public abstract class PlayerController : MonoBehaviour
         get { return _crouching; }
         set { _Animator.SetBool("Crouching", _crouching = value); }
     }
-
-
+    
     /// <summary>
     /// 이동이 막혀있다면 true입니다.
     /// </summary>
@@ -622,7 +575,6 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected bool InputBlocked { get; set; }
 
-
     /// <summary>
     /// 대쉬 점프중이라면 참입니다.
     /// </summary>
@@ -643,8 +595,7 @@ public abstract class PlayerController : MonoBehaviour
         get { return _airDashing; }
         set { _Animator.SetBool("AirDashing", _airDashing = value); }
     }
-
-
+    
     /// <summary>
     /// 대미지를 입었다면 true입니다.
     /// </summary>
@@ -695,8 +646,7 @@ public abstract class PlayerController : MonoBehaviour
         get { return _isDead; }
         private set { _isDead = value; }
     }
-
-
+    
     /// <summary>
     /// 플레이어가 생존해있는지 확인합니다.
     /// </summary>
@@ -713,8 +663,7 @@ public abstract class PlayerController : MonoBehaviour
     {
         return (_health == _maxHealth);
     }
-
-
+    
     /// <summary>
     /// 이동 요청을 받았다면 참입니다.
     /// </summary>
@@ -723,8 +672,7 @@ public abstract class PlayerController : MonoBehaviour
         get { return _moveRequested; }
         private set { _moveRequested = value; }
     }
-
-
+    
     /// <summary>
     /// 큰 대미지를 입었다면 참입니다.
     /// </summary>
@@ -732,24 +680,17 @@ public abstract class PlayerController : MonoBehaviour
         get { return _Animator.GetFloat("BigDamaged") == 1 ? true : false; }
         set { _Animator.SetFloat("BigDamaged", value ? 1 : 0); }
     }
-
-
+    
     /// <summary>
     /// 감시용 속도 벡터입니다.
     /// </summary>
     public Vector2 _velocity;
 
-
     #endregion
 
 
 
-
-
-
-
-
-
+    
 
     #region MonoBehaviour 기본 메서드를 재정의 합니다.
     /// <summary>
@@ -799,8 +740,7 @@ public abstract class PlayerController : MonoBehaviour
     {
 
     }
-
-
+    
     /// <summary>
     /// 충돌이 시작되었습니다.
     /// </summary>
@@ -825,8 +765,7 @@ public abstract class PlayerController : MonoBehaviour
     {
         UpdatePhysicsState(collision);
     }
-
-
+    
     /// <summary>
     /// 자식 클래스의 Update()를 실행하기 전에 부모 클래스에서 Update()를 수행합니다.
     /// </summary>
@@ -906,16 +845,10 @@ public abstract class PlayerController : MonoBehaviour
         return true;
     }
 
-
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 플레이어의 상태를 갱신합니다.
@@ -1117,7 +1050,6 @@ public abstract class PlayerController : MonoBehaviour
     {
         int layer = collision.collider.gameObject.layer;
 
-
         // 땅과 접촉한 경우의 처리입니다.
         if (IsSameLayer(layer, whatIsGround))
         {
@@ -1131,7 +1063,6 @@ public abstract class PlayerController : MonoBehaviour
                 _groundEdgeSet.Remove(groundCollider);
             }
         }
-
 
         // 벽과 접촉한 경우의 처리입니다.
         if (IsSameLayer(layer, whatIsWall))
@@ -1255,18 +1186,12 @@ public abstract class PlayerController : MonoBehaviour
         // 벽과 닿아있지 않으면 거짓입니다.
         return false;
     }
-
-
+    
     #endregion
 
 
 
-
-
-
-
-
-
+    
 
     #region 일회성 행동 메서드를 정의합니다.
     /// <summary>
@@ -1372,6 +1297,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void BlockInput()
     {
+        print("PlayerController Blocked Input");
         InputBlocked = true;
     }
     /// <summary>
@@ -1379,6 +1305,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void UnblockInput()
     {
+        print("PlayerController Unblocked Input");
         InputBlocked = false;
     }
 
@@ -2007,6 +1934,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     public void RequestBlockInput()
     {
+        print("Block Input Requested From Player");
         BlockInput();
     }
     /// <summary>
@@ -2014,6 +1942,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     public void RequestUnblockInput()
     {
+        print("Unblock Input Requested From Player");
         UnblockInput();
     }
 

@@ -21,7 +21,7 @@ public class StageManager : HDSceneManager
     /// </summary>
     public ReadyAnimator _ready;
     /// <summary>
-    /// 
+    /// 경고 애니메이션 관리자입니다.
     /// </summary>
     public WarningAnimator _warning;
 
@@ -250,7 +250,7 @@ public class StageManager : HDSceneManager
         if (_fader.FadeInEnded)
         {
             // 준비 애니메이션 재생을 시작합니다.
-            _ready.gameObject.SetActive(true);
+            PlayReadyAnimation();
         }
 
 
@@ -658,6 +658,21 @@ public class StageManager : HDSceneManager
         yield break;
     }
 
+    /// <summary>
+    /// 준비 애니메이션을 재생합니다.
+    /// </summary>
+    private void PlayReadyAnimation()
+    {
+        _ready.gameObject.SetActive(true);
+    }
+    /// <summary>
+    /// 경고 애니메이션을 재생합니다.
+    /// </summary>
+    private void PlayWarningAnimation()
+    {
+        _warning.gameObject.SetActive(true);
+    }
+
 
     /// <summary>
     /// HUD를 활성화합니다.
@@ -707,6 +722,7 @@ public class StageManager : HDSceneManager
     /// </summary>
     public void RequestBlockMoving()
     {
+        print("Block Requested From Stage Manager");
         _player.RequestBlockInput();
     }
     /// <summary>
@@ -714,6 +730,7 @@ public class StageManager : HDSceneManager
     /// </summary>
     public void RequestUnblockMoving()
     {
+        print("Unblock Requested From Stage Manager");
         _player.RequestUnblockInput();
     }
 
@@ -732,7 +749,13 @@ public class StageManager : HDSceneManager
         _enemyParent.SetActive(false);
     }
 
-
+    /// <summary>
+    /// 경고 애니메이션 재생을 요청합니다.
+    /// </summary>
+    public void RequestPlayingWarningAnimation()
+    {
+        PlayWarningAnimation();
+    }
 
     #endregion
 

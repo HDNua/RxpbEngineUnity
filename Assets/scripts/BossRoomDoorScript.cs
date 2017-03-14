@@ -224,26 +224,37 @@ public class BossRoomDoorScript : MonoBehaviour
     /// </summary>
     public void RequestClose()
     {
+        // 한 번만 열리는 문인 경우의 처리입니다.
         if (_isOneTimeDoor)
         {
             GetComponent<BoxCollider2D>().isTrigger = false;
         }
+        // 보스 방인 경우 시나리오를 진행합니다.
         if (_isBossRoomDoor)
         {
             _bossBattleManager.RequestBossBattleScenario();
         }
 
-        // 
+        // 문의 개방 상태를 모두 내립니다.
         Opened = false;
         Opening = false;
 
+        // 문 닫히는 소리를 재생합니다.
         _audioSources[1].Play();
 
+        // 문을 통과하기 이전의 원래 속도로 되돌립니다.
         _player.RequestChangeMovingSpeed(_player._walkSpeed);
         _player.RequestStopMoving();
-        _player.RequestUnblockInput();
+
+        // 보스 방이 아닌 경우에만 입력 중지를 해제합니다.
+        if (_isBossRoomDoor == false)
+        {
+            _player.RequestUnblockInput();
+        }
+        // 플레이어를 가리키는 포인터를 지웁니다.
         _player = null;
 
+        // 문을 통과한 다음에만 적이 출현할 수 있도록 설정합니다.
         _StageManager.RequestEnableAllEnemy();
     }
 

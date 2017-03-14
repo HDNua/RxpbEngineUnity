@@ -15,27 +15,19 @@ public class BossBattleManager : MonoBehaviour
     /// </summary>
     public DataBase _database;
 
-
     /// <summary>
     /// 보스 캐릭터입니다.
     /// </summary>
-    public CommanderYammarkScript _boss;
-
+    public EnemyBossScript _boss;
 
     /// <summary>
     /// 각입니다.
     /// </summary>
     public Transform[] _angle;
-
-
+    
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -66,12 +58,7 @@ public class BossBattleManager : MonoBehaviour
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
@@ -117,12 +104,7 @@ public class BossBattleManager : MonoBehaviour
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -139,12 +121,7 @@ public class BossBattleManager : MonoBehaviour
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -162,11 +139,7 @@ public class BossBattleManager : MonoBehaviour
 
 
 
-
-
-
-
-
+    
 
     #region 시작 메서드를 정의합니다.
     /// <summary>
@@ -178,7 +151,7 @@ public class BossBattleManager : MonoBehaviour
         StartCoroutine(CoroutineWarning());
     }
     /// <summary>
-    /// 
+    /// 등장을 시작합니다.
     /// </summary>
     void Appear()
     {
@@ -187,7 +160,7 @@ public class BossBattleManager : MonoBehaviour
         StartCoroutine(CoroutineAppearing());
     }
     /// <summary>
-    /// 
+    /// 대사를 시작합니다.
     /// </summary>
     void Script()
     {
@@ -196,7 +169,7 @@ public class BossBattleManager : MonoBehaviour
         StartCoroutine(CoroutineScripting());
     }
     /// <summary>
-    /// 
+    /// 전투 준비를 시작합니다.
     /// </summary>
     void Ready()
     {
@@ -205,31 +178,34 @@ public class BossBattleManager : MonoBehaviour
         StartCoroutine(CoroutineReadying());
     }
     /// <summary>
-    /// 
+    /// 전투를 시작합니다.
     /// </summary>
     void Fight()
     {
         _readying = false;
         _fighting = true;
 
+        _boss.Fight();
+
+        // 
         _stageManager.RequestUnblockMoving();
         GetComponent<AudioSource>().Play();
         StartCoroutine(CoroutineFighting());
     }
-
-
+    
     /// <summary>
-    /// 
+    /// 경고 화면 코루틴입니다.
     /// </summary>
-    /// <returns></returns>
     IEnumerator CoroutineWarning()
     {
-        // 
+        // 보스 전투 전처리를 진행합니다.
         _stageManager.RequestBlockMoving();
         _stageManager.StopBackgroundMusic();
 
+        // 경고 애니메이션을 재생합니다.
+        _stageManager.RequestPlayingWarningAnimation();
 
-        // 
+        // 경고음을 재생합니다.
         AudioClip warningSound = _stageManager._audioClips[8];
         AudioSource warningSource = _stageManager.AudioSources[8];
         float length = warningSound.length * 0.9f;
@@ -242,58 +218,57 @@ public class BossBattleManager : MonoBehaviour
         yield return new WaitForSeconds(length);
         warningSource.Play();
         yield return new WaitForSeconds(length);
-        warningSource.Play();
-        yield return new WaitForSeconds(length);
 
-
-        // 
+        // 보스가 등장합니다.
         Appear();
         yield break;
     }
     /// <summary>
-    /// 
+    /// 등장 루틴입니다.
     /// </summary>
-    /// <returns></returns>
     IEnumerator CoroutineAppearing()
     {
+        /*
         _boss._Rigidbody2D.velocity = new Vector2(0, -_boss._movingSpeed);
         while (_boss.transform.position.y > _angle[0].position.y)
         {
             yield return null;
         }
         _boss._Rigidbody2D.velocity = Vector2.zero;
+        */
+
+        _boss.gameObject.SetActive(true);
+        _boss.Appear();
+        while (_boss.AppearEnded == false)
+        {
+            yield return false;
+        }
 
         Script();
         yield break;
     }
     /// <summary>
-    /// 
+    /// 대사 루틴입니다.
     /// </summary>
-    /// <returns></returns>
     IEnumerator CoroutineScripting()
     {
-
-
         Ready();
         yield break;
     }
     /// <summary>
-    /// 
+    /// 전투 준비 루틴입니다.
     /// </summary>
-    /// <returns></returns>
     IEnumerator CoroutineReadying()
     {
-        
-
         Fight();
         yield break;
     }
     /// <summary>
-    /// 
+    /// 전투 루틴입니다.
     /// </summary>
-    /// <returns></returns>
     IEnumerator CoroutineFighting()
     {
+        /**
         float movingSpeed = _boss._movingSpeed;
         while (_boss.IsAlive())
         {
@@ -332,18 +307,13 @@ public class BossBattleManager : MonoBehaviour
             }
             _boss.transform.position = new Vector3(_boss.transform.position.x, _angle[0].position.y, _boss.transform.position.z);
         }
+        */
 
         yield break;
     }
 
-
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -363,17 +333,18 @@ public class BossBattleManager : MonoBehaviour
         set { _isWarningEnded = value; }
     }
 
-
+    /**
     [Obsolete("_script으로 대체되었습니다.")]
     /// <summary>
     /// 준비가 끝났다면 참입니다.
     /// </summary>
     bool _isReady = false;
-
+    */
 
     [Obsolete("")]
     void Update_dep()
     {
+        /*
         if (_isWarningEnded == false)
         {
             return;
@@ -435,6 +406,7 @@ public class BossBattleManager : MonoBehaviour
         {
             /// Debug.Log("unknown direction " + direction);
         }
+        */
     }
     [Obsolete("")]
     /// <summary>
@@ -442,7 +414,7 @@ public class BossBattleManager : MonoBehaviour
     /// </summary>
     void BeginScript()
     {
-        _isReady = true;
+        /// _isReady = true;
         StartCoroutine(CoroutineBeginScript());
     }
     [Obsolete("")]
@@ -473,8 +445,6 @@ public class BossBattleManager : MonoBehaviour
     {
         ActivateBossHUD();
 
-
-
         // 
         BeginBattle();
         yield break;
@@ -489,10 +459,14 @@ public class BossBattleManager : MonoBehaviour
         _stageManager.AudioSources[9].Play();
         yield return new WaitForSeconds(_stageManager._audioClips[9].length);
 
-
         // 
         yield break;
     }
+
+    /// <summary>
+    /// 보스 캐릭터입니다.
+    /// </summary>
+    public CommanderYammarkScript _boss_dep;
 
     #endregion
 }

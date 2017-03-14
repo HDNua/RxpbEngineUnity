@@ -27,6 +27,8 @@ public abstract class EnemyScript : MonoBehaviour
 
 
 
+
+
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
     /// <summary>
     /// 충돌체입니다.
@@ -184,12 +186,7 @@ public abstract class EnemyScript : MonoBehaviour
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -242,17 +239,11 @@ public abstract class EnemyScript : MonoBehaviour
         // 색상표를 사용하는 개체인 경우 이 메서드를 오버라이드하고 다음 문장을 호출합니다.
         // UpdateColor();
     }
-
-
+    
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 외부에서 접근 가능한 공용 메서드를 정의합니다.
@@ -268,12 +259,7 @@ public abstract class EnemyScript : MonoBehaviour
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -292,8 +278,7 @@ public abstract class EnemyScript : MonoBehaviour
                 .gameObject.SetActive(true);
         }
     }
-
-
+    
     /// <summary>
     /// 자신의 위치에 아이템을 생성합니다.
     /// </summary>
@@ -314,8 +299,7 @@ public abstract class EnemyScript : MonoBehaviour
         }
         return null;
     }
-
-
+    
     #endregion
 
 
