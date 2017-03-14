@@ -104,6 +104,15 @@ public abstract class EnemyBossScript : EnemyScript
     /// </summary>
     bool _dashing = false;
 
+    /// <summary>
+    /// 플레이어의 최대 체력을 확인합니다.
+    /// </summary>
+    public int _maxHealth = 40;
+    /// <summary>
+    /// 위험 상태로 바뀌는 체력의 값입니다.
+    /// </summary>
+    public int _dangerHealth = 10;
+
     #endregion
 
 
@@ -164,6 +173,25 @@ public abstract class EnemyBossScript : EnemyScript
         get { return _dashing; }
         set { _Animator.SetBool("Dashing", _dashing = value); }
     }
+
+
+    /// <summary>
+    /// 최대 체력입니다.
+    /// </summary>
+    public int MaxHealth
+    {
+        get { return _maxHealth; }
+        set { _maxHealth = value; }
+    }
+    /// <summary>
+    /// 플레이어의 체력이 가득 찼는지 확인합니다.
+    /// </summary>
+    /// <returns>체력이 가득 찼다면 true입니다.</returns>
+    public bool IsHealthFull()
+    {
+        return (_health == _maxHealth);
+    }
+
 
     /// <summary>
     /// 플레이어의 속도(RigidBody2D.velocity)입니다.
@@ -401,6 +429,23 @@ public abstract class EnemyBossScript : EnemyScript
 
 
 
+    #region 상태 메서드를 정의합니다.
+    /// <summary>
+    /// 플레이어가 체력을 회복합니다.
+    /// </summary>
+    public void Heal()
+    {
+        Health += 10;
+        if (Health > MaxHealth)
+            Health = MaxHealth;
+    }
+
+    #endregion
+
+
+
+
+
     #region 행동 메서드를 정의합니다.
     ///////////////////////////////////////////////////////////////////
     // 기본
@@ -512,6 +557,13 @@ public abstract class EnemyBossScript : EnemyScript
     {
         return _Animator.GetCurrentAnimatorStateInfo(0).IsName(stateName);
     }
+    /// <summary>
+    /// 
+    /// </summary>
+    public void RequestBossHeal()
+    {
+
+    }
 
     #endregion
 
@@ -620,27 +672,34 @@ public abstract class EnemyBossScript : EnemyScript
         }
         else if (rayB || rayF)
         {
-            Vector3 pos = transform.position;
-            float difY;
+            RaycastHit2D ray;
+
             if (rayB && !rayF)
             {
-                difY = rayB.distance / transform.localScale.y;
-                pos.y -= difY;
+                // difY = rayB.distance / transform.localScale.y;
+                // pos.y -= difY;
+                ray = rayB;
             }
             else if (!rayB && rayF)
             {
-                difY = rayF.distance / transform.localScale.y;
-                pos.y -= difY;
+                // difY = rayF.distance / transform.localScale.y;
+                // pos.y -= difY;
+                ray = rayF;
             }
             else
             {
-                difY = Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
-                pos.y -= difY;
+                // difY = Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
+                // pos.y -= difY;
+                ray = rayB.distance < rayF.distance ? rayB : rayF;
             }
 
+            // 
+            Vector3 pos = transform.position;
+            float difY = ray.distance / transform.localScale.y;
+            pos.y -= difY;
             if (Mathf.Abs(difY) < _jumpDecSize)
             {
-                transform.position = pos;
+                // transform.position = pos;
                 _Velocity = new Vector2(_Velocity.x, 0);
                 Landed = true;
             }

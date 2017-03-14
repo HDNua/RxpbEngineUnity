@@ -565,8 +565,7 @@ public class StageManager : HDSceneManager
         float time = 0f;
         float unitTime = 0.02f;
         AudioSource audioSource = AudioSources[item.SoundEffectIndexes[0]];
-
-
+        
         // 체력을 회복하는 루프입니다.
         for (int i = 0, len = item._itemValue; i < len; ++i)
         {
@@ -594,11 +593,6 @@ public class StageManager : HDSceneManager
 
         // 정지한 움직임을 해제합니다.
         Unfreeze();
-
-        /// Handy: 예전에는 매번 AudioSource를 생성했기 때문에 이게 필요했는데,
-        /// 이제는 StageManager가 기본적으로 가지고 있으므로 삭제하지 않습니다.
-        /// 음원 객체를 파괴합니다.
-        /// Destroy(audioSource, audioSource.clip.length);
 
         // 코루틴을 종료합니다.
         yield break;
@@ -722,7 +716,7 @@ public class StageManager : HDSceneManager
     /// </summary>
     public void RequestBlockMoving()
     {
-        print("Block Requested From Stage Manager");
+        /// print("Block Requested From Stage Manager");
         _player.RequestBlockInput();
     }
     /// <summary>
@@ -730,7 +724,7 @@ public class StageManager : HDSceneManager
     /// </summary>
     public void RequestUnblockMoving()
     {
-        print("Unblock Requested From Stage Manager");
+        /// print("Unblock Requested From Stage Manager");
         _player.RequestUnblockInput();
     }
 
@@ -755,6 +749,55 @@ public class StageManager : HDSceneManager
     public void RequestPlayingWarningAnimation()
     {
         PlayWarningAnimation();
+    }
+
+    #endregion
+
+
+
+
+    #region 보스 체력 회복 루틴을 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    public void HealBoss(EnemyBossScript boss)
+    {
+        StartCoroutine(BossHealRoutine(boss));
+    }
+    /// <summary>
+    /// 보스 체력이 회복되는 루틴입니다.
+    /// </summary>
+    /// <param name="boss">플레이어 객체입니다.</param>
+    /// <param name="item">사용한 아이템입니다.</param>
+    /// <returns>Update()를 다시 호출하기 위해 함수를 종료할 때마다 null을 반환합니다.</returns>
+    IEnumerator BossHealRoutine(EnemyBossScript boss)
+    {
+        // 사용할 변수를 선언합니다.
+        float time = 0f;
+        float unitTime = 0.02f;
+        AudioSource audioSource = AudioSources[1];
+
+        // 체력을 회복하는 루프입니다.
+        while (boss.IsHealthFull() == false)
+        {
+            // 루프 진입시마다 시작 시간을 초기화합니다.
+            time = 0f;
+
+            // 체력을 회복하면서 체력 회복 효과음을 재생합니다.
+            audioSource.Play();
+            audioSource.time = 0;
+            boss.Heal();
+
+            // 일정한 간격으로 체력을 회복합니다.
+            while (time < unitTime)
+            {
+                time += Time.unscaledDeltaTime;
+                yield return null;
+            }
+        }
+
+        // 코루틴을 종료합니다.
+        yield break;
     }
 
     #endregion

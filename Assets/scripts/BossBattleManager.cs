@@ -110,7 +110,7 @@ public class BossBattleManager : MonoBehaviour
 
     #region 메서드를 정의합니다.
     /// <summary>
-    /// 
+    /// 보스 캐릭터 체력 바를 표시합니다.
     /// </summary>
     void ActivateBossHUD()
     {
@@ -133,7 +133,13 @@ public class BossBattleManager : MonoBehaviour
     {
         Warning();
     }
-
+    /// <summary>
+    /// 보스 체력 재생을 요청합니다.
+    /// </summary>
+    public void RequestFillHealth()
+    {
+        _stageManager.HealBoss(_boss);
+    }
 
     #endregion
 
@@ -228,15 +234,7 @@ public class BossBattleManager : MonoBehaviour
     /// </summary>
     IEnumerator CoroutineAppearing()
     {
-        /*
-        _boss._Rigidbody2D.velocity = new Vector2(0, -_boss._movingSpeed);
-        while (_boss.transform.position.y > _angle[0].position.y)
-        {
-            yield return null;
-        }
-        _boss._Rigidbody2D.velocity = Vector2.zero;
-        */
-
+        // 
         _boss.gameObject.SetActive(true);
         _boss.Appear();
         while (_boss.AppearEnded == false)
@@ -244,6 +242,7 @@ public class BossBattleManager : MonoBehaviour
             yield return false;
         }
 
+        // 
         Script();
         yield break;
     }
@@ -260,6 +259,16 @@ public class BossBattleManager : MonoBehaviour
     /// </summary>
     IEnumerator CoroutineReadying()
     {
+        // 보스 캐릭터 체력 바를 표시합니다.
+        ActivateBossHUD();
+
+        // 보스 체력 재생을 요청합니다.
+        RequestFillHealth();
+
+        while (_boss.IsHealthFull() == false)
+            yield return false;
+        
+        // 전투를 시작합니다.
         Fight();
         yield break;
     }
@@ -268,46 +277,10 @@ public class BossBattleManager : MonoBehaviour
     /// </summary>
     IEnumerator CoroutineFighting()
     {
-        /**
-        float movingSpeed = _boss._movingSpeed;
-        while (_boss.IsAlive())
+        if (_boss.IsDead)
         {
-            // RightDown -> LeftDown
-            _boss._Rigidbody2D.velocity = new Vector2(-movingSpeed, 0);
-            while (_boss.transform.position.x > _angle[1].position.x)
-            {
-                yield return null;
-            }
-            _boss.transform.position = new Vector3(_angle[1].position.x, _boss.transform.position.y, _boss.transform.position.z);
-
-
-            // LeftDown -> LeftUp
-            _boss._Rigidbody2D.velocity = new Vector2(0, movingSpeed);
-            while (_boss.transform.position.y < _angle[2].position.y)
-            {
-                yield return null;
-            }
-            _boss.transform.position = new Vector3(_boss.transform.position.x, _angle[2].position.y, _boss.transform.position.z);
-
-
-            // LeftUp -> RightUp
-            _boss._Rigidbody2D.velocity = new Vector2(movingSpeed, 0);
-            while (_boss.transform.position.x < _angle[3].position.x)
-            {
-                yield return null;
-            }
-            _boss.transform.position = new Vector3(_angle[3].position.x, _boss.transform.position.y, _boss.transform.position.z);
-
-
-            // RightUp -> RightDown
-            _boss._Rigidbody2D.velocity = new Vector2(0, -_boss._movingSpeed);
-            while (_boss.transform.position.y > _angle[0].position.y)
-            {
-                yield return null;
-            }
-            _boss.transform.position = new Vector3(_boss.transform.position.x, _angle[0].position.y, _boss.transform.position.z);
+            EndBattle();
         }
-        */
 
         yield break;
     }
@@ -318,137 +291,17 @@ public class BossBattleManager : MonoBehaviour
 
 
 
-    #region 구형 정의를 보관합니다.
-    [Obsolete("_warning으로 대체되었습니다.")]
-    /// <summary>
-    /// 경고 출력이 끝났다면 참입니다.
-    /// </summary>
-    bool _isWarningEnded = false;
-    [Obsolete("_warning으로 대체되었습니다.")]
-    /// <summary>
-    /// 경고 출력이 끝났다면 참입니다.
-    /// </summary>
-    public bool IsWarningEnded
-    {
-        set { _isWarningEnded = value; }
-    }
-
-    /**
-    [Obsolete("_script으로 대체되었습니다.")]
-    /// <summary>
-    /// 준비가 끝났다면 참입니다.
-    /// </summary>
-    bool _isReady = false;
-    */
-
-    [Obsolete("")]
-    void Update_dep()
-    {
-        /*
-        if (_isWarningEnded == false)
-        {
-            return;
-        }
-
-        if (_isReady)
-        {
-            if (_boss.transform.position.y < _angle[0].position.y)
-            {
-                _boss.transform.position = new Vector2(_boss.transform.position.x, _angle[0].position.y);
-                _isReady = false;
-                GetComponent<AudioSource>().Play();
-                return;
-            }
-            _boss._Rigidbody2D.velocity = Vector2.down * _boss._movingSpeed;
-            return;
-        }
-
-
-
-        if (_boss.IsDead)
-        {
-            EndBattle();
-        }
-
-
-
-        Vector2 direction = _boss._Rigidbody2D.velocity;
-        if (direction.x != 0) direction.x = direction.x > 0 ? 1 : -1;
-        if (direction.y != 0) direction.y = direction.y > 0 ? 1 : -1;
-
-
-
-        if (direction == Vector2.down && _boss.transform.position.y < _angle[0].position.y)
-        {
-            _boss._Rigidbody2D.velocity = Vector2.left * _boss._movingSpeed;
-            _boss.transform.position = new Vector2(_boss.transform.position.x, _angle[0].position.y);
-        }
-        else if (direction == Vector2.left && _boss.transform.position.x < _angle[1].position.x)
-        {
-            _boss._Rigidbody2D.velocity = Vector2.up * _boss._movingSpeed;
-            _boss.transform.position = new Vector2(_angle[1].position.x, _boss.transform.position.y);
-        }
-        else if (direction == Vector2.up && _boss.transform.position.y > _angle[2].position.y)
-        {
-            _boss._Rigidbody2D.velocity = Vector2.right * _boss._movingSpeed;
-            _boss.transform.position = new Vector2(_boss.transform.position.x, _angle[2].position.y);
-        }
-        else if (direction == Vector2.right && _boss.transform.position.x > _angle[3].position.x)
-        {
-            _boss._Rigidbody2D.velocity = Vector2.down * _boss._movingSpeed;
-            _boss.transform.position = new Vector2(_angle[3].position.x, _boss.transform.position.y);
-        }
-        else if (direction == Vector2.zero)
-        {
-            _boss._Rigidbody2D.velocity = Vector2.left * _boss._movingSpeed;
-        }
-        else
-        {
-            /// Debug.Log("unknown direction " + direction);
-        }
-        */
-    }
-    [Obsolete("")]
-    /// <summary>
-    /// 전투 전에 캐릭터 간 스크립트를 진행합니다.
-    /// </summary>
-    void BeginScript()
-    {
-        /// _isReady = true;
-        StartCoroutine(CoroutineBeginScript());
-    }
-    [Obsolete("")]
-    /// <summary>
-    /// 전투를 시작합니다.
-    /// </summary>
-    void BeginBattle()
-    {
-        _stageManager.RequestUnblockMoving();
-    }
+    #region 구형 정의를 보관합니다.    
     [Obsolete("")]
     /// <summary>
     /// 전투를 끝냅니다.
     /// </summary>
     void EndBattle()
     {
-        StartCoroutine(CoroutineEndBattle());
         Debug.Log("end of game");
     }
 
-
-    [Obsolete("")]
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator CoroutineBeginScript()
-    {
-        ActivateBossHUD();
-
-        // 
-        BeginBattle();
-        yield break;
-    }
+    
     [Obsolete("")]
     /// <summary>
     /// 
@@ -462,11 +315,6 @@ public class BossBattleManager : MonoBehaviour
         // 
         yield break;
     }
-
-    /// <summary>
-    /// 보스 캐릭터입니다.
-    /// </summary>
-    public CommanderYammarkScript _boss_dep;
 
     #endregion
 }

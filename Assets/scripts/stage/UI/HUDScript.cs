@@ -10,11 +10,10 @@ public class HUDScript : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     /// <summary>
-    /// 데이터베이스입니다.
+    /// 데이터베이스 개체입니다.
     /// </summary>
     public DataBase _database;
-
-
+    
     /// <summary>
     /// 
     /// </summary>
@@ -27,44 +26,36 @@ public class HUDScript : MonoBehaviour
     /// 
     /// </summary>
     public UnityEngine.UI.Text _statusText;
-
-
+    
     /// <summary>
-    /// 
+    /// 체력 바 보드의 몸통 부분입니다.
     /// </summary>
     public GameObject _healthBoardBody;
     /// <summary>
-    /// 
+    /// 체력 바 보드의 머리 부분입니다.
     /// </summary>
     public GameObject _healthBoardHead;
     /// <summary>
-    /// 
+    /// 체력 바입니다.
     /// </summary>
     public GameObject _healthBar;
-
-
+    
     /// <summary>
-    /// 
+    /// 마나 바 보드의 몸통 부분입니다.
     /// </summary>
     public GameObject _manaBoardBody;
     /// <summary>
-    /// 
+    /// 마나 바 보드의 머리 부분입니다.
     /// </summary>
     public GameObject _manaBoardHead;
     /// <summary>
-    /// 
+    /// 마나 바입니다.
     /// </summary>
     public GameObject _manaBar;
-
-
+    
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -73,23 +64,16 @@ public class HUDScript : MonoBehaviour
     /// 스테이지 관리자입니다.
     /// </summary>
     StageManager _stageManager;
-
-
+    
     /// <summary>
     /// 정상 상태라면 참입니다. 무기 장착 상태라면 거짓입니다.
     /// </summary>
     public bool _isStateNormal = true;
-
-
+    
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
@@ -113,8 +97,7 @@ public class HUDScript : MonoBehaviour
             Vector3 healthScale = _healthBar.transform.localScale;
             healthScale.y = (float)player.Health / player.MaxHealth;
             _healthBar.transform.localScale = healthScale;
-
-
+            
             // 상태 보드를 업데이트합니다.
             UpdateStatusBoard();
             // 무기 장착 상태라면 마나도 업데이트합니다.
@@ -126,18 +109,12 @@ public class HUDScript : MonoBehaviour
             }
         }
     }
-
-
+    
     #endregion
 
 
 
-
-
-
-
-
-
+    
 
     #region 메서드를 정의합니다.
     /// <summary>
@@ -155,8 +132,7 @@ public class HUDScript : MonoBehaviour
     {
         _statusText.text = text;
     }
-
-
+    
     /// <summary>
     /// 상태 보드를 업데이트합니다.
     /// </summary>
@@ -177,18 +153,12 @@ public class HUDScript : MonoBehaviour
             _statusBoardWeapon.SetActive(true);
         }
     }
-
-
+    
     #endregion
 
 
 
-
-
-
-
-
-
+    
 
     #region 구형 정의를 보관합니다.
 

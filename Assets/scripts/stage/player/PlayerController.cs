@@ -1289,7 +1289,7 @@ public abstract class PlayerController : MonoBehaviour
         StopDashJumping();
         UnblockAirDashing();
 
-        // 
+        // 충돌 박스를 업데이트합니다.
         UpdateHitBox();
     }
     /// <summary>
@@ -1297,7 +1297,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void BlockInput()
     {
-        print("PlayerController Blocked Input");
+        /// print("PlayerController Blocked Input");
         InputBlocked = true;
     }
     /// <summary>
@@ -1305,7 +1305,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void UnblockInput()
     {
-        print("PlayerController Unblocked Input");
+        /// print("PlayerController Unblocked Input");
         InputBlocked = false;
     }
 
@@ -1934,7 +1934,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     public void RequestBlockInput()
     {
-        print("Block Input Requested From Player");
+        /// print("Block Input Requested From Player");
         BlockInput();
     }
     /// <summary>
@@ -1942,7 +1942,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     public void RequestUnblockInput()
     {
-        print("Unblock Input Requested From Player");
+        /// print("Unblock Input Requested From Player");
         UnblockInput();
     }
 

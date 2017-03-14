@@ -242,7 +242,9 @@ public class EnemyIntroBossScript : EnemyBossScript
 
         // 공격을 종료합니다.
         Attacking = false;
-        MoveToPlayer();
+        while (IsAnimationPlaying("Idle"))
+            yield return false;
+
         yield break;
     }
 
