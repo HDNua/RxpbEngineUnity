@@ -78,8 +78,7 @@ public abstract class EnemyScript : MonoBehaviour
     /// 사망 시 효과를 보관하는 개체입니다.
     /// </summary>
     public ParticleSpreadScript _deadEffect;
-
-
+    
     #endregion
     
 

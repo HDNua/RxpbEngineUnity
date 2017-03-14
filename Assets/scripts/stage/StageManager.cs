@@ -693,15 +693,6 @@ public class StageManager : HDSceneManager
     {
         return _checkpointCameraZones[checkpointIndex];
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="checkpointIndex"></param>
-    public void UpdateCheckpointCameraZone(int checkpointIndex)
-    {
-
-    }
-
     
     /// <summary>
     /// 배경 음악 재생을 중지합니다.
@@ -758,7 +749,7 @@ public class StageManager : HDSceneManager
 
     #region 보스 체력 회복 루틴을 정의합니다.
     /// <summary>
-    /// 
+    /// 보스의 체력을 회복합니다.
     /// </summary>
     public void HealBoss(EnemyBossScript boss)
     {
@@ -807,7 +798,15 @@ public class StageManager : HDSceneManager
 
 
     #region 구형 정의를 보관합니다.
+    [Obsolete("뭐하는 함수인지 모르겠어요.")]
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="checkpointIndex"></param>
+    public void UpdateCheckpointCameraZone(int checkpointIndex)
+    {
 
+    }
 
     #endregion
 }

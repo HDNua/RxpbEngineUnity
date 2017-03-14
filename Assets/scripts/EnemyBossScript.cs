@@ -450,7 +450,7 @@ public abstract class EnemyBossScript : EnemyScript
     ///////////////////////////////////////////////////////////////////
     // 기본
     /// <summary>
-    /// 플레이어가 지상에 착륙할 때의 상태를 설정합니다.
+    /// 지상에 착륙합니다.
     /// </summary>
     protected virtual void Land()
     {
@@ -460,7 +460,7 @@ public abstract class EnemyBossScript : EnemyScript
     /// <summary>
     /// 왼쪽으로 이동합니다.
     /// </summary>
-    protected void MoveLeft()
+    protected virtual void MoveLeft()
     {
         if (FacingRight)
             Flip();
@@ -472,7 +472,7 @@ public abstract class EnemyBossScript : EnemyScript
     /// <summary>
     /// 오른쪽으로 이동합니다.
     /// </summary>
-    protected void MoveRight()
+    protected virtual void MoveRight()
     {
         if (FacingRight == false)
             Flip();
@@ -500,7 +500,7 @@ public abstract class EnemyBossScript : EnemyScript
     ///////////////////////////////////////////////////////////////////
     // 점프 및 낙하
     /// <summary>
-    /// 플레이어를 점프하게 합니다.
+    /// 점프하게 합니다.
     /// </summary>
     protected virtual void Jump()
     {
@@ -511,7 +511,7 @@ public abstract class EnemyBossScript : EnemyScript
         Jumping = true;
     }
     /// <summary>
-    /// 플레이어의 점프를 중지합니다.
+    /// 점프를 중지합니다.
     /// </summary>
     protected virtual void StopJumping()
     {
@@ -519,7 +519,7 @@ public abstract class EnemyBossScript : EnemyScript
         Jumping = false;
     }
     /// <summary>
-    /// 플레이어를 낙하시킵니다.
+    /// 낙하합니다.
     /// </summary>
     protected virtual void Fall()
     {
@@ -870,6 +870,13 @@ public abstract class EnemyBossScript : EnemyScript
 
 
     #region 구형 정의를 보관합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    void FE_PlayWalkSound()
+    {
+        SoundEffects[1].Play();
+    }
 
 
     #endregion

@@ -150,6 +150,14 @@ public class EnemyIntroBossScript : EnemyBossScript
 
     #region EnemyBossScript의 메서드를 오버라이드합니다.
     /// <summary>
+    /// 지상에 착륙합니다.
+    /// </summary>
+    protected override void Land()
+    {
+        base.Land();
+        SoundEffects[1].Play();
+    }
+    /// <summary>
     /// 등장 액션입니다.
     /// </summary>
     public override void Appear()
@@ -158,6 +166,21 @@ public class EnemyIntroBossScript : EnemyBossScript
 
         // 
         StartCoroutine(CoroutineAppear());
+    }
+    /// <summary>
+    /// 점프하게 합니다.
+    /// </summary>
+    protected override void Jump()
+    {
+        base.Jump();
+        SoundEffects[2].Play();
+    }
+    /// <summary>
+    /// 낙하합니다.
+    /// </summary>
+    protected override void Fall()
+    {
+        base.Fall();
     }
 
     #endregion
@@ -235,8 +258,12 @@ public class EnemyIntroBossScript : EnemyBossScript
         // 
         while (IsAnimationPlaying("Idle"))
             yield return false;
+
+        SoundEffects[4].Play();
         while (IsAnimationPlaying("Attack1"))
             yield return false;
+
+        SoundEffects[5].Play();
         while (IsAnimationPlaying("Attack2"))
             yield return false;
 
