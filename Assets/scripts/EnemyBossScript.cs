@@ -113,6 +113,15 @@ public abstract class EnemyBossScript : EnemyScript
     /// </summary>
     public int _dangerHealth = 10;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _flying = false;
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _idle = false;
+
     #endregion
 
 
@@ -174,6 +183,24 @@ public abstract class EnemyBossScript : EnemyScript
         set { _Animator.SetBool("Dashing", _dashing = value); }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    protected bool Flying
+    {
+        get { return _flying; }
+        set { _flying = value; }
+    }
+    /**
+    /// <summary>
+    /// 
+    /// </summary>
+    protected bool IsIdle
+    {
+        get { return _idle; }
+        set { _Animator.SetBool("Idle", _idle = value); }
+    }
+    */
 
     /// <summary>
     /// 최대 체력입니다.
@@ -189,7 +216,7 @@ public abstract class EnemyBossScript : EnemyScript
     /// <returns>체력이 가득 찼다면 true입니다.</returns>
     public bool IsHealthFull()
     {
-        return (_health == _maxHealth);
+        return (Health == MaxHealth);
     }
 
 
@@ -206,11 +233,11 @@ public abstract class EnemyBossScript : EnemyScript
     }
 
     /// <summary>
-    /// 
+    /// 등장이 끝났다면 참입니다.
     /// </summary>
     bool _appearEnded = false;
     /// <summary>
-    /// 
+    /// 등장이 끝났다면 참입니다.
     /// </summary>
     public bool AppearEnded
     {
@@ -296,38 +323,53 @@ public abstract class EnemyBossScript : EnemyScript
     /// </summary>
     protected override void FixedUpdate()
     {
-        // 기존 사용자 입력을 확인합니다.
-        // 점프 중이라면
-        if (Jumping)
+        if (Flying)
         {
-            if (_Velocity.y <= 0)
-            {
-                Fall();
-            }
-            else
-            {
-                _Velocity = new Vector2(_Velocity.x, _Velocity.y - _jumpDecSize);
-            }
-        }
-        // 떨어지고 있다면
-        else if (Falling)
-        {
+            /*
             if (Landed)
             {
                 Land();
             }
             else
             {
-                float vy = _Velocity.y - _jumpDecSize;
-                _Velocity = new Vector2(_Velocity.x, vy > -16 ? vy : -16);
+                /// Landed = false;
             }
+            */
         }
-        // 그 외의 경우
         else
         {
-            if (Landed == false)
+            // 점프 중이라면
+            if (Jumping)
             {
-                Fall();
+                if (_Velocity.y <= 0)
+                {
+                    Fall();
+                }
+                else
+                {
+                    _Velocity = new Vector2(_Velocity.x, _Velocity.y - _jumpDecSize);
+                }
+            }
+            // 떨어지고 있다면
+            else if (Falling)
+            {
+                if (Landed)
+                {
+                    Land();
+                }
+                else
+                {
+                    float vy = _Velocity.y - _jumpDecSize;
+                    _Velocity = new Vector2(_Velocity.x, vy > -16 ? vy : -16);
+                }
+            }
+            // 그 외의 경우
+            else
+            {
+                if (Landed == false)
+                {
+                    Fall();
+                }
             }
         }
     }
@@ -466,7 +508,6 @@ public abstract class EnemyBossScript : EnemyScript
             Flip();
 
         Moving = true;
-
         _Rigidbody.velocity = new Vector2(-_movingSpeed, 0);
     }
     /// <summary>
@@ -478,7 +519,6 @@ public abstract class EnemyBossScript : EnemyScript
             Flip();
 
         Moving = true;
-
         _Rigidbody.velocity = new Vector2(_movingSpeed, 0);
     }
     /// <summary>
@@ -487,8 +527,11 @@ public abstract class EnemyBossScript : EnemyScript
     protected virtual void StopMoving()
     {
         _Velocity = new Vector2(0, _Velocity.y);
+
+        // 
         Moving = false;
     }
+    /**
     /// <summary>
     /// 개체 제거를 요청합니다.
     /// </summary>
@@ -496,6 +539,9 @@ public abstract class EnemyBossScript : EnemyScript
     {
         Destroy(gameObject);
     }
+    */
+    void TEST() { }
+    
     
     ///////////////////////////////////////////////////////////////////
     // 점프 및 낙하
@@ -644,7 +690,7 @@ public abstract class EnemyBossScript : EnemyScript
                 float sy = _movingSpeed * Mathf.Sin(rayAngleRad);
                 float vx = FacingRight ? sx : -sx;
 
-                if (Jumping)
+                if (Jumping || Flying)
                 {
                 }
                 // 예각이라면 내려갑니다.
@@ -700,7 +746,8 @@ public abstract class EnemyBossScript : EnemyScript
             if (Mathf.Abs(difY) < _jumpDecSize)
             {
                 // transform.position = pos;
-                _Velocity = new Vector2(_Velocity.x, 0);
+                float vy = _Velocity.y > 0 ? _Velocity.y : 0;
+                _Velocity = new Vector2(_Velocity.x, vy);
                 Landed = true;
             }
             else
@@ -708,7 +755,7 @@ public abstract class EnemyBossScript : EnemyScript
                 Landed = false;
             }
         }
-        else if (Jumping || Falling)
+        else if (Jumping || Falling || Flying)
         {
             Landed = false;
         }

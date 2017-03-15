@@ -181,6 +181,7 @@ public abstract class EnemyBulletScript : EnemyScript, IMovableEnemy
     }
 
 
+    /**
     /// <summary>
     /// 개체 제거를 요청합니다.
     /// </summary>
@@ -188,6 +189,7 @@ public abstract class EnemyBulletScript : EnemyScript, IMovableEnemy
     {
         Destroy(gameObject);
     }
+    */
     /// <summary>
     /// 탄환 발사 방향을 지정합니다.
     /// </summary>

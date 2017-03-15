@@ -231,7 +231,7 @@ public class EnemyMettoolScript : EnemyScript
     /// <returns>StartCoroutine 호출에 적합한 값을 반환합니다.</returns>
     IEnumerator WalkAround()
     {
-        while (_health != 0)
+        while (Health != 0)
         {
             int random = UnityEngine.Random.Range(0, 2);
             if (random == 1)
@@ -246,7 +246,7 @@ public class EnemyMettoolScript : EnemyScript
         }
     }
 
-
+    /**
     /// <summary>
     /// 
     /// </summary>
@@ -254,7 +254,7 @@ public class EnemyMettoolScript : EnemyScript
     {
         Destroy(gameObject);
     }
-
+    */
 
     #endregion
 

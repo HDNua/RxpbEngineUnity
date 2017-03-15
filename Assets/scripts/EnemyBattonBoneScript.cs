@@ -44,12 +44,7 @@ public class EnemyBattonBoneScript : EnemyScript
     public LayerMask _whatIsGround;
 
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -67,12 +62,7 @@ public class EnemyBattonBoneScript : EnemyScript
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
@@ -98,8 +88,11 @@ public class EnemyBattonBoneScript : EnemyScript
         /// Vector3 playerPos = _StageManager.GetCurrentPlayerPosition();
         Vector2 relativePos = _StageManager.GetCurrentPlayerPosition() - transform.position;
         float angle = Mathf.Atan2(relativePos.y, relativePos.x); // * Mathf.Rad2Deg;
+        float distortion = UnityEngine.Random.Range(_amp_min, _amp_max)
+            * Mathf.Sin(_ang_freq * _time);
+
         float vx = _movingSpeed * Mathf.Cos(angle);
-        float vy = _movingSpeed * Mathf.Sin(angle);
+        float vy = _movingSpeed * Mathf.Sin(angle) + distortion;
 
         /// Handy.Log("PlayerPosition={0}, Position={1}, Angle={2}, vx={3}, vy={4}", playerPos, transform.position, angle, vx, vy);
         _rigidbody.velocity = new Vector2(vx, vy);
@@ -109,18 +102,32 @@ public class EnemyBattonBoneScript : EnemyScript
             Flip();
         else if (relativePos.x > 0 && !FacingRight)
             Flip();
+
+
+        _time += Time.deltaTime;
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _amp_min = 1;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _amp_max = 3;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _ang_freq = 3;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _time = 0f;
+    
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region Collider2D의 기본 메서드를 재정의합니다.
@@ -156,12 +163,7 @@ public class EnemyBattonBoneScript : EnemyScript
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region EnemyScript의 메서드를 오버라이드합니다.
@@ -191,12 +193,7 @@ public class EnemyBattonBoneScript : EnemyScript
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -225,7 +222,7 @@ public class EnemyBattonBoneScript : EnemyScript
     /// <returns>StartCoroutine 호출에 적합한 값을 반환합니다.</returns>
     IEnumerator WalkAround()
     {
-        while (_health != 0)
+        while (Health != 0)
         {
             int random = UnityEngine.Random.Range(0, 2);
             if (random == 1)
@@ -240,25 +237,10 @@ public class EnemyBattonBoneScript : EnemyScript
         }
     }
 
-
-    /// <summary>
-    /// 
-    /// </summary>
-    void RequestDestroy()
-    {
-        Destroy(gameObject);
-    }
-
-
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 구형 정의를 보관합니다.

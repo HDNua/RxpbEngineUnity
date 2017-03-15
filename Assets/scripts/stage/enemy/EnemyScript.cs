@@ -95,7 +95,6 @@ public abstract class EnemyScript : MonoBehaviour
     /// </summary>
     public AudioSource[] SoundEffects { get { return _soundEffects; } }
 
-
     /// <summary>
     /// 사망했다면 참입니다.
     /// </summary>
@@ -104,14 +103,12 @@ public abstract class EnemyScript : MonoBehaviour
     /// 무적 상태라면 참입니다.
     /// </summary>
     bool _invencible;
-
-
+    
     /// <summary>
     /// 캐릭터가 오른쪽을 보고 있다면 참입니다.
     /// </summary>
     bool _facingRight;
-
-
+    
     /// <summary>
     /// 적 캐릭터가 소환되는 영역을 지정합니다.
     /// </summary>
@@ -124,7 +121,6 @@ public abstract class EnemyScript : MonoBehaviour
         get { return _spawnZone; }
         set { _spawnZone = value; }
     }
-
 
     #endregion
 
@@ -139,7 +135,10 @@ public abstract class EnemyScript : MonoBehaviour
     public int Health
     {
         get { return _health; }
-        protected set { _health = value; }
+        protected set
+        {
+            _health = value > 0 ? value : 0;
+        }
     }
     /// <summary>
     /// 대미지를 가져옵니다.
@@ -252,7 +251,7 @@ public abstract class EnemyScript : MonoBehaviour
     /// <param name="damage"></param>
     public virtual void Hurt(int damage)
     {
-        _health -= damage;
+        Health -= damage;
     }
 
 
@@ -333,6 +332,8 @@ public abstract class EnemyScript : MonoBehaviour
     }
 
     #endregion
+
+
 
 
 
@@ -473,13 +474,22 @@ public abstract class EnemyScript : MonoBehaviour
         _currentPalette = _defaultPalette;
     }
 
-
     #endregion
 
 
 
 
 
+    #region 요청 메서드를 정의합니다.
+    /// <summary>
+    /// 개체 제거를 요청합니다.
+    /// </summary>
+    protected void RequestDestroy()
+    {
+        Destroy(gameObject);
+    }
+
+    #endregion
 
 
 
