@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,13 +20,35 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
 
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
     /// <summary>
-    /// 
+    /// 방패 개체입니다.
+    /// </summary>
+    public EnemyScript _guard;
+    /// <summary>
+    /// 탄환 개체입니다.
+    /// </summary>
+    public EnemyBulletScript[] _bullets;
+    /// <summary>
+    /// 탄환 발사 지점입니다.
+    /// </summary>
+    public Transform _shotPosition;
+
+    /// <summary>
+    /// X축 속력입니다.
     /// </summary>
     public float _movingSpeedX = 1;
     /// <summary>
-    /// 
+    /// Y축 속력입니다.
     /// </summary>
     public float _movingSpeedY = 2;
+
+    /// <summary>
+    /// 방패를 들어 막는 시간입니다.
+    /// </summary>
+    public float _guardTime = 3f;
+    /// <summary>
+    /// 추적 시간입니다.
+    /// </summary>
+    public float _followTime = 5f;
 
     #endregion
 
@@ -38,6 +61,10 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     /// 캐릭터가 공격 중이라면 참입니다.
     /// </summary>
     bool _attacking = false;
+    /// <summary>
+    /// 방패를 들어 막는 중이라면 참입니다.
+    /// </summary>
+    bool _guarding = false;
 
     #endregion
 
@@ -53,6 +80,14 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     {
         get { return _attacking; }
         set { _Animator.SetBool("Attacking", _attacking = value); }
+    }
+    /// <summary>
+    /// 방패를 들어 막는 중이라면 참입니다.
+    /// </summary>
+    bool Guarding
+    {
+        get { return _guarding; }
+        set { _Animator.SetBool("Guarding", _guarding = value); }
     }
 
     #endregion
@@ -88,8 +123,13 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
             return;
         }
 
-        // 
-        MoveToPlayer();
+        /**
+        // 움직이고 있다면 항상 플레이어를 쫓아갑니다.
+        if (Moving)
+        {
+            MoveToPlayer();
+        }
+        */
     }
 
     #endregion
@@ -175,24 +215,6 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
 
     #region 행동 메서드를 정의합니다.
     /// <summary>
-    /// 공격합니다.
-    /// </summary>
-    private void Attack()
-    {
-        Attacking = true;
-
-        // 
-        StartCoroutine(CoroutineAttack());
-    }
-    /// <summary>
-    /// 공격을 중지합니다.
-    /// </summary>
-    private void StopAttack()
-    {
-        Attacking = false;
-    }
-
-    /// <summary>
     /// 왼쪽으로 이동합니다.
     /// </summary>
     protected override void MoveLeft()
@@ -220,6 +242,7 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     protected void MoveUp()
     {
         Moving = true;
+
         _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, _movingSpeedY);
     }
     /// <summary>
@@ -228,15 +251,81 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     protected void MoveDown()
     {
         Moving = true;
+
         _Rigidbody.velocity = new Vector2(_Rigidbody.velocity.x, -_movingSpeedY);
     }
+    /// <summary>
+    /// 이동을 중지합니다.
+    /// </summary>
+    protected override void StopMoving()
+    {
+        _Velocity = new Vector2(0, 0);
 
+        // 
+        Moving = false;
+    }
+
+    /// <summary>
+    /// 공격합니다.
+    /// </summary>
+    void Attack()
+    {
+        Attacking = true;
+
+        // 
+        StartCoroutine(CoroutineAttack());
+    }
+    /// <summary>
+    /// 공격을 중지합니다.
+    /// </summary>
+    void StopAttack()
+    {
+        Attacking = false;
+    }
+    /// <summary>
+    /// 방패를 들어 공격을 막습니다.
+    /// </summary>
+    void Guard()
+    {
+        Guarding = true;
+        _guard.gameObject.SetActive(true);
+
+        // 막기 코루틴을 시작합니다.
+        StartCoroutine(CoroutineGuard());
+    }
+    /// <summary>
+    /// 막기를 중지합니다.
+    /// </summary>
+    void StopGuarding()
+    {
+        Guarding = false;
+        _guard.gameObject.SetActive(false);
+    }
+    /// <summary>
+    /// 플레이어를 추적합니다.
+    /// </summary>
+    void Follow()
+    {
+        Guarding = false;
+        Attacking = false;
+
+        StartCoroutine(CoroutineFollow());
+    }
+    /// <summary>
+    /// 추적을 중지합니다.
+    /// </summary>
+    void StopFollowing()
+    {
+        StopMoving();
+    }
+    
     /// <summary>
     /// 전투 시작 액션입니다.
     /// </summary>
     public override void Fight()
     {
-        MoveLeft();
+        PlayerController player = _StageManager._player;
+        Guard();
     }
 
     #endregion
@@ -246,6 +335,80 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
 
 
     #region 보조 메서드를 정의합니다.
+    /// <summary>
+    /// 플레이어를 향해 이동합니다.
+    /// </summary>
+    private void MoveToPlayer()
+    {
+        // 사용할 변수를 선언합니다.
+        Vector3 playerPos = _StageManager.GetCurrentPlayerPosition();
+        Vector2 relativePos = playerPos - transform.position;
+
+        // 플레이어를 향해 수평 방향 전환합니다.
+        if (relativePos.x < 0)
+        {
+            MoveLeft();
+        }
+        else if (relativePos.x > 0)
+        {
+            MoveRight();
+        }
+        // 플레이어를 향해 수직 방향 전환합니다.
+        if (relativePos.y > 0)
+        {
+            MoveUp();
+        }
+        else if (relativePos.y < 0)
+        {
+            MoveDown();
+        }
+    }
+    /// <summary>
+    /// 탄환을 발사합니다.
+    /// </summary>
+    /// <param name="shotPosition">탄환을 발사할 위치입니다.</param>
+    public void Shot(Transform shotPosition)
+    {
+        SoundEffects[1].Play();
+        Instantiate(effects[1], shotPosition.position, shotPosition.rotation);
+
+        // 
+        EnemyBulletScript bullet = Instantiate
+            (_bullets[0], shotPosition.position, shotPosition.rotation)
+            as EnemyBulletScript;
+        bullet.transform.parent = _StageManager._enemyParent.transform;
+        bullet.MoveTo(FacingRight ? Vector3.right : Vector3.left);
+    }
+
+    /// <summary>
+    /// 막기 다음 액션을 수행합니다.
+    /// </summary>
+    void PerformActionAfterGuard()
+    {
+        Attack();
+    }
+    /// <summary>
+    /// 공격 다음 액션을 수행합니다.
+    /// </summary>
+    void PerformActionAfterAttack()
+    {
+        Follow();
+    }
+    /// <summary>
+    /// 추적 다음 액션을 수행합니다.
+    /// </summary>
+    void PerformActionAfterFollow()
+    {
+        Guard();
+    }
+
+    #endregion
+
+
+
+
+
+    #region 코루틴 메서드를 정의합니다.
     /// <summary>
     /// 등장 코루틴입니다.
     /// </summary>
@@ -258,16 +421,20 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
         }
         StopMoving();
 
+        /**
         // 떨어지고 나서 몇 초간 대기합니다.
         while (IsAnimationPlaying("FallRun"))
             yield return false;
         while (IsAnimationPlaying("FallEnd"))
             yield return false;
+        */
 
+        /**
         // 공격을 두 번 합니다.
         Attack();
         while (Attacking)
             yield return false;
+        */
 
         // 등장을 마칩니다.
         AppearEnded = true;
@@ -282,10 +449,14 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
         StopMoving();
 
         // 
+        Shot(_shotPosition);
+        yield return new WaitForSeconds(3f);
+
+        /**
+        // 
         while (IsAnimationPlaying("Idle"))
             yield return false;
 
-        /**
         SoundEffects[4].Play();
         while (IsAnimationPlaying("Attack1"))
             yield return false;
@@ -293,47 +464,51 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
         SoundEffects[5].Play();
         while (IsAnimationPlaying("Attack2"))
             yield return false;
-        */
 
         // 공격을 종료합니다.
         Attacking = false;
         while (IsAnimationPlaying("Idle"))
             yield return false;
-
-        yield break;
-    }
-
-    /// <summary>
-    /// 플레이어를 향해 이동합니다.
-    /// </summary>
-    private void MoveToPlayer()
-    {
-        // 사용할 변수를 선언합니다.
-        Vector3 playerPos = _StageManager.GetCurrentPlayerPosition();
-        Vector2 relativePos = playerPos - transform.position;
-
-        // 플레이어를 향해 방향을 바꿉니다.
-        if (relativePos.x < 0 && FacingRight)
-        {
-            MoveLeft();
-        }
-        else if (relativePos.x > 0 && !FacingRight)
-        {
-            MoveRight();
-        }
-        /*
-        Handy.Log("PlayerPos={2}, SelfPos={3}, RelPos={0}, FacingRight={1}",
-            relativePos, FacingRight, playerPos, transform.position);
         */
 
-        if (relativePos.y > 0)
+        Attacking = false;
+        PerformActionAfterAttack();
+        yield break;
+    }
+    /// <summary>
+    /// 막기 코루틴입니다.
+    /// </summary>
+    IEnumerator CoroutineGuard()
+    {
+        float time = 0;
+        while (time < _guardTime)
         {
-            MoveUp();
+            yield return false;
+            time += Time.deltaTime;
         }
-        else if (relativePos.y < 0)
+
+        // 막기 상태를 끝냅니다.
+        StopGuarding();
+        PerformActionAfterGuard();
+        yield break;
+    }
+    /// <summary>
+    /// 추적 코루틴입니다.
+    /// </summary>
+    IEnumerator CoroutineFollow()
+    {
+        float time = 0;
+        while (time < _followTime)
         {
-            MoveDown();
+            MoveToPlayer();
+            time += Time.deltaTime;
+            yield return false;
         }
+
+        // 막기 상태를 끝냅니다.
+        StopFollowing();
+        PerformActionAfterFollow();
+        yield break;
     }
 
     #endregion

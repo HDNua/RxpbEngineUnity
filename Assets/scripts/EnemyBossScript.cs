@@ -191,16 +191,6 @@ public abstract class EnemyBossScript : EnemyScript
         get { return _flying; }
         set { _flying = value; }
     }
-    /**
-    /// <summary>
-    /// 
-    /// </summary>
-    protected bool IsIdle
-    {
-        get { return _idle; }
-        set { _Animator.SetBool("Idle", _idle = value); }
-    }
-    */
 
     /// <summary>
     /// 최대 체력입니다.
@@ -275,21 +265,6 @@ public abstract class EnemyBossScript : EnemyScript
     protected override void Start()
     {
         base.Start();
-
-        /*
-        // 필드를 초기화합니다.
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _collider2D = GetComponent<Collider2D>();
-
-        // 자신과 가장 가까운 바닥으로 y 좌표를 옮깁니다.
-        RaycastHit2D groundRay = Physics2D.Raycast
-            (_groundCheck.position, Vector2.down, 10f, _whatIsGround);
-        Vector2 newPos = transform.position;
-        newPos.y -= Mathf.Abs(_collider2D.bounds.min.y - groundRay.point.y);
-        transform.position = newPos;
-
-        MoveLeft();
-        */
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트합니다.
@@ -297,24 +272,6 @@ public abstract class EnemyBossScript : EnemyScript
     protected override void Update()
     {
         base.Update();
-
-        /*
-        // 사용할 변수를 선언합니다.
-        float posX = transform.position.x;
-        float boundLeft = SpawnZone.Left;
-        float boundRight = SpawnZone.Right;
-
-
-        // 영역을 넘어서면 방향을 전환하여 원래대로 복귀합니다.
-        if (posX < boundLeft)
-        {
-            MoveRight();
-        }
-        else if (boundRight < posX)
-        {
-            MoveLeft();
-        }
-        */
     }
     /// <summary>
     /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트 합니다.
@@ -325,16 +282,7 @@ public abstract class EnemyBossScript : EnemyScript
     {
         if (Flying)
         {
-            /*
-            if (Landed)
-            {
-                Land();
-            }
-            else
-            {
-                /// Landed = false;
-            }
-            */
+
         }
         else
         {
@@ -603,13 +551,6 @@ public abstract class EnemyBossScript : EnemyScript
     {
         return _Animator.GetCurrentAnimatorStateInfo(0).IsName(stateName);
     }
-    /// <summary>
-    /// 
-    /// </summary>
-    public void RequestBossHeal()
-    {
-
-    }
 
     #endregion
 
@@ -718,31 +659,26 @@ public abstract class EnemyBossScript : EnemyScript
         }
         else if (rayB || rayF)
         {
+            // 가장 가까운 거리에 적중한 Ray를 탐색합니다.
             RaycastHit2D ray;
-
             if (rayB && !rayF)
             {
-                // difY = rayB.distance / transform.localScale.y;
-                // pos.y -= difY;
                 ray = rayB;
             }
             else if (!rayB && rayF)
             {
-                // difY = rayF.distance / transform.localScale.y;
-                // pos.y -= difY;
                 ray = rayF;
             }
             else
             {
-                // difY = Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
-                // pos.y -= difY;
                 ray = rayB.distance < rayF.distance ? rayB : rayF;
             }
 
-            // 
-            Vector3 pos = transform.position;
+            /// Vector3 pos = transform.position;
+            /// pos.y -= difY;
+            
+            // 지형과 Y 좌표의 차이가 작으면 추락을 중지합니다.
             float difY = ray.distance / transform.localScale.y;
-            pos.y -= difY;
             if (Mathf.Abs(difY) < _jumpDecSize)
             {
                 // transform.position = pos;
@@ -918,7 +854,7 @@ public abstract class EnemyBossScript : EnemyScript
 
     #region 구형 정의를 보관합니다.
     /// <summary>
-    /// 
+    /// 걷는 소리를 재생합니다.
     /// </summary>
     void FE_PlayWalkSound()
     {
