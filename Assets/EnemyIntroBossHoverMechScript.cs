@@ -30,7 +30,12 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     /// <summary>
     /// 탄환 발사 지점입니다.
     /// </summary>
-    public Transform _shotPosition;
+    public Transform[] _shotPosition;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public Transform _ultimateStartPosition;
 
     /// <summary>
     /// X축 속력입니다.
@@ -40,6 +45,14 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     /// Y축 속력입니다.
     /// </summary>
     public float _movingSpeedY = 2;
+    /// <summary>
+    /// 궁극기 시전 시 X축 속력입니다.
+    /// </summary>
+    public float _ultimateSpeedX1 = 5;
+    /// <summary>
+    /// 궁극기 시전 시 Y축 속력입니다.
+    /// </summary>
+    public float _ultimateSpeedY1 = 5;
 
     /// <summary>
     /// 방패를 들어 막는 시간입니다.
@@ -49,6 +62,31 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     /// 추적 시간입니다.
     /// </summary>
     public float _followTime = 5f;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _shotInterval = 2f;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public int _shotCount_1_1 = 4;
+    /// <summary>
+    /// 
+    /// </summary>
+    public int _shotCount_1_2 = 8;
+    /// <summary>
+    /// 
+    /// </summary>
+    public int _shotCount_2_1 = 4;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _ultimateInterval1 = 0.3f;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _ultimateInterval2 = 0.3f;
 
     #endregion
 
@@ -90,6 +128,11 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
         set { _Animator.SetBool("Guarding", _guarding = value); }
     }
 
+    /// <summary>
+    /// 궁극기가 활성화되었다면 참입니다.
+    /// </summary>
+    bool UltimateEnabled { get; set; }
+
     #endregion
 
 
@@ -104,10 +147,12 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     {
         base.Start();
 
-        // 
+        // 비행 상태로 변경합니다.
         Flying = true;
         Landed = false;
         StopFalling();
+
+        // 아래로 내려오는 것으로 시작합니다.
         MoveDown();
     }
     /// <summary>
@@ -117,19 +162,48 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     {
         base.Update();
 
-        // 
+        // 등장이 끝나지 않았다면
         if (AppearEnded == false)
         {
+            // 다음 문장을 수행하지 않습니다.
+            return;
+        }
+        // 전투 중인 상태가 아니라면 
+        else if (Fighting == false)
+        {
+            // 다음 문장을 수행하지 않습니다.
             return;
         }
 
-        /**
-        // 움직이고 있다면 항상 플레이어를 쫓아갑니다.
-        if (Moving)
+        //
+        if (UltimateEnabled == false && Health <= _dangerHealth)
         {
-            MoveToPlayer();
-        }
-        */
+            // 
+            StopMoving();
+            StopAttack();
+            StopGuarding();
+
+            // 
+            if (_coroutineAttack != null)
+            {
+                StopCoroutine(_coroutineAttack);
+                _coroutineAttack = null;
+            }
+            if (_coroutineGuard != null)
+            {
+                StopCoroutine(_coroutineGuard);
+                _coroutineGuard = null;
+            }
+            if (_coroutineFollow != null)
+            {
+                StopCoroutine(_coroutineFollow);
+                _coroutineFollow = null;
+            }
+
+            // 
+            UltimateEnabled = true;
+            ReadyUltimate();
+        } 
     }
 
     #endregion
@@ -213,6 +287,7 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
 
 
 
+
     #region 행동 메서드를 정의합니다.
     /// <summary>
     /// 왼쪽으로 이동합니다.
@@ -272,8 +347,8 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     {
         Attacking = true;
 
-        // 
-        StartCoroutine(CoroutineAttack());
+        // 공격 코루틴을 시작합니다.
+        _coroutineAttack = StartCoroutine(CoroutineAttack());
     }
     /// <summary>
     /// 공격을 중지합니다.
@@ -291,7 +366,7 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
         _guard.gameObject.SetActive(true);
 
         // 막기 코루틴을 시작합니다.
-        StartCoroutine(CoroutineGuard());
+        _coroutineGuard = StartCoroutine(CoroutineGuard());
     }
     /// <summary>
     /// 막기를 중지합니다.
@@ -309,7 +384,8 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
         Guarding = false;
         Attacking = false;
 
-        StartCoroutine(CoroutineFollow());
+        // 추적 코루틴을 시작합니다.
+        _coroutineFollow = StartCoroutine(CoroutineFollow());
     }
     /// <summary>
     /// 추적을 중지합니다.
@@ -318,13 +394,61 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     {
         StopMoving();
     }
+    /// <summary>
+    /// 방어 상태로 플레이어를 추적합니다.
+    /// </summary>
+    void GuardFollow()
+    {
+        Guarding = true;
+        Attacking = false;
+
+        // 가드를 활성화합니다.
+        _guard.gameObject.SetActive(true);
+
+        // 추적 코루틴을 시작합니다.
+        _coroutineFollow = StartCoroutine(CoroutineFollow());
+    }
+    /// <summary>
+    /// 추적을 중지합니다.
+    /// </summary>
+    void StopGuardFollowing()
+    {
+        StopGuarding();
+        StopMoving();
+    }
+
+    /// <summary>
+    /// 궁극기를 준비합니다.
+    /// </summary>
+    void ReadyUltimate()
+    {
+        StartCoroutine(CoroutineReadyUltimate());
+    }
+    /// <summary>
+    /// 궁극기 1을 시전합니다.
+    /// </summary>
+    void Ultimate1()
+    {
+        Guarding = false;
+
+        StartCoroutine(CoroutineUltimate1());
+    }
+    /// <summary>
+    /// 궁극기 2를 시전합니다.
+    /// </summary>
+    void Ultimate2()
+    {
+        StartCoroutine(CoroutineUltimate2());
+    }
     
     /// <summary>
     /// 전투 시작 액션입니다.
     /// </summary>
     public override void Fight()
     {
-        PlayerController player = _StageManager._player;
+        base.Fight();
+
+        // 
         Guard();
     }
 
@@ -335,6 +459,34 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
 
 
     #region 보조 메서드를 정의합니다.
+    /// <summary>
+    /// 특정 지점으로 이동합니다.
+    /// </summary>
+    /// <param name="t">이동할 지점입니다.</param>
+    void MoveTo(Transform t)
+    {
+        // 사용할 변수를 선언합니다.
+        Vector2 relativePos = t.position - transform.position;
+
+        // 플레이어를 향해 수평 방향 전환합니다.
+        if (relativePos.x < 0)
+        {
+            MoveLeft();
+        }
+        else if (relativePos.x > 0)
+        {
+            MoveRight();
+        }
+        // 플레이어를 향해 수직 방향 전환합니다.
+        if (relativePos.y > 0)
+        {
+            MoveUp();
+        }
+        else if (relativePos.y < 0)
+        {
+            MoveDown();
+        }
+    }
     /// <summary>
     /// 플레이어를 향해 이동합니다.
     /// </summary>
@@ -370,14 +522,47 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     public void Shot(Transform shotPosition)
     {
         SoundEffects[1].Play();
-        Instantiate(effects[1], shotPosition.position, shotPosition.rotation);
+        GameObject effect = Instantiate(effects[1], shotPosition.position, shotPosition.rotation);
+        if (FacingRight)
+        {
+            Vector3 scale = effect.transform.localScale;
+            effect.transform.localScale = new Vector3(-scale.x, scale.y);
+        }
 
         // 
         EnemyBulletScript bullet = Instantiate
             (_bullets[0], shotPosition.position, shotPosition.rotation)
             as EnemyBulletScript;
         bullet.transform.parent = _StageManager._enemyParent.transform;
-        bullet.MoveTo(FacingRight ? Vector3.right : Vector3.left);
+
+        // 
+        bullet.FacingRight = FacingRight;
+        bullet.MoveTo(_StageManager.GetCurrentPlayerPosition());
+    }
+    /// <summary>
+    /// 탄환을 발사합니다.
+    /// </summary>
+    /// <param name="shotPosition">탄환을 발사할 위치입니다.</param>
+    /// <param name="destination">탄환의 목적지입니다.</param>
+    public void Shot(Transform shotPosition, Vector3 destination)
+    {
+        SoundEffects[1].Play();
+        GameObject effect = Instantiate(effects[1], shotPosition.position, shotPosition.rotation);
+        if (FacingRight)
+        {
+            Vector3 scale = effect.transform.localScale;
+            effect.transform.localScale = new Vector3(-scale.x, scale.y);
+        }
+
+        // 
+        EnemyBulletScript bullet = Instantiate
+            (_bullets[0], shotPosition.position, shotPosition.rotation)
+            as EnemyBulletScript;
+        bullet.transform.parent = _StageManager._enemyParent.transform;
+
+        // 
+        bullet.FacingRight = FacingRight;
+        bullet.MoveTo(destination);
     }
 
     /// <summary>
@@ -392,12 +577,33 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     /// </summary>
     void PerformActionAfterAttack()
     {
-        Follow();
+        if (UltimateEnabled)
+        {
+            GuardFollow();
+        }
+        else
+        {
+            Follow();
+        }
     }
     /// <summary>
     /// 추적 다음 액션을 수행합니다.
     /// </summary>
     void PerformActionAfterFollow()
+    {
+        if (UltimateEnabled)
+        {
+            ReadyUltimate();
+        }
+        else
+        {
+            Guard();
+        }
+    }
+    /// <summary>
+    /// 궁극기를 시전한 다음 액션을 수행합니다.
+    /// </summary>
+    void PerformActionAfterUltimate()
     {
         Guard();
     }
@@ -409,6 +615,11 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
 
 
     #region 코루틴 메서드를 정의합니다.
+    Coroutine _coroutineAttack;
+    Coroutine _coroutineGuard;
+    Coroutine _coroutineFollow;
+
+
     /// <summary>
     /// 등장 코루틴입니다.
     /// </summary>
@@ -420,21 +631,6 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
             yield return false;
         }
         StopMoving();
-
-        /**
-        // 떨어지고 나서 몇 초간 대기합니다.
-        while (IsAnimationPlaying("FallRun"))
-            yield return false;
-        while (IsAnimationPlaying("FallEnd"))
-            yield return false;
-        */
-
-        /**
-        // 공격을 두 번 합니다.
-        Attack();
-        while (Attacking)
-            yield return false;
-        */
 
         // 등장을 마칩니다.
         AppearEnded = true;
@@ -448,31 +644,18 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
         // 움직임을 멈춥니다.
         StopMoving();
 
-        // 
-        Shot(_shotPosition);
-        yield return new WaitForSeconds(3f);
+        // 탄환을 세 번 발사합니다.
+        Shot(_shotPosition[0]);
+        yield return new WaitForSeconds(_shotInterval);
+        Shot(_shotPosition[0]);
+        yield return new WaitForSeconds(_shotInterval);
+        Shot(_shotPosition[0]);
+        yield return new WaitForSeconds(_shotInterval);
 
-        /**
-        // 
-        while (IsAnimationPlaying("Idle"))
-            yield return false;
-
-        SoundEffects[4].Play();
-        while (IsAnimationPlaying("Attack1"))
-            yield return false;
-
-        SoundEffects[5].Play();
-        while (IsAnimationPlaying("Attack2"))
-            yield return false;
-
-        // 공격을 종료합니다.
-        Attacking = false;
-        while (IsAnimationPlaying("Idle"))
-            yield return false;
-        */
-
+        // 공격을 끝냅니다.
         Attacking = false;
         PerformActionAfterAttack();
+        _coroutineAttack = null;
         yield break;
     }
     /// <summary>
@@ -490,6 +673,7 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
         // 막기 상태를 끝냅니다.
         StopGuarding();
         PerformActionAfterGuard();
+        _coroutineGuard = null;
         yield break;
     }
     /// <summary>
@@ -508,6 +692,116 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
         // 막기 상태를 끝냅니다.
         StopFollowing();
         PerformActionAfterFollow();
+        _coroutineFollow = null;
+        yield break;
+    }
+
+    /// <summary>
+    /// 궁극기를 준비합니다.
+    /// </summary>
+    IEnumerator CoroutineReadyUltimate()
+    {
+        float originalSpeedX = _movingSpeedX;
+        float originalSpeedY = _movingSpeedY;
+
+        _movingSpeedX = _ultimateSpeedX1;
+        _movingSpeedY = _ultimateSpeedY1;
+
+        MoveTo(_ultimateStartPosition);
+        while (true)
+        {
+            // 
+            Vector3 newPos = transform.position;
+            Vector3 ultPos = _ultimateStartPosition.position;
+
+            // 
+            if (newPos.x > ultPos.x)
+                newPos.x = ultPos.x;
+            if (newPos.y < ultPos.y)
+                newPos.y = ultPos.y;
+            Handy.Log("NewPos={0}, UltPos={1}", newPos, ultPos);
+
+            // 
+            if (Vector3.Distance(newPos, ultPos) < 0.1f)
+            {
+                break;
+            }
+
+            // 
+            yield return false;
+        }
+        StopMoving();
+        StopGuarding();
+
+        // 
+        _movingSpeedX = originalSpeedX;
+        _movingSpeedY = originalSpeedY;
+        Ultimate1();
+        yield break;
+    }
+    /// <summary>
+    /// 궁극기 1을 시전합니다.
+    /// </summary>
+    private IEnumerator CoroutineUltimate1()
+    {
+        float originalSpeedX = _movingSpeedX;
+        float originalSpeedY = _movingSpeedY;
+
+        // 
+        _movingSpeedX = _ultimateSpeedX1;
+        _movingSpeedY = _ultimateSpeedY1;
+        if (FacingRight)
+            Flip();
+
+        // 
+        MoveUp();
+        for (int i = 0; i < _shotCount_1_1; ++i)
+        {
+            Shot(_shotPosition[1], transform.position - new Vector3(100, 100));
+            yield return new WaitForSeconds(_ultimateInterval1);
+        }
+        StopMoving();
+
+        // 
+        MoveLeft();
+        for (int i = 0; i < _shotCount_1_2; ++i)
+        {
+            Shot(_shotPosition[1], transform.position - new Vector3(100, 100));
+            yield return new WaitForSeconds(_ultimateInterval1);
+        }
+        StopMoving();
+
+        // 궁극기를 끝냅니다.
+        _movingSpeedX = originalSpeedX;
+        _movingSpeedY = originalSpeedY;
+        Ultimate2();
+        yield break;
+    }
+    /// <summary>
+    /// 궁극기 2를 시전합니다.
+    /// </summary>
+    private IEnumerator CoroutineUltimate2()
+    {
+        float originalSpeedX = _movingSpeedX;
+        float originalSpeedY = _movingSpeedY;
+
+        // 
+        _movingSpeedX = _ultimateSpeedX1;
+        _movingSpeedY = _ultimateSpeedY1;
+
+        Flip();
+        MoveDown();
+        for (int i = 0; i < _shotCount_2_1; ++i)
+        {
+            Shot(_shotPosition[1], transform.position + new Vector3(100, 0));
+            yield return new WaitForSeconds(_ultimateInterval1);
+        }
+        StopMoving();
+
+        // 궁극기를 끝냅니다.
+        _movingSpeedX = originalSpeedX;
+        _movingSpeedY = originalSpeedY;
+        PerformActionAfterUltimate();
         yield break;
     }
 

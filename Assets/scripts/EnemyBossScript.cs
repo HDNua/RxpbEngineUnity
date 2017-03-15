@@ -114,13 +114,9 @@ public abstract class EnemyBossScript : EnemyScript
     public int _dangerHealth = 10;
 
     /// <summary>
-    /// 
+    /// 비행하는 보스라면 참입니다.
     /// </summary>
     bool _flying = false;
-    /// <summary>
-    /// 
-    /// </summary>
-    bool _idle = false;
 
     #endregion
 
@@ -184,7 +180,7 @@ public abstract class EnemyBossScript : EnemyScript
     }
 
     /// <summary>
-    /// 
+    /// 비행하는 보스라면 참입니다.
     /// </summary>
     protected bool Flying
     {
@@ -208,8 +204,7 @@ public abstract class EnemyBossScript : EnemyScript
     {
         return (Health == MaxHealth);
     }
-
-
+    
     /// <summary>
     /// 플레이어의 속도(RigidBody2D.velocity)입니다.
     /// </summary>
@@ -233,6 +228,19 @@ public abstract class EnemyBossScript : EnemyScript
     {
         get { return _appearEnded; }
         protected set { _appearEnded = value; }
+    }
+
+    /// <summary>
+    /// 전투 중이라면 참입니다.
+    /// </summary>
+    bool _fighting = false;
+    /// <summary>
+    /// 전투 중이라면 참입니다.
+    /// </summary>
+    public bool Fighting
+    {
+        get { return _fighting; }
+        protected set { _fighting = value; }
     }
 
     /// <summary>
@@ -411,7 +419,10 @@ public abstract class EnemyBossScript : EnemyScript
     /// <summary>
     /// 전투 시작 액션입니다.
     /// </summary>
-    public abstract void Fight();
+    public virtual void Fight()
+    {
+        Fighting = true;
+    }
 
     #endregion
 

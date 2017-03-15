@@ -180,16 +180,6 @@ public abstract class EnemyBulletScript : EnemyScript, IMovableEnemy
         StartCoroutine(CoroutineInvencible());
     }
 
-
-    /**
-    /// <summary>
-    /// 개체 제거를 요청합니다.
-    /// </summary>
-    protected void RequestDestroy()
-    {
-        Destroy(gameObject);
-    }
-    */
     /// <summary>
     /// 탄환 발사 방향을 지정합니다.
     /// </summary>
