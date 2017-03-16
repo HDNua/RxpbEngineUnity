@@ -11,36 +11,39 @@ using System.Collections;
 public class XBusterScript : AttackScript
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     Camera mainCamera;
+    /// <summary>
+    /// 
+    /// </summary>
     public Camera MainCamera { set { mainCamera = value; } }
 
+    /// <summary>
+    /// 
+    /// </summary>
     Collider2D _collider;
+    /// <summary>
+    /// 
+    /// </summary>
     Rigidbody2D _rigidbody;
-
-
+    
     #endregion
-
-
-
-
-
-
+    
 
 
 
 
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     public LayerMask busterUnpassable;
-
-
+    
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -51,6 +54,8 @@ public class XBusterScript : AttackScript
     protected override void Awake()
     {
         base.Awake();
+
+        // 필드를 초기화합니다.
         _collider = GetComponent<Collider2D>();
         _rigidbody = GetComponent<Rigidbody2D>();
     }
@@ -86,17 +91,11 @@ public class XBusterScript : AttackScript
             }
         }
     }
-
-
+    
     #endregion
 
 
-
-
-
-
-
-
+    
 
     #region Collider2D의 기본 메서드를 재정의합니다.
     /// <summary>
@@ -109,7 +108,6 @@ public class XBusterScript : AttackScript
         if (other.gameObject.CompareTag("Enemy"))
         {
             EnemyScript enemy = other.gameObject.GetComponent<EnemyScript>();
-
 
             // 적이 무적 상태라면
             if (enemy.Invencible)
@@ -139,17 +137,11 @@ public class XBusterScript : AttackScript
             Destroy(gameObject);
         }
     }
-
-
+    
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 보조 메서드를 정의합니다.
@@ -203,22 +195,14 @@ public class XBusterScript : AttackScript
         // 생성한 효과 객체를 반환합니다.
         return hitParticle;
     }
-
-
+    
     #endregion
 
 
 
-
-
-
-
-
-
+    
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("busterUnpassable로 대체되었습니다.", true)]
-    public LayerMask whatIsWall;
 
     #endregion
 }

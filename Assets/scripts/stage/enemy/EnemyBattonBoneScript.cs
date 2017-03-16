@@ -11,13 +11,9 @@ public class EnemyBattonBoneScript : EnemyScript
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
     /// <summary>
-    /// Rigidbody2D 요소를 가져옵니다.
+    /// 
     /// </summary>
     Rigidbody2D _rigidbody;
-    /// <summary>
-    /// BoxCollider2D 요소를 가져옵니다.
-    /// </summary>
-    Collider2D _collider2D;
 
     #endregion
 
@@ -92,7 +88,6 @@ public class EnemyBattonBoneScript : EnemyScript
 
         // 필드를 초기화합니다.
         _rigidbody = GetComponent<Rigidbody2D>();
-        _collider2D = GetComponent<Collider2D>();
 
         // 컬러 팔레트를 설정합니다.
         DefaultPalette = EnemyColorPalette.BattonBonePalette;
@@ -185,8 +180,7 @@ public class EnemyBattonBoneScript : EnemyScript
     public override void Dead()
     {
         // 폭발 효과를 생성하고 효과음을 재생합니다.
-        SoundEffects[0].Play();
-        Instantiate(effects[0], transform.position, transform.rotation);
+        CreateExplosion(transform.position);
 
         // 사망 시 아이템 드롭 루틴입니다.
         int dropItem = UnityEngine.Random.Range(0, _items.Length);

@@ -11,15 +11,6 @@ using UnityEngine;
 public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
 {
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
-    /// <summary>
-    /// Rigidbody2D 요소를 가져옵니다.
-    /// </summary>
-    Rigidbody2D _rigidbody;
-    /// <summary>
-    /// BoxCollider2D 요소를 가져옵니다.
-    /// </summary>
-    Collider2D _collider2D;
-
 
     #endregion
     
@@ -47,7 +38,7 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
     /// <summary>
     /// 사망 효과 간격입니다.
     /// </summary>
-    public float _deadEffectInterval;
+    public float _deadEffectInterval = 0.5f;
 
     #endregion
 
@@ -72,14 +63,13 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
         base.Start();
 
         // 필드를 초기화합니다.
-        _rigidbody = GetComponent<Rigidbody2D>();
-        _collider2D = GetComponent<Collider2D>();
+        Collider2D collider2D = GetComponent<Collider2D>();
 
         // 자신과 가장 가까운 바닥으로 y 좌표를 옮깁니다.
         RaycastHit2D groundRay = Physics2D.Raycast
             (_groundCheck.position, Vector2.down, 10f, _whatIsGround);
         Vector2 newPos = transform.position;
-        newPos.y -= Mathf.Abs(_collider2D.bounds.min.y - groundRay.point.y);
+        newPos.y -= Mathf.Abs(collider2D.bounds.min.y - groundRay.point.y);
         transform.position = newPos;
 
         // 컬러 팔레트를 설정합니다.
@@ -100,10 +90,10 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
     {
         base.LateUpdate();
 
+        // 
         UpdateColor();
     }
-
-
+    
     #endregion
 
 
@@ -123,12 +113,10 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
             GameObject pObject = other.gameObject;
             PlayerController player = pObject.GetComponent<PlayerController>();
 
-
             // 플레이어가 무적 상태이거나 죽었다면
             if (player.Invencible || player.IsDead)
             {
                 // 아무 것도 하지 않습니다.
-
             }
             // 그 외의 경우
             else
@@ -221,8 +209,9 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
             float distortionX = UnityEngine.Random.Range(1, 3);
             float distortionY = UnityEngine.Random.Range(1, 3);
 
-            SoundEffects[0].Play();
-            Instantiate(effects[0], transform.position + new Vector3(distortionX, distortionY), transform.rotation);
+            /// SoundE_ffects[0].Play();
+            /// Instantiate(e_ffects[0], transform.position + new Vector3(distortionX, distortionY), transform.rotation);
+            CreateExplosion(transform.position + new Vector3(distortionX, distortionY));
 
             // 
             yield return new WaitForSeconds(_deadEffectInterval);

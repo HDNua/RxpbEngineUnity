@@ -111,8 +111,9 @@ public class EnemyTrapBlastBulletScript : EnemyBulletScript
     public override void Dead()
     {
         // 폭발 효과를 생성하고 효과음을 재생합니다.
-        SoundEffects[0].Play();
-        Instantiate(effects[0], transform.position, transform.rotation);
+        /// SoundE_ffects[0].Play();
+        /// Instantiate(e_ffects[0], transform.position, transform.rotation);
+        CreateExplosion(transform.position);
 
         // 캐릭터가 사망합니다.
         base.Dead();

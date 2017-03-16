@@ -177,8 +177,9 @@ public class EnemyMettoolScript : EnemyScript
     public override void Dead()
     {
         // 폭발 효과를 생성하고 효과음을 재생합니다.
-        SoundEffects[0].Play();
-        Instantiate(effects[0], transform.position, transform.rotation);
+        /// SoundE_ffects[0].Play();
+        /// Instantiate(e_ffects[0], transform.position, transform.rotation);
+        CreateExplosion(transform.position);
 
         // 사망 시 아이템 드롭 루틴입니다.
         int dropItem = UnityEngine.Random.Range(0, _items.Length);

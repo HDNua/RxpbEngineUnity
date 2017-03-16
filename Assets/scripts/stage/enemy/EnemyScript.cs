@@ -76,7 +76,7 @@ public abstract class EnemyScript : MonoBehaviour
     /// <summary>
     /// 사망 시 효과를 보관하는 개체입니다.
     /// </summary>
-    public ParticleSpreadScript _deadEffect;
+    public ParticleSpreadScript _deadParticleSpreadEffect;
 
     /// <summary>
     /// 피격 텍스쳐 집합입니다.
@@ -311,13 +311,12 @@ public abstract class EnemyScript : MonoBehaviour
         gameObject.SetActive(false);
 
         // 사망 효과가 존재하는 적이라면 호출합니다.
-        if (_deadEffect != null)
+        if (_deadParticleSpreadEffect != null)
         {
-            Instantiate(_deadEffect, transform.position, transform.rotation)
+            Instantiate(_deadParticleSpreadEffect, transform.position, transform.rotation)
                 .gameObject.SetActive(true);
         }
-    }
-    
+    }    
     /// <summary>
     /// 자신의 위치에 아이템을 생성합니다.
     /// </summary>
@@ -337,6 +336,14 @@ public abstract class EnemyScript : MonoBehaviour
             return ret;
         }
         return null;
+    }
+
+    /// <summary>
+    /// 폭발 효과를 생성합니다. (주의: 효과 0번은 폭발 개체여야 합니다.)
+    /// </summary>
+    protected virtual void CreateExplosion(Vector3 position)
+    {
+        Instantiate(effects[0], position, transform.rotation).gameObject.SetActive(true);
     }
     
     #endregion

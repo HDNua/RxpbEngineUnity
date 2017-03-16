@@ -514,9 +514,9 @@ public class ZController : PlayerController
                 var fTime = nTime - Mathf.Floor(nTime);
                 _Animator.Play("JumpShotGround", 0, fTime);
 
+                // 
                 StopMoving();
                 BlockMoving();
-//                audioSources[5].Play();
             }
         }
     }
@@ -531,7 +531,6 @@ public class ZController : PlayerController
         base.Dash();
 
         // 대쉬 효과 애니메이션을 추가합니다.
-        // GameObject dashFog = I_nstantiate(effects[0], dashFogPosition.position, dashFogPosition.rotation) as GameObject;
         GameObject dashFog = CloneObject(effects[0], dashFogPosition);
         if (FacingRight == false)
         {

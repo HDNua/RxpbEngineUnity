@@ -1202,7 +1202,6 @@ public class XController : PlayerController
     {
         base.Dash();
 
-
         // 대쉬 효과 애니메이션을 추가합니다.
         GameObject dashFog = CloneObject(effects[0], dashFogPosition);
         if (FacingRight == false)
@@ -1212,7 +1211,6 @@ public class XController : PlayerController
             dashFog.transform.localScale = newScale;
         }
         SoundEffects[3].Play();
-
 
         // 대쉬 코루틴을 실행합니다.
         _dashCoroutine = StartCoroutine(DashCoroutine());
@@ -1224,8 +1222,7 @@ public class XController : PlayerController
     {
         bool wasDashing = Dashing;
         base.StopDashing();
-
-
+        
         if (wasDashing)
         {
             // 대쉬 이펙트를 제거합니다.

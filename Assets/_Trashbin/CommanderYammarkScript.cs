@@ -149,14 +149,13 @@ public class CommanderYammarkScript : EnemyScript, IBossEnemy
     /// </summary>
     public override void Dead()
     {
+        /**
         // 사망 코루틴을 시작합니다.
         StartCoroutine(DeadCoroutine());
 
-
         // 폭발 효과를 생성하고 효과음을 재생합니다.
-        SoundEffects[0].Play();
-        Instantiate(effects[0], transform.position, transform.rotation);
-
+        SoundE_ffects[0].Play();
+        Instantiate(e_ffects[0], transform.position, transform.rotation);
 
         // 사망 시 아이템 드롭 루틴입니다.
         int dropItem = UnityEngine.Random.Range(0, _items.Length);
@@ -165,9 +164,11 @@ public class CommanderYammarkScript : EnemyScript, IBossEnemy
             CreateItem(_items[dropItem]);
         }
 
-
         // 캐릭터가 사망합니다.
         base.Dead();
+        */
+
+        throw new NotImplementedException();
     }
 
 

@@ -14,15 +14,10 @@ public class EnemySpikyMK2Script : EnemyScript
     /// 
     /// </summary>
     Rigidbody2D _rigidbody;
-    /// <summary>
-    /// 
-    /// </summary>
-    BoxCollider2D _boxCollider2D;
-
 
     #endregion
 
-    
+
 
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
     /// <summary>
@@ -42,7 +37,7 @@ public class EnemySpikyMK2Script : EnemyScript
     /// </summary>
     public LayerMask _whatIsGround;
     /// <summary>
-    /// 
+    /// 무엇이 바닥 땅인지를 결정합니다.
     /// </summary>
     public LayerMask _whatIsGroundBottom;
 
@@ -83,7 +78,6 @@ public class EnemySpikyMK2Script : EnemyScript
 
         // 필드를 초기화합니다.
         _rigidbody = GetComponent<Rigidbody2D>();
-        _boxCollider2D = GetComponent<BoxCollider2D>();
 
         // 초기화를 마무리합니다.
         if (FacingRight)
@@ -289,9 +283,9 @@ public class EnemySpikyMK2Script : EnemyScript
     public override void Dead()
     {
         // 폭발 효과를 생성하고 효과음을 재생합니다.
-        SoundEffects[0].Play();
-        Instantiate(effects[0], transform.position, transform.rotation);
-
+        /// SoundE_ffects[0].Play();
+        /// Instantiate(e_ffects[0], transform.position, transform.rotation);
+        CreateExplosion(transform.position);
 
         // 사망 시 아이템 드롭 루틴입니다.
         int dropItem = UnityEngine.Random.Range(0, _items.Length);
