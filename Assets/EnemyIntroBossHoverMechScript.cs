@@ -719,7 +719,8 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
                 newPos.x = ultPos.x;
             if (newPos.y < ultPos.y)
                 newPos.y = ultPos.y;
-            Handy.Log("NewPos={0}, UltPos={1}", newPos, ultPos);
+            /// Handy.Log("NewPos={0}, UltPos={1}", newPos, ultPos);
+            transform.position = newPos;
 
             // 
             if (Vector3.Distance(newPos, ultPos) < 0.1f)

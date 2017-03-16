@@ -1,4 +1,4 @@
-RXPB v5.5.0 (IMPORTANT)
+RXPB v5.5.1
 
 ! CrouchShotLight와 같은 상태에 대해서도 RXPBHelper로 팔레트 수정 요망.
 
@@ -10,6 +10,12 @@ RXPB v5.5.0 (IMPORTANT)
 * !!!!! IMPORTANT !!!!!
   보스 전투 구현 완료!
 > 오 나 진짜 게임인줄 알았어
+
+
+- 체크포인트가 무시되던 버그 해결.
+
+
+- 치명적 버그 해결.
 
 
 end.

@@ -182,7 +182,6 @@ public class CameraZone : MonoBehaviour
 
 
     #region Trigger 관련 메서드를 재정의합니다.
-    /**
     /// <summary>
     /// 
     /// </summary>
@@ -197,7 +196,6 @@ public class CameraZone : MonoBehaviour
             }
         }
     }
-    */
     
     #endregion
     
