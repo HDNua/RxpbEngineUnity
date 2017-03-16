@@ -15,6 +15,16 @@ public static class EnemyColorPalette
     /// </summary>
     static readonly int[] INVENCIBLE_COLOR_PALETTE =
     {
+        0x88D8F8, 0x90D8F8, 0x98D8F8, 0xA0D8F8,
+        0xA8E0F8, 0xB0E0F8, 0xB8E0F8,
+        0xC0E0F8, 0xC8E8F8, 0xD0E8F8, 0xD8E8F8,
+        0xE0F0F8, 0xE8F0F8, 0xF0F0F8, 0xF8F8F8,
+        0x88D8F8, 0x90D8F8, 0x98D8F8, 0xA0D8F8,
+        0xA8E0F8, 0xB0E0F8, 0xB8E0F8,
+        0xC0E0F8, 0xC8E8F8, 0xD0E8F8, 0xD8E8F8,
+        0xE0F0F8, 0xE8F0F8, 0xF0F0F8, 0xF8F8F8,
+
+        /*
         0x7FA0EE, 0xAEC9E9, 0x7FA0EE, 0x7FA0EE,
         0x7FA0EE, 0x7FA0EE, 0xAEC9E9,
         0x7FA0EE, 0x7FA0EE, 0x6B90D3, 0xAEC9E9,
@@ -23,6 +33,7 @@ public static class EnemyColorPalette
         0x7FA0EE, 0x7FA0EE, 0xAEC9E9,
         0x7FA0EE, 0x7FA0EE, 0x6B90D3, 0xAEC9E9,
         0x7FA0EE, 0x7FA0EE, 0x7FA0EE, 0x7FA0EE,
+        */
     };
 
 
@@ -71,18 +82,29 @@ public static class EnemyColorPalette
         0xF0F0F0, 0xC0C0C8, 0x9898A0, 0x707078, 0x484850, 0x282830, 0xF0B020, 0xB08020, 0x605020, 0x688848, 0x406028, 0x304020, 0xB04020, 0x882818, 0x402018,
     };
     /// <summary>
+    /// 박쥐의 기본 색상표입니다.
+    /// </summary>
+    static readonly int[] BATTON_BONE_COLOR_PALETTE =
+    {
+        0xD8A038, 0xE8C848, 0x503868, 0xF8F860, 0xC87830, 0x9868A8, 0xF0F0F0, 0x382840, 0xD090B0, 0x982828, 0x702830, 0xC05828, 0xA04828, 0x606070, 0xA0A8C0,
+        0xD8A038, 0xE8C848, 0x503868, 0xF8F860, 0xC87830, 0x9868A8, 0xF0F0F0, 0x382840, 0xD090B0, 0x982828, 0x702830, 0xC05828, 0xA04828, 0x606070, 0xA0A8C0,
+    };
+
+    /// <summary>
+    /// 호버 메카 보스의 기본 색상표입니다.
+    /// </summary>
+    static readonly int[] INTRO_BOSS_HOVER_MECH_PALETTE =
+    {
+        0x5A7B4A, 0x395218, 0x93DD83, 0x6B9B5A, 0x102900, 0x635242, 0x938772, 0xF6F6F6, 0xC5BCA4, 0x4A4A63, 0xA43121, 0x602413, 0x52A48B, 0x6B7393, 0x29314A,
+        0x634A4A, 0xDDBCB4, 0x31396B, 0x5A6B83, 0x83BCB4, 0xB4BCDD, 0x317363, 0x8B9BB4, 0x294A4A, 0x7B93CD, 0x83ACD5, 0xB4D5E6, 0xD5E6EE, 0x7321D5, 0x93C5E6,
+    };
+
+
+    /// <summary>
     /// 
     /// </summary>
     static readonly int[] INTRO_BOSS_HEAD_COLOR_PALETTE =
     {
-//        0x508D43, 0x29312F, 0x454647, 0x5A5638, 0x191818, 0x275637, 0xECEDE1, 0x65756A, 0x56241F, 0xB4AD31, 0x99A7A7, 0xB3462D, 0x546559, 0xB7BFBD, 0x788787,
-//        0x508D43, 0x29312F, 0x454647, 0x5A5638, 0x191818, 0x275637, 0xECEDE1, 0x65756A, 0x56241F, 0xB4AD31, 0x99A7A7, 0xB3462D, 0x546559, 0xB7BFBD, 0x788787,
-//        0xFFFFFF, 0xE5EEE6, 0xBECBC8, 0x687A6D, 0x3D713C, 0x569143, 0x355C3D, 0xA2B2AB, 0x222B26, 0x402A1D, 0x515A5C, 0x303A34, 0x2F4C33, 0x1B171B, 0x1D1F21, // 0x5C6A60,
-//        0xACD39F, 0x120C11, 0x321B15, 0x788B80, 0x7CBD4E, 0x53371A, 0x8A9896, 0x704C1D, 0x292C34, 0x927D55, 0xC3533A, 0x24212C, 0x3D4045, 0x474D4D, 0xFD9789, // 0x843932,
-//        0xE5EEE6, 0xBECBC8, 0x687A6D, 0x3D713C, 0x569143, 0x355C3D, 0xA2B2AB, 0x222B26, 0x402A1D, 0x515A5C, 0x303A34, 0x2F4C33, 0x1B171B, 0x1D1F21, 0x5C6A60,
-//        0xACD39F, 0x120C11, 0x321B15, 0x788B80, 0x7CBD4E, 0x53371A, 0x8A9896, 0x704C1D, 0x292C34, 0x927D55, 0xC3533A, 0x24212C, 0x3D4045, 0x474D4D, 0xFD9789, // 0x843932,
-//        0xC4CAC1, 0x558E44, 0x3B6B3D, 0x7F8D83, 0x23222A, 0x292F32, 0x59635F, 0x39443F, 0x51361B, 0x1E181B, 0x120D12, 0x7CBC4F, 0x3C2419, 0x734920, 0xC75840,
-//        0xC4CAC1, 0x558E44, 0x3B6B3D, 0x7F8D83, 0x23222A, 0x292F32, 0x59635F, 0x39443F, 0x51361B, 0x1E181B, 0x120D12, 0x7CBC4F, 0x3C2419, 0x734920, 0xC75840,
         0xE7F1E3, 0x5E9848, 0x386040, 0x293B24, 0x1B171C, 0x2D4E32, 0x586B5A, 0xC0B9AD, 0x3F773B, 0x7EBF4F, 0x282B30, 0x1D2321, 0x563819, 0x3E3420, 0x130D12,
         0x744B1F, 0x281916, 0x26242F, 0x8D9A96, 0x7B867B, 0x2A3138, 0x422926, 0x6C756C, 0x383F41, 0x525759, 0x44484C, 0x35353A, 0x3A1F12, 0x221E29, 0xC54D40,
     };
@@ -102,8 +124,7 @@ public static class EnemyColorPalette
         0xBDE2C7, 0x82908E, 0x306B3A, 0x434F4F, 0x303943, 0xBDC5C1, 0x4D7243, 0x364449, 0x29342E, 0x292E38, 0xF2F6F5, 0x63736F, 0x202B2A, 0x1B2422, 0xA6B4B0,
         0x625746, 0x4B5B59, 0x736F41, 0x252332, 0x6CA04B, 0x523224, 0x96A39F, 0x707F7E, 0x191B20, 0xBA992B, 0x0F1416, 0x586663, 0xA0701E, 0x785026, 0xC0807B,
     };
-
-
+    
     #endregion
 
 
@@ -130,6 +151,9 @@ public static class EnemyColorPalette
     public static Color[] WalkCannonPalette { get; private set; }
     public static Color[] TrapBlastPalette { get; private set; }
     public static Color[] SpikyMK2Plaette { get; private set; }
+    public static Color[] BattonBonePalette { get; private set; }
+
+    public static Color[] IntroBossHoverMechPalette { get; private set; }
 
     public static Color[] IntroBossHeadPalette { get; private set; }
     public static Color[] IntroBossBodyPalette { get; private set; }
@@ -159,6 +183,10 @@ public static class EnemyColorPalette
         Color[] walkcannonPalette;
         Color[] trapBlastPalette;
         Color[] spikyMk2Palette;
+        Color[] battonBonePalette;
+
+        Color[] introBossHoverMechPalette;
+
         Color[] introBossHeadPalette;
         Color[] introBossBodyPalette;
         Color[] introBossArmPalette;
@@ -169,6 +197,10 @@ public static class EnemyColorPalette
         walkcannonPalette = new Color[PALETTE_COUNT];
         trapBlastPalette = new Color[PALETTE_COUNT];
         spikyMk2Palette = new Color[PALETTE_COUNT];
+        battonBonePalette = new Color[PALETTE_COUNT];
+        introBossHoverMechPalette = new Color[PALETTE_COUNT];
+
+        // 
         introBossHeadPalette = new Color[PALETTE_COUNT];
         introBossBodyPalette = new Color[PALETTE_COUNT];
         introBossArmPalette = new Color[PALETTE_COUNT];
@@ -181,7 +213,10 @@ public static class EnemyColorPalette
             walkcannonPalette[i] = ColorFromInt(WALKCANNON_COLOR_PALETTE[i]);
             trapBlastPalette[i] = ColorFromInt(TRAP_BLAST_COLOR_PALETTE[i]);
             spikyMk2Palette[i] = ColorFromInt(SPIKY_MK2_COLOR_PALETTE[i]);
+            battonBonePalette[i] = ColorFromInt(BATTON_BONE_COLOR_PALETTE[i]);
+            introBossHoverMechPalette[i] = ColorFromInt(INTRO_BOSS_HOVER_MECH_PALETTE[i]);
 
+            // 
             introBossHeadPalette[i] = ColorFromInt(INTRO_BOSS_HEAD_COLOR_PALETTE[i]);
             introBossBodyPalette[i] = ColorFromInt(INTRO_BOSS_BODY_COLOR_PALETTE[i]);
             introBossArmPalette[i] = ColorFromInt(INTRO_BOSS_ARM_COLOR_PALETTE[i]);
@@ -191,6 +226,10 @@ public static class EnemyColorPalette
         WalkCannonPalette = walkcannonPalette;
         TrapBlastPalette = trapBlastPalette;
         SpikyMK2Plaette = spikyMk2Palette;
+        BattonBonePalette = battonBonePalette;
+        IntroBossHoverMechPalette = introBossHoverMechPalette;
+
+        // 
         IntroBossHeadPalette = introBossHeadPalette;
         IntroBossBodyPalette = introBossBodyPalette;
         IntroBossArmPalette = introBossArmPalette;

@@ -63,28 +63,28 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     /// </summary>
     public float _followTime = 5f;
     /// <summary>
-    /// 
+    /// 샷 간격입니다.
     /// </summary>
     public float _shotInterval = 2f;
 
     /// <summary>
-    /// 
+    /// 궁극기 1의 샷 발사 회수 1입니다.
     /// </summary>
     public int _shotCount_1_1 = 4;
     /// <summary>
-    /// 
+    /// 궁극기 1의 샷 발사 회수 2입니다.
     /// </summary>
     public int _shotCount_1_2 = 8;
     /// <summary>
-    /// 
+    /// 궁극기 2의 샷 발사 회수 1입니다.
     /// </summary>
     public int _shotCount_2_1 = 4;
     /// <summary>
-    /// 
+    /// 궁극기 1의 샷 발사 간격입니다.
     /// </summary>
     public float _ultimateInterval1 = 0.3f;
     /// <summary>
-    /// 
+    /// 궁극기 2의 샷 발사 간격입니다.
     /// </summary>
     public float _ultimateInterval2 = 0.3f;
 
@@ -147,6 +147,9 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     {
         base.Start();
 
+        // 컬러 팔레트를 설정합니다.
+        DefaultPalette = EnemyColorPalette.IntroBossHoverMechPalette;
+
         // 비행 상태로 변경합니다.
         Flying = true;
         Landed = false;
@@ -204,6 +207,17 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
             UltimateEnabled = true;
             ReadyUltimate();
         } 
+    }
+    /// <summary>
+    /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
+    /// 주로 오브젝트를 따라가게 설정한 카메라는 LastUpdate를 사용합니다.
+    /// </summary>
+    protected override void LateUpdate()
+    {
+        base.LateUpdate();
+
+        // 색상을 업데이트합니다.
+        UpdateColor();
     }
 
     #endregion
@@ -615,8 +629,17 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
 
 
     #region 코루틴 메서드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     Coroutine _coroutineAttack;
+    /// <summary>
+    /// 
+    /// </summary>
     Coroutine _coroutineGuard;
+    /// <summary>
+    /// 
+    /// </summary>
     Coroutine _coroutineFollow;
 
 

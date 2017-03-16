@@ -53,16 +53,33 @@ public class EnemyBattonBoneScript : EnemyScript
     /// <summary>
     /// 캐릭터가 움직이는 속도를 정의합니다.
     /// </summary>
-    public float _movingSpeed = 1;
+    public float _movingSpeed = 3;
     /// <summary>
     /// 캐릭터가 도망치는 속도를 정의합니다.
     /// </summary>
-    public float _runawaySpeed = 2;
+    public float _runawaySpeed = 5;
+
+    /// <summary>
+    /// 진동 폭의 최솟값입니다.
+    /// </summary>
+    public float _amp_min = 1;
+    /// <summary>
+    /// 진동 폭의 최댓값입니다.
+    /// </summary>
+    public float _amp_max = 2;
+    /// <summary>
+    /// 각진동수입니다.
+    /// </summary>
+    public float _ang_freq = 3;
+    /// <summary>
+    /// 개체가 생존한 시간입니다.
+    /// </summary>
+    public float _time = 0f;
 
     #endregion
 
 
-    
+
 
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
@@ -76,6 +93,9 @@ public class EnemyBattonBoneScript : EnemyScript
         // 필드를 초기화합니다.
         _rigidbody = GetComponent<Rigidbody2D>();
         _collider2D = GetComponent<Collider2D>();
+
+        // 컬러 팔레트를 설정합니다.
+        DefaultPalette = EnemyColorPalette.BattonBonePalette;
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트합니다.
@@ -85,44 +105,36 @@ public class EnemyBattonBoneScript : EnemyScript
         base.Update();
 
         // 사용할 변수를 선언합니다.
-        /// Vector3 playerPos = _StageManager.GetCurrentPlayerPosition();
         Vector2 relativePos = _StageManager.GetCurrentPlayerPosition() - transform.position;
-        float angle = Mathf.Atan2(relativePos.y, relativePos.x); // * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(relativePos.y, relativePos.x);
         float distortion = UnityEngine.Random.Range(_amp_min, _amp_max)
             * Mathf.Sin(_ang_freq * _time);
 
+        // 개체의 속도를 변경합니다.
         float vx = _movingSpeed * Mathf.Cos(angle);
         float vy = _movingSpeed * Mathf.Sin(angle) + distortion;
-
-        /// Handy.Log("PlayerPosition={0}, Position={1}, Angle={2}, vx={3}, vy={4}", playerPos, transform.position, angle, vx, vy);
         _rigidbody.velocity = new Vector2(vx, vy);
 
-        // 
+        // 플레이어를 쫓아갑니다.
         if (relativePos.x < 0 && FacingRight)
             Flip();
         else if (relativePos.x > 0 && !FacingRight)
             Flip();
 
-
+        // 업데이트의 끝입니다.
         _time += Time.deltaTime;
     }
+    /// <summary>
+    /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
+    /// 주로 오브젝트를 따라가게 설정한 카메라는 LastUpdate를 사용합니다.
+    /// </summary>
+    protected override void LateUpdate()
+    {
+        base.LateUpdate();
 
-    /// <summary>
-    /// 
-    /// </summary>
-    public float _amp_min = 1;
-    /// <summary>
-    /// 
-    /// </summary>
-    public float _amp_max = 3;
-    /// <summary>
-    /// 
-    /// </summary>
-    public float _ang_freq = 3;
-    /// <summary>
-    /// 
-    /// </summary>
-    public float _time = 0f;
+        // 색상을 업데이트합니다.
+        UpdateColor();
+    }
     
     #endregion
 

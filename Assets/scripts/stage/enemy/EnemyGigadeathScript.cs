@@ -166,9 +166,6 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
     public override void Hurt(int damage)
     {
         base.Hurt(damage);
-
-        // 무적 상태 코루틴을 시작합니다.
-        StartCoroutine(CoroutineInvencible());
     }
 
     #endregion

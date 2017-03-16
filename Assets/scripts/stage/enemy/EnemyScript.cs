@@ -21,8 +21,7 @@ public abstract class EnemyScript : MonoBehaviour
     /// 무적 시간입니다.
     /// </summary>
     public float INVENCIBLE_TIME_LENGTH = 1f;
-
-
+    
     #endregion
 
 
@@ -78,6 +77,11 @@ public abstract class EnemyScript : MonoBehaviour
     /// 사망 시 효과를 보관하는 개체입니다.
     /// </summary>
     public ParticleSpreadScript _deadEffect;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    System.Collections.Generic.Dictionary<int, Texture2D> _hit_textures = new System.Collections.Generic.Dictionary<int, Texture2D>();
     
     #endregion
     
@@ -103,11 +107,21 @@ public abstract class EnemyScript : MonoBehaviour
     /// 무적 상태라면 참입니다.
     /// </summary>
     bool _invencible;
+
+    /// <summary>
+    /// 피해를 입었다면 참입니다.
+    /// </summary>
+    bool _damaged;
     
     /// <summary>
     /// 캐릭터가 오른쪽을 보고 있다면 참입니다.
     /// </summary>
     bool _facingRight;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    float _invencibleTime = 0;
     
     /// <summary>
     /// 적 캐릭터가 소환되는 영역을 지정합니다.
@@ -121,6 +135,11 @@ public abstract class EnemyScript : MonoBehaviour
         get { return _spawnZone; }
         set { _spawnZone = value; }
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    Coroutine _coroutineInvencible = null;
 
     #endregion
 
@@ -146,6 +165,15 @@ public abstract class EnemyScript : MonoBehaviour
     public int Damage
     {
         get { return _damage; }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool Damaged
+    {
+        get { return _damaged; }
+        protected set { _damaged = value; }
     }
     
     /// <summary>
@@ -236,6 +264,13 @@ public abstract class EnemyScript : MonoBehaviour
     {
         // 색상표를 사용하는 개체인 경우 이 메서드를 오버라이드하고 다음 문장을 호출합니다.
         // UpdateColor();
+
+        /*
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        Sprite sprite = spriteRenderer.sprite;
+        Texture2D texture = sprite.texture;
+        texture.GetInstanceID
+            */
     }
     
     #endregion
@@ -252,12 +287,18 @@ public abstract class EnemyScript : MonoBehaviour
     public virtual void Hurt(int damage)
     {
         Health -= damage;
+        Damaged = true;
+
+        // 무적 상태 코루틴을 시작합니다.
+        if (_coroutineInvencible != null)
+            StopCoroutine(_coroutineInvencible);
+        _coroutineInvencible = StartCoroutine(CoroutineInvencible());
     }
 
 
     #endregion
 
-    
+
 
 
 
@@ -360,11 +401,19 @@ public abstract class EnemyScript : MonoBehaviour
     /// </summary>
     protected void UpdateColor()
     {
+        if (Damaged)
+        {
+            // 바디 색상을 맞춥니다.
+            UpdateBodyColor(_currentPalette);
+        }
+
+        /**
         if (_currentPalette != null)
         {
             // 바디 색상을 맞춥니다.
             UpdateBodyColor(_currentPalette);
         }
+        */
     }
     /// <summary>
     /// 색상을 주어진 팔레트로 업데이트합니다.
@@ -373,45 +422,62 @@ public abstract class EnemyScript : MonoBehaviour
     void UpdateBodyColor(Color[] currentPalette)
     {
         SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-        Texture2D texture = renderer.sprite.texture;
+        Sprite sprite = renderer.sprite;
+        Texture2D texture = sprite.texture;
+        Texture2D cloneTexture = null;
 
-        // !!!!! IMPORTANT !!!!!
-        // 1. 텍스쳐 파일은 Read/Write 속성이 Enabled여야 합니다.
-        // 2. 반드시 Generate Mip Maps 속성을 켜십시오.
-        Color[] colors = texture.GetPixels();
-        Color[] pixels = new Color[colors.Length];
-        Color[] DefaultPalette = _defaultPalette;
 
-        // 모든 픽셀을 돌면서 색상을 업데이트합니다.
-        for (int pixelIndex = 0, pixelCount = colors.Length; pixelIndex < pixelCount; ++pixelIndex)
+        if (currentPalette == null)
         {
-            Color color = colors[pixelIndex];
-            if (color.a == 1)
+            cloneTexture = texture;
+        }
+        else if (_hit_textures.ContainsKey(sprite.GetInstanceID()))
+        {
+            cloneTexture = _hit_textures[sprite.GetInstanceID()];
+        }
+        else
+        {
+            // !!!!! IMPORTANT !!!!!
+            // 1. 텍스쳐 파일은 Read/Write 속성이 Enabled여야 합니다.
+            // 2. 반드시 Generate Mip Maps 속성을 켜십시오.
+            Color[] colors = texture.GetPixels();
+            Color[] pixels = new Color[colors.Length];
+            Color[] DefaultPalette = _defaultPalette;
+
+            // 모든 픽셀을 돌면서 색상을 업데이트합니다.
+            for (int pixelIndex = 0, pixelCount = colors.Length; pixelIndex < pixelCount; ++pixelIndex)
             {
-                for (int targetIndex = 0, targetPixelCount = DefaultPalette.Length; targetIndex < targetPixelCount; ++targetIndex)
+                Color color = colors[pixelIndex];
+                if (color.a == 1)
                 {
-                    Color colorDst = DefaultPalette[targetIndex];
-                    if (Mathf.Approximately(color.r, colorDst.r) &&
-                        Mathf.Approximately(color.g, colorDst.g) &&
-                        Mathf.Approximately(color.b, colorDst.b) &&
-                        Mathf.Approximately(color.a, colorDst.a))
+                    for (int targetIndex = 0, targetPixelCount = DefaultPalette.Length; targetIndex < targetPixelCount; ++targetIndex)
                     {
-                        pixels[pixelIndex] = currentPalette[targetIndex];
-                        break;
+                        Color colorDst = DefaultPalette[targetIndex];
+                        if (Mathf.Approximately(color.r, colorDst.r) &&
+                            Mathf.Approximately(color.g, colorDst.g) &&
+                            Mathf.Approximately(color.b, colorDst.b) &&
+                            Mathf.Approximately(color.a, colorDst.a))
+                        {
+                            pixels[pixelIndex] = currentPalette[targetIndex];
+                            break;
+                        }
                     }
                 }
+                else
+                {
+                    /// pixels[pixelIndex] = color;
+                }
             }
-            else
-            {
-                /// pixels[pixelIndex] = color;
-            }
-        }
 
-        // 텍스쳐를 복제하고 새 픽셀 팔레트로 덮어씌웁니다.
-        Texture2D cloneTexture = new Texture2D(texture.width, texture.height);
-        cloneTexture.filterMode = FilterMode.Point;
-        cloneTexture.SetPixels(pixels);
-        cloneTexture.Apply();
+            // 텍스쳐를 복제하고 새 픽셀 팔레트로 덮어씌웁니다.
+            cloneTexture = new Texture2D(texture.width, texture.height);
+            cloneTexture.filterMode = FilterMode.Point;
+            cloneTexture.SetPixels(pixels);
+            cloneTexture.Apply();
+
+            // 
+            _hit_textures.Add(sprite.GetInstanceID(), cloneTexture);
+        }
 
         // 새 텍스쳐를 렌더러에 반영합니다.
         MaterialPropertyBlock block = new MaterialPropertyBlock();
@@ -424,11 +490,11 @@ public abstract class EnemyScript : MonoBehaviour
     /// <returns>코루틴 열거자입니다.</returns>
     protected IEnumerator CoroutineInvencible()
     {
-        float invencibleTime = 0;
+        _invencibleTime = 0;
         bool invencibleColorState = false;
-        while (invencibleTime < INVENCIBLE_TIME_LENGTH)
+        while (_invencibleTime < INVENCIBLE_TIME_LENGTH)
         {
-            invencibleTime += TIME_30FPS + Time.deltaTime;
+            _invencibleTime += TIME_30FPS + Time.deltaTime;
 
             if (invencibleColorState)
             {
@@ -442,6 +508,7 @@ public abstract class EnemyScript : MonoBehaviour
             yield return new WaitForSeconds(TIME_30FPS);
         }
         Invencible = false;
+        Damaged = false;
         UpdateColorEndOfInvencibleTime();
         yield break;
     }
@@ -471,7 +538,7 @@ public abstract class EnemyScript : MonoBehaviour
     /// </summary>
     void ResetBodyColor()
     {
-        _currentPalette = _defaultPalette;
+        _currentPalette = null;
     }
 
     #endregion
