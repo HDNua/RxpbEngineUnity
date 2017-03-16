@@ -45,6 +45,7 @@ public abstract class EnemyScript : MonoBehaviour
 
 
 
+
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     /// <summary>
     /// 캐릭터의 체력입니다.
@@ -264,13 +265,6 @@ public abstract class EnemyScript : MonoBehaviour
     {
         // 색상표를 사용하는 개체인 경우 이 메서드를 오버라이드하고 다음 문장을 호출합니다.
         // UpdateColor();
-
-        /*
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-        Sprite sprite = spriteRenderer.sprite;
-        Texture2D texture = sprite.texture;
-        texture.GetInstanceID
-            */
     }
     
     #endregion
@@ -294,8 +288,7 @@ public abstract class EnemyScript : MonoBehaviour
             StopCoroutine(_coroutineInvencible);
         _coroutineInvencible = StartCoroutine(CoroutineInvencible());
     }
-
-
+    
     #endregion
 
 
@@ -343,7 +336,7 @@ public abstract class EnemyScript : MonoBehaviour
     /// </summary>
     protected virtual void CreateExplosion(Vector3 position)
     {
-        Instantiate(effects[0], position, transform.rotation).gameObject.SetActive(true);
+        Instantiate(DataBase.Instance.ExplosionEffect, position, transform.rotation).gameObject.SetActive(true);
     }
     
     #endregion

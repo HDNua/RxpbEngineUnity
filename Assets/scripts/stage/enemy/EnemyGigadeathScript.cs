@@ -16,7 +16,7 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
     
 
 
-    #region Unity에서 접근 가능한 공용 객체를 정의합니다.
+    #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     /// <summary>
     /// 자신의 밑에 지면이 존재하는지 검사하기 위해 사용합니다.
     /// </summary>
@@ -140,7 +140,8 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
     public override void Dead()
     {
         // 폭발 효과를 생성하고 효과음을 재생합니다.
-        StartCoroutine(CoroutineDead());
+        Instantiate(DataBase.Instance.MultipleExplosionEffect,
+            transform.position, transform.rotation);
 
         // 사망 시 아이템 드롭 루틴입니다.
         int dropItem = UnityEngine.Random.Range(0, _items.Length);
@@ -199,25 +200,6 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
 
 
     #region 코루틴 메서드를 정의합니다.
-    /// <summary>
-    /// 사망 코루틴입니다.
-    /// </summary>
-    private IEnumerator CoroutineDead()
-    {
-        for (int i = 0; i < 3; ++i)
-        {
-            float distortionX = UnityEngine.Random.Range(1, 3);
-            float distortionY = UnityEngine.Random.Range(1, 3);
-
-            /// SoundE_ffects[0].Play();
-            /// Instantiate(e_ffects[0], transform.position + new Vector3(distortionX, distortionY), transform.rotation);
-            CreateExplosion(transform.position + new Vector3(distortionX, distortionY));
-
-            // 
-            yield return new WaitForSeconds(_deadEffectInterval);
-        }
-        yield break;
-    }
 
     #endregion
 

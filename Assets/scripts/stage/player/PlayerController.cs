@@ -19,8 +19,7 @@ public abstract class PlayerController : MonoBehaviour
     /// 1/60 프레임 간의 시간입니다.
     /// </summary>
     public const float TIME_60FPS = 0.0166667f;
-
-
+    
     /// <summary>
     /// 무적 상태가 유지되는 시간입니다.
     /// </summary>
@@ -38,16 +37,10 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected const float DASH_AFTERIMAGE_LIFETIME = 0.05f;
 
-
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 컨트롤러가 사용할 Unity 객체에 대한 접근자를 정의합니다.
@@ -79,17 +72,11 @@ public abstract class PlayerController : MonoBehaviour
     {
         get { return GetComponent<SpriteRenderer>(); }
     }
-
-
+    
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
@@ -368,6 +355,11 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     bool _spawning = true;
     /// <summary>
+    /// 플레이어가 복귀중이라면 참입니다.
+    /// </summary>
+    bool _returning = false;
+
+    /// <summary>
     /// 지상에 있다면 true입니다.
     /// </summary>
     public bool _landed = false;
@@ -473,12 +465,22 @@ public abstract class PlayerController : MonoBehaviour
         private set { _facingRight = value; }
     }
     /// <summary>
-    /// 플레이어가 소환중이라면 true입니다.
+    /// 플레이어가 소환 중이라면 참입니다.
     /// </summary>
     protected bool Spawning
     {
         get { return _spawning; }
         private set { _Animator.SetBool("Spawning", _spawning = value); }
+    }
+    /// <summary>
+    /// 플레이어가 복귀 중이라면 참입니다.
+    /// </summary>
+    public bool Returning
+    {
+        get {
+            return IsAnimationPlaying("ReturnRun");
+        }
+        // private set { _returning = true; }
     }
     /// <summary>
     /// 플레이어가 준비중이라면 true입니다.
@@ -773,7 +775,7 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual bool UpdateController()
     {
         // 소환 중이라면
-        if (Spawning)
+        if (Spawning || Returning)
         {
             return false;
         }
@@ -807,8 +809,15 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>자식 클래스의 Update 실행을 막으려면 참을 반환합니다.</returns>
     protected virtual bool FixedUpdateController()
     {
+        // 복귀 중이라면
+        if (Returning)
+        {
+            _Velocity = new Vector2(0, _spawnSpeed);
+
+            return false;
+        }
         // 소환 중이라면
-        if (Spawning)
+        else if (Spawning)
         {
             // 준비 중이라면
             if (Readying)
@@ -877,7 +886,11 @@ public abstract class PlayerController : MonoBehaviour
         }
 
 
-        if (OnGround())
+        if (Returning)
+        {
+            return false;
+        }
+        else if (OnGround())
         {
             // 절차:
             // 1. 캐릭터에서 수직으로 내린 직선에 맞는 경사면의 법선 벡터를 구한다.
@@ -934,22 +947,16 @@ public abstract class PlayerController : MonoBehaviour
                 {
                     _Velocity = Vector2.zero;
                 }
-                /// Handy.Log("({0}, {1})", rayB.normal, rayF.normal);
             }
 
             Landed = true;
         }
-        else if (Jumping || Falling)
+        else if (Jumping || Falling || Returning)
         {
-            /// Handy.Log("Jumping || Falling");
-
             Landed = false;
         }
         else if (rayB || rayF)
         {
-            /// Handy.Log("rayB || rayF");
-
-
             if (Sliding)
             {
 
@@ -958,7 +965,7 @@ public abstract class PlayerController : MonoBehaviour
             {
 
             }
-            else if (Spawning)
+            else if (Spawning || Returning)
             {
                 
             }
@@ -1763,16 +1770,10 @@ public abstract class PlayerController : MonoBehaviour
         // 
         UpdateHitBox();
     }
-
-
+    
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -1796,7 +1797,6 @@ public abstract class PlayerController : MonoBehaviour
         MaxHealth++;
     }
 
-
     /// <summary>
     /// 플레이어가 대미지를 입습니다.
     /// </summary>
@@ -1814,7 +1814,6 @@ public abstract class PlayerController : MonoBehaviour
             Danger = true;
         }
 
-
         // 상태를 업데이트합니다.
         Damaged = true;
         if (point >= _bigDamageValue)
@@ -1827,8 +1826,7 @@ public abstract class PlayerController : MonoBehaviour
         StopDashing();
         StopJumping();
         StopFalling();
-
-
+        
         // 플레이어에 대해 넉백 효과를 겁니다.
         if (BigDamaged && IsAlive())
         {
@@ -1862,7 +1860,6 @@ public abstract class PlayerController : MonoBehaviour
 
         yield break;
     }
-
 
     /// <summary>
     /// 대미지 상태를 해제합니다.
@@ -1900,16 +1897,10 @@ public abstract class PlayerController : MonoBehaviour
         TESTEST3();
         yield break;
     }
-
-
+    
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -1934,7 +1925,6 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     public void RequestBlockInput()
     {
-        /// print("Block Input Requested From Player");
         BlockInput();
     }
     /// <summary>
@@ -1942,21 +1932,19 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     public void RequestUnblockInput()
     {
-        /// print("Unblock Input Requested From Player");
         UnblockInput();
     }
 
-
     /// <summary>
-    /// 
+    /// 이동 속도 변경을 요청합니다.
     /// </summary>
-    /// <param name="speed"></param>
+    /// <param name="speed">변경할 이동 속도입니다.</param>
     public void RequestChangeMovingSpeed(float speed)
     {
         _movingSpeed = speed;
     }
     /// <summary>
-    /// 
+    /// 왼쪽으로 움직이도록 요청합니다.
     /// </summary>
     public void RequestMoveLeft()
     {
@@ -1964,7 +1952,7 @@ public abstract class PlayerController : MonoBehaviour
         MoveLeft();
     }
     /// <summary>
-    /// 
+    /// 오른쪽으로 움직이도록 요청합니다.
     /// </summary>
     public void RequestMoveRight()
     {
@@ -1972,35 +1960,22 @@ public abstract class PlayerController : MonoBehaviour
         MoveRight();
     }
     /// <summary>
-    /// 
+    /// 움직임을 멈추도록 요청합니다.
     /// </summary>
     public void RequestStopMoving()
     {
         MoveRequested = false;
     }
 
-
-
-
-
-
-
     /// <summary>
-    /// 테스트 코드에요.
+    /// 세레머니를 요청합니다.
     /// </summary>
-    public bool Returning
+    public void RequestCeremony()
     {
-        get; protected set;
-    }
-    /// <summary>
-    /// 테스트 코드랍니다.
-    /// </summary>
-    public void RequestReturn()
-    {
-        _Animator.Play("X20_Win");
+        _Animator.Play("Ceremony");
     }
 
-
+    /**
     /// <summary>
     /// 삭제하자
     /// </summary>
@@ -2008,14 +1983,10 @@ public abstract class PlayerController : MonoBehaviour
     {
         Returning = true;
     }
-
+    */
 
     #endregion
-
-
-
-
-
+        
 
 
 
@@ -2052,7 +2023,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     /// <param name="stateName">재생 중인지 확인하려는 애니메이션의 이름입니다.</param>
     /// <returns>애니메이션이 재생 중이라면 true를 반환합니다.</returns>
-    protected bool IsAnimationPlaying(string stateName)
+    public bool IsAnimationPlaying(string stateName)
     {
         return _Animator.GetCurrentAnimatorStateInfo(0).IsName(stateName);
     }
@@ -2067,7 +2038,6 @@ public abstract class PlayerController : MonoBehaviour
         return Instantiate
             (gObject, transform.position, transform.rotation) as GameObject;
     }
-
 
     /// <summary>
     /// 히트 박스를 변경합니다.
@@ -2096,16 +2066,10 @@ public abstract class PlayerController : MonoBehaviour
         boxCollider.offset = hitBox.offset;
         boxCollider.size = hitBox.size;
     }
-
-
+    
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -2118,11 +2082,9 @@ public abstract class PlayerController : MonoBehaviour
         get { return _Rigidbody.velocity; }
         set
         {
-            /// Handy.Log("Velocity from ({0}) to ({1})", _Rigidbody.velocity, value);
             _Rigidbody.velocity = value;
         }
     }
-
 
     /// <summary>
     /// 테스트 메서드입니다. 주의: 지우지 마십시오! 하위 형식에서 오버라이딩합니다.
@@ -2136,54 +2098,15 @@ public abstract class PlayerController : MonoBehaviour
     /// 테스트 메서드입니다. 주의: 지우지 마십시오! 하위 형식에서 오버라이딩합니다.
     /// </summary>
     protected virtual void TESTEST3() { }
-
-
+    
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("UpdateLanding의 이전 버전입니다.")]
-    /// <summary>
-    /// 땅에 닿았다면 true를 반환합니다.
-    /// </summary>
-    /// <returns>땅에 닿았다면 true를 반환합니다.</returns>
-    bool UpdateLanding_dep()
-    {
-        RaycastHit2D rayB = Physics2D.Raycast(groundCheckBack.position, Vector2.down, groundCheckRadius, whatIsGround);
-        RaycastHit2D rayF = Physics2D.Raycast(groundCheckFront.position, Vector2.down, groundCheckRadius, whatIsGround);
-
-        if (OnGround())
-        {
-            Landed = true;
-        }
-        else if (Jumping || Falling)
-        {
-            Landed = false;
-        }
-        else if (rayB || rayF)
-        {
-            Vector3 pos = transform.position;
-            pos.y -= Mathf.Min(rayB.distance, rayF.distance);
-            transform.position = pos;
-            _Velocity = new Vector2(_Velocity.x, 0);
-            Landed = true;
-        }
-        else
-        {
-            Landed = false;
-        }
-        return Landed;
-    }
-
 
     #endregion
 }

@@ -387,28 +387,7 @@ public abstract class EnemyBossScript : EnemyScript
     /// </summary>
     public override void Dead()
     {
-        // 폭발 효과를 생성하고 효과음을 재생합니다.
-        /// SoundE_ffects[0].Play();
-        /// Instantiate(e_ffects[0], transform.position, transform.rotation);
-        CreateExplosion(transform.position);
-
-        /**
-        // 사망 시 아이템 드롭 루틴입니다.
-        int dropItem = UnityEngine.Random.Range(0, _items.Length);
-        if (_items[dropItem] != null)
-        {
-            CreateItem(_items[dropItem]);
-        }
-        */
-
-        // 캐릭터가 사망합니다.
-        base.Dead();
-
-        // 개체 제거를 요청합니다.
-        Invoke("RequestDestroy", 3f);
-
-        // 
-        print("Boss Dead Need To Be Implemented");
+        throw new NotImplementedException();
     }
 
     #endregion

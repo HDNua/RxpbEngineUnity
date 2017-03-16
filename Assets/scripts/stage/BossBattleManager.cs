@@ -24,14 +24,31 @@ public class BossBattleManager : MonoBehaviour
     /// 각입니다.
     /// </summary>
     public Transform[] _angle;
-    
+
+    /// <summary>
+    /// 보스 사망 시 효과입니다.
+    /// </summary>
+    public BossDeadEffectScript _bossDeadEffect;
+
     #endregion
 
-    
 
 
 
-    #region 필드를 정의합니다.
+
+    #region Unity 개체에 대한 참조를 보관합니다.
+    /// <summary>
+    /// 보스 전투 관리자입니다.
+    /// </summary>
+    public static BossBattleManager Instance
+    {
+        get
+        {
+            return GameObject.FindGameObjectWithTag("BossBattleManager")
+                .GetComponent<BossBattleManager>();
+        }
+    }
+
     /// <summary>
     /// 스테이지 관리자입니다.
     /// </summary>
@@ -41,20 +58,41 @@ public class BossBattleManager : MonoBehaviour
     /// </summary>
     UIManager _userInterfaceManager;
 
+    #endregion
 
+
+
+
+
+    #region 필드를 정의합니다.
     // 절차:
     // 1. 경고
     // 2. 등장
     // 3. 대사 (생략 가능)
     // 4. 준비
     // 5. 시작
+
+    /// <summary>
+    /// 경고 중이라면 참입니다.
+    /// </summary>
     bool _warning = false;
+    /// <summary>
+    /// 등장 중이라면 참입니다.
+    /// </summary>
     bool _appearing = false;
+    /// <summary>
+    /// 대사 중이라면 참입니다.
+    /// </summary>
     bool _scripting = false;
+    /// <summary>
+    /// 준비 중이라면 참입니다.
+    /// </summary>
     bool _readying = false;
+    /// <summary>
+    /// 전투 중이라면 참입니다.
+    /// </summary>
     bool _fighting = false;
-
-
+    
     #endregion
 
 
@@ -198,7 +236,14 @@ public class BossBattleManager : MonoBehaviour
         GetComponent<AudioSource>().Play();
         StartCoroutine(CoroutineFighting());
     }
-    
+    /// <summary>
+    /// 전투를 끝냅니다.
+    /// </summary>
+    void EndBattle()
+    {
+        StartCoroutine(CoroutineEndBattle());
+    }
+
     /// <summary>
     /// 경고 화면 코루틴입니다.
     /// </summary>
@@ -230,7 +275,7 @@ public class BossBattleManager : MonoBehaviour
         yield break;
     }
     /// <summary>
-    /// 등장 루틴입니다.
+    /// 등장 코루틴입니다.
     /// </summary>
     IEnumerator CoroutineAppearing()
     {
@@ -247,7 +292,7 @@ public class BossBattleManager : MonoBehaviour
         yield break;
     }
     /// <summary>
-    /// 대사 루틴입니다.
+    /// 대사 코루틴입니다.
     /// </summary>
     IEnumerator CoroutineScripting()
     {
@@ -255,7 +300,7 @@ public class BossBattleManager : MonoBehaviour
         yield break;
     }
     /// <summary>
-    /// 전투 준비 루틴입니다.
+    /// 전투 준비 코루틴입니다.
     /// </summary>
     IEnumerator CoroutineReadying()
     {
@@ -273,7 +318,7 @@ public class BossBattleManager : MonoBehaviour
         yield break;
     }
     /// <summary>
-    /// 전투 루틴입니다.
+    /// 전투 코루틴입니다.
     /// </summary>
     IEnumerator CoroutineFighting()
     {
@@ -284,29 +329,9 @@ public class BossBattleManager : MonoBehaviour
 
         yield break;
     }
-
-    #endregion
-    
-
-
-
-
-    #region 구형 정의를 보관합니다.    
-    [Obsolete("")]
     /// <summary>
-    /// 전투를 끝냅니다.
+    /// 전투 종료 코루틴입니다.
     /// </summary>
-    void EndBattle()
-    {
-        Debug.Log("end of game");
-    }
-
-    
-    [Obsolete("")]
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <returns></returns>
     IEnumerator CoroutineEndBattle()
     {
         _stageManager.AudioSources[9].Play();
@@ -315,6 +340,14 @@ public class BossBattleManager : MonoBehaviour
         // 
         yield break;
     }
+
+    #endregion
+
+
+
+
+
+    #region 구형 정의를 보관합니다.    
 
     #endregion
 }

@@ -17,12 +17,7 @@ public class EffectScript : MonoBehaviour
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 필드 및 프로퍼티를 정의합니다.
@@ -50,8 +45,7 @@ public class EffectScript : MonoBehaviour
         get { return _destroyRequested; }
         private set { _destroyRequested = value; }
     }
-
-
+    
     /// <summary>
     /// 
     /// </summary>
@@ -64,16 +58,10 @@ public class EffectScript : MonoBehaviour
     /// 
     /// </summary>
     Color[] _currentPalette = null;
-
-
+    
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -123,21 +111,15 @@ public class EffectScript : MonoBehaviour
         }
     }
 
-
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
     #region 프레임 이벤트 핸들러를 정의합니다.
     /// <summary>
-    /// 
+    /// 효과를 끝냅니다.
     /// </summary>
     void FE_EndEffect()
     {
@@ -150,23 +132,18 @@ public class EffectScript : MonoBehaviour
 
 
 
-
-
-
-
-
     #region 보조 메서드를 정의합니다.
     /// <summary>
-    /// 필드 색상표를 바탕으로 텍스쳐 색상을 업데이트합니다.
+    /// 
     /// </summary>
-    void UpdateTextureColor()
+    /// <param name="texture"></param>
+    /// <param name="src"></param>
+    /// <param name="dst"></param>
+    /// <returns></returns>
+    protected Texture2D GetColorUpdatedTexture(Texture2D texture, Color[] src, Color[] dst)
     {
-        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
-        Texture2D texture = renderer.sprite.texture;
         Color[] colors = texture.GetPixels();
         Color[] pixels = new Color[colors.Length];
-        /// Color[] _defaultPalette = RXColors.XDefaultChargeEffectColorPalette;
-
 
         // 모든 픽셀을 돌면서 색상을 업데이트합니다.
         for (int pixelIndex = 0, pixelCount = colors.Length; pixelIndex < pixelCount; ++pixelIndex)
@@ -175,15 +152,17 @@ public class EffectScript : MonoBehaviour
             pixels[pixelIndex] = color;
             if (color.a == 1)
             {
-                for (int targetIndex = 0, targetPixelCount = _defaultPalette.Length; targetIndex < targetPixelCount; ++targetIndex)
+                for (int targetIndex = 0, targetPixelCount = src.Length;
+                    targetIndex < targetPixelCount;
+                    ++targetIndex)
                 {
-                    Color colorDst = _defaultPalette[targetIndex];
+                    Color colorDst = src[targetIndex];
                     if (Mathf.Approximately(color.r, colorDst.r) &&
                         Mathf.Approximately(color.g, colorDst.g) &&
                         Mathf.Approximately(color.b, colorDst.b) &&
                         Mathf.Approximately(color.a, colorDst.a))
                     {
-                        pixels[pixelIndex] = _currentPalette[targetIndex];
+                        pixels[pixelIndex] = dst[targetIndex];
                         break;
                     }
                 }
@@ -194,12 +173,24 @@ public class EffectScript : MonoBehaviour
             }
         }
 
-
         // 텍스쳐를 복제하고 새 픽셀 팔레트로 덮어씌웁니다.
         Texture2D cloneTexture = new Texture2D(texture.width, texture.height);
         cloneTexture.filterMode = FilterMode.Point;
         cloneTexture.SetPixels(pixels);
         cloneTexture.Apply();
+
+        // 완성된 텍스쳐를 반환합니다.
+        return cloneTexture;
+    }
+    /// <summary>
+    /// 필드 색상표를 바탕으로 텍스쳐 색상을 업데이트합니다.
+    /// </summary>
+    protected void UpdateTextureColor()
+    {
+        // 
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        Texture2D cloneTexture = GetColorUpdatedTexture
+            (renderer.sprite.texture, _defaultPalette, _currentPalette);
 
         // 새 텍스쳐를 렌더러에 반영합니다.
         MaterialPropertyBlock block = new MaterialPropertyBlock();
@@ -207,14 +198,8 @@ public class EffectScript : MonoBehaviour
         renderer.SetPropertyBlock(block);
     }
 
-
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -277,8 +262,7 @@ public class EffectScript : MonoBehaviour
         AttachSound(audioClip);
         PlayEffectSound();
     }
-
-
+    
     /// <summary>
     /// 텍스쳐를 업데이트합니다.
     /// </summary>
@@ -290,9 +274,10 @@ public class EffectScript : MonoBehaviour
         _currentPalette = targetPalette;
         _paletteChangeRequested = true;
     }
-
-
+    
     #endregion
+
+
 
 
 

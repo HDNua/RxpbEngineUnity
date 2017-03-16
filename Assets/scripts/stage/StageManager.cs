@@ -63,6 +63,11 @@ public class StageManager : HDSceneManager
     /// </summary>
     public GameObject _enemyParent;
 
+    /// <summary>
+    /// 복귀 완료까지 걸리는 시간입니다.
+    /// </summary>
+    public float _returningTime = 3f;
+
     #endregion
 
 
@@ -176,6 +181,14 @@ public class StageManager : HDSceneManager
     {
         get { return _playerSpawnPosition; }
         set { _playerSpawnPosition = value; }
+    }
+
+    /// <summary>
+    /// 보스 클리어 시 마지막에 재생되는 효과음입니다.
+    /// </summary>
+    public AudioSource BossClearExplosionSoundEffect
+    {
+        get { return AudioSources[12]; }
     }
     
     #endregion
@@ -388,78 +401,80 @@ public class StageManager : HDSceneManager
     {
         LoadingSceneManager.LoadLevel("Title");
     }
-    
+
 
     /// <summary>
-    /// 종료 아이템을 획득했습니다.
+    /// 스테이지를 끝냅니다.
     /// </summary>
-    /// <param name="player">플레이어 객체입니다.</param>
-    /// <param name="item">플레이어가 사용한 아이템입니다.</param>
-    private void Test_EndGameItemGet(PlayerController player, ItemScript item)
+    private void StageClear()
     {
-        RequestStopBackgroundMusic();
-        
-        _gameEndValue = item.Value;
-
-                _player.RequestBlockInput();
-        _timeManager.StageManagerRequested = true;
-        StartCoroutine(EndGameCoroutine());
+        StartCoroutine(CoroutineClearStage());
+    }
+    /// <summary>
+    /// 스테이지 종료를 요청합니다.
+    /// </summary>
+    public void RequestClearStage()
+    {
+        StageClear();
     }
     /// <summary>
     /// 스테이지 종료 아이템 획득 코루틴입니다.
     /// </summary>
-    /// <returns></returns>
-    IEnumerator EndGameCoroutine()
+    IEnumerator CoroutineClearStage()
     {
         // 다음 커밋에서 삭제할 예정입니다.
-        GameManager.Instance.SpawnPositionIndex = 0;
-        
-        AudioSource audioSource = AudioSources[3];
-        audioSource.Play();
+        /// GameManager.Instance.SpawnPositionIndex = 0;
 
-        float startTime = 0f;
-        float soundLength = audioSource.clip.length;
-        while (startTime < soundLength)
-        {
-            startTime += Time.unscaledDeltaTime;
-        }
-        _timeManager.StageManagerRequested = false;
-
-
-
-        while (_player.Landed == false)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-
-        audioSource = AudioSources[5];
+        // 
+        AudioSource audioSource = AudioSources[5];
         audioSource.Play();
         while (audioSource.isPlaying)
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return false;
         }
 
-
-
-        _player.RequestReturn();
+        // 
+        _player.RequestCeremony();
         yield return new WaitForSeconds(0.2f);
         AudioSources[7].Play();
-
-        while (_player.Returning == false)
+        while (_player.IsAnimationPlaying("Ceremony"))
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return false;
         }
 
+        // 
+        while (_player.IsAnimationPlaying("Ceremony"))
+        {
+            yield return false;
+        }
 
+        AudioSources[13].Play();
+        while (_player.IsAnimationPlaying("ReturnBeg"))
+        {
+            yield return false;
+        }
 
+        float time = 0;
+        while (_player.IsAnimationPlaying("ReturnRun"))
+        {
+            time += Time.deltaTime;
+
+            if (time > _returningTime)
+                break;
+
+            yield return false;
+        }
+
+        //
         _gameEnded = true;
         _fader.FadeOut();
         yield break;
     }
+
     /// <summary>
     /// 배경 음악 재생 중지를 요청합니다.
     /// </summary>
-    void RequestStopBackgroundMusic()
+    public void RequestStopBackgroundMusic()
     {
         _bgmSource.Stop();
         _database._bossBattleManager.GetComponent<AudioSource>().Stop();
@@ -808,6 +823,101 @@ public class StageManager : HDSceneManager
     public void UpdateCheckpointCameraZone(int checkpointIndex)
     {
 
+    }
+
+
+
+
+    [Obsolete("")]
+    /// <summary>
+    /// 종료 아이템을 획득했습니다.
+    /// </summary>
+    /// <param name="player">플레이어 객체입니다.</param>
+    /// <param name="item">플레이어가 사용한 아이템입니다.</param>
+    private void Test_EndGameItemGet(PlayerController player, ItemScript item)
+    {
+        RequestStopBackgroundMusic();
+
+        _gameEndValue = item.Value;
+
+        // 
+        _player.RequestBlockInput();
+        _timeManager.StageManagerRequested = true;
+        StartCoroutine(EndGameCoroutine());
+    }
+    [Obsolete("")]
+    /// <summary>
+    /// 스테이지 종료 아이템 획득 코루틴입니다.
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator EndGameCoroutine()
+    {
+        // 다음 커밋에서 삭제할 예정입니다.
+        GameManager.Instance.SpawnPositionIndex = 0;
+
+        AudioSource audioSource = AudioSources[3];
+        audioSource.Play();
+
+        float startTime = 0f;
+        float soundLength = audioSource.clip.length;
+        while (startTime < soundLength)
+        {
+            startTime += Time.unscaledDeltaTime;
+        }
+        _timeManager.StageManagerRequested = false;
+
+
+
+        while (_player.Landed == false)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        audioSource = AudioSources[5];
+        audioSource.Play();
+        while (audioSource.isPlaying)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+
+
+        _player.RequestCeremony();
+        yield return new WaitForSeconds(0.2f);
+        AudioSources[7].Play();
+
+        /**
+        while (_player.Returning == false)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        */
+
+        // 
+        while (_player.IsAnimationPlaying("Ceremony"))
+        {
+            yield return false;
+        }
+        while (_player.IsAnimationPlaying("ReturnBeg"))
+        {
+            yield return false;
+        }
+
+        float time = 0;
+        while (_player.IsAnimationPlaying("ReturnRun"))
+        {
+            time += Time.deltaTime;
+
+            if (time > _returningTime)
+                break;
+
+            yield return false;
+        }
+
+        // 
+        _gameEnded = true;
+        _fader.FadeOut();
+        yield break;
     }
 
     #endregion

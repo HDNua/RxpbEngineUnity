@@ -11,38 +11,63 @@ using System.Collections.Generic;
 public class DataBase : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
-    // 기본 데이터입니다.
+    /// <summary>
+    /// 엑스 플레이어입니다.
+    /// </summary>
     public PlayerController _playerX;
+    /// <summary>
+    /// 제로 캐릭터입니다.
+    /// </summary>
     public PlayerController _playerZ;
 
-
-    // Material입니다.
+    /// <summary>
+    /// 마찰이 없는 Material입니다. Collider가 미끄러질 수 있게 해줍니다.
+    /// </summary>
     public PhysicsMaterial2D _frictionlessWall;
 
-
-    // 공용 맵 요소입니다.
+    /// <summary>
+    /// 공용 맵 요소입니다.
+    /// </summary>
     public Map _map;
+    /// <summary>
+    /// 스테이지 관리자입니다.
+    /// </summary>
     public StageManager _stageManager;
+    /// <summary>
+    /// 정지 메뉴 관리자입니다.
+    /// </summary>
     public PauseMenuManager _pauseMenu;
+    /// <summary>
+    /// 시간 관리자입니다.
+    /// </summary>
     public TimeManager _timeManager;
+    /// <summary>
+    /// 사용자 인터페이스 관리자입니다.
+    /// </summary>
     public UIManager _userInterfaceManager;
 
-
-    // 보스 전투 관리자입니다.
+    /// <summary>
+    /// 보스 전투 관리자입니다.
+    /// </summary>
     public BossBattleManager _bossBattleManager;
 
+    /// <summary>
+    /// 효과 개체 집합입니다.
+    /// </summary>
+    public EffectScript[] _effects;
+
+    /// <summary>
+    /// 카메라 추적 스크립트입니다.
+    /// </summary>
+    public CameraFollowScript _cameraFollow;
 
     #endregion
 
 
 
+
+
     #region Unity 개체에 대한 참조를 보관합니다.
-    /// <summary>
-    /// 
-    /// </summary>
-    public CameraFollowScript _cameraFollow;
-
-
     /// <summary>
     /// 데이터베이스 개체입니다.
     /// </summary>
@@ -52,12 +77,7 @@ public class DataBase : MonoBehaviour
     }
 
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -67,12 +87,7 @@ public class DataBase : MonoBehaviour
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -87,8 +102,7 @@ public class DataBase : MonoBehaviour
             return GameManager.Instance;
         }
     }
-
-
+    
     /// <summary>
     /// 엑스 PlayerController입니다.
     /// </summary>
@@ -97,8 +111,7 @@ public class DataBase : MonoBehaviour
     /// 제로 PlayerController입니다.
     /// </summary>
     public PlayerController PlayerZ { get { return _playerZ; } }
-
-
+    
     /// <summary>
     /// 맵 객체입니다.
     /// </summary>
@@ -134,8 +147,7 @@ public class DataBase : MonoBehaviour
     {
         get { return _timeManager; }
     }
-
-
+    
     /// <summary>
     /// 사용자 인터페이스 관리자입니다.
     /// </summary>
@@ -143,14 +155,23 @@ public class DataBase : MonoBehaviour
     {
         get { return _userInterfaceManager; }
     }
-
+    
+    /// <summary>
+    /// 폭발 효과 개체를 가져옵니다.
+    /// </summary>
+    public EffectScript ExplosionEffect
+    {
+        get { return _effects[0]; }
+    }
+    /// <summary>
+    /// 연속 폭발 효과 개체를 가져옵니다.
+    /// </summary>
+    public EffectScript MultipleExplosionEffect
+    {
+        get { return _effects[1]; }
+    }
 
     #endregion
-
-
-
-
-
 
 
 
@@ -187,15 +208,9 @@ public class DataBase : MonoBehaviour
 
     }
 
-
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -208,15 +223,9 @@ public class DataBase : MonoBehaviour
 
     }
 
-
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -246,11 +255,9 @@ public class DataBase : MonoBehaviour
             throw new Exception("데이터베이스 필드 정의 부족");
         }
 
-
         // 필드를 정의합니다.
         _cameraZoneParent = _map.CameraZoneParent;
     }
-
 
     [Obsolete("이 개체는 Unity 개체이므로 직접 연결해야 합니다.")]
     /// <summary>
@@ -262,8 +269,7 @@ public class DataBase : MonoBehaviour
     /// 카메라 존 경계 집합의 부모 개체입니다.
     /// </summary>
     CameraZoneBorderParent _cameraZoneBorderParent = null;
-
-
+    
     [Obsolete("이 개체는 Unity 개체이므로 직접 연결해야 합니다.")]
     /// <summary>
     /// 카메라 존의 부모 객체입니다.
@@ -277,7 +283,6 @@ public class DataBase : MonoBehaviour
     {
         get { return _cameraZoneBorderParent; }
     }
-
-
+    
     #endregion
 }

@@ -19,12 +19,7 @@ public class ReadyAnimator : MonoBehaviour
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
@@ -55,12 +50,7 @@ public class ReadyAnimator : MonoBehaviour
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 프레임 이펙트 핸들러를 정의합니다.
@@ -78,8 +68,7 @@ public class ReadyAnimator : MonoBehaviour
     {
         // HUD를 활성화 합니다.
         _stageManager.EnableHUD();
-
-
+        
         // 플레이어 소환을 요청합니다.
         _stageManager._player.transform.position = _stageManager.PlayerSpawnPosition.position;
         _stageManager._player.RequestSpawn();
