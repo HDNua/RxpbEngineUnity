@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections;
+using System.Collections.Generic;
 
 
 /// <summary>
@@ -79,9 +79,9 @@ public abstract class EnemyScript : MonoBehaviour
     public ParticleSpreadScript _deadEffect;
 
     /// <summary>
-    /// 
+    /// 피격 텍스쳐 집합입니다.
     /// </summary>
-    System.Collections.Generic.Dictionary<int, Texture2D> _hit_textures = new System.Collections.Generic.Dictionary<int, Texture2D>();
+    Dictionary<int, Texture2D> _hit_textures = new Dictionary<int, Texture2D>();
     
     #endregion
     
@@ -119,7 +119,7 @@ public abstract class EnemyScript : MonoBehaviour
     bool _facingRight;
 
     /// <summary>
-    /// 
+    /// 무적 상태 시간입니다.
     /// </summary>
     float _invencibleTime = 0;
     
@@ -137,7 +137,7 @@ public abstract class EnemyScript : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// 무적 상태 코루틴입니다.
     /// </summary>
     Coroutine _coroutineInvencible = null;
 
@@ -168,7 +168,7 @@ public abstract class EnemyScript : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// 대미지를 입었다면 참입니다.
     /// </summary>
     public bool Damaged
     {
@@ -406,14 +406,6 @@ public abstract class EnemyScript : MonoBehaviour
             // 바디 색상을 맞춥니다.
             UpdateBodyColor(_currentPalette);
         }
-
-        /**
-        if (_currentPalette != null)
-        {
-            // 바디 색상을 맞춥니다.
-            UpdateBodyColor(_currentPalette);
-        }
-        */
     }
     /// <summary>
     /// 색상을 주어진 팔레트로 업데이트합니다.

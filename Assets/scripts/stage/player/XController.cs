@@ -709,14 +709,8 @@ public class XController : PlayerController
         /// UpdateHitBox();
     }
 
-
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -965,18 +959,12 @@ public class XController : PlayerController
         }
         return ret;
     }
-
-
+    
     #endregion
 
 
 
-
-
-
-
-
-    
+        
 
     #region PlayerController 행동 메서드를 위한 코루틴을 정의합니다.
     /// <summary>
@@ -1015,8 +1003,7 @@ public class XController : PlayerController
         }
         yield break;
     }
-
-
+    
     /// <summary>
     /// 대쉬 코루틴 필드입니다.
     /// </summary>
@@ -1063,8 +1050,7 @@ public class XController : PlayerController
         // 코루틴을 중지합니다.
         yield break;
     }
-
-
+    
     /// <summary>
     /// 에어 대쉬 코루틴 필드입니다.
     /// </summary>
@@ -1098,7 +1084,6 @@ public class XController : PlayerController
         yield break;
     }
 
-
     /// <summary>
     /// 벽 타기 코루틴 필드입니다.
     /// </summary>
@@ -1117,8 +1102,7 @@ public class XController : PlayerController
         // 코루틴을 중지합니다.
         yield break;
     }
-
-
+    
     /// <summary>
     /// 벽 점프 코루틴 필드입니다.
     /// </summary>
@@ -1143,17 +1127,11 @@ public class XController : PlayerController
         // 코루틴을 중지합니다.
         yield break;
     }
-
-
+    
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region PlayerController 행동 메서드를 재정의합니다.
@@ -1196,8 +1174,7 @@ public class XController : PlayerController
     {
         base.StopMoving();
     }
-
-
+    
     ///////////////////////////////////////////////////////////////////
     // 점프 및 낙하
     /// <summary>
@@ -1215,7 +1192,6 @@ public class XController : PlayerController
     {
         base.StopJumping();
     }
-
 
     ///////////////////////////////////////////////////////////////////
     // 대쉬
@@ -1276,7 +1252,6 @@ public class XController : PlayerController
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     // 벽 타기
     /// <summary>
@@ -1305,7 +1280,6 @@ public class XController : PlayerController
         }
     }
 
-
     ///////////////////////////////////////////////////////////////////
     // 조합
     /// <summary>
@@ -1314,7 +1288,6 @@ public class XController : PlayerController
     protected override void WallJump()
     {
         base.WallJump();
-
 
         // 코루틴을 시작합니다.
         _wallJumpCoroutine = StartCoroutine(WallJumpCoroutine());
@@ -1325,7 +1298,6 @@ public class XController : PlayerController
     protected override void StopWallJumping()
     {
         base.StopWallJumping();
-
 
         // 코루틴을 중지합니다.
         if (_wallJumpCoroutine != null)
@@ -1340,7 +1312,6 @@ public class XController : PlayerController
     protected override void DashJump()
     {
         base.DashJump();
-
 
         // 대쉬 점프를 합니다.
         SoundEffects[3].Stop();
@@ -1375,7 +1346,6 @@ public class XController : PlayerController
             _dashBoostEffect = null;
         }
 
-
         // 코루틴을 중지합니다.
         if (_airDashCoroutine != null)
         {
@@ -1390,21 +1360,14 @@ public class XController : PlayerController
     {
         base.WallDashJump();
 
-
         // 코루틴을 시작합니다.
         _wallJumpCoroutine = StartCoroutine(WallJumpCoroutine());
     }
-
-
+    
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region PlayerController 상태 메서드를 재정의 합니다.
@@ -1444,7 +1407,6 @@ public class XController : PlayerController
     {
         base.Dead();
 
-
         // 사망 시 입자가 퍼지는 효과를 요청합니다.
         stageManager._deadEffect.RequestRun(stageManager._player);
         Voices[9].Play();
@@ -1457,8 +1419,7 @@ public class XController : PlayerController
     public override void Hurt(int damage)
     {
         base.Hurt(damage);
-
-
+        
         // 플레이어가 생존해있다면
         if (IsAlive())
         {
@@ -1473,7 +1434,6 @@ public class XController : PlayerController
                 Voices[4].Play();
                 SoundEffects[11].Play();
             }
-
 
             // 발생한 효과를 제거합니다.
             if (_slideFogEffect != null)
@@ -1495,11 +1455,9 @@ public class XController : PlayerController
     protected override void EndHurt()
     {
         base.EndHurt();
-
-
+        
         // 블록된 행동 상태를 해제합니다.
         ShotBlocked = false;
-
 
         // 위험한 상태인데 위험 상태 경고 보이스를 재생하지 않았다면 재생합니다.
         if (Danger && _dangerVoicePlayed == false)
@@ -1514,16 +1472,10 @@ public class XController : PlayerController
         }
     }
 
-
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 보조 메서드를 정의합니다.
@@ -1536,8 +1488,7 @@ public class XController : PlayerController
         var stateInfo = _Animator.GetCurrentAnimatorStateInfo(0);
         _Animator.Play(stateInfo.fullPathHash, 0, fTime);
     }
-
-
+    
     /// <summary>
     /// 샷 루틴을 업데이트 합니다.
     /// </summary>
@@ -1545,8 +1496,7 @@ public class XController : PlayerController
     {
 
     }
-
-
+    
     /// <summary>
     /// 무기를 변경합니다.
     /// </summary>
@@ -1573,7 +1523,7 @@ public class XController : PlayerController
                 break;
 
             default:
-                targetPalette = XColorPalette.XDefaultPalette;
+                targetPalette = null; // XColorPalette.XDefaultPalette;
                 break;
         }
 
@@ -1595,7 +1545,7 @@ public class XController : PlayerController
         }
 
         // 플레이어가 차지 중이라면 색을 업데이트합니다.
-        if (_chargeTime > 0)
+        if (_chargeTime > CHARGE_LEVEL[0])
         {
             // 차지 효과 색상을 업데이트 합니다.
             if (_chargeEffect2 != null)
@@ -1621,43 +1571,91 @@ public class XController : PlayerController
     /// <param name="_currentPalette">현재 팔레트입니다.</param>
     void UpdateBodyColor(Color[] currentPalette)
     {
-        Texture2D texture = _Renderer.sprite.texture;
+        Sprite sprite = _Renderer.sprite;
+        Texture2D texture = sprite.texture;
         Color[] colors = texture.GetPixels();
         Color[] pixels = new Color[colors.Length];
         Color[] DefaultPalette = XColorPalette.XDefaultPalette;
+        Texture2D cloneTexture = null;
+        int textureID = sprite.GetInstanceID();
 
-
-        // 모든 픽셀을 돌면서 색상을 업데이트합니다.
-        for (int pixelIndex = 0, pixelCount = colors.Length; pixelIndex < pixelCount; ++pixelIndex)
+        if (currentPalette == null)
         {
-            Color color = colors[pixelIndex];
-            if (color.a == 1)
+            cloneTexture = texture;
+        }
+        // 현재 팔레트에 대한 텍스쳐 ID가 준비되어있다면
+        else if (IsTexturePrepared(textureID, currentPalette))
+        {
+            cloneTexture = texture;
+            if (currentPalette == XColorPalette.InvenciblePalette)
             {
-                for (int targetIndex = 0, targetPixelCount = DefaultPalette.Length; targetIndex < targetPixelCount; ++targetIndex)
-                {
-                    Color colorDst = DefaultPalette[targetIndex];
-                    if (Mathf.Approximately(color.r, colorDst.r) &&
-                        Mathf.Approximately(color.g, colorDst.g) &&
-                        Mathf.Approximately(color.b, colorDst.b) &&
-                        Mathf.Approximately(color.a, colorDst.a))
-                    {
-                        pixels[pixelIndex] = currentPalette[targetIndex];
-                        break;
-                    }
-                }
+                cloneTexture = _hit_textures[textureID];
+            }
+            else if (currentPalette == XColorPalette.XCharge1Palette) // (CHARGE_LEVEL[0] < _chargeTime && _chargeTime < CHARGE_LEVEL[2])
+            {
+                cloneTexture = _charge1_textures[textureID];
+            }
+            else if (currentPalette == XColorPalette.XCharge2Palette) // (CHARGE_LEVEL[2] < _chargeTime)
+            {
+                cloneTexture = _charge2_textures[textureID];
+            }
+            else if (currentPalette == XColorPalette.XWeapon1Palette) // (_weaponState == 1)
+            {
+                cloneTexture = _weapon1_textures[textureID];
+            }
+            else if (currentPalette == XColorPalette.XWeapon2Palette) // (_weaponState == 2)
+            {
+                cloneTexture = _weapon2_textures[textureID];
+            }
+            else if (currentPalette == XColorPalette.XWeapon3Palette) // (_weaponState == 3)
+            {
+                cloneTexture = _weapon3_textures[textureID];
+            }
+            else if (currentPalette == XColorPalette.XWeapon4Palette) // (_weaponState == 4)
+            {
+                cloneTexture = _weapon4_textures[textureID];
             }
             else
             {
-                pixels[pixelIndex] = color;
+                throw new Exception("예기치 못한 오류");
             }
         }
+        else
+        {
+            // 모든 픽셀을 돌면서 색상을 업데이트합니다.
+            for (int pixelIndex = 0, pixelCount = colors.Length; pixelIndex < pixelCount; ++pixelIndex)
+            {
+                Color color = colors[pixelIndex];
+                if (color.a == 1)
+                {
+                    for (int targetIndex = 0, targetPixelCount = DefaultPalette.Length; targetIndex < targetPixelCount; ++targetIndex)
+                    {
+                        Color colorDst = DefaultPalette[targetIndex];
+                        if (Mathf.Approximately(color.r, colorDst.r) &&
+                            Mathf.Approximately(color.g, colorDst.g) &&
+                            Mathf.Approximately(color.b, colorDst.b) &&
+                            Mathf.Approximately(color.a, colorDst.a))
+                        {
+                            pixels[pixelIndex] = currentPalette[targetIndex];
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    pixels[pixelIndex] = color;
+                }
+            }
 
+            // 텍스쳐를 복제하고 새 픽셀 팔레트로 덮어씌웁니다.
+            cloneTexture = new Texture2D(texture.width, texture.height);
+            cloneTexture.filterMode = FilterMode.Point;
+            cloneTexture.SetPixels(pixels);
+            cloneTexture.Apply();
 
-        // 텍스쳐를 복제하고 새 픽셀 팔레트로 덮어씌웁니다.
-        Texture2D cloneTexture = new Texture2D(texture.width, texture.height);
-        cloneTexture.filterMode = FilterMode.Point;
-        cloneTexture.SetPixels(pixels);
-        cloneTexture.Apply();
+            // 
+            AddTextureToSet(textureID, cloneTexture, currentPalette);
+        }
 
         // 새 텍스쳐를 렌더러에 반영합니다.
         MaterialPropertyBlock block = new MaterialPropertyBlock();
@@ -1690,12 +1688,98 @@ public class XController : PlayerController
     }
 
 
+    Dictionary<int, Texture2D> _hit_textures = new Dictionary<int, Texture2D>();
+    Dictionary<int, Texture2D> _charge1_textures = new Dictionary<int, Texture2D>();
+    Dictionary<int, Texture2D> _charge2_textures = new Dictionary<int, Texture2D>();
+    Dictionary<int, Texture2D> _weapon1_textures = new Dictionary<int, Texture2D>();
+    Dictionary<int, Texture2D> _weapon2_textures = new Dictionary<int, Texture2D>();
+    Dictionary<int, Texture2D> _weapon3_textures = new Dictionary<int, Texture2D>();
+    Dictionary<int, Texture2D> _weapon4_textures = new Dictionary<int, Texture2D>();
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="textureID"></param>
+    /// <param name="colorPalette"></param>
+    /// <returns></returns>
+    private bool IsTexturePrepared(int textureID, Color[] colorPalette)
+    {
+        if (colorPalette == XColorPalette.InvenciblePalette)
+        {
+            return _hit_textures.ContainsKey(textureID);
+        }
+        else if (colorPalette == XColorPalette.XCharge1Palette)
+        {
+            return _charge1_textures.ContainsKey(textureID);
+        }
+        else if (colorPalette == XColorPalette.XCharge2Palette)
+        {
+            return _charge2_textures.ContainsKey(textureID);
+        }
+        else if (colorPalette == XColorPalette.XWeapon1Palette)
+        {
+            return _weapon1_textures.ContainsKey(textureID);
+        }
+        else if (colorPalette == XColorPalette.XWeapon2Palette)
+        {
+            return _weapon2_textures.ContainsKey(textureID);
+        }
+        else if (colorPalette == XColorPalette.XWeapon3Palette)
+        {
+            return _weapon3_textures.ContainsKey(textureID);
+        }
+        else if (colorPalette == XColorPalette.XWeapon4Palette)
+        {
+            return _weapon4_textures.ContainsKey(textureID);
+        }
+
+        // 
+        return false;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="textureID"></param>
+    /// <param name="cloneTexture"></param>
+    /// <param name="colorPalette"></param>
+    private void AddTextureToSet(int textureID, Texture2D cloneTexture, Color[] colorPalette)
+    {
+        if (colorPalette == XColorPalette.InvenciblePalette)
+        {
+            _hit_textures.Add(textureID, cloneTexture);
+        }
+        else if (colorPalette == XColorPalette.XCharge1Palette)
+        {
+            _charge1_textures.Add(textureID, cloneTexture);
+        }
+        else if (colorPalette == XColorPalette.XCharge2Palette)
+        {
+            _charge2_textures.Add(textureID, cloneTexture);
+        }
+        else if (colorPalette == XColorPalette.XWeapon1Palette)
+        {
+            _weapon1_textures.Add(textureID, cloneTexture);
+        }
+        else if (colorPalette == XColorPalette.XWeapon2Palette)
+        {
+            _weapon2_textures.Add(textureID, cloneTexture);
+        }
+        else if (colorPalette == XColorPalette.XWeapon3Palette)
+        {
+            _weapon3_textures.Add(textureID, cloneTexture);
+        }
+        else if (colorPalette == XColorPalette.XWeapon4Palette)
+        {
+            _weapon4_textures.Add(textureID, cloneTexture);
+        }
+        else
+        {
+            throw new Exception("예기치 못한 추가 오류");
+        }
+    }
+
+
     #endregion
-
-
-
-
-
 
 
 
@@ -1733,7 +1817,6 @@ public class XController : PlayerController
         }
         return palette;
     }
-
 
     /// <summary>
     /// 효과 개체의 색을 색상표를 바탕으로 업데이트합니다.

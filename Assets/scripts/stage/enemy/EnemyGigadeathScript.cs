@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -42,12 +43,17 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
     /// 탄환 개체입니다.
     /// </summary>
     public EnemyBulletScript _bullet;
-    
+
+    /// <summary>
+    /// 사망 효과 간격입니다.
+    /// </summary>
+    public float _deadEffectInterval;
+
     #endregion
 
 
 
-    
+
 
     #region 캐릭터의 상태 필드 및 프로퍼티를 정의합니다.
 
@@ -55,7 +61,7 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
 
 
 
-    
+
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
     /// <summary>
@@ -146,11 +152,10 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
     public override void Dead()
     {
         // 폭발 효과를 생성하고 효과음을 재생합니다.
-        SoundEffects[0].Play();
-        Instantiate(effects[0], transform.position, transform.rotation);
+        StartCoroutine(CoroutineDead());
 
         // 사망 시 아이템 드롭 루틴입니다.
-        int dropItem = Random.Range(0, _items.Length);
+        int dropItem = UnityEngine.Random.Range(0, _items.Length);
         if (_items[dropItem] != null)
         {
             CreateItem(_items[dropItem]);
@@ -180,7 +185,7 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
     /// </summary>
     public void RequestShot()
     {
-        Shot(_shotPoints[Random.Range(0, _shotPoints.Length)]);
+        Shot(_shotPoints[UnityEngine.Random.Range(0, _shotPoints.Length)]);
     }
     /// <summary>
     /// 탄환을 발사합니다.
@@ -200,13 +205,30 @@ public class EnemyGigadeathScript : EnemyScript, IShootableEnemy
     }
 
     #endregion
-    
 
 
-    
 
-    #region 보조 메서드를 정의합니다.
 
+
+    #region 코루틴 메서드를 정의합니다.
+    /// <summary>
+    /// 사망 코루틴입니다.
+    /// </summary>
+    private IEnumerator CoroutineDead()
+    {
+        for (int i = 0; i < 3; ++i)
+        {
+            float distortionX = UnityEngine.Random.Range(1, 3);
+            float distortionY = UnityEngine.Random.Range(1, 3);
+
+            SoundEffects[0].Play();
+            Instantiate(effects[0], transform.position + new Vector3(distortionX, distortionY), transform.rotation);
+
+            // 
+            yield return new WaitForSeconds(_deadEffectInterval);
+        }
+        yield break;
+    }
 
     #endregion
 
