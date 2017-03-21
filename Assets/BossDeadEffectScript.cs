@@ -22,7 +22,7 @@ public class BossDeadEffectScript : EffectScript
     /// <summary>
     /// 
     /// </summary>
-    public EffectMultipleExplosionScript _explosion;
+    public EffectBossExplosionScript _explosion;
 
     /// <summary>
     /// 불이 켜진 상태라면 참입니다.
@@ -131,8 +131,9 @@ public class BossDeadEffectScript : EffectScript
         stageManager.RequestStopBackgroundMusic();
 
         // 
-        EffectMultipleExplosionScript explosion = Instantiate
+        EffectBossExplosionScript explosion = Instantiate
             (_explosion, transform.position, transform.rotation);
+        explosion.gameObject.SetActive(true);
 
         // 
         ScreenFader fader = stageManager._fader;

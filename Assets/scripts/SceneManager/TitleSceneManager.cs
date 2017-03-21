@@ -19,12 +19,7 @@ public class TitleSceneManager : MonoBehaviour
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 필드를 정의합니다.
@@ -51,12 +46,7 @@ public class TitleSceneManager : MonoBehaviour
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
@@ -121,19 +111,19 @@ public class TitleSceneManager : MonoBehaviour
                         break;
 
                     case 1:
-                        _nextLevelName = "CS01_Prologue";
+                        _nextLevelName = "01_Intro";
                         _changeSceneRequested = true;
                         fader.FadeOut(1);
                         break;
 
                     case 2:
-                        _nextLevelName = "Continue";
+                        _nextLevelName = "00_TestStage";
                         _changeSceneRequested = true;
                         fader.FadeOut(1);
                         break;
 
                     case 3:
-                        _nextLevelName = "TEST_built";
+                        _nextLevelName = "02_CommanderYammark";
                         _changeSceneRequested = true;
                         fader.FadeOut(1);
                         break;
@@ -155,12 +145,7 @@ public class TitleSceneManager : MonoBehaviour
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 보조 메서드를 정의합니다.
@@ -177,17 +162,17 @@ public class TitleSceneManager : MonoBehaviour
         _menuIndex = index;
         _seSources[0].Play();
     }
-
-
+    
     /// <summary>
     /// 선택 키가 눌렸는지 확인합니다.
     /// </summary>
     /// <returns>선택 키가 눌렸다면 참입니다.</returns>
     bool IsSelectKeyPressed()
     {
-        return (Input.GetKeyDown(KeyCode.Return) || Input.GetButton("Attack") || Input.GetKey(KeyCode.Space));
+        return (Input.GetKeyDown(KeyCode.Return)
+            || Input.GetButton("Attack")
+            || Input.GetKey(KeyCode.Space));
     }
-
-
+    
     #endregion
 }

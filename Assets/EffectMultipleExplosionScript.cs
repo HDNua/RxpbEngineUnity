@@ -59,6 +59,9 @@ public class EffectMultipleExplosionScript : EffectScript
 
     #endregion
 
+
+
+    #region 보조 메서드를 정의합니다.
     /// <summary>
     /// 사망 코루틴입니다.
     /// </summary>
@@ -72,7 +75,7 @@ public class EffectMultipleExplosionScript : EffectScript
 
             // 
             Vector3 position = transform.position + new Vector3(distortionX, distortionY);
-            Instantiate(DataBase.Instance.ExplosionEffect, position, transform.rotation);
+            CreateExplosion(position);
 
             // 
             yield return new WaitForSeconds(_deadEffectInterval);
@@ -82,4 +85,16 @@ public class EffectMultipleExplosionScript : EffectScript
         RequestDestroy();
         yield break;
     }
+
+    /// <summary>
+    /// 폭발 효과 개체를 생성합니다.
+    /// </summary>
+    /// <param name="position">폭발 효과 개체를 생성할 위치입니다.</param>
+    void CreateExplosion(Vector3 position)
+    {
+        EffectScript effect = DataBase.Instance.Explosion1Effect;
+        Instantiate(effect, position, transform.rotation);
+    }
+
+    #endregion
 }

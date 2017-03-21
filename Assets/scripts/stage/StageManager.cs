@@ -239,6 +239,9 @@ public class StageManager : HDSceneManager
         {
             if (_fader.FadeOutEnded)
             {
+                LoadingSceneManager.LoadLevel("CS03_GaiaFound");
+                
+                /*
                 switch (_gameEndValue)
                 {
                     case 2:
@@ -253,6 +256,7 @@ public class StageManager : HDSceneManager
                         LoadingSceneManager.LoadLevel("StageSelect");
                         break;
                 }
+                */
 
                 // RestartLevel();
             }

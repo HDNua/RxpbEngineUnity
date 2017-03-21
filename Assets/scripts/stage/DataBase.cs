@@ -159,16 +159,37 @@ public class DataBase : MonoBehaviour
     /// <summary>
     /// 폭발 효과 개체를 가져옵니다.
     /// </summary>
-    public EffectScript ExplosionEffect
+    public EffectScript Explosion1Effect
     {
         get { return _effects[0]; }
+    }
+    /// <summary>
+    /// 폭발 효과 개체를 가져옵니다.
+    /// </summary>
+    public EffectScript Explosion2Effect
+    {
+        get { return _effects[1]; }
+    }
+    /// <summary>
+    /// 폭발 효과 개체를 가져옵니다.
+    /// </summary>
+    public EffectScript Explosion3Effect
+    {
+        get { return _effects[2]; }
+    }
+    /// <summary>
+    /// 폭발 효과 개체를 가져옵니다.
+    /// </summary>
+    public EffectScript Explosion4Effect
+    {
+        get { return _effects[3]; }
     }
     /// <summary>
     /// 연속 폭발 효과 개체를 가져옵니다.
     /// </summary>
     public EffectScript MultipleExplosionEffect
     {
-        get { return _effects[1]; }
+        get { return _effects[4]; }
     }
 
     #endregion

@@ -14,12 +14,7 @@ public class ZController : PlayerController
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 플레이어의 상태 필드를 정의합니다.
@@ -51,22 +46,26 @@ public class ZController : PlayerController
 
 
 
-
-
-
-
-
-
+    
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     protected override void Awake()
     {
         base.Awake(); // Initialize();
     }
+    /// <summary>
+    /// 
+    /// </summary>
     void Start()
     {
         // Initialize();
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected override void Update()
     {
         if (UpdateController() == false)
@@ -188,6 +187,9 @@ public class ZController : PlayerController
             }
         }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     void FixedUpdate()
     {
         /// UpdateState();
@@ -399,13 +401,20 @@ public class ZController : PlayerController
             }
         }
     }
+    /// <summary>
+    /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
+    /// 주로 오브젝트를 따라가게 설정한 카메라는 LastUpdate를 사용합니다.
+    /// </summary>
+    protected override void LateUpdate()
+    {
+        base.LateUpdate();
+        UpdateState();
+
+        // 제로의  색상을 업데이트합니다.
+        /// UpdateColor();
+    }
 
     #endregion
-
-
-
-
-
 
 
 
@@ -460,12 +469,7 @@ public class ZController : PlayerController
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region PlayerController 행동 메서드를 재정의 합니다.

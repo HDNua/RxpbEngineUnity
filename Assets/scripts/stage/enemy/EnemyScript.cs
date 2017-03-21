@@ -336,7 +336,8 @@ public abstract class EnemyScript : MonoBehaviour
     /// </summary>
     protected virtual void CreateExplosion(Vector3 position)
     {
-        Instantiate(DataBase.Instance.ExplosionEffect, position, transform.rotation).gameObject.SetActive(true);
+        Instantiate(DataBase.Instance.Explosion1Effect, position, transform.rotation)
+            .gameObject.SetActive(true);
     }
     
     #endregion

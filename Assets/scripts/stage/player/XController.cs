@@ -15,8 +15,7 @@ public class XController : PlayerController
     /// 차지 단계가 변하는 시간입니다.
     /// </summary>
     readonly float[] CHARGE_LEVEL = { 0.2f, 0.3f, 1.7f };
-
-
+    
     /// <summary>
     /// 샷 발사 시에 반짝이는 시간입니다.
     /// </summary>
@@ -25,16 +24,10 @@ public class XController : PlayerController
     /// 샷 상태가 끝나는 시간입니다.
     /// </summary>
     const float END_SHOOTING_TIME = 0.5416667f;
-
-
+    
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -51,8 +44,7 @@ public class XController : PlayerController
     /// 버스터 샷 집합입니다.
     /// </summary>
     public GameObject[] _bullets;
-
-
+    
     /// <summary>
     /// 버스터 샷이 생성되는 위치입니다.
     /// </summary>
@@ -77,22 +69,15 @@ public class XController : PlayerController
     /// 앉은 상태에서 버스터 샷이 생성되는 위치입니다.
     /// </summary>
     public Transform _crouchShotPosition;
-
-
+    
     /// <summary>
     /// 차지 효과가 발생하는 위치입니다.
     /// </summary>
     public Transform _chargeEffectPosition;
-
-
+    
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -115,12 +100,7 @@ public class XController : PlayerController
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -141,14 +121,12 @@ public class XController : PlayerController
     /// 샷이 막혀있다면 참입니다.
     /// </summary>
     bool _shotBlocked = false;
-
-
+    
     /// <summary>
     /// 위험 경고 효과음이 재생되었다면 참입니다.
     /// </summary>
     bool _dangerVoicePlayed = false;
-
-
+    
     /// <summary>
     /// 샷을 발사한 이후로 경과한 시간입니다.
     /// </summary>
@@ -164,15 +142,9 @@ public class XController : PlayerController
             _Animator.SetFloat("ShotTime", _shotTime2 = value);
         }
     }
-
-
+    
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -197,8 +169,7 @@ public class XController : PlayerController
         get { return _shotBlocked; }
         private set { _shotBlocked = value; }
     }
-
-
+    
     /// <summary>
     /// 차지 샷 중이라면 참입니다.
     /// </summary>
@@ -211,8 +182,7 @@ public class XController : PlayerController
         get { return _chargeShooting; }
         set { _Animator.SetBool("ChargeShooting", _chargeShooting = value); }
     }
-
-
+    
     /// <summary>
     /// 현재 무기 상태입니다. 0은 기본입니다.
     /// </summary>
@@ -221,17 +191,11 @@ public class XController : PlayerController
     /// 현재 색상 팔레트입니다.
     /// </summary>
     Color[] _currentPalette;
-
-
+    
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region MonoBehavior 기본 메서드를 재정의합니다.
@@ -701,12 +665,8 @@ public class XController : PlayerController
         base.LateUpdate();
         UpdateState();
 
-
         // 엑스의 색상을 업데이트합니다.
         UpdateColor();
-
-        // 충돌 박스를 업데이트합니다.
-        /// UpdateHitBox();
     }
 
     #endregion
@@ -1570,9 +1530,6 @@ public class XController : PlayerController
     {
         Sprite sprite = _Renderer.sprite;
         Texture2D texture = sprite.texture;
-        Color[] colors = texture.GetPixels();
-        Color[] pixels = new Color[colors.Length];
-        Color[] DefaultPalette = XColorPalette.XDefaultPalette;
         Texture2D cloneTexture = null;
         int textureID = sprite.GetInstanceID();
 
@@ -1619,6 +1576,10 @@ public class XController : PlayerController
         }
         else
         {
+            Color[] colors = texture.GetPixels();
+            Color[] pixels = new Color[colors.Length];
+            Color[] DefaultPalette = XColorPalette.XDefaultPalette;
+
             // 모든 픽셀을 돌면서 색상을 업데이트합니다.
             for (int pixelIndex = 0, pixelCount = colors.Length; pixelIndex < pixelCount; ++pixelIndex)
             {
