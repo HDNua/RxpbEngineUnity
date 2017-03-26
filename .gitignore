@@ -34,3 +34,8 @@ ExportedObj/
 Icon?
 ehthumbs.db
 Thumbs.db
+
+# =============== #
+# Assistant Tools #
+# =============== #
+*.jar
