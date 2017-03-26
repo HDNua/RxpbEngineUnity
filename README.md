@@ -15,7 +15,11 @@ Graphic Designer: 알엑스
 ------------------------------------------------------------------------------
 ## 주의사항(Notice)
 
-"RX_" 접두어가 붙은 파일에 대해 다음의 CCL 라이선스가 적용됩니다.
+* 이 게임에서 사용된 자원은 캡콤에 저작권이 있습니다.
+
+Rights of resources used in this fan-made game is reserved by Capcom.
+
+* "RX_" 접두어가 붙은 파일에 대해 다음의 CCL 라이선스가 적용됩니다.
 
 Following CCL is applied to resources which name has prefix "RX_".
 
