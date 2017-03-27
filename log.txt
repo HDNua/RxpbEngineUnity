@@ -1,9 +1,7 @@
-RXPB v5.6.3.1
+RXPB v6.0.0
 
-- Github commit.
-
-
-- Huge File (<100Mb) removed from git.
+- 협동 모드 도입 시작.
+> Co-op mode implementation has started.
 
 
 end.

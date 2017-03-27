@@ -11,14 +11,23 @@ using System.Collections;
 public class ZSaberScript : AttackScript
 {
     #region MonoBehaviour 기본 메서드를 재정의 합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     protected override void Awake()
     {
         base.Awake();
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected override void Start()
     {
         base.Start();
     }
+    /// <summary>
+    /// 
+    /// </summary>
     protected override void Update()
     {
         base.Update();

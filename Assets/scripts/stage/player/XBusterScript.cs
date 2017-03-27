@@ -97,6 +97,7 @@ public class XBusterScript : AttackScript
 
     
 
+
     #region Collider2D의 기본 메서드를 재정의합니다.
     /// <summary>
     /// 충돌체가 트리거 내부로 진입했습니다.

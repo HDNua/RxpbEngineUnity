@@ -316,11 +316,13 @@ public class XController : PlayerController
                 Dash();
             }
         }
+        /**
         // 캐릭터 변경 키가 눌린 경우
         else if (IsKeyDown("ChangeCharacter"))
         {
             /// stageManager.ChangePlayer(stageManager.PlayerZ);
         }
+        */
         // 테스트 코드입니다.
         else if (Input.GetKeyDown(KeyCode.A))
         {

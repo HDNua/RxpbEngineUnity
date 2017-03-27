@@ -193,6 +193,11 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     public BoxCollider2D _hitBoxDown;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public int _playerIndex = -1;
+
     #endregion
 
     
@@ -238,7 +243,13 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>키가 눌렸다면 true를 반환합니다.</returns>
     protected bool IsKeyDown(string axisName)
     {
-        return (InputBlocked == false && Input.GetButtonDown(axisName));
+        if (InputBlocked)
+            return false;
+
+        // return (InputBlocked == false && Input.GetButtonDown(axisName));
+        if (_playerIndex < 0)
+            return Input.GetButtonDown(axisName);
+        return Input.GetButtonDown(axisName + _playerIndex);
     }
     /// <summary>
     /// 키가 계속 눌린 상태인지 확인합니다.
@@ -247,7 +258,13 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>키가 눌린 상태라면 true를 반환합니다.</returns>
     protected bool IsKeyPressed(string axisName)
     {
-        return (InputBlocked == false && Input.GetButton(axisName));
+        if (InputBlocked)
+            return false;
+
+        // return (InputBlocked == false && Input.GetButton(axisName));
+        if (_playerIndex < 0)
+            return Input.GetButton(axisName);
+        return Input.GetButton(axisName + _playerIndex);
     }
     /// <summary>
     /// 왼쪽 키가 눌려있는지 확인합니다.
@@ -255,8 +272,13 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>왼쪽 키가 눌려있다면 참입니다.</returns>
     protected bool IsLeftKeyPressed()
     {
-        /// return (InputBlocked == false && (Input.GetAxisRaw("Horizontal") < 0));
-        return (InputBlocked == false && Input.GetKey(KeyCode.LeftArrow));
+        if (InputBlocked)
+            return false;
+
+        // return (InputBlocked == false && Input.GetKey(KeyCode.LeftArrow));
+        if (_playerIndex < 0)
+            return Input.GetKey(KeyCode.LeftArrow);
+        return Input.GetAxis("Horizontal" + _playerIndex) < 0;
     }
     /// <summary>
     /// 오른쪽 키가 눌려있는지 확인합니다.
@@ -264,8 +286,13 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>오른쪽 키가 눌려있다면 참입니다.</returns>
     protected bool IsRightKeyPressed()
     {
-        /// return (InputBlocked == false && (Input.GetAxisRaw("Horizontal") > 0));
-        return (InputBlocked == false && Input.GetKey(KeyCode.RightArrow));
+        if (InputBlocked)
+            return false;
+
+        // return (InputBlocked == false && Input.GetKey(KeyCode.RightArrow));
+        if (_playerIndex < 0)
+            return Input.GetKey(KeyCode.RightArrow);
+        return Input.GetAxis("Horizontal" + _playerIndex) > 0;
     }
     /// <summary>
     /// 위쪽 키가 눌려있는지 확인합니다.
@@ -273,8 +300,13 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>위쪽 키가 눌려있다면 참입니다.</returns>
     protected bool IsUpKeyPressed()
     {
-        /// return (InputBlocked == false && (Input.GetAxisRaw("Vertical") > 0));
-        return (InputBlocked == false && Input.GetKey(KeyCode.UpArrow));
+        if (InputBlocked)
+            return false;
+
+        // return (InputBlocked == false && Input.GetKey(KeyCode.UpArrow));
+        if (_playerIndex < 0)
+            return Input.GetKey(KeyCode.UpArrow);
+        return Input.GetAxis("Vertical" + _playerIndex) > 0;
     }
     /// <summary>
     /// 아래쪽 키가 눌려있는지 확인합니다.
@@ -282,8 +314,13 @@ public abstract class PlayerController : MonoBehaviour
     /// <returns>아래쪽 키가 눌려있다면 참입니다.</returns>
     protected bool IsDownKeyPressed()
     {
-        /// return (InputBlocked == false && (Input.GetAxisRaw("Vertical") < 0));
-        return (InputBlocked == false && Input.GetKey(KeyCode.DownArrow));
+        if (InputBlocked)
+            return false;
+
+        // return (InputBlocked == false && Input.GetKey(KeyCode.DownArrow));
+        if (_playerIndex < 0)
+            return Input.GetKey(KeyCode.UpArrow);
+        return Input.GetAxis("Vertical" + _playerIndex) < 0;
     }
 
     #endregion
@@ -1275,12 +1312,7 @@ public abstract class PlayerController : MonoBehaviour
 
 
 
-
-
-
-
-
-
+    
 
     #region 플레이어의 행동 메서드를 정의합니다.
     ///////////////////////////////////////////////////////////////////
@@ -1975,16 +2007,6 @@ public abstract class PlayerController : MonoBehaviour
         _Animator.Play("Ceremony");
     }
 
-    /**
-    /// <summary>
-    /// 삭제하자
-    /// </summary>
-    void ________TESTEST()
-    {
-        Returning = true;
-    }
-    */
-
     #endregion
         
 
@@ -2098,15 +2120,80 @@ public abstract class PlayerController : MonoBehaviour
     /// 테스트 메서드입니다. 주의: 지우지 마십시오! 하위 형식에서 오버라이딩합니다.
     /// </summary>
     protected virtual void TESTEST3() { }
-    
+
     #endregion
 
 
-    
 
 
 
     #region 구형 정의를 보관합니다.
+    [Obsolete("")]
+    /// <summary>
+    /// 키가 눌렸는지 확인합니다.
+    /// </summary>
+    /// <param name="axisName">상태를 확인할 키의 이름입니다.</param>
+    /// <returns>키가 눌렸다면 true를 반환합니다.</returns>
+    protected bool IsKeyDown_dep(string axisName)
+    {
+        if (InputBlocked)
+            return false;
+
+        // return (InputBlocked == false && Input.GetButtonDown(axisName));
+        if (_playerIndex < 0)
+            return Input.GetButtonDown(axisName);
+        return Input.GetButtonDown(axisName + _playerIndex);
+    }
+    [Obsolete("")]
+    /// <summary>
+    /// 키가 계속 눌린 상태인지 확인합니다.
+    /// </summary>
+    /// <param name="axisName">눌린 상태인지 확인할 키의 이름입니다.</param>
+    /// <returns>키가 눌린 상태라면 true를 반환합니다.</returns>
+    protected bool IsKeyPressed_dep(string axisName)
+    {
+        return (InputBlocked == false && Input.GetButton(axisName));
+    }
+    [Obsolete("")]
+    /// <summary>
+    /// 왼쪽 키가 눌려있는지 확인합니다.
+    /// </summary>
+    /// <returns>왼쪽 키가 눌려있다면 참입니다.</returns>
+    protected bool IsLeftKeyPressed_dep()
+    {
+        /// return (InputBlocked == false && (Input.GetAxisRaw("Horizontal") < 0));
+        return (InputBlocked == false && Input.GetKey(KeyCode.LeftArrow));
+    }
+    [Obsolete("")]
+    /// <summary>
+    /// 오른쪽 키가 눌려있는지 확인합니다.
+    /// </summary>
+    /// <returns>오른쪽 키가 눌려있다면 참입니다.</returns>
+    protected bool IsRightKeyPressed_dep()
+    {
+        /// return (InputBlocked == false && (Input.GetAxisRaw("Horizontal") > 0));
+        return (InputBlocked == false && Input.GetKey(KeyCode.RightArrow));
+    }
+    [Obsolete("")]
+    /// <summary>
+    /// 위쪽 키가 눌려있는지 확인합니다.
+    /// </summary>
+    /// <returns>위쪽 키가 눌려있다면 참입니다.</returns>
+    protected bool IsUpKeyPressed_dep()
+    {
+        /// return (InputBlocked == false && (Input.GetAxisRaw("Vertical") > 0));
+        return (InputBlocked == false && Input.GetKey(KeyCode.UpArrow));
+    }
+    [Obsolete("")]
+    /// <summary>
+    /// 아래쪽 키가 눌려있는지 확인합니다.
+    /// </summary>
+    /// <returns>아래쪽 키가 눌려있다면 참입니다.</returns>
+    protected bool IsDownKeyPressed_dep()
+    {
+        /// return (InputBlocked == false && (Input.GetAxisRaw("Vertical") < 0));
+        return (InputBlocked == false && Input.GetKey(KeyCode.DownArrow));
+    }
 
     #endregion
 }

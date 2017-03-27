@@ -240,31 +240,11 @@ public class StageManager : HDSceneManager
             if (_fader.FadeOutEnded)
             {
                 LoadingSceneManager.LoadLevel("CS03_GaiaFound");
-                
-                /*
-                switch (_gameEndValue)
-                {
-                    case 2:
-                        LoadingSceneManager.LoadLevel("CS03_GaiaFound");
-                        break;
-
-                    case 3:
-                        LoadingSceneManager.LoadLevel("CS03_GaiaFound");
-                        break;
-
-                    default:
-                        LoadingSceneManager.LoadLevel("StageSelect");
-                        break;
-                }
-                */
-
-                // RestartLevel();
             }
 
             return;
         }
-
-
+        
         // 페이드 인 효과가 종료되는 시점에
         if (_fader.FadeInEnded)
         {
@@ -272,20 +252,43 @@ public class StageManager : HDSceneManager
             PlayReadyAnimation();
         }
 
-
-        if (Input.GetKeyDown(KeyCode.Q))
+        // 특수 키 입력에 대한 처리입니다.
+        if (Input.GetKeyDown(KeyCode.Q)) 
         {
+            // 플레이 속도를 바꿉니다.
             _timeManager.TimeScale = _timeManager.TimeScale == test ? 1 : test;
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
+            // 플레이어에게 대미지를 입힙니다.
             _player.Hurt(TestDamageValue);
         }
-        else if (Input.GetKeyDown(KeyCode.R))
+        else if (Input.GetKeyDown(KeyCode.R)) 
         {
+            // 플레이어의 체력을 모두 회복합니다.
             while (_player.IsHealthFull() == false)
             {
                 _player.Heal();
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.T))
+        {
+            // 
+            if (_playerZ.isActiveAndEnabled)
+            {
+                _playerX._playerIndex = -1;
+                _playerZ._playerIndex = -1;
+
+                _playerZ.gameObject.SetActive(false);
+            }
+            else
+            {
+                _playerX._playerIndex = 0;
+                _playerZ._playerIndex = 1;
+
+                Vector3 posX = _playerX.transform.position;
+                _playerZ.transform.position = new Vector3(posX.x - 1, posX.y + 10);
+                _playerZ.RequestSpawn();
             }
         }
 
@@ -323,8 +326,7 @@ public class StageManager : HDSceneManager
         // 관리자 객체의 필드가 새 플레이어를 가리키도록 합니다.
         _map.UpdatePlayer(_player = newPlayer);
     }
-
-
+    
     /// <summary>
     /// 화면을 동결시킵니다.
     /// </summary>
@@ -341,8 +343,7 @@ public class StageManager : HDSceneManager
         IsFrozen = false;
         _timeManager.StageManagerRequested = false;
     }
-
-
+    
     /// <summary>
     /// 스테이지를 재시작합니다.
     /// </summary>
@@ -350,8 +351,7 @@ public class StageManager : HDSceneManager
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-
-
+    
     #endregion
     
 
@@ -405,8 +405,7 @@ public class StageManager : HDSceneManager
     {
         LoadingSceneManager.LoadLevel("Title");
     }
-
-
+    
     /// <summary>
     /// 스테이지를 끝냅니다.
     /// </summary>
@@ -483,8 +482,7 @@ public class StageManager : HDSceneManager
         _bgmSource.Stop();
         _database._bossBattleManager.GetComponent<AudioSource>().Stop();
     }
-
-
+    
     /// <summary>
     /// 현재 조작중인 플레이어의 위치를 반환합니다.
     /// </summary>
@@ -493,8 +491,7 @@ public class StageManager : HDSceneManager
     {
         return _player.transform.position;
     }
-
-
+    
     #endregion
 
 
