@@ -4,7 +4,7 @@
 ------------------------------------------------------------------------------
 ## What is RXPB?
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ZEjLZwuM0Hk" frameborder="0" allowfullscreen></iframe>
+[![HI](https://img.youtube.com/vi/ZEjLZwuM0Hk/0.jpg)](https://www.youtube.com/embed/ZEjLZwuM0Hk)
 
 ------------------------------------------------------------------------------
 ## Team SnakeHead
