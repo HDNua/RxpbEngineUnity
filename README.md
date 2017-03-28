@@ -1,5 +1,5 @@
 # RxpbEngineUnity
-"Rockman X: Pandora's Box" Engine using Unity3D (https://www.youtube.com/edit?o=U&video_id=ZEjLZwuM0Hk)
+"Rockman X: Pandora's Box" Engine using Unity3D (https://www.youtube.com/watch?v=ZEjLZwuM0Hk)
 
 ------------------------------------------------------------------------------
 ## What is RXPB?
