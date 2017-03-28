@@ -190,7 +190,7 @@ public class StageManager1P : StageManager
     /// </summary>
     public override void EnableHUD()
     {
-        _userInterfaceManager.ActivatePlayerHUD();
+        _userInterfaceManager.ActivateMainPlayerHUD();
     }
     
     /// <summary>

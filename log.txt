@@ -1,4 +1,4 @@
-RXPB v6.0.2
+RXPB v6.0.3
 
 - 협동 모드 도입 시작.
   Co-op mode implementation has started.
@@ -9,6 +9,11 @@ RXPB v6.0.2
   
   
 - StageManager를 1인용과 2인용으로 분리함.
+
+
+- 협동 모드 개발 진행중.
+!> 보스 문 진입 시에 어떻게 처리할지가 의문이다.
+!> 사망 시 파편 효과 버그 발견.
 
 
 end.

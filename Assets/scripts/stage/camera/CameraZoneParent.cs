@@ -21,7 +21,7 @@ public class CameraZoneParent : MonoBehaviour
     /// <summary>
     /// CameraFollow 스크립트입니다.
     /// </summary>
-    CameraFollowScript _cameraFollow;
+    CameraFollow1PScript _cameraFollow;
 
     /// <summary>
     /// 카메라 존의 부모 개체입니다.
@@ -42,7 +42,7 @@ public class CameraZoneParent : MonoBehaviour
     /// <summary>
     /// CameraFollow 객체입니다.
     /// </summary>
-    public CameraFollowScript CameraFollow
+    public CameraFollow1PScript CameraFollow
     {
         get { return _cameraFollow; }
     }

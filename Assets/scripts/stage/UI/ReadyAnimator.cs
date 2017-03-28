@@ -64,7 +64,10 @@ public class ReadyAnimator : MonoBehaviour
         {
             StageManager2P stageManager = (StageManager2P)_stageManager;
 
-            // 
+            // HUD를 활성화 합니다.
+            stageManager.EnableHUD();
+
+            // 플레이어 소환을 요청합니다.
             Vector3 mainSpawnPos = stageManager._PlayerSpawnPosition.position;
             stageManager.MainPlayer.transform.position = mainSpawnPos;
             stageManager.MainPlayer.RequestSpawn();

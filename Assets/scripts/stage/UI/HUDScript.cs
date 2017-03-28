@@ -13,7 +13,7 @@ public class HUDScript : MonoBehaviour
     /// 데이터베이스 개체입니다.
     /// </summary>
     public DataBase _database;
-    
+
     /// <summary>
     /// 체력 상태 바입니다.
     /// </summary>
@@ -59,17 +59,21 @@ public class HUDScript : MonoBehaviour
 
 
 
-    #region 필드를 정의합니다.
-    /// <summary>
-    /// 스테이지 관리자입니다.
-    /// </summary>
-    StageManager1P _stageManager;
-    
+    #region 필드 및 프로퍼티를 정의합니다.
     /// <summary>
     /// 정상 상태라면 참입니다. 무기 장착 상태라면 거짓입니다.
     /// </summary>
     bool _isStateNormal = true;
-    
+
+    /// <summary>
+    /// HUD가 표현할 대상 플레이어입니다.
+    /// </summary>
+    PlayerController _player;
+    /// <summary>
+    /// HUD가 표현할 대상 플레이어를 설정합니다.
+    /// </summary>
+    public PlayerController Player { set { _player = value; } }
+
     #endregion
 
 
@@ -90,12 +94,11 @@ public class HUDScript : MonoBehaviour
     /// </summary>
     void Update()
     {
-        PlayerController player = _stageManager._player;
-        if (player != null)
+        if (_player != null)
         {
             // 체력을 업데이트 합니다.
             Vector3 healthScale = _healthBar.transform.localScale;
-            healthScale.y = (float)player.Health / player.MaxHealth;
+            healthScale.y = (float)_player.Health / _player.MaxHealth;
             _healthBar.transform.localScale = healthScale;
 
             // 상태 보드를 업데이트합니다.
@@ -105,7 +108,7 @@ public class HUDScript : MonoBehaviour
             if (_isStateNormal == false)
             {
                 Vector3 manaScale = _manaBar.transform.localScale;
-                manaScale.y = (float)player.Health / player.MaxHealth;
+                manaScale.y = (float)_player.Health / _player.MaxHealth;
                 _manaBar.transform.localScale = manaScale;
             }
         }
@@ -154,15 +157,19 @@ public class HUDScript : MonoBehaviour
             _statusBoardWeapon.SetActive(true);
         }
     }
-    
+
     #endregion
 
 
 
-    
+
 
     #region 구형 정의를 보관합니다.
-
+    [Obsolete("[v6.0.2] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 스테이지 관리자입니다.
+    /// </summary>
+    StageManager1P _stageManager;
 
     #endregion
 }

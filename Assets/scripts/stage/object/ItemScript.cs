@@ -26,6 +26,8 @@ public class ItemScript : MonoBehaviour
 
 
 
+
+
     #region 컨트롤러가 사용할 Unity 객체를 정의합니다.
     /// <summary>
     /// 렌더러 개체입니다.
@@ -73,15 +75,15 @@ public class ItemScript : MonoBehaviour
     public LayerMask _whatIsGround;
 
     /// <summary>
-    /// 
+    /// 초기 속도입니다.
     /// </summary>
     public Vector2 _initialVelocity = new Vector2(0, 10);
     /// <summary>
-    /// 
+    /// 가속도입니다.
     /// </summary>
     public Vector2 _acceleration = new Vector2(0, 20);
     /// <summary>
-    /// 
+    /// 땅에 닿은 후의 생존 시간입니다.
     /// </summary>
     public float _landOffset = 2f;
 
@@ -164,7 +166,7 @@ public class ItemScript : MonoBehaviour
     /// <summary>
     /// 스테이지 관리자입니다.
     /// </summary>
-    StageManager1P _StageManager { get { return StageManager1P.Instance; } }
+    StageManager _StageManager { get { return StageManager.Instance; } }
 
     #endregion
 

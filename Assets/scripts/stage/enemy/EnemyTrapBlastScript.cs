@@ -15,6 +15,8 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
 
 
 
+
+
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
     /// <summary>
     /// 탄환 시작 위치입니다.
@@ -26,12 +28,16 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
     public EnemyBulletScript _bullet;
 
     #endregion
-    
 
 
 
 
-    #region 캐릭터의 상태 필드 및 프로퍼티를 정의합니다.
+
+    #region Unity 개체에 대한 참조를 보관합니다.
+    /// <summary>
+    /// 스테이지 관리자입니다.
+    /// </summary>
+    StageManager _stageManager;
 
     #endregion
 
@@ -46,6 +52,9 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
     protected override void Start()
     {
         base.Start();
+
+        // 필드를 초기화합니다.
+        _stageManager = StageManager.Instance;
 
         // 컬러 팔레트를 설정합니다.
         DefaultPalette = EnemyColorPalette.TrapBlastPalette;
@@ -68,19 +77,14 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
     {
         base.LateUpdate();
 
+        // 색상을 업데이트합니다.
         UpdateColor();
     }
-
 
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region Collider2D의 기본 메서드를 재정의합니다.
@@ -115,12 +119,7 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -193,7 +192,7 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
 
         // 플레이어의 위치를 향해 발사합니다.
         bullet.FacingRight = FacingRight;
-        bullet.MoveTo(StageManager1P.Instance.GetCurrentPlayerPosition());
+        bullet.MoveTo(StageManager.Instance.GetCurrentPlayerPosition());
     }
 
     #endregion
@@ -206,6 +205,8 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
 
 
     #endregion
+
+
 
 
 

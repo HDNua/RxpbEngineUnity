@@ -206,9 +206,9 @@ public abstract class EnemyScript : MonoBehaviour
     /// <summary>
     /// 스테이지 관리자입니다.
     /// </summary>
-    protected StageManager1P _StageManager
+    protected StageManager _StageManager
     {
-        get { return StageManager1P.Instance; }
+        get { return StageManager.Instance; }
     }
 
     #endregion

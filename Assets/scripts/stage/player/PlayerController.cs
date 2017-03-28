@@ -306,7 +306,7 @@ public abstract class PlayerController : MonoBehaviour
         // return (InputBlocked == false && Input.GetKey(KeyCode.UpArrow));
         if (_playerIndex < 0)
             return Input.GetKey(KeyCode.UpArrow);
-        return Input.GetAxis("Vertical" + _playerIndex) < 0;
+        return Input.GetAxis("Vertical" + _playerIndex) > 0;
     }
     /// <summary>
     /// 아래쪽 키가 눌려있는지 확인합니다.
@@ -320,7 +320,7 @@ public abstract class PlayerController : MonoBehaviour
         // return (InputBlocked == false && Input.GetKey(KeyCode.DownArrow));
         if (_playerIndex < 0)
             return Input.GetKey(KeyCode.DownArrow);
-        return Input.GetAxis("Vertical" + _playerIndex) > 0;
+        return Input.GetAxis("Vertical" + _playerIndex) < 0;
     }
 
     #endregion

@@ -30,7 +30,7 @@ public class CameraZoneBorderParent : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    public CameraFollowScript CameraFollow
+    public CameraFollow1PScript CameraFollow
     {
         get { return _database.CameraFollow; }
     }

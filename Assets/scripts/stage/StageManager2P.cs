@@ -57,6 +57,9 @@ public class StageManager2P : StageManager
     protected override void Start()
     {
         base.Start();
+
+        MainPlayer._playerIndex = 0;
+        SubPlayer._playerIndex = 1;
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -184,7 +187,8 @@ public class StageManager2P : StageManager
     /// </summary>
     public override void EnableHUD()
     {
-        _userInterfaceManager.ActivatePlayerHUD();
+        _userInterfaceManager.ActivateMainPlayerHUD();
+        _userInterfaceManager.ActivateSubPlayerHUD();
     }
 
     /// <summary>

@@ -51,7 +51,7 @@ public class DataBase : MonoBehaviour
     /// <summary>
     /// 카메라 추적 스크립트입니다.
     /// </summary>
-    public CameraFollowScript _cameraFollow;
+    public CameraFollow1PScript _cameraFollow;
 
     #endregion
 
@@ -133,7 +133,7 @@ public class DataBase : MonoBehaviour
     /// <summary>
     /// CameraFollow 객체입니다.
     /// </summary>
-    public CameraFollowScript CameraFollow
+    public CameraFollow1PScript CameraFollow
     {
         get { return _cameraFollow; }
     }
