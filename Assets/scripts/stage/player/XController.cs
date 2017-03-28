@@ -1744,6 +1744,7 @@ public class XController : PlayerController
 
 
 
+
     #region 정적 보조 메서드를 정의합니다.
     /// <summary>
     /// 현재 웨폰 상태에 해당하는 팔레트를 가져옵니다.
@@ -1794,12 +1795,7 @@ public class XController : PlayerController
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 구형 정의를 보관합니다.

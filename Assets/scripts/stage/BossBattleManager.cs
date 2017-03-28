@@ -21,11 +21,6 @@ public class BossBattleManager : MonoBehaviour
     public EnemyBossScript _boss;
 
     /// <summary>
-    /// 각입니다.
-    /// </summary>
-    public Transform[] _angle;
-
-    /// <summary>
     /// 보스 사망 시 효과입니다.
     /// </summary>
     public BossDeadEffectScript _bossDeadEffect;
@@ -105,7 +100,7 @@ public class BossBattleManager : MonoBehaviour
     /// </summary>
     void Start()
     {
-        _stageManager = _database.StageManager;
+        _stageManager = StageManager.Instance; // _database.StageManager;
         _userInterfaceManager = _database.UIManager;
     }
     /// <summary>
@@ -347,7 +342,12 @@ public class BossBattleManager : MonoBehaviour
 
 
 
-    #region 구형 정의를 보관합니다.    
+    #region 구형 정의를 보관합니다.
+    [Obsolete("[v6.0.0] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 각입니다.
+    /// </summary>
+    public Transform[] _angle;
 
     #endregion
 }

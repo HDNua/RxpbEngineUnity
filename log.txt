@@ -1,7 +1,11 @@
-RXPB v6.0.0
+RXPB v6.0.1
 
 - 협동 모드 도입 시작.
-> Co-op mode implementation has started.
+  Co-op mode implementation has started.
+
+
+- 임시 커밋.
+  Temporary commit.
 
 
 end.

@@ -17,8 +17,7 @@ public class CameraZone : MonoBehaviour
     public bool _isLeftBounded;
     public bool _isRightBounded;
     public bool _isBottomBounded;
-
-
+    
     /// <summary>
     /// 
     /// </summary>
@@ -26,8 +25,7 @@ public class CameraZone : MonoBehaviour
     public bool _isLeftFirst;
     public bool _isRightFirst;
     public bool _isBottomFirst;
-
-
+    
     /// <summary>
     /// 
     /// </summary>
@@ -35,14 +33,12 @@ public class CameraZone : MonoBehaviour
     public float _left;
     public float _right;
     public float _bottom;
-
-
+    
     /// <summary>
     /// 
     /// </summary>
     public int _cameraZoneID;
-
-
+    
     /// <summary>
     /// 
     /// </summary>
@@ -52,12 +48,31 @@ public class CameraZone : MonoBehaviour
     /// </summary>
     public int _checkpointIndex = -1;
 
-
     #endregion
 
 
-    
+
+
+
     #region 필드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    DataBase _database;
+    /// <summary>
+    /// 
+    /// </summary>
+    DataBase _DataBase { get { return _database; } }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    StageManager _stageManager;
+    /// <summary>
+    /// 
+    /// </summary>
+    StageManager _StageManager { get { return _stageManager; } }
+
     /// <summary>
     /// 
     /// </summary>
@@ -76,14 +91,12 @@ public class CameraZone : MonoBehaviour
             return _cameraZoneParent;
         }
     }
-
-
+    
     /// <summary>
     ///  
     /// </summary>
     Camera _mainCamera;
-
-
+    
     /// <summary>
     /// 
     /// </summary>
@@ -92,8 +105,7 @@ public class CameraZone : MonoBehaviour
     /// 
     /// </summary>
     PolygonCollider2D _slopeZone;
-
-
+    
     #endregion
 
 
@@ -108,7 +120,11 @@ public class CameraZone : MonoBehaviour
     {
         // 필드를 초기화합니다.
         _mainCamera = Camera.main;
-        Map map = _CameraZoneParent._stageManager._database.Map;
+        _database = DataBase.Instance;
+        _stageManager = StageManager.Instance;
+
+        // 변수를 정의합니다.
+        Map map = _database.Map;
 
         // 카메라 존 충돌체 획득을 시도합니다.
         _boxZone = GetComponent<BoxCollider2D>();
@@ -137,20 +153,17 @@ public class CameraZone : MonoBehaviour
         else
             throw new Exception("둘 다 아님");
 
-
         // 카메라 뷰 박스의 크기를 획득합니다.
         float frustumHeight = Mathf.Abs(2.0f * _mainCamera.transform.position.z * Mathf.Tan(_mainCamera.fieldOfView * 0.5f * Mathf.Deg2Rad));
         float frustumWidth = Mathf.Abs(frustumHeight * _mainCamera.aspect);
         float cameraWidthHalf = frustumWidth / 2;
         float cameraHeightHalf = frustumHeight / 2;
 
-
         // 상하좌우 값 조정
         _top -= cameraHeightHalf;
         _left += cameraWidthHalf;
         _right -= cameraWidthHalf;
         _bottom += cameraHeightHalf;
-
 
         // 마지막 상하좌우값 조정
         if (_top < _bottom)
@@ -170,29 +183,37 @@ public class CameraZone : MonoBehaviour
             _left = _right = result;
         }
 
-
         // 이름 업데이트
         name = GetInstanceID().ToString();
     }
-
 
     #endregion
 
     
 
 
+
     #region Trigger 관련 메서드를 재정의합니다.
     /// <summary>
-    /// 
+    /// 충돌체가 트리거 내부로 진입했습니다.
     /// </summary>
-    /// <param name="other"></param>
+    /// <param name="other">충돌체 개체입니다.</param>
     void OnTriggerEnter2D(Collider2D other)
     {
+        // 플레이어가 들어오면
         if (other.CompareTag("Player"))
         {
+            // 체크 포인트인 경우
             if (_isCheckpoint)
             {
-                UpdateCheckpoint();
+                // 플레이어 개체를 획득합니다.
+                PlayerController player = other.GetComponent<PlayerController>();
+
+                // 주 플레이어가 진입한 경우에만 체크 포인트를 업데이트합니다.
+                if (_stageManager.MainPlayer == player)
+                {
+                    UpdateCheckpoint();
+                }
             }
         }
     }
@@ -209,7 +230,7 @@ public class CameraZone : MonoBehaviour
     /// </summary>
     /// <param name="points">사각형의 꼭짓점 좌표 배열입니다.</param>
     /// <returns>"왼쪽 위, 오른쪽 위, 왼쪽 아래, 오른쪽 아래"로 정렬된 좌표 배열을 획득합니다.</returns>
-    Vector2[] GetTetragonPoints(Vector2[] points)
+    static Vector2[] GetTetragonPoints(Vector2[] points)
     {
         Vector2[] ret = new Vector2[4];
 

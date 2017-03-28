@@ -5,38 +5,48 @@ using System.Collections;
 
 
 /// <summary>
-/// 
+/// 카메라 존 경계의 부모입니다.
 /// </summary>
 public class CameraZoneBorderParent : MonoBehaviour
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    public static CameraZoneBorderParent Instance
+    {
+        get
+        {
+            return GameObject.FindGameObjectWithTag("CameraZoneBorderParent")
+                .GetComponent<CameraZoneBorderParent>();
+        }
+    }
+
+
+    /// <summary>
+    /// 
+    /// </summary>
     public DataBase _database;
 
-
-
-    #region 프로퍼티를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     public CameraFollowScript CameraFollow
     {
         get { return _database.CameraFollow; }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     public StageManager StageManager
     {
-        get { return _database.StageManager; }
+        get { return StageManager.Instance; }
     }
 
-
-    #endregion
-
-
-
-    // Use this for initialization
+    /// <summary>
+    /// 
+    /// </summary>
     void Start()
     {
-        /**
-        CameraZoneBorder[] children = GetComponentsInChildren<CameraZoneBorder>();
-        foreach (CameraZoneBorder child in children)
-        {
-            child._cameraZoneParent = _database.CameraZoneParent;
-        }
-        */
+
     }
 }

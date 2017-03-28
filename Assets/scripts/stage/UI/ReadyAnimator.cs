@@ -13,8 +13,7 @@ public class ReadyAnimator : MonoBehaviour
     /// <summary>
     /// 스테이지 관리자입니다.
     /// </summary>
-    public StageManager _stageManager;
-
+    StageManager _stageManager;
 
     #endregion
 
@@ -28,6 +27,9 @@ public class ReadyAnimator : MonoBehaviour
     /// </summary>
     void Start()
     {
+        /*
+         * [v6.0.0] 다음 커밋에서 삭제할 예정입니다.
+         * 
         // 예외 메시지 리스트를 생성합니다.
         List<string> exceptionList = new List<string>();
 
@@ -44,8 +46,10 @@ public class ReadyAnimator : MonoBehaviour
             }
             throw new Exception("데이터베이스 필드 정의 부족");
         }
-    }
+        */
 
+        _stageManager = StageManager.Instance;
+    }
 
     #endregion
 

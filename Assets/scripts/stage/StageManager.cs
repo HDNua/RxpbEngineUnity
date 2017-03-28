@@ -12,11 +12,6 @@ public class StageManager : HDSceneManager
 {
     #region Unity에서 접근 가능한 공용 객체를 정의합니다.
     /// <summary>
-    /// Scene 데이터베이스입니다.
-    /// </summary>
-    public DataBase _database;
-    
-    /// <summary>
     /// 준비 애니메이션 관리자입니다.
     /// </summary>
     public ReadyAnimator _ready;
@@ -25,11 +20,6 @@ public class StageManager : HDSceneManager
     /// </summary>
     public WarningAnimator _warning;
 
-    /// <summary>
-    /// 현재 조작중인 플레이어입니다.
-    /// </summary>
-    public PlayerController _player;
-    
     /// <summary>
     /// 사망 효과 파티클에 대한 스크립트입니다.
     /// </summary>
@@ -68,6 +58,11 @@ public class StageManager : HDSceneManager
     /// </summary>
     public float _returningTime = 3f;
 
+    /// <summary>
+    /// 현재 조작중인 플레이어입니다.
+    /// </summary>
+    public PlayerController _player;
+
     #endregion
 
 
@@ -86,6 +81,60 @@ public class StageManager : HDSceneManager
         }
     }
 
+    /// <summary>
+    /// 데이터베이스 개체입니다.
+    /// </summary>
+    DataBase _database;
+    /// <summary>
+    /// 데이터베이스 개체입니다.
+    /// </summary>
+    DataBase _DataBase { get { return _database; } }
+    
+    /// <summary>
+    /// 맵 객체입니다.
+    /// </summary>
+    Map _map;
+    /// <summary>
+    /// 맵 객체입니다.
+    /// </summary>
+    Map _Map { get { return _map; } }
+
+    /// <summary>
+    /// UnityEngine.Time 관리자입니다.
+    /// </summary>
+    TimeManager _timeManager;
+    /// <summary>
+    /// UnityEngine.Time 관리자입니다.
+    /// </summary>
+    TimeManager _TimeManager { get { return _timeManager; } }
+
+    /// <summary>
+    /// 배경 음악 AudioSource입니다.
+    /// </summary>
+    AudioSource _bgmSource;
+    /// <summary>
+    /// 배경 음악 AudioSource입니다.
+    /// </summary>
+    AudioSource _AudioSource { get { return _bgmSource; } }
+
+    /// <summary>
+    /// 플레이어가 소환되는 위치입니다.
+    /// </summary>
+    Transform _playerSpawnPosition;
+    /// <summary>
+    /// 플레이어가 소환되는 위치입니다.
+    /// </summary>
+    public Transform PlayerSpawnPosition
+    {
+        get { return _playerSpawnPosition; }
+        set { _playerSpawnPosition = value; }
+    }
+
+    /// <summary>
+    /// 주 플레이어 개체입니다.
+    /// </summary>
+    public PlayerController MainPlayer { get { return _player; } }
+
     #endregion
 
 
@@ -94,55 +143,20 @@ public class StageManager : HDSceneManager
 
     #region 필드를 정의합니다.
     /// <summary>
-    /// 맵 객체입니다.
-    /// </summary>
-    Map _map;
-    /// <summary>
-    /// UnityEngine.Time 관리자입니다.
-    /// </summary>
-    TimeManager _timeManager;
-
-
-    /// <summary>
-    /// 배경 음악 AudioSource입니다.
-    /// </summary>
-    AudioSource _bgmSource;
-
-
-    /// <summary>
-    /// 엑스에 대한 PlayerController니다.
-    /// </summary>
-    PlayerController _playerX;
-    /// <summary>
-    /// 제로에 대한 PlayerController입니다.
-    /// </summary>
-    PlayerController _playerZ;
-
-
-    /// <summary>
-    /// 플레이어가 소환되는 위치입니다.
-    /// </summary>
-    Transform _playerSpawnPosition;
-
-
-    /// <summary>
     /// 플레이어를 조종할 수 없는 상태라면 참입니다.
     /// </summary>
     bool _isFrozen;
-
-
+    
     /// <summary>
     /// 게임이 종료되었다면 참입니다.
     /// </summary>
     bool _gameEnded = false;
-
-
+    
     /// <summary>
-    /// 
+    /// 게임 종료 값입니다.
     /// </summary>
     int _gameEndValue = -1;
-
-
+    
     #endregion
 
     
@@ -155,14 +169,14 @@ public class StageManager : HDSceneManager
     /// </summary>
     public PlayerController PlayerX
     {
-        get { return _playerX; }
+        get { return _database.PlayerX; }
     }
     /// <summary>
     /// 제로에 대한 PlayerController입니다.
     /// </summary>
     public PlayerController PlayerZ
     {
-        get { return _playerZ; }
+        get { return _database.PlayerZ; }
     }
     
     /// <summary>
@@ -175,24 +189,15 @@ public class StageManager : HDSceneManager
     }
     
     /// <summary>
-    /// 플레이어가 소환되는 위치입니다.
-    /// </summary>
-    public Transform PlayerSpawnPosition
-    {
-        get { return _playerSpawnPosition; }
-        set { _playerSpawnPosition = value; }
-    }
-
-    /// <summary>
     /// 보스 클리어 시 마지막에 재생되는 효과음입니다.
     /// </summary>
     public AudioSource BossClearExplosionSoundEffect
     {
         get { return AudioSources[12]; }
     }
-    
+
     #endregion
-    
+
 
 
 
@@ -205,24 +210,26 @@ public class StageManager : HDSceneManager
     {
         base.Start();
 
-
         // 필드를 초기화합니다.
+        _database = DataBase.Instance;
         _map = _database.Map;
         _timeManager = _database.TimeManager;
         _bgmSource = GetComponent<AudioSource>();
 
-
         // 불러온 캐릭터를 잠깐 사용 불가능하게 합니다.
-        _playerX = _database.PlayerX;
-        _playerZ = _database.PlayerZ;
-        _playerX.gameObject.SetActive(false);
-        _playerZ.gameObject.SetActive(false);
-
-
+        /// _playerX = _database.PlayerX;
+        /// _playerZ = _database.PlayerZ;
+        /// _playerX.gameObject.SetActive(false);
+        /// _playerZ.gameObject.SetActive(false);
+        PlayerController[] players = _database._players;
+        foreach (PlayerController player in players)
+        {
+            player.gameObject.SetActive(false);
+        }
+        
         // 맵 데이터를 초기화합니다.
         /// _player.transform.position = _playerSpawnPos.transform.position;
         _playerSpawnPosition = _checkpointSpawnPositions[_database.GameManager.SpawnPositionIndex];
-
 
         // 페이드인 효과를 처리합니다.
         _fader.FadeIn();
@@ -271,28 +278,8 @@ public class StageManager : HDSceneManager
                 _player.Heal();
             }
         }
-        else if (Input.GetKeyDown(KeyCode.T))
-        {
-            // 
-            if (_playerZ.isActiveAndEnabled)
-            {
-                _playerX._playerIndex = -1;
-                _playerZ._playerIndex = -1;
 
-                _playerZ.gameObject.SetActive(false);
-            }
-            else
-            {
-                _playerX._playerIndex = 0;
-                _playerZ._playerIndex = 1;
-
-                Vector3 posX = _playerX.transform.position;
-                _playerZ.transform.position = new Vector3(posX.x - 1, posX.y + 10);
-                _playerZ.RequestSpawn();
-            }
-        }
-
-
+        // 
         if (Input.GetKeyDown(KeyCode.Return))
         {
             _userInterfaceManager.RequestPauseToggle();
@@ -368,9 +355,11 @@ public class StageManager : HDSceneManager
     {
         switch (item.Type)
         {
+            /*
             case "EndGame":
                 Test_EndGameItemGet(player, item);
                 break;
+                */
 
             case "1UP":
                 GetItem1UP(player, item);
@@ -765,6 +754,7 @@ public class StageManager : HDSceneManager
 
 
 
+
     #region 보스 체력 회복 루틴을 정의합니다.
     /// <summary>
     /// 보스의 체력을 회복합니다.
@@ -825,9 +815,6 @@ public class StageManager : HDSceneManager
     {
 
     }
-
-
-
 
     [Obsolete("")]
     /// <summary>
@@ -919,6 +906,26 @@ public class StageManager : HDSceneManager
         _gameEnded = true;
         _fader.FadeOut();
         yield break;
+    }
+
+    [Obsolete("_players 필드로 대체되었습니다.")]
+    /// <summary>
+    /// 엑스에 대한 PlayerController니다.
+    /// </summary>
+    PlayerController _playerX = null;
+    [Obsolete("_players 필드로 대체되었습니다.")]
+    /// <summary>
+    /// 제로에 대한 PlayerController입니다.
+    /// </summary>
+    PlayerController _playerZ = null;
+    [Obsolete("경고 제거용 임시 메서드입니다.")]
+    /// <summary>
+    /// 
+    /// </summary>
+    void Test()
+    {
+        _playerX.RequestSpawn();
+        _playerZ.RequestSpawn();
     }
 
     #endregion

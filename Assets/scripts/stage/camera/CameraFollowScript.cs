@@ -12,17 +12,10 @@ public class CameraFollowScript : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     /// <summary>
-    /// 데이터베이스입니다.
-    /// </summary>
-    public DataBase _database;
-
-
-    /// <summary>
     /// 카메라 뷰 박스입니다.
     /// </summary>
     public BoxCollider2D _cameraViewBox;
-
-
+    
     /// <summary>
     /// 화면을 전환할 때 카메라의 이동 속도를 결정합니다.
     /// </summary>
@@ -32,12 +25,18 @@ public class CameraFollowScript : MonoBehaviour
     /// </summary>
     public float _cameraTransitionSpeedUnitY = 0.3f;
 
-
     #endregion
 
 
 
+
+
     #region Unity 개체에 대한 참조를 보관합니다.
+    /// <summary>
+    /// 데이터베이스입니다.
+    /// </summary>
+    DataBase _database;
+
     /// <summary>
     /// 카메라 존 집합의 부모 객체입니다.
     /// </summary>
@@ -46,7 +45,6 @@ public class CameraFollowScript : MonoBehaviour
     /// 카메라 존 경계 집합의 부모 객체입니다.
     /// </summary>
     public CameraZoneBorderParent _cameraZoneBorderParent;
-
 
     #endregion
 
@@ -60,7 +58,6 @@ public class CameraFollowScript : MonoBehaviour
     /// </summary>
     Map _map;
 
-
     /// <summary>
     /// Scene에서 사용할 메인 카메라입니다.
     /// </summary>
@@ -69,7 +66,6 @@ public class CameraFollowScript : MonoBehaviour
     /// 현재 활동중인 플레이어입니다.
     /// </summary>
     PlayerController _player;
-
 
     /// <summary>
     /// 시작 카메라 존입니다.
@@ -88,7 +84,6 @@ public class CameraFollowScript : MonoBehaviour
     /// </summary>
     float _camZ;
 
-
     /// <summary>
     /// 카메라 존 변경 중이라면 참입니다.
     /// </summary>
@@ -97,8 +92,7 @@ public class CameraFollowScript : MonoBehaviour
     /// 카메라 존 변경 시작으로부터 경과한 시간을 나타냅니다.
     /// </summary>
     float _transitioningTime = 0f;
-
-
+    
     /// <summary>
     /// X 전이가 끝났다면 참입니다.
     /// </summary>
@@ -108,7 +102,6 @@ public class CameraFollowScript : MonoBehaviour
     /// </summary>
     bool _yTransitionEnded = false;
 
-
     /// <summary>
     /// X 방향 카메라 존 범위입니다.
     /// </summary>
@@ -117,7 +110,6 @@ public class CameraFollowScript : MonoBehaviour
     /// Y 방향 카메라 존 범위입니다.
     /// </summary>
     float _yMin, _yMax;
-
 
     #endregion
 
@@ -161,6 +153,7 @@ public class CameraFollowScript : MonoBehaviour
     /// </summary>
     void Start()
     {
+        /*
         // 예외 메시지 리스트를 생성합니다.
         List<string> exceptionList = new List<string>();
 
@@ -170,11 +163,17 @@ public class CameraFollowScript : MonoBehaviour
 
         // 일반 필드를 초기화합니다.
         {
+            // 
+            _database = DataBase.Instance;
+            _stageManager = StageManager.Instance;
+
+            // 
             _camera = Camera.main;
             _camZ = _camera.transform.position.z;
 
+            // 
             _map = _database.Map;
-            _player = _map.Player;
+            _player = _stageManager.MainPlayer;
         }
         // 예외 메시지가 하나 이상 존재하는 경우 예외를 발생하고 중지합니다.
         if (exceptionList.Count > 0)
@@ -185,7 +184,24 @@ public class CameraFollowScript : MonoBehaviour
             }
             throw new Exception("데이터베이스 필드 정의 부족");
         }
+        */
 
+        // 일반 필드를 초기화합니다.
+        _database = DataBase.Instance;
+        _map = _database.Map;
+        _camera = Camera.main;
+        _camZ = _camera.transform.position.z;
+
+        // 변수를 선언합니다.
+        StageManager stageManager = StageManager.Instance;
+        {
+            // 
+
+            // 
+
+            // 
+            _player = stageManager.MainPlayer;
+        }
 
         // 카메라 관련 필드를 초기화합니다.
         {
@@ -207,7 +223,8 @@ public class CameraFollowScript : MonoBehaviour
 
             // 시작 카메라 존을 맞춥니다.
             /// _startCameraZone = _cameraZones[0];
-            _startCameraZone = _database.StageManager.GetCheckpointCameraZone(_database.GameManager.SpawnPositionIndex);
+            _startCameraZone = stageManager.GetCheckpointCameraZone
+                (_database.GameManager.SpawnPositionIndex);
             if (_startCameraZone == null)
                 throw new Exception("시작 카메라 존이 설정되지 않았습니다.");
 

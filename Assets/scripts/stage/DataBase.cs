@@ -12,27 +12,19 @@ public class DataBase : MonoBehaviour
 {
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
     /// <summary>
-    /// 엑스 플레이어입니다.
-    /// </summary>
-    public PlayerController _playerX;
-    /// <summary>
-    /// 제로 캐릭터입니다.
-    /// </summary>
-    public PlayerController _playerZ;
-
-    /// <summary>
     /// 마찰이 없는 Material입니다. Collider가 미끄러질 수 있게 해줍니다.
     /// </summary>
     public PhysicsMaterial2D _frictionlessWall;
 
     /// <summary>
+    /// 
+    /// </summary>
+    public PlayerController[] _players;
+
+    /// <summary>
     /// 공용 맵 요소입니다.
     /// </summary>
     public Map _map;
-    /// <summary>
-    /// 스테이지 관리자입니다.
-    /// </summary>
-    public StageManager _stageManager;
     /// <summary>
     /// 정지 메뉴 관리자입니다.
     /// </summary>
@@ -102,16 +94,28 @@ public class DataBase : MonoBehaviour
             return GameManager.Instance;
         }
     }
-    
+
     /// <summary>
     /// 엑스 PlayerController입니다.
     /// </summary>
-    public PlayerController PlayerX { get { return _playerX; } }
+    public PlayerController PlayerX
+    {
+        get
+        {
+            return _players[0];
+        }
+    }
     /// <summary>
     /// 제로 PlayerController입니다.
     /// </summary>
-    public PlayerController PlayerZ { get { return _playerZ; } }
-    
+    public PlayerController PlayerZ
+    {
+        get
+        {
+            return _players[1];
+        }
+    }
+
     /// <summary>
     /// 맵 객체입니다.
     /// </summary>
@@ -132,13 +136,6 @@ public class DataBase : MonoBehaviour
     public CameraFollowScript CameraFollow
     {
         get { return _cameraFollow; }
-    }
-    /// <summary>
-    /// 스테이지 장면 관리자입니다.
-    /// </summary>
-    public StageManager StageManager
-    {
-        get { return _stageManager; }
     }
     /// <summary>
     /// UnityEngine.Time 관리자입니다.
@@ -246,64 +243,35 @@ public class DataBase : MonoBehaviour
 
     #endregion
 
-    
+
 
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("다음 커밋에서 삭제할 예정입니다.")]
+    [Obsolete("StageManager.Instance를 호출하십시오.")]
     /// <summary>
-    /// MonoBehaviour 개체를 초기화합니다.
+    /// 스테이지 관리자입니다.
     /// </summary>
-    void Start_dep()
+    public StageManager _stageManager;
+    [Obsolete("StageManager.Instance를 호출하십시오.")]
+    /// <summary>
+    /// 스테이지 장면 관리자입니다.
+    /// </summary>
+    public StageManager StageManager
     {
-        // 예외 메시지 리스트를 생성합니다.
-        List<string> exceptionList = new List<string>();
-
-        // 빈 필드가 존재하는 경우 예외 메시지를 추가합니다.
-        if (_map == null)
-            exceptionList.Add("DataBase.Map == null");
-        if (_cameraZoneParent == null)
-            exceptionList.Add("DataBase.CameraZoneParent == null");
-
-        // 예외 메시지가 하나 이상 존재하는 경우 예외를 발생하고 중지합니다.
-        if (exceptionList.Count > 0)
-        {
-            foreach (string msg in exceptionList)
-            {
-                Handy.Log("DataBase Error: {0}", msg);
-            }
-            throw new Exception("데이터베이스 필드 정의 부족");
-        }
-
-        // 필드를 정의합니다.
-        _cameraZoneParent = _map.CameraZoneParent;
+        get { return _stageManager; }
     }
 
-    [Obsolete("이 개체는 Unity 개체이므로 직접 연결해야 합니다.")]
+    [Obsolete("PlayerX 프로퍼티로 대체되었습니다.")]
     /// <summary>
-    /// 카메라 존 집합의 부모 개체입니다.
+    /// 엑스 플레이어입니다.
     /// </summary>
-    CameraZoneParent _cameraZoneParent;
-    [Obsolete("이 개체는 Unity 개체이므로 직접 연결해야 합니다.")]
+    public PlayerController _playerX;
+    [Obsolete("PlayerZ 프로퍼티로 대체되었습니다.")]
     /// <summary>
-    /// 카메라 존 경계 집합의 부모 개체입니다.
+    /// 제로 캐릭터입니다.
     /// </summary>
-    CameraZoneBorderParent _cameraZoneBorderParent = null;
-    
-    [Obsolete("이 개체는 Unity 개체이므로 직접 연결해야 합니다.")]
-    /// <summary>
-    /// 카메라 존의 부모 객체입니다.
-    /// </summary>
-    public CameraZoneParent CameraZoneParent
-    {
-        get { return _cameraZoneParent; }
-    }
-    [Obsolete("이 개체는 Unity 개체이므로 직접 연결해야 합니다.")]
-    public CameraZoneBorderParent CameraZoneBorderParent
-    {
-        get { return _cameraZoneBorderParent; }
-    }
-    
+    public PlayerController _playerZ;
+
     #endregion
 }

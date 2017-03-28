@@ -15,15 +15,15 @@ public class HUDScript : MonoBehaviour
     public DataBase _database;
     
     /// <summary>
-    /// 
+    /// 체력 상태 바입니다.
     /// </summary>
     public GameObject _statusBoardNormal;
     /// <summary>
-    /// 
+    /// 무기 상태 바입니다.
     /// </summary>
     public GameObject _statusBoardWeapon;
     /// <summary>
-    /// 
+    /// 상태 텍스트입니다.
     /// </summary>
     public UnityEngine.UI.Text _statusText;
     
@@ -68,7 +68,7 @@ public class HUDScript : MonoBehaviour
     /// <summary>
     /// 정상 상태라면 참입니다. 무기 장착 상태라면 거짓입니다.
     /// </summary>
-    public bool _isStateNormal = true;
+    bool _isStateNormal = true;
     
     #endregion
 
@@ -83,7 +83,7 @@ public class HUDScript : MonoBehaviour
     void Start()
     {
         // 필드를 초기화합니다.
-        _stageManager = _database.StageManager;
+        _stageManager = StageManager.Instance; // _database.StageManager;
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -97,9 +97,10 @@ public class HUDScript : MonoBehaviour
             Vector3 healthScale = _healthBar.transform.localScale;
             healthScale.y = (float)player.Health / player.MaxHealth;
             _healthBar.transform.localScale = healthScale;
-            
+
             // 상태 보드를 업데이트합니다.
             UpdateStatusBoard();
+
             // 무기 장착 상태라면 마나도 업데이트합니다.
             if (_isStateNormal == false)
             {
@@ -109,12 +110,12 @@ public class HUDScript : MonoBehaviour
             }
         }
     }
-    
+
     #endregion
 
 
 
-    
+
 
     #region 메서드를 정의합니다.
     /// <summary>
