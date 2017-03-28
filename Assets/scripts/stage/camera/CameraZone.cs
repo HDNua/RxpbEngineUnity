@@ -56,29 +56,29 @@ public class CameraZone : MonoBehaviour
 
     #region 필드를 정의합니다.
     /// <summary>
-    /// 
+    /// 데이터베이스 개체입니다.
     /// </summary>
     DataBase _database;
     /// <summary>
-    /// 
+    /// 데이터베이스 개체입니다.
     /// </summary>
     DataBase _DataBase { get { return _database; } }
 
     /// <summary>
-    /// 
+    /// 스테이지 관리자입니다.
     /// </summary>
     StageManager _stageManager;
     /// <summary>
-    /// 
+    /// 스테이지 관리자입니다.
     /// </summary>
     StageManager _StageManager { get { return _stageManager; } }
 
     /// <summary>
-    /// 
+    /// 카메라 존 부모 개체입니다.
     /// </summary>
     CameraZoneParent _cameraZoneParent = null;
     /// <summary>
-    /// 
+    /// 카메라 존 부모 개체입니다.
     /// </summary>
     CameraZoneParent _CameraZoneParent
     {

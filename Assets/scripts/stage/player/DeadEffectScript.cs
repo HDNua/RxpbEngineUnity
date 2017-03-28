@@ -36,7 +36,7 @@ public class DeadEffectScript : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    StageManager stageManager;
+    StageManager1P stageManager;
     /// <summary>
     /// 
     /// </summary>
@@ -56,7 +56,7 @@ public class DeadEffectScript : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        stageManager = GetComponentInParent<StageManager>();
+        stageManager = GetComponentInParent<StageManager1P>();
     }
     /// <summary>
     /// MonoBehaviour 개체를 초기화합니다.

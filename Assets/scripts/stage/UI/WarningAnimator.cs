@@ -13,7 +13,7 @@ public class WarningAnimator : MonoBehaviour
     /// <summary>
     /// 스테이지 관리자입니다.
     /// </summary>
-    public StageManager _stageManager;
+    public StageManager1P _stageManager;
 
 
     #endregion
@@ -81,7 +81,7 @@ public class WarningAnimator : MonoBehaviour
 
 
         // 플레이어 소환을 요청합니다.
-        _stageManager._player.transform.position = _stageManager.PlayerSpawnPosition.position;
+        _stageManager._player.transform.position = _stageManager._PlayerSpawnPosition.position;
         _stageManager._player.RequestSpawn();
     }
 

@@ -252,12 +252,12 @@ public class DataBase : MonoBehaviour
     /// <summary>
     /// 스테이지 관리자입니다.
     /// </summary>
-    public StageManager _stageManager;
+    public StageManager1P _stageManager;
     [Obsolete("StageManager.Instance를 호출하십시오.")]
     /// <summary>
     /// 스테이지 장면 관리자입니다.
     /// </summary>
-    public StageManager StageManager
+    public StageManager1P StageManager
     {
         get { return _stageManager; }
     }

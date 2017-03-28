@@ -37,9 +37,9 @@ public class CameraZoneBorderParent : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    public StageManager StageManager
+    public StageManager1P StageManager
     {
-        get { return StageManager.Instance; }
+        get { return StageManager1P.Instance; }
     }
 
     /// <summary>

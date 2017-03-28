@@ -193,7 +193,7 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
 
         // 플레이어의 위치를 향해 발사합니다.
         bullet.FacingRight = FacingRight;
-        bullet.MoveTo(StageManager.Instance.GetCurrentPlayerPosition());
+        bullet.MoveTo(StageManager1P.Instance.GetCurrentPlayerPosition());
     }
 
     #endregion

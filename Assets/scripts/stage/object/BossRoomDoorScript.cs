@@ -101,9 +101,9 @@ public class BossRoomDoorScript : MonoBehaviour
     /// <summary>
     /// 스테이지 관리자입니다.
     /// </summary>
-    StageManager _StageManager
+    StageManager1P _StageManager
     {
-        get { return StageManager.Instance; }
+        get { return StageManager1P.Instance; }
     }
 
     #endregion

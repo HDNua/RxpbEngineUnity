@@ -13,7 +13,7 @@ public class CameraZoneParent : MonoBehaviour
     /// <summary>
     /// 장면 관리자입니다.
     /// </summary>
-    StageManager _stageManager;
+    StageManager1P _stageManager;
     /// <summary>
     /// 데이터베이스입니다.
     /// </summary>
@@ -75,7 +75,7 @@ public class CameraZoneParent : MonoBehaviour
 
         // 필드를 초기화합니다.
         _database = DataBase.Instance;
-        _stageManager = StageManager.Instance;
+        _stageManager = StageManager1P.Instance;
         _cameraFollow = _database.CameraFollow;
     }
 }

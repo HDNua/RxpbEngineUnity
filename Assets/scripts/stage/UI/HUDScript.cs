@@ -63,7 +63,7 @@ public class HUDScript : MonoBehaviour
     /// <summary>
     /// 스테이지 관리자입니다.
     /// </summary>
-    StageManager _stageManager;
+    StageManager1P _stageManager;
     
     /// <summary>
     /// 정상 상태라면 참입니다. 무기 장착 상태라면 거짓입니다.
@@ -83,7 +83,7 @@ public class HUDScript : MonoBehaviour
     void Start()
     {
         // 필드를 초기화합니다.
-        _stageManager = StageManager.Instance; // _database.StageManager;
+        _stageManager = StageManager1P.Instance; // _database.StageManager;
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.

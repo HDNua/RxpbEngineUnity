@@ -850,7 +850,7 @@ public class XController : PlayerController
 
         // 탄환 속성을 업데이트 합니다.
         XBusterScript buster = _bullet.GetComponent<XBusterScript>();
-        buster.MainCamera = stageManager.MainCamera;
+        buster.MainCamera = Camera.main; // stageManager.MainCamera;
         yield break;
     }
     /// <summary>
@@ -1337,7 +1337,6 @@ public class XController : PlayerController
     {
         base.RequestDead();
 
-
         // 사망할 때 플레이어가 차지 상태라면 효과를 제거합니다.
         if (_chargeEffect1 != null)
         {
@@ -1351,7 +1350,6 @@ public class XController : PlayerController
             SoundEffects[7].Stop();
             _chargeTime = 0;
         }
-
 
         // 생존 시간에 생성되었던 효과를 제거합니다.
         if (_slideFogEffect != null)

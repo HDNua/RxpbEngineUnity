@@ -27,7 +27,7 @@ public class Map : MonoBehaviour
     /// <summary>
     /// 스테이지 관리자입니다.
     /// </summary>
-    StageManager _stageManager;
+    StageManager1P _stageManager;
 
     #endregion
 
@@ -52,7 +52,7 @@ public class Map : MonoBehaviour
         get
         {
             // return _stageManager._player;
-            return StageManager.Instance._player;
+            return StageManager1P.Instance._player;
         }
     }
 
@@ -93,7 +93,7 @@ public class Map : MonoBehaviour
         */
 
         // 필드를 초기화합니다.
-        _stageManager = StageManager.Instance;
+        _stageManager = StageManager1P.Instance;
         _cameraZoneParent = GetComponentInChildren<CameraZoneParent>();
     }
     

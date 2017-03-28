@@ -27,27 +27,6 @@ public class ReadyAnimator : MonoBehaviour
     /// </summary>
     void Start()
     {
-        /*
-         * [v6.0.0] 다음 커밋에서 삭제할 예정입니다.
-         * 
-        // 예외 메시지 리스트를 생성합니다.
-        List<string> exceptionList = new List<string>();
-
-        // 빈 필드가 존재하는 경우 예외 메시지를 추가합니다.
-        if (_stageManager == null)
-            exceptionList.Add("ReadyAnimator.StageManager == null");
-
-        // 예외 메시지가 하나 이상 존재하는 경우 예외를 발생하고 중지합니다.
-        if (exceptionList.Count > 0)
-        {
-            foreach (string msg in exceptionList)
-            {
-                Handy.Log("ReadyAnimator Error: {0}", msg);
-            }
-            throw new Exception("데이터베이스 필드 정의 부족");
-        }
-        */
-
         _stageManager = StageManager.Instance;
     }
 
@@ -70,12 +49,33 @@ public class ReadyAnimator : MonoBehaviour
     /// </summary>
     void FE_SpawnPlayer()
     {
-        // HUD를 활성화 합니다.
-        _stageManager.EnableHUD();
-        
-        // 플레이어 소환을 요청합니다.
-        _stageManager._player.transform.position = _stageManager.PlayerSpawnPosition.position;
-        _stageManager._player.RequestSpawn();
+        if (_stageManager is StageManager1P)
+        {
+            StageManager1P stageManager = (StageManager1P)_stageManager;
+
+            // HUD를 활성화 합니다.
+            stageManager.EnableHUD();
+
+            // 플레이어 소환을 요청합니다.
+            stageManager._player.transform.position = _stageManager._PlayerSpawnPosition.position;
+            stageManager._player.RequestSpawn();
+        }
+        else if (_stageManager is StageManager2P)
+        {
+            StageManager2P stageManager = (StageManager2P)_stageManager;
+
+            // 
+            Vector3 mainSpawnPos = stageManager._PlayerSpawnPosition.position;
+            stageManager.MainPlayer.transform.position = mainSpawnPos;
+            stageManager.MainPlayer.RequestSpawn();
+            stageManager.SubPlayer.transform.position = new Vector3
+                (mainSpawnPos.x - 1, mainSpawnPos.y);
+            stageManager.SubPlayer.RequestSpawn();
+        }
+        else
+        {
+            throw new Exception("알 수 없는 스테이지 관리자 형식");
+        }
     }
 
 

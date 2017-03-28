@@ -193,7 +193,7 @@ public class CameraFollowScript : MonoBehaviour
         _camZ = _camera.transform.position.z;
 
         // 변수를 선언합니다.
-        StageManager stageManager = StageManager.Instance;
+        StageManager1P stageManager = StageManager1P.Instance;
         {
             // 
 

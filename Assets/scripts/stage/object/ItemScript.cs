@@ -164,7 +164,7 @@ public class ItemScript : MonoBehaviour
     /// <summary>
     /// 스테이지 관리자입니다.
     /// </summary>
-    StageManager _StageManager { get { return StageManager.Instance; } }
+    StageManager1P _StageManager { get { return StageManager1P.Instance; } }
 
     #endregion
 

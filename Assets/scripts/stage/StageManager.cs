@@ -24,7 +24,7 @@ public class StageManager : HDSceneManager
     /// 사망 효과 파티클에 대한 스크립트입니다.
     /// </summary>
     public DeadEffectScript _deadEffect;
-    
+
     /// <summary>
     /// 체크포인트 소환 위치 집합입니다.
     /// </summary>
@@ -33,12 +33,12 @@ public class StageManager : HDSceneManager
     /// 체크포인트 카메라 존 집합입니다.
     /// </summary>
     public CameraZone[] _checkpointCameraZones;
-    
+
     /// <summary>
     /// 사용자 인터페이스 관리자입니다.
     /// </summary>
     public UIManager _userInterfaceManager;
-    
+
     /// <summary>
     /// 테스트 시간입니다.
     /// </summary>
@@ -56,12 +56,7 @@ public class StageManager : HDSceneManager
     /// <summary>
     /// 복귀 완료까지 걸리는 시간입니다.
     /// </summary>
-    public float _returningTime = 3f;
-
-    /// <summary>
-    /// 현재 조작중인 플레이어입니다.
-    /// </summary>
-    public PlayerController _player;
+    public float _returningTime = 1.5f;
 
     #endregion
 
@@ -88,8 +83,8 @@ public class StageManager : HDSceneManager
     /// <summary>
     /// 데이터베이스 개체입니다.
     /// </summary>
-    DataBase _DataBase { get { return _database; } }
-    
+    protected DataBase _DataBase { get { return _database; } }
+
     /// <summary>
     /// 맵 객체입니다.
     /// </summary>
@@ -97,7 +92,7 @@ public class StageManager : HDSceneManager
     /// <summary>
     /// 맵 객체입니다.
     /// </summary>
-    Map _Map { get { return _map; } }
+    protected Map _Map { get { return _map; } }
 
     /// <summary>
     /// UnityEngine.Time 관리자입니다.
@@ -106,7 +101,7 @@ public class StageManager : HDSceneManager
     /// <summary>
     /// UnityEngine.Time 관리자입니다.
     /// </summary>
-    TimeManager _TimeManager { get { return _timeManager; } }
+    protected TimeManager _TimeManager { get { return _timeManager; } }
 
     /// <summary>
     /// 배경 음악 AudioSource입니다.
@@ -115,7 +110,7 @@ public class StageManager : HDSceneManager
     /// <summary>
     /// 배경 음악 AudioSource입니다.
     /// </summary>
-    AudioSource _AudioSource { get { return _bgmSource; } }
+    protected AudioSource _AudioSource { get { return _bgmSource; } }
 
     /// <summary>
     /// 플레이어가 소환되는 위치입니다.
@@ -124,7 +119,7 @@ public class StageManager : HDSceneManager
     /// <summary>
     /// 플레이어가 소환되는 위치입니다.
     /// </summary>
-    public Transform PlayerSpawnPosition
+    public Transform _PlayerSpawnPosition
     {
         get { return _playerSpawnPosition; }
         set { _playerSpawnPosition = value; }
@@ -133,7 +128,7 @@ public class StageManager : HDSceneManager
     /// <summary>
     /// 주 플레이어 개체입니다.
     /// </summary>
-    public PlayerController MainPlayer { get { return _player; } }
+    public virtual PlayerController MainPlayer { get { throw new NotImplementedException(); } }
 
     #endregion
 
@@ -146,23 +141,23 @@ public class StageManager : HDSceneManager
     /// 플레이어를 조종할 수 없는 상태라면 참입니다.
     /// </summary>
     bool _isFrozen;
-    
+
     /// <summary>
     /// 게임이 종료되었다면 참입니다.
     /// </summary>
     bool _gameEnded = false;
-    
+
     /// <summary>
     /// 게임 종료 값입니다.
     /// </summary>
     int _gameEndValue = -1;
-    
+
     #endregion
 
-    
 
 
-    
+
+
     #region 프로퍼티를 정의합니다.
     /// <summary>
     /// 엑스에 대한 PlayerController니다.
@@ -178,7 +173,7 @@ public class StageManager : HDSceneManager
     {
         get { return _database.PlayerZ; }
     }
-    
+
     /// <summary>
     /// 플레이어를 조종할 수 없는 상태라면 참입니다.
     /// </summary>
@@ -187,7 +182,15 @@ public class StageManager : HDSceneManager
         get { return _isFrozen; }
         protected set { _isFrozen = value; }
     }
-    
+    /// <summary>
+    /// 게임이 종료되었다면 참입니다.
+    /// </summary>
+    protected bool GameEnded
+    {
+        get { return _gameEnded; }
+        set { _gameEnded = value; }
+    }
+
     /// <summary>
     /// 보스 클리어 시 마지막에 재생되는 효과음입니다.
     /// </summary>
@@ -217,18 +220,13 @@ public class StageManager : HDSceneManager
         _bgmSource = GetComponent<AudioSource>();
 
         // 불러온 캐릭터를 잠깐 사용 불가능하게 합니다.
-        /// _playerX = _database.PlayerX;
-        /// _playerZ = _database.PlayerZ;
-        /// _playerX.gameObject.SetActive(false);
-        /// _playerZ.gameObject.SetActive(false);
         PlayerController[] players = _database._players;
         foreach (PlayerController player in players)
         {
             player.gameObject.SetActive(false);
         }
-        
+
         // 맵 데이터를 초기화합니다.
-        /// _player.transform.position = _playerSpawnPos.transform.position;
         _playerSpawnPosition = _checkpointSpawnPositions[_database.GameManager.SpawnPositionIndex];
 
         // 페이드인 효과를 처리합니다.
@@ -251,7 +249,7 @@ public class StageManager : HDSceneManager
 
             return;
         }
-        
+
         // 페이드 인 효과가 종료되는 시점에
         if (_fader.FadeInEnded)
         {
@@ -260,7 +258,7 @@ public class StageManager : HDSceneManager
         }
 
         // 특수 키 입력에 대한 처리입니다.
-        if (Input.GetKeyDown(KeyCode.Q)) 
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             // 플레이 속도를 바꿉니다.
             _timeManager.TimeScale = _timeManager.TimeScale == test ? 1 : test;
@@ -268,15 +266,12 @@ public class StageManager : HDSceneManager
         else if (Input.GetKeyDown(KeyCode.W))
         {
             // 플레이어에게 대미지를 입힙니다.
-            _player.Hurt(TestDamageValue);
+            HurtPlayer();
         }
-        else if (Input.GetKeyDown(KeyCode.R)) 
+        else if (Input.GetKeyDown(KeyCode.R))
         {
             // 플레이어의 체력을 모두 회복합니다.
-            while (_player.IsHealthFull() == false)
-            {
-                _player.Heal();
-            }
+            HealPlayer();
         }
 
         // 
@@ -294,26 +289,20 @@ public class StageManager : HDSceneManager
 
     #region 기능 메서드를 정의합니다.
     /// <summary>
-    /// 플레이어를 변경합니다.
+    /// 플레이어의 체력을 회복합니다.
     /// </summary>
-    /// <param name="newPlayer">변경 이후의 플레이어입니다.</param>
-    public void ChangePlayer(PlayerController newPlayer)
+    protected virtual void HealPlayer()
     {
-        // 이전 플레이어를 비활성화합니다.
-        _player.gameObject.SetActive(false);
-
-        // 새 플레이어를 소환합니다.
-        newPlayer.transform.position = _player.transform.position;
-        newPlayer.RequestSpawn();
-        if (_player.FacingRight == false)
-        {
-            newPlayer.RequestFlip();
-        }
-
-        // 관리자 객체의 필드가 새 플레이어를 가리키도록 합니다.
-        _map.UpdatePlayer(_player = newPlayer);
+        throw new NotImplementedException();
     }
-    
+    /// <summary>
+    /// 플레이어에게 대미지를 입힙니다.
+    /// </summary>
+    protected virtual void HurtPlayer()
+    {
+        throw new NotImplementedException();
+    }
+
     /// <summary>
     /// 화면을 동결시킵니다.
     /// </summary>
@@ -330,7 +319,7 @@ public class StageManager : HDSceneManager
         IsFrozen = false;
         _timeManager.StageManagerRequested = false;
     }
-    
+
     /// <summary>
     /// 스테이지를 재시작합니다.
     /// </summary>
@@ -338,9 +327,9 @@ public class StageManager : HDSceneManager
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
-    
+
     #endregion
-    
+
 
 
 
@@ -355,12 +344,6 @@ public class StageManager : HDSceneManager
     {
         switch (item.Type)
         {
-            /*
-            case "EndGame":
-                Test_EndGameItemGet(player, item);
-                break;
-                */
-
             case "1UP":
                 GetItem1UP(player, item);
                 break;
@@ -394,7 +377,7 @@ public class StageManager : HDSceneManager
     {
         LoadingSceneManager.LoadLevel("Title");
     }
-    
+
     /// <summary>
     /// 스테이지를 끝냅니다.
     /// </summary>
@@ -412,57 +395,10 @@ public class StageManager : HDSceneManager
     /// <summary>
     /// 스테이지 종료 아이템 획득 코루틴입니다.
     /// </summary>
-    IEnumerator CoroutineClearStage()
+    protected virtual IEnumerator CoroutineClearStage()
     {
-        // 다음 커밋에서 삭제할 예정입니다.
-        /// GameManager.Instance.SpawnPositionIndex = 0;
-
-        // 
-        AudioSource audioSource = AudioSources[5];
-        audioSource.Play();
-        while (audioSource.isPlaying)
-        {
-            yield return false;
-        }
-
-        // 
-        _player.RequestCeremony();
-        yield return new WaitForSeconds(0.2f);
-        AudioSources[7].Play();
-        while (_player.IsAnimationPlaying("Ceremony"))
-        {
-            yield return false;
-        }
-
-        // 
-        while (_player.IsAnimationPlaying("Ceremony"))
-        {
-            yield return false;
-        }
-
-        AudioSources[13].Play();
-        while (_player.IsAnimationPlaying("ReturnBeg"))
-        {
-            yield return false;
-        }
-
-        float time = 0;
-        while (_player.IsAnimationPlaying("ReturnRun"))
-        {
-            time += Time.deltaTime;
-
-            if (time > _returningTime)
-                break;
-
-            yield return false;
-        }
-
-        //
-        _gameEnded = true;
-        _fader.FadeOut();
-        yield break;
+        throw new NotImplementedException();
     }
-
     /// <summary>
     /// 배경 음악 재생 중지를 요청합니다.
     /// </summary>
@@ -471,16 +407,15 @@ public class StageManager : HDSceneManager
         _bgmSource.Stop();
         _database._bossBattleManager.GetComponent<AudioSource>().Stop();
     }
-    
     /// <summary>
     /// 현재 조작중인 플레이어의 위치를 반환합니다.
     /// </summary>
     /// <returns>현재 조작중인 플레이어의 위치입니다.</returns>
-    public Vector3 GetCurrentPlayerPosition()
+    public virtual Vector3 GetCurrentPlayerPosition()
     {
-        return _player.transform.position;
+        throw new NotImplementedException();
     }
-    
+
     #endregion
 
 
@@ -559,7 +494,6 @@ public class StageManager : HDSceneManager
         StartCoroutine(IncreaseMaxHealthRoutine(player, item));
     }
 
-
     /// <summary>
     /// 회복이 이루어지는 루틴입니다.
     /// </summary>
@@ -572,7 +506,7 @@ public class StageManager : HDSceneManager
         float time = 0f;
         float unitTime = 0.02f;
         AudioSource audioSource = AudioSources[item.SoundEffectIndexes[0]];
-        
+
         // 체력을 회복하는 루프입니다.
         for (int i = 0, len = item._itemValue; i < len; ++i)
         {
@@ -662,35 +596,34 @@ public class StageManager : HDSceneManager
     /// <summary>
     /// 준비 애니메이션을 재생합니다.
     /// </summary>
-    private void PlayReadyAnimation()
+    protected void PlayReadyAnimation()
     {
         _ready.gameObject.SetActive(true);
     }
     /// <summary>
     /// 경고 애니메이션을 재생합니다.
     /// </summary>
-    private void PlayWarningAnimation()
+    protected void PlayWarningAnimation()
     {
         _warning.gameObject.SetActive(true);
     }
 
-
     /// <summary>
     /// HUD를 활성화합니다.
     /// </summary>
-    public void EnableHUD()
+    public virtual void EnableHUD()
     {
-        _userInterfaceManager.ActivatePlayerHUD();
+        throw new NotImplementedException();
     }
     /// <summary>
     /// 시도 횟수를 증가시킵니다.
     /// </summary>
-    void IncreaseTryCount()
+    protected void IncreaseTryCount()
     {
         GameManager.Instance.RequestIncreaseTryCount();
         _userInterfaceManager.UpdateTryCountText();
     }
-    
+
     /// <summary>
     /// 현재 체크포인트의 카메라 존을 획득합니다.
     /// </summary>
@@ -700,7 +633,7 @@ public class StageManager : HDSceneManager
     {
         return _checkpointCameraZones[checkpointIndex];
     }
-    
+
     /// <summary>
     /// 배경 음악 재생을 중지합니다.
     /// </summary>
@@ -708,22 +641,20 @@ public class StageManager : HDSceneManager
     {
         _bgmSource.Stop();
     }
-    
+
     /// <summary>
     /// 플레이어의 움직임 방지를 요청합니다.
     /// </summary>
-    public void RequestBlockMoving()
+    public virtual void RequestBlockMoving()
     {
-        /// print("Block Requested From Stage Manager");
-        _player.RequestBlockInput();
+        throw new NotImplementedException();
     }
     /// <summary>
     /// 플레이어의 움직임 방지 중지를 요청합니다.
     /// </summary>
-    public void RequestUnblockMoving()
+    public virtual void RequestUnblockMoving()
     {
-        /// print("Unblock Requested From Stage Manager");
-        _player.RequestUnblockInput();
+        throw new NotImplementedException();
     }
 
     /// <summary>
@@ -806,108 +737,6 @@ public class StageManager : HDSceneManager
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("뭐하는 함수인지 모르겠어요.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="checkpointIndex"></param>
-    public void UpdateCheckpointCameraZone(int checkpointIndex)
-    {
-
-    }
-
-    [Obsolete("")]
-    /// <summary>
-    /// 종료 아이템을 획득했습니다.
-    /// </summary>
-    /// <param name="player">플레이어 객체입니다.</param>
-    /// <param name="item">플레이어가 사용한 아이템입니다.</param>
-    private void Test_EndGameItemGet(PlayerController player, ItemScript item)
-    {
-        RequestStopBackgroundMusic();
-
-        _gameEndValue = item.Value;
-
-        // 
-        _player.RequestBlockInput();
-        _timeManager.StageManagerRequested = true;
-        StartCoroutine(EndGameCoroutine());
-    }
-    [Obsolete("")]
-    /// <summary>
-    /// 스테이지 종료 아이템 획득 코루틴입니다.
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator EndGameCoroutine()
-    {
-        // 다음 커밋에서 삭제할 예정입니다.
-        GameManager.Instance.SpawnPositionIndex = 0;
-
-        AudioSource audioSource = AudioSources[3];
-        audioSource.Play();
-
-        float startTime = 0f;
-        float soundLength = audioSource.clip.length;
-        while (startTime < soundLength)
-        {
-            startTime += Time.unscaledDeltaTime;
-        }
-        _timeManager.StageManagerRequested = false;
-
-
-
-        while (_player.Landed == false)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-
-        audioSource = AudioSources[5];
-        audioSource.Play();
-        while (audioSource.isPlaying)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-
-
-
-        _player.RequestCeremony();
-        yield return new WaitForSeconds(0.2f);
-        AudioSources[7].Play();
-
-        /**
-        while (_player.Returning == false)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-        */
-
-        // 
-        while (_player.IsAnimationPlaying("Ceremony"))
-        {
-            yield return false;
-        }
-        while (_player.IsAnimationPlaying("ReturnBeg"))
-        {
-            yield return false;
-        }
-
-        float time = 0;
-        while (_player.IsAnimationPlaying("ReturnRun"))
-        {
-            time += Time.deltaTime;
-
-            if (time > _returningTime)
-                break;
-
-            yield return false;
-        }
-
-        // 
-        _gameEnded = true;
-        _fader.FadeOut();
-        yield break;
-    }
-
     [Obsolete("_players 필드로 대체되었습니다.")]
     /// <summary>
     /// 엑스에 대한 PlayerController니다.
