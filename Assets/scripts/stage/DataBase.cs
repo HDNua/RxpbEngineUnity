@@ -17,7 +17,7 @@ public class DataBase : MonoBehaviour
     public PhysicsMaterial2D _frictionlessWall;
 
     /// <summary>
-    /// 
+    /// 플레이어 리스트입
     /// </summary>
     public PlayerController[] _players;
 
@@ -201,6 +201,7 @@ public class DataBase : MonoBehaviour
     /// </summary>
     void Awake()
     {
+        /*
         // 예외 메시지 리스트를 생성합니다.
         List<string> exceptionList = new List<string>();
 
@@ -217,6 +218,7 @@ public class DataBase : MonoBehaviour
             }
             throw new Exception("데이터베이스 필드 정의 부족");
         }
+        */
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -248,30 +250,6 @@ public class DataBase : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("StageManager.Instance를 호출하십시오.")]
-    /// <summary>
-    /// 스테이지 관리자입니다.
-    /// </summary>
-    public StageManager1P _stageManager;
-    [Obsolete("StageManager.Instance를 호출하십시오.")]
-    /// <summary>
-    /// 스테이지 장면 관리자입니다.
-    /// </summary>
-    public StageManager1P StageManager
-    {
-        get { return _stageManager; }
-    }
-
-    [Obsolete("PlayerX 프로퍼티로 대체되었습니다.")]
-    /// <summary>
-    /// 엑스 플레이어입니다.
-    /// </summary>
-    public PlayerController _playerX;
-    [Obsolete("PlayerZ 프로퍼티로 대체되었습니다.")]
-    /// <summary>
-    /// 제로 캐릭터입니다.
-    /// </summary>
-    public PlayerController _playerZ;
 
     #endregion
 }

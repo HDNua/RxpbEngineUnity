@@ -39,7 +39,7 @@ public class CameraFollow : MonoBehaviour
     /// <summary>
     /// 스테이지 관리자입니다.
     /// </summary>
-    StageManager2P _stageManager;
+    StageManager _stageManager;
 
     /// <summary>
     /// 카메라 존 집합의 부모 객체입니다.
@@ -144,7 +144,7 @@ public class CameraFollow : MonoBehaviour
     {
         // 
         _database = DataBase.Instance;
-        _stageManager = StageManager2P.Instance;
+        _stageManager = StageManager.Instance;
         _camera = Camera.main;
         _camZ = _camera.transform.position.z;
         _cameraZoneParent = CameraZoneParent.Instance;

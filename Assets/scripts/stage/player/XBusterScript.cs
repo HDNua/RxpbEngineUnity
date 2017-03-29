@@ -114,13 +114,13 @@ public class XBusterScript : AttackScript
             if (enemy.Invencible)
             {
                 // 반사 효과를 생성합니다.
-                MakeReflectedParticle();
+                MakeReflectedParticle(_rigidbody.velocity.x < 0, transform);
             }
             // 그 외의 경우
             else
             {
                 // 타격 효과를 생성하고 대미지를 입힙니다.
-                MakeHitParticle();
+                MakeHitParticle(_rigidbody.velocity.x < 0, transform);
                 enemy.Hurt(damage);
             }
 
@@ -134,23 +134,33 @@ public class XBusterScript : AttackScript
         else if (_collider.IsTouchingLayers(busterUnpassable))
         {
             // 타격 입자를 생성하고 탄환을 제거합니다.
-            MakeHitParticle();
+            MakeHitParticle(_rigidbody.velocity.x < 0, transform);
             Destroy(gameObject);
         }
     }
-    
+
     #endregion
 
 
-    
+
 
 
     #region 보조 메서드를 정의합니다.
+
+
+    #endregion
+
+
+
+
+
+    #region 구형 정의를 보관합니다.
+    [Obsolete("[v6.0.3] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
     /// 피격 효과 객체를 생성합니다.
     /// </summary>
     /// <returns>피격 효과 객체입니다.</returns>
-    GameObject MakeHitParticle()
+    protected GameObject MakeHitParticle_dep()
     {
         GameObject hitParticle = Instantiate
             (effects[0], transform.position, transform.rotation)
@@ -171,39 +181,6 @@ public class XBusterScript : AttackScript
         // 생성한 효과 객체를 반환합니다.
         return hitParticle;
     }
-    /// <summary>
-    /// 피격 효과 객체를 생성합니다.
-    /// </summary>
-    /// <returns>피격 효과 객체입니다.</returns>
-    public GameObject MakeReflectedParticle()
-    {
-        GameObject hitParticle = Instantiate
-            (effects[1], transform.position, transform.rotation)
-            as GameObject;
-
-        // 버스터 속도의 반대쪽으로 적절히 x 반전합니다.
-        if (_rigidbody.velocity.x < 0)
-        {
-            Vector3 newScale = hitParticle.transform.localScale;
-            newScale.x *= -1;
-            hitParticle.transform.localScale = newScale;
-        }
-
-        // 효과음을 재생합니다.
-        EffectScript hitEffect = hitParticle.GetComponent<EffectScript>();
-        hitEffect.PlayEffectSound(SoundEffects[1].clip);
-
-        // 생성한 효과 객체를 반환합니다.
-        return hitParticle;
-    }
-    
-    #endregion
-
-
-
-    
-
-    #region 구형 정의를 보관합니다.
 
     #endregion
 }

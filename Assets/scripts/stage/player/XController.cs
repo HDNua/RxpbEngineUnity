@@ -890,7 +890,7 @@ public class XController : PlayerController
 
         // 버스터 컴포넌트를 발사체에 붙입니다.
         XBusterScript buster = _bullet.GetComponent<XBusterScript>();
-        buster.MainCamera = stageManager.MainCamera;
+        buster.MainCamera = Camera.main; // _stageManager.MainCamera;
     }
     /// <summary>
     /// 샷이 시작되는 위치를 결정합니다.
@@ -1365,7 +1365,8 @@ public class XController : PlayerController
         base.Dead();
 
         // 사망 시 입자가 퍼지는 효과를 요청합니다.
-        stageManager._deadEffect.RequestRun(stageManager._player);
+        /// _StageManager._deadEffect.RequestRun(_StageManager._player);
+        _deadEffect.RequestRun(this);
         Voices[9].Play();
         SoundEffects[12].Play();
     }

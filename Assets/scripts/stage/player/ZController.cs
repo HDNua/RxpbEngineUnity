@@ -9,7 +9,10 @@ using UnityEngine;
 public class ZController : PlayerController
 {
     #region 효과 객체를 보관합니다.
-    GameObject dashBoostEffect = null;
+    /// <summary>
+    /// 
+    /// </summary>
+    GameObject _dashBoostEffect = null;
 
     #endregion
 
@@ -18,24 +21,48 @@ public class ZController : PlayerController
 
 
     #region 플레이어의 상태 필드를 정의합니다.
-    public Collider2D[] attackRange;
+    /// <summary>
+    /// 제로의 공격 범위입니다.
+    /// </summary>
+    public GameObject[] _attackRange;
 
+    /// <summary>
+    /// 
+    /// </summary>
     bool _attackBlocked;
+    /// <summary>
+    /// 
+    /// </summary>
     bool _attacking;
+    /// <summary>
+    /// 
+    /// </summary>
     bool _attackRequested;
 
+    /// <summary>
+    /// 
+    /// </summary>
     bool dangerVoicePlayed = false;
 
+    /// <summary>
+    /// 
+    /// </summary>
     bool AttackBlocked
     {
         get { return _attackBlocked; }
         set { _attackBlocked = value; }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     bool Attacking
     {
         get { return _attacking; }
         set { _Animator.SetBool("Attacking", _attacking = value); }
     }
+    /// <summary>
+    /// 
+    /// </summary>
     bool AttackRequested
     {
         get { return _attackRequested; }
@@ -46,25 +73,25 @@ public class ZController : PlayerController
 
 
 
-    
+
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
     /// <summary>
-    /// 
+    /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
     protected override void Awake()
     {
         base.Awake(); // Initialize();
     }
     /// <summary>
-    /// 
+    /// MonoBehaviour 개체를 초기화합니다.
     /// </summary>
     void Start()
     {
         // Initialize();
     }
     /// <summary>
-    /// 
+    /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
     /// </summary>
     protected override void Update()
     {
@@ -190,7 +217,9 @@ public class ZController : PlayerController
         }
     }
     /// <summary>
-    /// 
+    /// FixedTimestep에 설정된 값에 따라 일정한 간격으로 업데이트 합니다.
+    /// 물리 효과가 적용된 오브젝트를 조정할 때 사용됩니다.
+    /// (Update는 불규칙한 호출이기 때문에 물리엔진 충돌검사가 제대로 되지 않을 수 있습니다.)
     /// </summary>
     void FixedUpdate()
     {
@@ -412,7 +441,7 @@ public class ZController : PlayerController
         base.LateUpdate();
         UpdateState();
 
-        // 제로의  색상을 업데이트합니다.
+        // 제로의 색상을 업데이트합니다.
         /// UpdateColor();
     }
 
@@ -552,10 +581,10 @@ public class ZController : PlayerController
     protected override void StopDashing()
     {
         base.StopDashing();
-        if (dashBoostEffect != null)
+        if (_dashBoostEffect != null)
         {
-            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
-            dashBoostEffect = null;
+            _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
+            _dashBoostEffect = null;
         }
     }
     /// <summary>
@@ -567,10 +596,10 @@ public class ZController : PlayerController
 
         SoundEffects[3].Stop();
         SoundEffects[1].Play();
-        if (dashBoostEffect != null)
+        if (_dashBoostEffect != null)
         {
-            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
-            dashBoostEffect = null;
+            _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
+            _dashBoostEffect = null;
         }
     }
     /// <summary>
@@ -587,21 +616,16 @@ public class ZController : PlayerController
     protected override void StopAirDashing()
     {
         base.StopAirDashing();
-        if (dashBoostEffect != null)
+        if (_dashBoostEffect != null)
         {
-            dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
-            dashBoostEffect = null;
+            _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
+            _dashBoostEffect = null;
         }
     }
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -613,7 +637,8 @@ public class ZController : PlayerController
     {
         base.Dead();
 
-        stageManager._deadEffect.RequestRun(stageManager._player);
+        /// _StageManager._deadEffect.RequestRun(_StageManager._player);
+        _deadEffect.RequestRun(this);
         Voices[8].Play();
         SoundEffects[9].Play();
     }
@@ -632,7 +657,7 @@ public class ZController : PlayerController
         Invoke("EndHurt", GetCurrentAnimationLength());
     }
     /// <summary>
-    /// 
+    /// 다친 상태를 끝냅니다.
     /// </summary>
     protected override void EndHurt()
     {
@@ -648,15 +673,9 @@ public class ZController : PlayerController
         }
     }
 
-
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -686,7 +705,8 @@ public class ZController : PlayerController
     public void FE_Attack1_1()
     {
         // 공격 범위를 활성화합니다.
-        attackRange[0].enabled = true;
+        /// enabled = true;
+        ActivateAttackRange(0);
     }
     /// <summary>
     /// 첫 번째 일반 지상 공격이 종료할 때 발생합니다.
@@ -704,7 +724,8 @@ public class ZController : PlayerController
     public void Attack_saber2()
     {
         // 공격 범위를 비활성화합니다.
-        attackRange[0].enabled = false;
+        /// _attackRange[0].enabled = false;
+        DeactivateAttackRange(0);
 
         // 받은 요청은 삭제합니다.
         AttackRequested = false;
@@ -724,14 +745,21 @@ public class ZController : PlayerController
     public void Attack_saber2_run()
     {
         // 공격 범위를 활성화합니다.
-        attackRange[1].enabled = true;
+        /// _attackRange[1].enabled = true;
+        ActivateAttackRange(1);
     }
+    /// <summary>
+    /// 
+    /// </summary>
     public void Attack_saber2_run2()
     {
         // 이전 공격 범위를 비활성화합니다.
-        attackRange[1].enabled = false;
+        /// _attackRange[1].enabled = false;
+        DeactivateAttackRange(1);
+
         // 공격 범위를 활성화합니다.
-        attackRange[2].enabled = true;
+        /// _attackRange[2].enabled = true;
+        ActivateAttackRange(2);
     }
     /// <summary>
     /// 두 번째 일반 지상 공격이 종료할 때 발생합니다.
@@ -749,8 +777,10 @@ public class ZController : PlayerController
     public void Attack_saber3()
     {
         // 공격 범위를 비활성화합니다.
-        attackRange[1].enabled = false;
-        attackRange[2].enabled = false;
+        /// _attackRange[1].enabled = false;
+        /// _attackRange[2].enabled = false;
+        DeactivateAttackRange(1);
+        DeactivateAttackRange(1);
 
         // 받은 요청은 삭제합니다.
         _Animator.SetBool("AttackRequested", _attackRequested = false);
@@ -770,35 +800,60 @@ public class ZController : PlayerController
     public void Attack_saber3_run()
     {
         // 공격 범위를 활성화합니다.
-        attackRange[3].enabled = true;
+        /// _attackRange[3].enabled = true;
+        ActivateAttackRange(3);
     }
+    /// <summary>
+    /// 
+    /// </summary>
     public void Attack_saber3_run2()
     {
         // 이전 공격 범위를 비활성화합니다.
-        //        attackRange[3].enabled = false;
+        /// attackRange[3].enabled = false;
+        DeactivateAttackRange(3);
+
         // 공격 범위를 활성화합니다.
-        attackRange[4].enabled = true;
+        /// _attackRange[4].enabled = true;
+        ActivateAttackRange(4);
     }
+    /// <summary>
+    /// 
+    /// </summary>
     public void Attack_saber3_run3()
     {
         // 이전 공격 범위를 비활성화합니다.
-        //        attackRange[4].enabled = false;
+        /// attackRange[4].enabled = false;
+        DeactivateAttackRange(4);
+
         // 공격 범위를 활성화합니다.
-        attackRange[5].enabled = true;
+        /// _attackRange[5].enabled = true;
+        ActivateAttackRange(5);
     }
+    /// <summary>
+    /// 
+    /// </summary>
     public void Attack_saber3_run4()
     {
         // 이전 공격 범위를 비활성화합니다.
-        //        attackRange[5].enabled = false;
+        /// attackRange[5].enabled = false;
+        DeactivateAttackRange(5);
+
         // 공격 범위를 활성화합니다.
-        attackRange[6].enabled = true;
+        /// _attackRange[6].enabled = true;
+        ActivateAttackRange(6);
     }
+    /// <summary>
+    /// 
+    /// </summary>
     public void Attack_saber3_run5()
     {
         // 이전 공격 범위를 비활성화합니다.
-        //        attackRange[6].enabled = false;
+        /// attackRange[6].enabled = false;
+        DeactivateAttackRange(6);
+
         // 공격 범위를 활성화합니다.
-        attackRange[7].enabled = true;
+        /// _attackRange[7].enabled = true;
+        ActivateAttackRange(7);
     }
     /// <summary>
     /// 지상 공격이 종료할 때 발생합니다.
@@ -811,7 +866,8 @@ public class ZController : PlayerController
         UnblockDashing();
 
         // 공격 범위를 비활성화합니다.
-        attackRange[2].enabled = false;
+        /// _attackRange[2].enabled = false;
+        DeactivateAttackRange(2);
     }
     /// <summary>
     /// 지상 공격 모션이 완전히 종료되어 대기 상태로 바뀔 때 발생합니다.
@@ -821,14 +877,22 @@ public class ZController : PlayerController
         StopAttacking();
 
         // 공격 범위를 모두 비활성화합니다.
-        attackRange[0].enabled = false;
-        attackRange[1].enabled = false;
-        attackRange[2].enabled = false;
-        attackRange[3].enabled = false;
-        attackRange[4].enabled = false;
-        attackRange[5].enabled = false;
-        attackRange[6].enabled = false;
-        attackRange[7].enabled = false;
+        /// _attackRange[0].enabled = false;
+        /// _attackRange[1].enabled = false;
+        /// _attackRange[2].enabled = false;
+        /// _attackRange[3].enabled = false;
+        /// _attackRange[4].enabled = false;
+        /// _attackRange[5].enabled = false;
+        /// _attackRange[6].enabled = false;
+        /// _attackRange[7].enabled = false;
+        DeactivateAttackRange(0);
+        DeactivateAttackRange(1);
+        DeactivateAttackRange(2);
+        DeactivateAttackRange(3);
+        DeactivateAttackRange(4);
+        DeactivateAttackRange(5);
+        DeactivateAttackRange(6);
+        DeactivateAttackRange(7);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -854,7 +918,7 @@ public class ZController : PlayerController
             newScale.x = FacingRight ? newScale.x : -newScale.x;
             dashBoost.transform.localScale = newScale;
         }
-        dashBoostEffect = dashBoost;
+        _dashBoostEffect = dashBoost;
     }
     /// <summary>
     /// 플레이어의 대쉬 상태를 종료하도록 요청합니다.
@@ -924,6 +988,30 @@ public class ZController : PlayerController
         UnblockAirDashing();
         UnblockAttacking();
         StopAttacking();
+    }
+
+    #endregion
+
+
+
+
+
+    #region 보조 메서드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
+    void ActivateAttackRange(int index)
+    {
+        _attackRange[index].SetActive(true);
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="index"></param>
+    void DeactivateAttackRange(int index)
+    {
+        _attackRange[index].SetActive(false);
     }
 
     #endregion

@@ -52,7 +52,7 @@ public class CameraZoneBorder : MonoBehaviour
     /// <summary>
     /// 주인공 추적 카메라 개체입니다.
     /// </summary>
-    CameraFollow2PScript _cameraFollow;
+    CameraFollow _cameraFollow;
     
     /// <summary>
     /// 수평 방향 경계라면 참입니다.
@@ -82,17 +82,9 @@ public class CameraZoneBorder : MonoBehaviour
     {
         // 필드를 초기화합니다.
         _parent = GetComponentInParent<CameraZoneBorderParent>();
-        /*
-        if (_parent == null)
-        {
-            throw new Exception("CameraZoneBorderError: CameraZoneBorderParent == null");
-        }
-        _cameraFollow = _parent.CameraFollow;
-        _sceneManager = _parent.StageManager;
-        */
         _database = DataBase.Instance;
         _stageManager = StageManager.Instance;
-        _cameraFollow = Camera.main.GetComponent<CameraFollow2PScript>();
+        _cameraFollow = Camera.main.GetComponent<CameraFollow>();
         
         // 경계선 객체를 획득합니다.
         EdgeCollider2D border = GetComponent<EdgeCollider2D>();

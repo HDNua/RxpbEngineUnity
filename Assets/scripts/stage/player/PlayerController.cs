@@ -19,7 +19,7 @@ public abstract class PlayerController : MonoBehaviour
     /// 1/60 프레임 간의 시간입니다.
     /// </summary>
     public const float TIME_60FPS = 0.0166667f;
-    
+
     /// <summary>
     /// 무적 상태가 유지되는 시간입니다.
     /// </summary>
@@ -40,7 +40,7 @@ public abstract class PlayerController : MonoBehaviour
     #endregion
 
 
-    
+
 
 
     #region 컨트롤러가 사용할 Unity 객체에 대한 접근자를 정의합니다.
@@ -72,23 +72,14 @@ public abstract class PlayerController : MonoBehaviour
     {
         get { return GetComponent<SpriteRenderer>(); }
     }
-    
+
     #endregion
 
 
-    
+
 
 
     #region Unity에서 접근 가능한 공용 필드를 정의합니다.
-    /// <summary>
-    /// 데이터베이스 객체입니다.
-    /// </summary>
-    public DataBase _database;
-    /// <summary>
-    /// 스테이지 관리자입니다.
-    /// </summary>
-    public StageManager1P stageManager;
-    
     /// <summary>
     /// 캐릭터 음성 집합입니다.
     /// </summary>
@@ -97,7 +88,7 @@ public abstract class PlayerController : MonoBehaviour
     /// 캐릭터 효과음 집합입니다.
     /// </summary>
     public AudioClip[] audioClips;
-    
+
     /// <summary>
     /// 바닥 검사를 위한 위치 객체입니다.
     /// </summary>
@@ -118,7 +109,7 @@ public abstract class PlayerController : MonoBehaviour
     /// 무엇이 지형인지를 나타내는 마스크입니다. 기본값은 ""입니다.
     /// </summary>
     public LayerMask whatIsGround;
-    
+
     /// <summary>
     /// 벽 검사를 위한 충돌체입니다.
     /// </summary>
@@ -131,7 +122,7 @@ public abstract class PlayerController : MonoBehaviour
     /// 무엇이 벽인지를 나타내는 마스크입니다. 기본값은 "Wall"입니다.
     /// </summary>
     public LayerMask whatIsWall;
-    
+
     /// <summary>
     /// 걷는 속도입니다.
     /// </summary>
@@ -156,12 +147,12 @@ public abstract class PlayerController : MonoBehaviour
     /// 대쉬 속도입니다.
     /// </summary>
     public float _dashSpeed = 12;
-    
+
     /// <summary>
     /// 큰 대미지를 받은 것으로 인정되는 값입니다.
     /// </summary>
     public int _bigDamageValue = 10;
-    
+
     /// <summary>
     /// PlayerController 객체가 사용할 효과 집합입니다.
     /// </summary>
@@ -178,12 +169,12 @@ public abstract class PlayerController : MonoBehaviour
     /// 벽 타기 시 연기가 발생하는 위치입니다.
     /// </summary>
     public Transform slideFogPosition;
-    
+
     /// <summary>
     /// 플레이어가 오른쪽을 보고 있다면 참입니다.
     /// </summary>
     public bool _facingRight = true;
-    
+
     /// <summary>
     /// 일반 히트 박스입니다.
     /// </summary>
@@ -194,17 +185,39 @@ public abstract class PlayerController : MonoBehaviour
     public BoxCollider2D _hitBoxDown;
 
     /// <summary>
-    /// 
+    /// 플레이어 인덱스입니다.
     /// </summary>
     public int _playerIndex = -1;
 
+    /// <summary>
+    /// 사망 시 효과입니다.
+    /// </summary>
+    public DeadEffectScript _deadEffect;
+
     #endregion
 
-    
+
 
 
 
     #region Unity를 통해 초기화한 속성을 사용 가능한 형태로 보관합니다.
+    /// <summary>
+    /// 데이터베이스 객체입니다.
+    /// </summary>
+    DataBase _database;
+    /// <summary>
+    /// 데이터베이스 객체입니다.
+    /// </summary>
+    protected DataBase _DataBase { get { return _database; } }
+    /// <summary>
+    /// 스테이지 관리자입니다.
+    /// </summary>
+    StageManager _stageManager;
+    /// <summary>
+    /// 스테이지 관리자입니다.
+    /// </summary>
+    protected StageManager _StageManager { get { return _stageManager; } }
+
     /// <summary>
     /// 목소리의 리스트 필드입니다.
     /// </summary>
@@ -222,12 +235,10 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     public AudioSource[] SoundEffects { get { return soundEffects; } }
 
-
     /// <summary>
     /// 벽 타기 시 연기 효과 객체입니다.
     /// </summary>
     protected GameObject _slideFogEffect;
-
 
     #endregion
 
@@ -737,6 +748,10 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void Awake()
     {
+        // 필드를 초기화합니다.
+        _database = DataBase.Instance;
+        _stageManager = StageManager.Instance;
+
         // 목소리를 포함한 효과음의 리스트를 초기화 합니다.
         voices = new AudioSource[voiceClips.Length];
         for (int i = 0, len = voiceClips.Length; i < len; ++i)
@@ -820,7 +835,7 @@ public abstract class PlayerController : MonoBehaviour
         else if (IsDead)
         {
             // 페이더가 종료되는 경우에
-            if (stageManager._fader.FadeOutEnded)
+            if (_stageManager._fader.FadeOutEnded)
             {
                 // 스테이지를 재시작합니다.
                 RequestRestart();
@@ -894,7 +909,7 @@ public abstract class PlayerController : MonoBehaviour
     #endregion
 
 
-    
+    public GameObject _testObject;
 
 
     #region 플레이어의 상태를 갱신합니다.
@@ -1004,7 +1019,7 @@ public abstract class PlayerController : MonoBehaviour
             }
             else if (Spawning || Returning)
             {
-                
+
             }
             else if (Readying)
             {
@@ -1116,8 +1131,7 @@ public abstract class PlayerController : MonoBehaviour
             Pushing = isTouchingWall && isKeyPressedValid;
         }
     }
-
-
+    
     /// <summary>
     /// 레이어가 어떤 레이어 마스크에 포함되는지 확인합니다.
     /// </summary>
@@ -1274,7 +1288,7 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     void RequestFadeOut()
     {
-        stageManager._fader.FadeOut(1);
+        _stageManager._fader.FadeOut(1);
         Invoke("RequestRestart", 1);
     }
     /// <summary>
@@ -1289,7 +1303,7 @@ public abstract class PlayerController : MonoBehaviour
         else
         {
             _database.GameManager.RequestDecreaseTryCount();
-            stageManager.RestartLevel();
+            _stageManager.RestartLevel();
         }
     }
 
@@ -2128,71 +2142,187 @@ public abstract class PlayerController : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("")]
+    [Obsolete("[v6.0.3] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
-    /// 키가 눌렸는지 확인합니다.
+    /// 플레이어가 땅과 접촉했는지에 대한 필드를 갱신합니다.
     /// </summary>
-    /// <param name="axisName">상태를 확인할 키의 이름입니다.</param>
-    /// <returns>키가 눌렸다면 true를 반환합니다.</returns>
-    protected bool IsKeyDown_dep(string axisName)
+    /// <returns>플레이어가 땅에 닿아있다면 참입니다.</returns>
+    bool UpdateLanding_dep()
     {
-        if (InputBlocked)
-            return false;
+        RaycastHit2D rayB = Physics2D.Raycast(groundCheckBack.position, Vector2.down, groundCheckRadius, whatIsGround);
+        RaycastHit2D rayF = Physics2D.Raycast(groundCheckFront.position, Vector2.down, groundCheckRadius, whatIsGround);
 
-        // return (InputBlocked == false && Input.GetButtonDown(axisName));
-        if (_playerIndex < 0)
-            return Input.GetButtonDown(axisName);
-        return Input.GetButtonDown(axisName + _playerIndex);
-    }
-    [Obsolete("")]
-    /// <summary>
-    /// 키가 계속 눌린 상태인지 확인합니다.
-    /// </summary>
-    /// <param name="axisName">눌린 상태인지 확인할 키의 이름입니다.</param>
-    /// <returns>키가 눌린 상태라면 true를 반환합니다.</returns>
-    protected bool IsKeyPressed_dep(string axisName)
-    {
-        return (InputBlocked == false && Input.GetButton(axisName));
-    }
-    [Obsolete("")]
-    /// <summary>
-    /// 왼쪽 키가 눌려있는지 확인합니다.
-    /// </summary>
-    /// <returns>왼쪽 키가 눌려있다면 참입니다.</returns>
-    protected bool IsLeftKeyPressed_dep()
-    {
-        /// return (InputBlocked == false && (Input.GetAxisRaw("Horizontal") < 0));
-        return (InputBlocked == false && Input.GetKey(KeyCode.LeftArrow));
-    }
-    [Obsolete("")]
-    /// <summary>
-    /// 오른쪽 키가 눌려있는지 확인합니다.
-    /// </summary>
-    /// <returns>오른쪽 키가 눌려있다면 참입니다.</returns>
-    protected bool IsRightKeyPressed_dep()
-    {
-        /// return (InputBlocked == false && (Input.GetAxisRaw("Horizontal") > 0));
-        return (InputBlocked == false && Input.GetKey(KeyCode.RightArrow));
-    }
-    [Obsolete("")]
-    /// <summary>
-    /// 위쪽 키가 눌려있는지 확인합니다.
-    /// </summary>
-    /// <returns>위쪽 키가 눌려있다면 참입니다.</returns>
-    protected bool IsUpKeyPressed_dep()
-    {
-        /// return (InputBlocked == false && (Input.GetAxisRaw("Vertical") > 0));
-        return (InputBlocked == false && Input.GetKey(KeyCode.UpArrow));
-    }
-    [Obsolete("")]
-    /// <summary>
-    /// 아래쪽 키가 눌려있는지 확인합니다.
-    /// </summary>
-    /// <returns>아래쪽 키가 눌려있다면 참입니다.</returns>
-    protected bool IsDownKeyPressed_dep()
-    {
-        /// return (InputBlocked == false && (Input.GetAxisRaw("Vertical") < 0));
-        return (InputBlocked == false && Input.GetKey(KeyCode.DownArrow));
+        Debug.DrawRay(groundCheckBack.position, Vector2.down, Color.red);
+        Debug.DrawRay(groundCheckFront.position, Vector2.down, Color.red);
+
+        if (Handy.DebugPoint) // PlayerController.UpdateLanding
+        {
+            Handy.Log("PlayerController.UpdateLanding");
+        }
+
+
+        if (Returning)
+        {
+            return false;
+        }
+        else if (OnGround())
+        {
+            // 절차:
+            // 1. 캐릭터에서 수직으로 내린 직선에 맞는 경사면의 법선 벡터를 구한다.
+            // 2. 법선 벡터와 이동 방향 벡터가 이루는 각도가 예각이면 내려오는 것
+            //    법선 벡터와 이동 방향 벡터가 이루는 각도가 둔각이면 올라가는 것
+            /// Handy.Log("OnGround()");
+
+
+            // 앞 부분 Ray와 뒤 부분 Ray의 경사각이 다른 경우
+            if (rayB.normal.normalized != rayF.normal.normalized)
+            {
+                bool isTouchingSlopeFromB = rayB.normal.x == 0;
+                /// Transform pos = isTouchingSlopeFromB ? groundCheckBack : groundCheckFront;
+                RaycastHit2D ray = isTouchingSlopeFromB ? rayB : rayF;
+
+                Vector2 from = FacingRight ? Vector2.right : Vector2.left;
+                float rayAngle = Vector2.Angle(from, ray.normal);
+                float rayAngleRad = Mathf.Deg2Rad * rayAngle;
+
+                float sx = _movingSpeed * Mathf.Cos(rayAngleRad);
+                float sy = _movingSpeed * Mathf.Sin(rayAngleRad);
+                float vx = FacingRight ? sx : -sx;
+
+
+                if (Readying)
+                {
+                    _Velocity = Vector2.zero;
+                }
+                else if (Jumping)
+                {
+
+                }
+                // 예각이라면 내려갑니다.
+                else if (rayAngle < 90)
+                {
+                    float vy = -sy;
+                    _Velocity = new Vector2(vx, vy);
+                }
+                // 둔각이라면 올라갑니다.
+                else if (rayAngle > 90)
+                {
+                    float vy = sy;
+                    _Velocity = new Vector2(vx, vy);
+                }
+                // 90도라면
+                else
+                {
+
+                }
+            }
+            else
+            {
+                if (Readying)
+                {
+                    _Velocity = Vector2.zero;
+                }
+            }
+
+            Landed = true;
+        }
+        else if (Jumping || Falling || Returning)
+        {
+            Landed = false;
+        }
+        else if (rayB || rayF)
+        {
+            if (Sliding)
+            {
+
+            }
+            else if (AirDashing)
+            {
+
+            }
+            else if (Spawning || Returning)
+            {
+
+            }
+            else if (Readying)
+            {
+                _Velocity = new Vector2(0, 0);
+            }
+            else if (Landed)
+            {
+                Vector3 pos = transform.position;
+                float difY;
+                if (rayB && !rayF)
+                {
+                    difY = rayB.distance / transform.localScale.y;
+                    pos.y -= difY;
+                }
+                else if (!rayB && rayF)
+                {
+                    difY = rayF.distance / transform.localScale.y;
+                    pos.y -= difY;
+                }
+                else
+                {
+                    difY = Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
+                    pos.y -= difY;
+                }
+                transform.position = pos;
+                _Velocity = new Vector2(_Velocity.x, -Mathf.Abs(_Velocity.x) * Mathf.Sin(Mathf.Deg2Rad * 60));
+                Landed = true;
+            }
+            else
+            {
+                Landed = false;
+            }
+
+
+            /**
+            if (Sliding)
+            {
+
+            }
+            else if (AirDashing)
+            {
+
+            }
+
+            // TODO: 나중에 수정해야 하지 않나 합니다.
+            else if (Spawning)
+            {
+
+            }
+
+            else
+            {
+                Vector3 pos = transform.position;
+                float difY;
+                if (rayB && !rayF)
+                {
+                    difY = rayB.distance / transform.localScale.y;
+                    pos.y -= difY;
+                }
+                else if (!rayB && rayF)
+                {
+                    difY = rayF.distance / transform.localScale.y;
+                    pos.y -= difY;
+                }
+                else
+                {
+                    difY = Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
+                    pos.y -= difY;
+                }
+                transform.position = pos;
+                _Velocity = new Vector2(_Velocity.x, -Mathf.Abs(_Velocity.x) * Mathf.Sin(Mathf.Deg2Rad * 60));
+                Landed = true;
+            }
+            */
+        }
+        else
+        {
+            Landed = false;
+        }
+        return Landed;
     }
 
     #endregion

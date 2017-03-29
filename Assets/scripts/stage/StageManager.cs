@@ -147,11 +147,6 @@ public class StageManager : HDSceneManager
     /// </summary>
     bool _gameEnded = false;
 
-    /// <summary>
-    /// 게임 종료 값입니다.
-    /// </summary>
-    int _gameEndValue = -1;
-
     #endregion
 
 

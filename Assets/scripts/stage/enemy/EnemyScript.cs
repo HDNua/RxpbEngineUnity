@@ -309,6 +309,9 @@ public abstract class EnemyScript : MonoBehaviour
             Instantiate(_deadParticleSpreadEffect, transform.position, transform.rotation)
                 .gameObject.SetActive(true);
         }
+
+        //
+        RequestDestroy();
     }    
     /// <summary>
     /// 자신의 위치에 아이템을 생성합니다.

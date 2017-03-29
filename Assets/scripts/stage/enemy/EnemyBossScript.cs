@@ -537,6 +537,7 @@ public abstract class EnemyBossScript : EnemyScript
 
 
 
+
     #region 보조 메서드를 정의합니다.
     /// <summary>
     /// 애니메이션이 재생 중인지 확인합니다.

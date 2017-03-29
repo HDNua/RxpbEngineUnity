@@ -60,6 +60,10 @@ public class StageManager2P : StageManager
 
         MainPlayer._playerIndex = 0;
         SubPlayer._playerIndex = 1;
+
+        Collider2D mainCollider = MainPlayer.GetComponent<Collider2D>();
+        Collider2D subCollider = SubPlayer.GetComponent<Collider2D>();
+        Physics2D.IgnoreCollision(mainCollider, subCollider, true);
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.

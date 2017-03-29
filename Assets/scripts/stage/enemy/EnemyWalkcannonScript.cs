@@ -18,15 +18,9 @@ public class EnemyWalkcannonScript : EnemyScript
     /// BoxCollider2D 요소를 가져옵니다.
     /// </summary>
     BoxCollider2D _boxCollider2D;
-
-
+    
     #endregion
-
-
-
-
-
-
+    
 
 
 
@@ -48,16 +42,10 @@ public class EnemyWalkcannonScript : EnemyScript
     /// 무엇이 땅인지를 결정합니다. 기본값은 "Ground, TiledGeometry"입니다.
     /// </summary>
     public LayerMask _whatIsGround;
-
-
+    
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -71,12 +59,7 @@ public class EnemyWalkcannonScript : EnemyScript
 
 
 
-
-
-
-
-
-
+    
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
     /// <summary>
@@ -108,14 +91,12 @@ public class EnemyWalkcannonScript : EnemyScript
     protected override void Update()
     {
         base.Update();
-
-
+        
         // 사용할 변수를 선언합니다.
         float posX = transform.position.x;
         float boundLeft = SpawnZone.Left;
         float boundRight = SpawnZone.Right;
-
-
+        
         // 영역을 넘어서면 방향을 전환하여 원래대로 복귀합니다.
         if (posX < boundLeft)
         {
@@ -139,12 +120,7 @@ public class EnemyWalkcannonScript : EnemyScript
 
     #endregion
 
-
-
-
-
-
-
+    
 
 
 
@@ -161,7 +137,6 @@ public class EnemyWalkcannonScript : EnemyScript
             GameObject pObject = other.gameObject;
             PlayerController player = pObject.GetComponent<PlayerController>();
 
-
             // 플레이어가 무적 상태이거나 죽었다면
             if (player.Invencible || player.IsDead)
             {
@@ -176,16 +151,10 @@ public class EnemyWalkcannonScript : EnemyScript
             }
         }
     }
-
-
+    
     #endregion
 
-
-
-
-
-
-
+    
 
 
 

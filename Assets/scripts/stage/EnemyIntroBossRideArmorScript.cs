@@ -75,36 +75,6 @@ public class EnemyIntroBossRideArmorScript : EnemyBossScript
         }
 
         MoveToPlayer();
-
-        /*
-        // 사용할 변수를 선언합니다.
-        Vector2 relativePos = _StageManager.GetCurrentPlayerPosition() - transform.position;
-        */
-
-        /*
-        float angle = Mathf.Atan2(relativePos.y, relativePos.x); // * Mathf.Rad2Deg;
-        float vx = _movingSpeed * Mathf.Cos(angle);
-        float vy = _movingSpeed * Mathf.Sin(angle);
-        _Rigidbody.velocity = new Vector2(vx, vy);
-        */
-
-        /*
-        // 
-        if (relativePos.x < 0 && FacingRight)
-        {
-            MoveLeft();
-        }
-        else if (relativePos.x > 0 && !FacingRight)
-        {
-            MoveRight();
-        }
-        */
-        /*
-        else if (Landed == true)
-        {
-            Jump();
-        }
-        */
     }
     
     #endregion
@@ -184,6 +154,7 @@ public class EnemyIntroBossRideArmorScript : EnemyBossScript
     }
 
     #endregion
+
 
 
 

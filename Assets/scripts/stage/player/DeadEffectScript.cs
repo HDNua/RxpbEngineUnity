@@ -24,6 +24,8 @@ public class DeadEffectScript : MonoBehaviour
 
 
 
+
+
     #region Unity에서 사용할 공용 필드를 정의합니다.
     public GameObject[] particles;
 
@@ -32,21 +34,21 @@ public class DeadEffectScript : MonoBehaviour
 
 
 
+
+
     #region 필드를 정의합니다.
     /// <summary>
     /// 
     /// </summary>
-    StageManager1P stageManager;
+    GameObject _p1 { get { return particles[0]; } }
     /// <summary>
     /// 
     /// </summary>
-    GameObject p1;
-    /// <summary>
-    /// 
-    /// </summary>
-    GameObject p2;
+    GameObject _p2 { get { return particles[1]; } }
 
     #endregion
+
+
 
 
 
@@ -56,7 +58,7 @@ public class DeadEffectScript : MonoBehaviour
     /// </summary>
     void Awake()
     {
-        stageManager = GetComponentInParent<StageManager1P>();
+        /// _stageManager = GetComponentInParent<StageManager1P>();
     }
     /// <summary>
     /// MonoBehaviour 개체를 초기화합니다.
@@ -69,12 +71,7 @@ public class DeadEffectScript : MonoBehaviour
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region 메서드를 정의합니다.
@@ -96,13 +93,11 @@ public class DeadEffectScript : MonoBehaviour
     /// <summary>
     /// 사망 효과를 재생합니다.
     /// </summary>
-    void Run()
+    /// <param name="player">사망한 플레이어입니다.</param>
+    void Run(PlayerController player)
     {
-        /// running = true;
-        /// runTime = 0;
-
         // 플레이어를 투명하게 만듭니다.
-        stageManager._player.GetComponent<SpriteRenderer>().enabled = false;
+        player.GetComponent<SpriteRenderer>().enabled = false;
 
         // 사망 코루틴을 시작합니다.
         StartCoroutine(DeadEffectCoroutine());
@@ -116,14 +111,14 @@ public class DeadEffectScript : MonoBehaviour
     {
         // 
         float speed = bigParticleSpeed1;
-        MakeParticle(p2, new Vector2(+1.0f, +0.0f), speed);
-        MakeParticle(p2, new Vector2(+1.0f, +1.0f), speed);
-        MakeParticle(p2, new Vector2(+0.0f, +1.0f), speed);
-        MakeParticle(p2, new Vector2(-1.0f, +1.0f), speed);
-        MakeParticle(p2, new Vector2(-1.0f, +0.0f), speed);
-        MakeParticle(p2, new Vector2(-1.0f, -1.0f), speed);
-        MakeParticle(p2, new Vector2(+0.0f, -1.0f), speed);
-        MakeParticle(p2, new Vector2(+1.0f, -1.0f), speed);
+        MakeParticle(_p2, new Vector2(+1.0f, +0.0f), speed);
+        MakeParticle(_p2, new Vector2(+1.0f, +1.0f), speed);
+        MakeParticle(_p2, new Vector2(+0.0f, +1.0f), speed);
+        MakeParticle(_p2, new Vector2(-1.0f, +1.0f), speed);
+        MakeParticle(_p2, new Vector2(-1.0f, +0.0f), speed);
+        MakeParticle(_p2, new Vector2(-1.0f, -1.0f), speed);
+        MakeParticle(_p2, new Vector2(+0.0f, -1.0f), speed);
+        MakeParticle(_p2, new Vector2(+1.0f, -1.0f), speed);
 
         // 
         speed = smallParticleSpeed;
@@ -139,32 +134,32 @@ public class DeadEffectScript : MonoBehaviour
             rv3.Normalize();
             rv4.Normalize();
 
-            MakeParticle(p1, rv1, speed);
-            MakeParticle(p1, rv2, speed);
-            MakeParticle(p1, rv3, speed);
-            MakeParticle(p1, rv4, speed);
+            MakeParticle(_p1, rv1, speed);
+            MakeParticle(_p1, rv2, speed);
+            MakeParticle(_p1, rv3, speed);
+            MakeParticle(_p1, rv4, speed);
 
             yield return new WaitForSeconds(particleInterval);
         }
 
         // 
         speed = bigParticleSpeed2;
-        MakeParticle(p2, new Vector2(+0.3f, +1.0f), speed);
-        MakeParticle(p2, new Vector2(+0.6f, +1.0f), speed);
-        MakeParticle(p2, new Vector2(+1.0f, +0.3f), speed);
-        MakeParticle(p2, new Vector2(+1.0f, +0.6f), speed);
-        MakeParticle(p2, new Vector2(+0.3f, -1.0f), speed);
-        MakeParticle(p2, new Vector2(+0.6f, -1.0f), speed);
-        MakeParticle(p2, new Vector2(+1.0f, -0.3f), speed);
-        MakeParticle(p2, new Vector2(+1.0f, -0.6f), speed);
-        MakeParticle(p2, new Vector2(-0.3f, +1.0f), speed);
-        MakeParticle(p2, new Vector2(-0.6f, +1.0f), speed);
-        MakeParticle(p2, new Vector2(-1.0f, +0.3f), speed);
-        MakeParticle(p2, new Vector2(-1.0f, +0.6f), speed);
-        MakeParticle(p2, new Vector2(-0.3f, -1.0f), speed);
-        MakeParticle(p2, new Vector2(-0.6f, -1.0f), speed);
-        MakeParticle(p2, new Vector2(-1.0f, -0.3f), speed);
-        MakeParticle(p2, new Vector2(-1.0f, -0.6f), speed);
+        MakeParticle(_p2, new Vector2(+0.3f, +1.0f), speed);
+        MakeParticle(_p2, new Vector2(+0.6f, +1.0f), speed);
+        MakeParticle(_p2, new Vector2(+1.0f, +0.3f), speed);
+        MakeParticle(_p2, new Vector2(+1.0f, +0.6f), speed);
+        MakeParticle(_p2, new Vector2(+0.3f, -1.0f), speed);
+        MakeParticle(_p2, new Vector2(+0.6f, -1.0f), speed);
+        MakeParticle(_p2, new Vector2(+1.0f, -0.3f), speed);
+        MakeParticle(_p2, new Vector2(+1.0f, -0.6f), speed);
+        MakeParticle(_p2, new Vector2(-0.3f, +1.0f), speed);
+        MakeParticle(_p2, new Vector2(-0.6f, +1.0f), speed);
+        MakeParticle(_p2, new Vector2(-1.0f, +0.3f), speed);
+        MakeParticle(_p2, new Vector2(-1.0f, +0.6f), speed);
+        MakeParticle(_p2, new Vector2(-0.3f, -1.0f), speed);
+        MakeParticle(_p2, new Vector2(-0.6f, -1.0f), speed);
+        MakeParticle(_p2, new Vector2(-1.0f, -0.3f), speed);
+        MakeParticle(_p2, new Vector2(-1.0f, -0.6f), speed);
 
         // 
         speed = smallParticleSpeed;
@@ -180,15 +175,15 @@ public class DeadEffectScript : MonoBehaviour
             rv3.Normalize();
             rv4.Normalize();
 
-            MakeParticle(p1, rv1, speed);
-            MakeParticle(p1, rv2, speed);
-            MakeParticle(p1, rv3, speed);
-            MakeParticle(p1, rv4, speed);
+            MakeParticle(_p1, rv1, speed);
+            MakeParticle(_p1, rv2, speed);
+            MakeParticle(_p1, rv3, speed);
+            MakeParticle(_p1, rv4, speed);
 
             yield return new WaitForSeconds(particleInterval);
         }
-
-        yield return false;
+        
+        yield break;
     }
 
     /// <summary>
@@ -196,32 +191,41 @@ public class DeadEffectScript : MonoBehaviour
     /// </summary>
     public void RequestRun(PlayerController player)
     {
+        /* 
+         * [v6.0.3] 다음 커밋에서 삭제할 예정입니다.
         if (player == stageManager.PlayerX)
         {
-            p1 = particles[0];
-            p2 = particles[1];
+            _p1 = particles[0];
+            _p2 = particles[1];
         }
         else if (player == stageManager.PlayerZ)
         {
-            p1 = particles[2];
-            p2 = particles[3];
+            _p1 = particles[2];
+            _p2 = particles[3];
         }
         else
         {
-            throw new System.Exception();
+            throw new Exception();
         }
+        */
 
         transform.position = player.transform.position;
-        Run();
+        Run(player);
     }
-    
+
     #endregion
-    
+
 
 
 
 
     #region 구형 정의를 보관합니다.
+    [Obsolete("[v6.0.3] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 
+    /// </summary>
+    StageManager1P _stageManager;
+
 
     #endregion
 }
