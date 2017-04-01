@@ -1052,48 +1052,6 @@ public abstract class PlayerController : MonoBehaviour
             {
                 Landed = false;
             }
-
-
-            /**
-            if (Sliding)
-            {
-
-            }
-            else if (AirDashing)
-            {
-
-            }
-
-            // TODO: 나중에 수정해야 하지 않나 합니다.
-            else if (Spawning)
-            {
-
-            }
-
-            else
-            {
-                Vector3 pos = transform.position;
-                float difY;
-                if (rayB && !rayF)
-                {
-                    difY = rayB.distance / transform.localScale.y;
-                    pos.y -= difY;
-                }
-                else if (!rayB && rayF)
-                {
-                    difY = rayF.distance / transform.localScale.y;
-                    pos.y -= difY;
-                }
-                else
-                {
-                    difY = Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
-                    pos.y -= difY;
-                }
-                transform.position = pos;
-                _Velocity = new Vector2(_Velocity.x, -Mathf.Abs(_Velocity.x) * Mathf.Sin(Mathf.Deg2Rad * 60));
-                Landed = true;
-            }
-            */
         }
         else
         {
@@ -2102,10 +2060,29 @@ public abstract class PlayerController : MonoBehaviour
         boxCollider.offset = hitBox.offset;
         boxCollider.size = hitBox.size;
     }
+
+    #endregion
     
+
+
+
+
+    #region 정적 보조 메서드를 정의합니다.
+    /// <summary>
+    /// 효과 개체의 색을 색상표를 바탕으로 업데이트합니다.
+    /// </summary>
+    /// <param name="effectObject">대상 효과 개체입니다.</param>
+    /// <param name="defaultPalette">기본 효과 색상표입니다.</param>
+    /// <param name="targetPalette">대상 효과 색상표입니다.</param>
+    public static void UpdateEffectColor(GameObject effectObject, Color[] defaultPalette, Color[] targetPalette)
+    {
+        EffectScript effectScript = effectObject.GetComponent<EffectScript>();
+        effectScript.RequestUpdateTexture(defaultPalette, targetPalette);
+    }
+
     #endregion
 
-    
+
 
 
 

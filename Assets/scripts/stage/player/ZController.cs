@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 
@@ -95,6 +96,7 @@ public class ZController : PlayerController
     /// </summary>
     protected override void Update()
     {
+        base.Update();
         if (UpdateController() == false)
         {
             return;
@@ -117,13 +119,19 @@ public class ZController : PlayerController
                     daiScale.x *= -1;
                 dashAfterImage.transform.localScale = daiScale;
                 dashAfterImage.SetActive(false);
+
+                // 
                 var daiRenderer = dashAfterImage.GetComponent<SpriteRenderer>();
                 daiRenderer.sprite = _Renderer.sprite;
                 dashAfterImage.SetActive(true);
                 DashAfterImageTime = 0;
+
+                // 
+
             }
         }
 
+        ///////////////////////////////////////////////////////////////////////////
         // 새로운 사용자 입력을 확인합니다.
         // 점프 키가 눌린 경우
         if (IsKeyDown("Jump"))
@@ -451,6 +459,137 @@ public class ZController : PlayerController
 
 
 
+    #region PlayerController 행동 메서드를 위한 코루틴을 정의합니다.
+    /// <summary>
+    /// 대쉬 코루틴 필드입니다.
+    /// </summary>
+    Coroutine _dashCoroutine = null;
+    /// <summary>
+    /// 대쉬 코루틴입니다.
+    /// </summary>
+    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
+    IEnumerator CoroutineDash()
+    {
+        // DashBeg
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+
+        // DashRun
+        if (DashJumping == false)
+        {
+            GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
+            dashBoost.transform.SetParent(groundCheck.transform);
+            if (FacingRight == false)
+            {
+                var newScale = dashBoost.transform.localScale;
+                newScale.x = FacingRight ? newScale.x : -newScale.x;
+                dashBoost.transform.localScale = newScale;
+            }
+            _dashBoostEffect = dashBoost;
+
+            yield return new WaitForSeconds(0.3f);
+        }
+
+
+        // DashEnd (사용자 입력 중지가 아닌 기본 대쉬 중지 행동입니다.)
+        if (DashJumping == false)
+        {
+            StopDashing();
+            StopAirDashing();
+            StopMoving();
+            SoundEffects[3].Stop();
+            SoundEffects[4].Play();
+        }
+
+        // 코루틴을 중지합니다.
+        yield break;
+    }
+
+    /// <summary>
+    /// 에어 대쉬 코루틴 필드입니다.
+    /// </summary>
+    Coroutine _airDashCoroutine = null;
+    /// <summary>
+    /// 에어 대쉬 코루틴입니다.
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator CoroutineAirDash()
+    {
+        // AirDashBeg == AirDashRun
+        {
+            GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
+            dashBoost.transform.SetParent(groundCheck.transform);
+            if (FacingRight == false)
+            {
+                var newScale = dashBoost.transform.localScale;
+                newScale.x = FacingRight ? newScale.x : -newScale.x;
+                dashBoost.transform.localScale = newScale;
+            }
+            _dashBoostEffect = dashBoost;
+
+            yield return new WaitForSeconds(0.3f);
+        }
+
+        // AirDashEnd
+        {
+            StopAirDashing();
+        }
+
+        yield break;
+    }
+
+    /// <summary>
+    /// 벽 타기 코루틴 필드입니다.
+    /// </summary>
+    Coroutine _slideCoroutine = null;
+    /// <summary>
+    /// 벽 타기 코루틴입니다.
+    /// </summary>
+    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
+    IEnumerator CoroutineSlide()
+    {
+        // SlideBeg
+        {
+            SoundEffects[6].Play();
+        }
+
+        // 코루틴을 중지합니다.
+        yield break;
+    }
+
+    /// <summary>
+    /// 벽 점프 코루틴 필드입니다.
+    /// </summary>
+    Coroutine _wallJumpCoroutine = null;
+    /// <summary>
+    /// 벽 점프 코루틴입니다.
+    /// </summary>
+    /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
+    IEnumerator CoroutineWallJump()
+    {
+        // WallJumpBeg
+        {
+            SoundEffects[5].Play();
+        }
+
+        // WallJumpEnd
+        {
+            // UnblockSliding();
+            // _Velocity = new Vector2(0, _Velocity.y);
+        }
+
+        // 코루틴을 중지합니다.
+        yield break;
+    }
+
+    #endregion
+
+
+
+
+
     #region 제로에 대해 새롭게 정의된 행동 메서드의 목록입니다.
     ///////////////////////////////////////////////////////////////////
     // 공격
@@ -540,6 +679,8 @@ public class ZController : PlayerController
     protected override void StopFalling()
     {
         base.StopFalling();
+        
+        /*
         if (_attacking)
         {
             var curState = _Animator.GetCurrentAnimatorStateInfo(0);
@@ -554,6 +695,7 @@ public class ZController : PlayerController
                 BlockMoving();
             }
         }
+        */
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -574,17 +716,93 @@ public class ZController : PlayerController
             dashFog.transform.localScale = newScale;
         }
         SoundEffects[3].Play();
+
+        // 대쉬 코루틴을 실행합니다.
+        _dashCoroutine = StartCoroutine(CoroutineDash());
     }
     /// <summary>
     /// 플레이어의 대쉬를 중지합니다. (사용자의 입력에 의함)
     /// </summary>
     protected override void StopDashing()
     {
+        bool wasDashing = Dashing;
         base.StopDashing();
-        if (_dashBoostEffect != null)
+
+        if (wasDashing)
         {
-            _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
-            _dashBoostEffect = null;
+            // 대쉬 이펙트를 제거합니다.
+            if (_dashBoostEffect != null)
+            {
+                _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
+                _dashBoostEffect = null;
+            }
+
+            // 코루틴을 중지합니다.
+            if (_dashCoroutine != null)
+            {
+                StopCoroutine(_dashCoroutine);
+                if (DashJumping == false)
+                {
+                    /// StopDashing();
+                    StopAirDashing();
+                    StopMoving();
+                    SoundEffects[3].Stop();
+                    SoundEffects[4].Play();
+                }
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    // 벽 타기
+    /// <summary>
+    /// 플레이어가 벽을 타도록 합니다.
+    /// </summary>
+    protected override void Slide()
+    {
+        base.Slide();
+
+        // 코루틴을 시작합니다.
+        _slideCoroutine = StartCoroutine(CoroutineSlide());
+    }
+    /// <summary>
+    /// 플레이어의 벽 타기를 중지합니다.
+    /// </summary>
+    protected override void StopSliding()
+    {
+        base.StopSliding();
+
+        // 코루틴을 중지합니다.
+        if (_slideCoroutine != null)
+        {
+            StopCoroutine(_slideCoroutine);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    // 조합
+    /// <summary>
+    /// 플레이어가 벽 점프를 합니다.
+    /// </summary>
+    protected override void WallJump()
+    {
+        base.WallJump();
+
+        // 코루틴을 시작합니다.
+        _wallJumpCoroutine = StartCoroutine(CoroutineWallJump());
+    }
+    /// <summary>
+    /// 플레이어의 벽 점프를 중지합니다.
+    /// </summary>
+    protected override void StopWallJumping()
+    {
+        base.StopWallJumping();
+
+        // 코루틴을 중지합니다.
+        if (_wallJumpCoroutine != null)
+        {
+            StopCoroutine(_wallJumpCoroutine);
+            _wallJumpCoroutine = null;
         }
     }
     /// <summary>
@@ -609,6 +827,9 @@ public class ZController : PlayerController
     {
         base.AirDash();
         SoundEffects[3].Play();
+
+        // 코루틴을 시작합니다.
+        _airDashCoroutine = StartCoroutine(CoroutineAirDash());
     }
     /// <summary>
     /// 플레이어의 에어 대쉬를 중지합니다.
@@ -621,11 +842,28 @@ public class ZController : PlayerController
             _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
             _dashBoostEffect = null;
         }
+
+        // 코루틴을 중지합니다.
+        if (_airDashCoroutine != null)
+        {
+            StopCoroutine(_airDashCoroutine);
+            _airDashCoroutine = null;
+        }
+    }
+    /// <summary>
+    /// 플레이어가 벽에서 대쉬 점프하게 합니다.
+    /// </summary>
+    protected override void WallDashJump()
+    {
+        base.WallDashJump();
+
+        // 코루틴을 시작합니다.
+        _wallJumpCoroutine = StartCoroutine(CoroutineWallJump());
     }
 
     #endregion
 
-    
+
 
 
 

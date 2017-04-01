@@ -219,13 +219,10 @@ public class XController : PlayerController
     protected override void Update()
     {
         base.Update();
-        /// UpdateState();
-
         if (UpdateController() == false)
         {
             return;
         }
-
 
         // 화면 갱신에 따른 변화를 추적합니다.
         if (Dashing) // 대쉬 상태에서 잔상을 만듭니다.
@@ -255,8 +252,7 @@ public class XController : PlayerController
                 UpdateEffectColor(dashAfterImage, XColorPalette.XDefaultPalette, XColorPalette.XDashEffectColorPalette);
             }
         }
-
-
+        
         ///////////////////////////////////////////////////////////////////////////
         // 새로운 사용자 입력을 확인합니다.
         // 점프 키가 눌린 경우
@@ -974,7 +970,7 @@ public class XController : PlayerController
     /// 대쉬 코루틴입니다.
     /// </summary>
     /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
-    IEnumerator DashCoroutine()
+    IEnumerator CoroutineDash()
     {
         // DashBeg
         {
@@ -1021,7 +1017,7 @@ public class XController : PlayerController
     /// 에어 대쉬 코루틴입니다.
     /// </summary>
     /// <returns></returns>
-    IEnumerator AirDashCoroutine()
+    IEnumerator CoroutineAirDash()
     {
         // AirDashBeg == AirDashRun
         {
@@ -1054,7 +1050,7 @@ public class XController : PlayerController
     /// 벽 타기 코루틴입니다.
     /// </summary>
     /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
-    IEnumerator SlideCoroutine()
+    IEnumerator CoroutineSlide()
     {
         // SlideBeg
         {
@@ -1073,7 +1069,7 @@ public class XController : PlayerController
     /// 벽 점프 코루틴입니다.
     /// </summary>
     /// <returns>행동 단위가 끝날 때마다 null을 반환합니다.</returns>
-    IEnumerator WallJumpCoroutine()
+    IEnumerator CoroutineWallJump()
     {
         // WallJumpBeg
         {
@@ -1115,27 +1111,6 @@ public class XController : PlayerController
         base.Land();
         SoundEffects[2].Play();
     }
-    /// <summary>
-    /// 플레이어를 왼쪽으로 이동합니다.
-    /// </summary>
-    protected override void MoveLeft()
-    {
-        base.MoveLeft();
-    }
-    /// <summary>
-    /// 플레이어를 오른쪽으로 이동합니다.
-    /// </summary>
-    protected override void MoveRight()
-    {
-        base.MoveRight();
-    }
-    /// <summary>
-    /// 플레이어의 이동을 중지합니다.
-    /// </summary>
-    protected override void StopMoving()
-    {
-        base.StopMoving();
-    }
     
     ///////////////////////////////////////////////////////////////////
     // 점프 및 낙하
@@ -1175,7 +1150,7 @@ public class XController : PlayerController
         SoundEffects[3].Play();
 
         // 대쉬 코루틴을 실행합니다.
-        _dashCoroutine = StartCoroutine(DashCoroutine());
+        _dashCoroutine = StartCoroutine(CoroutineDash());
     }
     /// <summary>
     /// 플레이어의 대쉬를 중지합니다. (사용자의 입력에 의함)
@@ -1193,7 +1168,6 @@ public class XController : PlayerController
                 _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
                 _dashBoostEffect = null;
             }
-
 
             // 코루틴을 중지합니다.
             if (_dashCoroutine != null)
@@ -1220,9 +1194,8 @@ public class XController : PlayerController
     {
         base.Slide();
 
-
         // 코루틴을 시작합니다.
-        _slideCoroutine = StartCoroutine(SlideCoroutine());
+        _slideCoroutine = StartCoroutine(CoroutineSlide());
     }
     /// <summary>
     /// 플레이어의 벽 타기를 중지합니다.
@@ -1230,7 +1203,6 @@ public class XController : PlayerController
     protected override void StopSliding()
     {
         base.StopSliding();
-
 
         // 코루틴을 중지합니다.
         if (_slideCoroutine != null)
@@ -1249,7 +1221,7 @@ public class XController : PlayerController
         base.WallJump();
 
         // 코루틴을 시작합니다.
-        _wallJumpCoroutine = StartCoroutine(WallJumpCoroutine());
+        _wallJumpCoroutine = StartCoroutine(CoroutineWallJump());
     }
     /// <summary>
     /// 플레이어의 벽 점프를 중지합니다.
@@ -1289,9 +1261,8 @@ public class XController : PlayerController
         base.AirDash();
         SoundEffects[3].Play();
 
-
         // 코루틴을 시작합니다.
-        _airDashCoroutine = StartCoroutine(AirDashCoroutine());
+        _airDashCoroutine = StartCoroutine(CoroutineAirDash());
     }
     /// <summary>
     /// 플레이어의 에어 대쉬를 중지합니다.
@@ -1320,7 +1291,7 @@ public class XController : PlayerController
         base.WallDashJump();
 
         // 코루틴을 시작합니다.
-        _wallJumpCoroutine = StartCoroutine(WallJumpCoroutine());
+        _wallJumpCoroutine = StartCoroutine(CoroutineWallJump());
     }
     
     #endregion
@@ -1488,8 +1459,7 @@ public class XController : PlayerController
         _weaponState = weaponIndex;
         _currentPalette = targetPalette;
     }
-
-
+    
     /// <summary>
     /// 엑스의 색상을 업데이트합니다.
     /// </summary>
@@ -1521,8 +1491,7 @@ public class XController : PlayerController
 
         }
     }
-
-
+    
     /// <summary>
     /// 엑스의 색상을 주어진 팔레트로 업데이트합니다.
     /// </summary>
@@ -1646,7 +1615,9 @@ public class XController : PlayerController
         _currentPalette = GetPalette(_weaponState);
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
     Dictionary<int, Texture2D> _hit_textures = new Dictionary<int, Texture2D>();
     Dictionary<int, Texture2D> _charge1_textures = new Dictionary<int, Texture2D>();
     Dictionary<int, Texture2D> _charge2_textures = new Dictionary<int, Texture2D>();
@@ -1656,11 +1627,11 @@ public class XController : PlayerController
     Dictionary<int, Texture2D> _weapon4_textures = new Dictionary<int, Texture2D>();
 
     /// <summary>
-    /// 
+    /// 텍스쳐가 준비되었는지 확인합니다.
     /// </summary>
-    /// <param name="textureID"></param>
-    /// <param name="colorPalette"></param>
-    /// <returns></returns>
+    /// <param name="textureID">확인할 텍스쳐의 식별자입니다.</param>
+    /// <param name="colorPalette">확인할 팔레트입니다.</param>
+    /// <returns>텍스쳐가 준비되었다면 참입니다.</returns>
     private bool IsTexturePrepared(int textureID, Color[] colorPalette)
     {
         if (colorPalette == XColorPalette.InvenciblePalette)
@@ -1696,11 +1667,11 @@ public class XController : PlayerController
         return false;
     }
     /// <summary>
-    /// 
+    /// 컬러 팔레트를 이용하여 생성된 새 텍스쳐를 집합에 넣습니다.
     /// </summary>
-    /// <param name="textureID"></param>
-    /// <param name="cloneTexture"></param>
-    /// <param name="colorPalette"></param>
+    /// <param name="textureID">텍스쳐 식별자입니다.</param>
+    /// <param name="cloneTexture">생성한 텍스쳐입니다.</param>
+    /// <param name="colorPalette">텍스쳐를 생성하기 위해 사용한 팔레트입니다.</param>
     private void AddTextureToSet(int textureID, Texture2D cloneTexture, Color[] colorPalette)
     {
         if (colorPalette == XColorPalette.InvenciblePalette)
@@ -1736,8 +1707,7 @@ public class XController : PlayerController
             throw new Exception("예기치 못한 추가 오류");
         }
     }
-
-
+    
     #endregion
 
 
@@ -1777,20 +1747,7 @@ public class XController : PlayerController
         }
         return palette;
     }
-
-    /// <summary>
-    /// 효과 개체의 색을 색상표를 바탕으로 업데이트합니다.
-    /// </summary>
-    /// <param name="effectObject">대상 효과 개체입니다.</param>
-    /// <param name="defaultPalette">기본 효과 색상표입니다.</param>
-    /// <param name="targetPalette">대상 효과 색상표입니다.</param>
-    static void UpdateEffectColor(GameObject effectObject, Color[] defaultPalette, Color[] targetPalette)
-    {
-        EffectScript effectScript = effectObject.GetComponent<EffectScript>();
-        effectScript.RequestUpdateTexture(defaultPalette, targetPalette);
-    }
-
-
+    
     #endregion
 
 
