@@ -127,7 +127,7 @@ public class BossDeadEffectScript : EffectScript
         */
 
         // 
-        StageManager1P stageManager = StageManager1P.Instance;
+        StageManager stageManager = StageManager.Instance;
         stageManager.RequestStopBackgroundMusic();
 
         // 

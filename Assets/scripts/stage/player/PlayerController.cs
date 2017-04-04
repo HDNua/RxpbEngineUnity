@@ -2008,7 +2008,131 @@ public abstract class PlayerController : MonoBehaviour
     }
 
     #endregion
-        
+
+
+
+
+
+    #region 색상 보조 메서드를 정의합니다.
+    /// <summary>
+    /// 현재 색상 팔레트입니다.
+    /// </summary>
+    Color[] _currentPalette;
+    /// <summary>
+    /// 
+    /// </summary>
+    protected Color[] _CurrentPalette { set { _currentPalette = value; } }
+    /// <summary>
+    /// 
+    /// </summary>
+    Color[] _defaultPalette = XColorPalette.DefaultPalette;
+    /// <summary>
+    /// 
+    /// </summary>
+    protected Color[] _DefaultPalette { set { _defaultPalette = value; } }
+
+    /// <summary>
+    /// 플레이어의 색상을 업데이트합니다.
+    /// </summary>
+    protected virtual void UpdateColor()
+    {
+        // 웨폰을 장착한 상태라면
+        if (_currentPalette != null)
+        {
+            // 바디 색상을 맞춥니다.
+            UpdateBodyColor(_currentPalette);
+        }
+    }
+
+    /// <summary>
+    /// 색상을 주어진 팔레트로 업데이트합니다.
+    /// </summary>
+    /// <param name="_currentPalette">현재 팔레트입니다.</param>
+    protected void UpdateBodyColor(Color[] currentPalette)
+    {
+        Sprite sprite = _Renderer.sprite;
+        Texture2D texture = sprite.texture;
+        Texture2D cloneTexture = null;
+        int textureID = sprite.GetInstanceID();
+
+        if (currentPalette == null)
+        {
+            cloneTexture = texture;
+        }
+        // 현재 팔레트에 대한 텍스쳐 ID가 준비되어있다면
+        else if (IsTexturePrepared(textureID, currentPalette))
+        {
+            cloneTexture = GetPreparedTexture(textureID, currentPalette);
+        }
+        else
+        {
+            Color[] colors = texture.GetPixels();
+            Color[] pixels = new Color[colors.Length];
+
+            // 모든 픽셀을 돌면서 색상을 업데이트합니다.
+            for (int pixelIndex = 0, pixelCount = colors.Length; pixelIndex < pixelCount; ++pixelIndex)
+            {
+                Color color = colors[pixelIndex];
+                if (color.a == 1)
+                {
+                    for (int targetIndex = 0, targetPixelCount = _defaultPalette.Length; targetIndex < targetPixelCount; ++targetIndex)
+                    {
+                        Color colorDst = _defaultPalette[targetIndex];
+                        if (Mathf.Approximately(color.r, colorDst.r) &&
+                            Mathf.Approximately(color.g, colorDst.g) &&
+                            Mathf.Approximately(color.b, colorDst.b) &&
+                            Mathf.Approximately(color.a, colorDst.a))
+                        {
+                            pixels[pixelIndex] = currentPalette[targetIndex];
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    pixels[pixelIndex] = color;
+                }
+            }
+
+            // 텍스쳐를 복제하고 새 픽셀 팔레트로 덮어씌웁니다.
+            cloneTexture = new Texture2D(texture.width, texture.height);
+            cloneTexture.filterMode = FilterMode.Point;
+            cloneTexture.SetPixels(pixels);
+            cloneTexture.Apply();
+
+            // 
+            AddTextureToSet(textureID, cloneTexture, currentPalette);
+        }
+
+        // 새 텍스쳐를 렌더러에 반영합니다.
+        MaterialPropertyBlock block = new MaterialPropertyBlock();
+        block.SetTexture("_MainTex", cloneTexture);
+        _Renderer.SetPropertyBlock(block);
+    }
+    /// <summary>
+    /// 텍스쳐가 준비되었는지 확인합니다.
+    /// </summary>
+    /// <param name="textureID">확인할 텍스쳐의 식별자입니다.</param>
+    /// <param name="colorPalette">확인할 팔레트입니다.</param>
+    /// <returns>텍스쳐가 준비되었다면 참입니다.</returns>
+    protected abstract bool IsTexturePrepared(int textureID, Color[] currentPalette);
+    /// <summary>
+    /// 준비된 텍스쳐를 가져옵니다.
+    /// </summary>
+    /// <param name="textureID">가져올 텍스쳐의 식별자입니다.</param>
+    /// <param name="currentPalette">가져올 팔레트입니다.</param>
+    /// <returns>준비된 텍스쳐를 반환합니다.</returns>
+    protected abstract Texture2D GetPreparedTexture(int textureID, Color[] currentPalette);
+    /// <summary>
+    /// 컬러 팔레트를 이용하여 생성된 새 텍스쳐를 집합에 넣습니다.
+    /// </summary>
+    /// <param name="textureID">텍스쳐 식별자입니다.</param>
+    /// <param name="cloneTexture">생성한 텍스쳐입니다.</param>
+    /// <param name="colorPalette">텍스쳐를 생성하기 위해 사용한 팔레트입니다.</param>
+    protected abstract void AddTextureToSet(int textureID, Texture2D cloneTexture, Color[] colorPalette);
+
+    #endregion
+
 
 
 
@@ -2130,15 +2254,15 @@ public abstract class PlayerController : MonoBehaviour
     /// <summary>
     /// 테스트 메서드입니다. 주의: 지우지 마십시오! 하위 형식에서 오버라이딩합니다.
     /// </summary>
-    protected virtual void TESTEST1() { }
+    protected abstract void TESTEST1();
     /// <summary>
     /// 테스트 메서드입니다. 주의: 지우지 마십시오! 하위 형식에서 오버라이딩합니다.
     /// </summary>
-    protected virtual void TESTEST2() { }
+    protected abstract void TESTEST2();
     /// <summary>
     /// 테스트 메서드입니다. 주의: 지우지 마십시오! 하위 형식에서 오버라이딩합니다.
     /// </summary>
-    protected virtual void TESTEST3() { }
+    protected abstract void TESTEST3();
 
     #endregion
 

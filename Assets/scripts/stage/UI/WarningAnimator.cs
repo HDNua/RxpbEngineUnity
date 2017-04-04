@@ -13,18 +13,12 @@ public class WarningAnimator : MonoBehaviour
     /// <summary>
     /// 스테이지 관리자입니다.
     /// </summary>
-    public StageManager1P _stageManager;
-
-
+    public StageManager _stageManager;
+    
     #endregion
 
 
-
-
-
-
-
-
+    
 
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
@@ -33,6 +27,9 @@ public class WarningAnimator : MonoBehaviour
     /// </summary>
     void Start()
     {
+        /*
+         * [v6.2.1] 다음 커밋에서 삭제할 예정입니다.
+         * 
         // 예외 메시지 리스트를 생성합니다.
         List<string> exceptionList = new List<string>();
 
@@ -49,42 +46,10 @@ public class WarningAnimator : MonoBehaviour
             }
             throw new Exception("데이터베이스 필드 정의 부족");
         }
+        */
+
+        _stageManager = StageManager.Instance;
     }
-
-
-    #endregion
-
-
-
-
-
-
-
-
-
-
-    #region 프레임 이펙트 핸들러를 정의합니다.
-    /// <summary>
-    /// 준비 효과음을 재생합니다.
-    /// </summary>
-    void FE_PlayReadyVoice()
-    {
-        _stageManager.AudioSources[0].Play();
-    }
-    /// <summary>
-    /// 플레이어를 소환합니다.
-    /// </summary>
-    void FE_SpawnPlayer()
-    {
-        // HUD를 활성화 합니다.
-        _stageManager.EnableHUD();
-
-
-        // 플레이어 소환을 요청합니다.
-        _stageManager._player.transform.position = _stageManager._PlayerSpawnPosition.position;
-        _stageManager._player.RequestSpawn();
-    }
-
 
     #endregion
 }

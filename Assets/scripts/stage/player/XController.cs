@@ -185,10 +185,6 @@ public class XController : PlayerController
     /// 현재 무기 상태입니다. 0은 기본입니다.
     /// </summary>
     public int _weaponState = 0;
-    /// <summary>
-    /// 현재 색상 팔레트입니다.
-    /// </summary>
-    Color[] _currentPalette;
 
     #endregion
 
@@ -228,6 +224,9 @@ public class XController : PlayerController
     protected override void Awake()
     {
         base.Awake();
+
+        // 
+        _DefaultPalette = XColorPalette.DefaultPalette;
     }
     /// <summary>
     /// MonoBehaviour 개체를 초기화합니다.
@@ -272,7 +271,7 @@ public class XController : PlayerController
                 DashAfterImageTime = 0;
 
                 // 
-                UpdateEffectColor(dashAfterImage, XColorPalette.XDefaultPalette, XColorPalette.XDashEffectColorPalette);
+                UpdateEffectColor(dashAfterImage, XColorPalette.DefaultPalette, XColorPalette.DashEffectColorPalette);
             }
         }
         
@@ -972,7 +971,7 @@ public class XController : PlayerController
                 {
                     Color[] palette = (_chargeTime < CHARGE_LEVEL[2]) ?
                         XColorPalette.XCharge1Palette : XColorPalette.XCharge2Palette;
-                    _currentPalette = palette;
+                    _CurrentPalette = palette;
                 }
                 else
                 {
@@ -1487,20 +1486,15 @@ public class XController : PlayerController
         }
 
         _weaponState = weaponIndex;
-        _currentPalette = targetPalette;
+        _CurrentPalette = targetPalette;
     }
     
     /// <summary>
     /// 엑스의 색상을 업데이트합니다.
     /// </summary>
-    void UpdateColor()
+    protected override void UpdateColor()
     {
-        // 웨폰을 장착한 상태라면
-        if (_currentPalette != null)
-        {
-            // 바디 색상을 맞춥니다.
-            UpdateBodyColor(_currentPalette);
-        }
+        base.UpdateColor();
 
         // 플레이어가 차지 중이라면 색을 업데이트합니다.
         if (_chargeTime > CHARGE_LEVEL[0])
@@ -1520,105 +1514,6 @@ public class XController : PlayerController
         {
 
         }
-    }
-    
-    /// <summary>
-    /// 엑스의 색상을 주어진 팔레트로 업데이트합니다.
-    /// </summary>
-    /// <param name="_currentPalette">현재 팔레트입니다.</param>
-    void UpdateBodyColor(Color[] currentPalette)
-    {
-        Sprite sprite = _Renderer.sprite;
-        Texture2D texture = sprite.texture;
-        Texture2D cloneTexture = null;
-        int textureID = sprite.GetInstanceID();
-
-        if (currentPalette == null)
-        {
-            cloneTexture = texture;
-        }
-        // 현재 팔레트에 대한 텍스쳐 ID가 준비되어있다면
-        else if (IsTexturePrepared(textureID, currentPalette))
-        {
-            cloneTexture = texture;
-            if (currentPalette == XColorPalette.InvenciblePalette)
-            {
-                cloneTexture = _hit_textures[textureID];
-            }
-            else if (currentPalette == XColorPalette.XCharge1Palette) // (CHARGE_LEVEL[0] < _chargeTime && _chargeTime < CHARGE_LEVEL[2])
-            {
-                cloneTexture = _charge1_textures[textureID];
-            }
-            else if (currentPalette == XColorPalette.XCharge2Palette) // (CHARGE_LEVEL[2] < _chargeTime)
-            {
-                cloneTexture = _charge2_textures[textureID];
-            }
-            else if (currentPalette == XColorPalette.XWeapon1Palette) // (_weaponState == 1)
-            {
-                cloneTexture = _weapon1_textures[textureID];
-            }
-            else if (currentPalette == XColorPalette.XWeapon2Palette) // (_weaponState == 2)
-            {
-                cloneTexture = _weapon2_textures[textureID];
-            }
-            else if (currentPalette == XColorPalette.XWeapon3Palette) // (_weaponState == 3)
-            {
-                cloneTexture = _weapon3_textures[textureID];
-            }
-            else if (currentPalette == XColorPalette.XWeapon4Palette) // (_weaponState == 4)
-            {
-                cloneTexture = _weapon4_textures[textureID];
-            }
-            else
-            {
-                throw new Exception("예기치 못한 오류");
-            }
-        }
-        else
-        {
-            Color[] colors = texture.GetPixels();
-            Color[] pixels = new Color[colors.Length];
-            Color[] DefaultPalette = XColorPalette.XDefaultPalette;
-
-            // 모든 픽셀을 돌면서 색상을 업데이트합니다.
-            for (int pixelIndex = 0, pixelCount = colors.Length; pixelIndex < pixelCount; ++pixelIndex)
-            {
-                Color color = colors[pixelIndex];
-                if (color.a == 1)
-                {
-                    for (int targetIndex = 0, targetPixelCount = DefaultPalette.Length; targetIndex < targetPixelCount; ++targetIndex)
-                    {
-                        Color colorDst = DefaultPalette[targetIndex];
-                        if (Mathf.Approximately(color.r, colorDst.r) &&
-                            Mathf.Approximately(color.g, colorDst.g) &&
-                            Mathf.Approximately(color.b, colorDst.b) &&
-                            Mathf.Approximately(color.a, colorDst.a))
-                        {
-                            pixels[pixelIndex] = currentPalette[targetIndex];
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    pixels[pixelIndex] = color;
-                }
-            }
-
-            // 텍스쳐를 복제하고 새 픽셀 팔레트로 덮어씌웁니다.
-            cloneTexture = new Texture2D(texture.width, texture.height);
-            cloneTexture.filterMode = FilterMode.Point;
-            cloneTexture.SetPixels(pixels);
-            cloneTexture.Apply();
-
-            // 
-            AddTextureToSet(textureID, cloneTexture, currentPalette);
-        }
-
-        // 새 텍스쳐를 렌더러에 반영합니다.
-        MaterialPropertyBlock block = new MaterialPropertyBlock();
-        block.SetTexture("_MainTex", cloneTexture);
-        _Renderer.SetPropertyBlock(block);
     }
     /// <summary>
     /// 차지 효과 개체의 색상표를 업데이트합니다.
@@ -1642,7 +1537,7 @@ public class XController : PlayerController
     /// </summary>
     void ResetBodyColor()
     {
-        _currentPalette = GetPalette(_weaponState);
+        _CurrentPalette = GetPalette(_weaponState);
     }
 
     /// <summary>
@@ -1662,7 +1557,7 @@ public class XController : PlayerController
     /// <param name="textureID">확인할 텍스쳐의 식별자입니다.</param>
     /// <param name="colorPalette">확인할 팔레트입니다.</param>
     /// <returns>텍스쳐가 준비되었다면 참입니다.</returns>
-    private bool IsTexturePrepared(int textureID, Color[] colorPalette)
+    protected override bool IsTexturePrepared(int textureID, Color[] colorPalette)
     {
         if (colorPalette == XColorPalette.InvenciblePalette)
         {
@@ -1697,12 +1592,56 @@ public class XController : PlayerController
         return false;
     }
     /// <summary>
+    /// 준비된 텍스쳐를 가져옵니다.
+    /// </summary>
+    /// <param name="textureID">가져올 텍스쳐의 식별자입니다.</param>
+    /// <param name="currentPalette">가져올 팔레트입니다.</param>
+    /// <returns>준비된 텍스쳐를 반환합니다.</returns>
+    protected override Texture2D GetPreparedTexture(int textureID, Color[] currentPalette)
+    {
+        Texture2D cloneTexture = null;
+        if (currentPalette == XColorPalette.InvenciblePalette)
+        {
+            cloneTexture = _hit_textures[textureID];
+        }
+        else if (currentPalette == XColorPalette.XCharge1Palette) // (CHARGE_LEVEL[0] < _chargeTime && _chargeTime < CHARGE_LEVEL[2])
+        {
+            cloneTexture = _charge1_textures[textureID];
+        }
+        else if (currentPalette == XColorPalette.XCharge2Palette) // (CHARGE_LEVEL[2] < _chargeTime)
+        {
+            cloneTexture = _charge2_textures[textureID];
+        }
+        else if (currentPalette == XColorPalette.XWeapon1Palette) // (_weaponState == 1)
+        {
+            cloneTexture = _weapon1_textures[textureID];
+        }
+        else if (currentPalette == XColorPalette.XWeapon2Palette) // (_weaponState == 2)
+        {
+            cloneTexture = _weapon2_textures[textureID];
+        }
+        else if (currentPalette == XColorPalette.XWeapon3Palette) // (_weaponState == 3)
+        {
+            cloneTexture = _weapon3_textures[textureID];
+        }
+        else if (currentPalette == XColorPalette.XWeapon4Palette) // (_weaponState == 4)
+        {
+            cloneTexture = _weapon4_textures[textureID];
+        }
+        else
+        {
+            throw new Exception("예기치 못한 오류");
+        }
+
+        return cloneTexture;
+    }
+    /// <summary>
     /// 컬러 팔레트를 이용하여 생성된 새 텍스쳐를 집합에 넣습니다.
     /// </summary>
     /// <param name="textureID">텍스쳐 식별자입니다.</param>
     /// <param name="cloneTexture">생성한 텍스쳐입니다.</param>
     /// <param name="colorPalette">텍스쳐를 생성하기 위해 사용한 팔레트입니다.</param>
-    private void AddTextureToSet(int textureID, Texture2D cloneTexture, Color[] colorPalette)
+    protected override void AddTextureToSet(int textureID, Texture2D cloneTexture, Color[] colorPalette)
     {
         if (colorPalette == XColorPalette.InvenciblePalette)
         {
@@ -1738,6 +1677,28 @@ public class XController : PlayerController
         }
     }
     
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override void TESTEST1()
+    {
+        _CurrentPalette = XColorPalette.InvenciblePalette;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override void TESTEST2()
+    {
+        ResetBodyColor();
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override void TESTEST3()
+    {
+        ResetBodyColor();
+    }
+
     #endregion
 
 
@@ -1816,31 +1777,6 @@ public class XController : PlayerController
             Console.WriteLine(clipInfo.clip.length);
         }
     }
-
-
-    /// <summary>
-    /// 
-    /// </summary>
-    protected override void TESTEST1()
-    {
-        _currentPalette = XColorPalette.InvenciblePalette;
-        // UpdateBodyColor();
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    protected override void TESTEST2()
-    {
-        ResetBodyColor();
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    protected override void TESTEST3()
-    {
-        ResetBodyColor();
-    }
-
 
     #endregion
 }
