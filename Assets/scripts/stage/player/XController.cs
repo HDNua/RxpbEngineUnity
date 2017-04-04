@@ -86,8 +86,7 @@ public class XController : PlayerController
     /// 대쉬 부스트 효과를 보관합니다.
     /// </summary>
     GameObject _dashBoostEffect = null;
-
-
+    
     /// <summary>
     /// 차지 효과 1를 보관합니다.
     /// </summary>
@@ -96,8 +95,7 @@ public class XController : PlayerController
     /// 차지 효과 2를 보관합니다.
     /// </summary>
     GameObject _chargeEffect2 = null;
-
-
+    
     #endregion
 
     

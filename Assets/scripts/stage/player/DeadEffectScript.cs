@@ -27,6 +27,9 @@ public class DeadEffectScript : MonoBehaviour
 
 
     #region Unity에서 사용할 공용 필드를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
     public GameObject[] particles;
 
 
@@ -54,11 +57,11 @@ public class DeadEffectScript : MonoBehaviour
 
     #region MonoBehaviour 기본 메서드를 재정의합니다.
     /// <summary>
-    /// 
+    /// MonoBehaviour 개체를 최초로 초기화합니다.
     /// </summary>
     void Awake()
     {
-        /// _stageManager = GetComponentInParent<StageManager1P>();
+
     }
     /// <summary>
     /// MonoBehaviour 개체를 초기화합니다.
@@ -191,24 +194,6 @@ public class DeadEffectScript : MonoBehaviour
     /// </summary>
     public void RequestRun(PlayerController player)
     {
-        /* 
-         * [v6.0.3] 다음 커밋에서 삭제할 예정입니다.
-        if (player == stageManager.PlayerX)
-        {
-            _p1 = particles[0];
-            _p2 = particles[1];
-        }
-        else if (player == stageManager.PlayerZ)
-        {
-            _p1 = particles[2];
-            _p2 = particles[3];
-        }
-        else
-        {
-            throw new Exception();
-        }
-        */
-
         transform.position = player.transform.position;
         Run(player);
     }
@@ -220,11 +205,6 @@ public class DeadEffectScript : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("[v6.0.3] 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 
-    /// </summary>
-    StageManager1P _stageManager;
 
 
     #endregion

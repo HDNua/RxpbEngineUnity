@@ -29,18 +29,6 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
 
     #endregion
 
-
-
-
-
-    #region Unity 개체에 대한 참조를 보관합니다.
-    /// <summary>
-    /// 스테이지 관리자입니다.
-    /// </summary>
-    StageManager _stageManager;
-
-    #endregion
-
     
 
 
@@ -52,9 +40,6 @@ public class EnemyTrapBlastScript : EnemyScript, IShootableEnemy
     protected override void Start()
     {
         base.Start();
-
-        // 필드를 초기화합니다.
-        _stageManager = StageManager.Instance;
 
         // 컬러 팔레트를 설정합니다.
         DefaultPalette = EnemyColorPalette.TrapBlastPalette;

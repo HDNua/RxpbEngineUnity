@@ -70,6 +70,15 @@ public class ZController : PlayerController
         set { _Animator.SetBool("AttackRequested", _attackRequested = value); }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    float AttackCount
+    {
+        get { return _Animator.GetFloat("AttackCount"); }
+        set { _Animator.SetFloat("AttackCount", value); }
+    }
+
     #endregion
 
 
@@ -138,7 +147,7 @@ public class ZController : PlayerController
         {
             if (JumpBlocked)
             {
-                // p_rint("TEST");
+                
             }
             else if (Sliding)
             {
@@ -391,6 +400,26 @@ public class ZController : PlayerController
 
             }
         }
+        // 앉은 상태라면
+        else if (Crouching)
+        {
+            if (IsDownKeyPressed() == false)
+            {
+                StopCrouching();
+            }
+            else if (IsLeftKeyPressed() && FacingRight)
+            {
+                Flip();
+            }
+            else if (IsRightKeyPressed() && FacingRight == false)
+            {
+                Flip();
+            }
+            else
+            {
+                StopMoving();
+            }
+        }
         // 움직임이 막힌 상태라면
         else if (MoveBlocked)
         {
@@ -404,7 +433,16 @@ public class ZController : PlayerController
         // 그 외의 경우
         else
         {
-            if (IsLeftKeyPressed())
+            if (IsDownKeyPressed() && Landed)
+            {
+                Crouch();
+                /// StopMoving();
+            }
+            else if (MoveRequested)
+            {
+
+            }
+            else if(IsLeftKeyPressed())
             {
                 if (FacingRight == false && Pushing)
                 {
@@ -439,6 +477,10 @@ public class ZController : PlayerController
                 StopMoving();
             }
         }
+
+
+        // 
+
     }
     /// <summary>
     /// 모든 Update 함수가 호출된 후 마지막으로 호출됩니다.
@@ -475,7 +517,6 @@ public class ZController : PlayerController
             yield return new WaitForSeconds(0.1f);
         }
 
-
         // DashRun
         if (DashJumping == false)
         {
@@ -491,7 +532,6 @@ public class ZController : PlayerController
 
             yield return new WaitForSeconds(0.3f);
         }
-
 
         // DashEnd (사용자 입력 중지가 아닌 기본 대쉬 중지 행동입니다.)
         if (DashJumping == false)
@@ -584,6 +624,46 @@ public class ZController : PlayerController
         yield break;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    Coroutine _coroutineAttack = null;
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator CoroutineAttack()
+    {
+        yield return new WaitForSeconds(0.2f);
+        AttackRequested = false;
+        while (IsAnimationPlaying("Attack1"))
+            yield return false;
+        if (AttackRequested == false)
+        {
+            StopAttacking();
+        }
+
+        yield return new WaitForSeconds(0.2f);
+        AttackRequested = false;
+        while (IsAnimationPlaying("Attack2"))
+            yield return false;
+        if (AttackRequested == false)
+        {
+            StopAttacking();
+        }
+
+        yield return new WaitForSeconds(0.2f);
+        AttackRequested = false;
+        while (IsAnimationPlaying("Attack3"))
+            yield return false;
+        if (AttackRequested == false)
+        {
+            StopAttacking();
+        }
+
+        yield break;
+    }
+
     #endregion
 
 
@@ -603,15 +683,21 @@ public class ZController : PlayerController
 
         Attacking = true;
         AttackRequested = true;
+
+        ++AttackCount;
+        _coroutineAttack = StartCoroutine(CoroutineAttack());
     }
     /// <summary>
     /// 플레이어의 공격을 중지합니다.
     /// </summary>
     void StopAttacking()
     {
+        UnblockMoving();
+
         Attacking = false;
         AttackRequested = false;
-        UnblockMoving();
+
+        AttackCount = 0;
     }
     /// <summary>
     /// 플레이어의 공격 요청을 막습니다.
@@ -636,6 +722,7 @@ public class ZController : PlayerController
         AttackRequested = true;
         BlockAirDashing();
     }
+
     #endregion
 
 
@@ -864,7 +951,10 @@ public class ZController : PlayerController
     #endregion
 
 
+    AudioSource VoiceBigDamaged { get { return Voices[6]; } }
+    AudioSource VoiceDamaged { get { return Voices[5]; } }
 
+    AudioSource SoundHit { get { return SoundEffects[8]; } }
 
 
     #region PlayerController 상태 메서드를 재정의 합니다.
@@ -886,13 +976,53 @@ public class ZController : PlayerController
     /// <param name="damage">플레이어가 입을 대미지입니다.</param>
     public override void Hurt(int damage)
     {
-        base.Hurt(damage);
+        /**
+         * 
         if (IsAlive())
         {
             Voices[5].Play();
             SoundEffects[8].Play();
         }
         Invoke("EndHurt", GetCurrentAnimationLength());
+
+        */
+
+        base.Hurt(damage);
+
+        // 플레이어가 생존해있다면
+        if (IsAlive())
+        {
+            // 대미지 음성 및 효과음을 재생합니다.
+            if (BigDamaged)
+            {
+                /// [v6.1.1] 다음 커밋에서 삭제할 예정입니다.
+                /// Voices[6].Play();
+                /// SoundEffects[11].Play();
+                VoiceBigDamaged.Play();
+                SoundHit.Play();
+            }
+            else
+            {
+                /// [v6.1.1] 다음 커밋에서 삭제할 예정입니다.
+                /// Voices[5].Play();
+                /// SoundEffects[11].Play();
+                VoiceDamaged.Play();
+                SoundHit.Play();
+            }
+
+            // 발생한 효과를 제거합니다.
+            if (_slideFogEffect != null)
+            {
+                _slideFogEffect.GetComponent<EffectScript>().RequestDestroy();
+            }
+            if (_dashBoostEffect != null)
+            {
+                _dashBoostEffect.GetComponent<EffectScript>().RequestDestroy();
+            }
+        }
+
+        // END_HURT_TIME 시간 후에 대미지를 입은 상태를 종료합니다.
+        Invoke("EndHurt", END_HURT_TIME);
     }
     /// <summary>
     /// 다친 상태를 끝냅니다.
@@ -909,323 +1039,6 @@ public class ZController : PlayerController
         {
             dangerVoicePlayed = false;
         }
-    }
-
-    #endregion
-
-    
-
-
-
-    #region 프레임 이벤트 핸들러를 정의합니다.
-    ///////////////////////////////////////////////////////////////////
-    // 지상 공격
-    /// <summary>
-    /// 첫 번째 일반 지상 공격 시에 발생합니다.
-    /// </summary>
-    public void FE_Attack1()
-        {
-            // 받은 요청은 삭제합니다.
-            AttackRequested = false;
-
-            // 공격 시 불가능한 행동을 막습니다.
-            BlockAttacking();
-            BlockJumping();
-            BlockDashing();
-
-            // 효과음을 재생합니다.
-            Voices[1].Play();
-            SoundEffects[7].Play();
-        }
-    /// <summary>
-    /// 첫 번째 일반 지상 공격이 공격으로 인정되는 때에 발생합니다.
-    /// </summary>
-    public void FE_Attack1_1()
-    {
-        // 공격 범위를 활성화합니다.
-        /// enabled = true;
-        ActivateAttackRange(0);
-    }
-    /// <summary>
-    /// 첫 번째 일반 지상 공격이 종료할 때 발생합니다.
-    /// </summary>
-    public void FE_Attack1_end()
-    {
-        // 막은 행동을 가능하게 합니다.
-        UnblockAttacking();
-        UnblockJumping();
-        UnblockDashing();
-    }
-    /// <summary>
-    /// 두 번째 일반 지상 공격 시에 발생합니다.
-    /// </summary>
-    public void Attack_saber2()
-    {
-        // 공격 범위를 비활성화합니다.
-        /// _attackRange[0].enabled = false;
-        DeactivateAttackRange(0);
-
-        // 받은 요청은 삭제합니다.
-        AttackRequested = false;
-
-        // 공격 시 불가능한 행동을 막습니다.
-        BlockAttacking(); // 공격
-        BlockJumping(); // 점프
-        BlockDashing(); // 대쉬
-
-        // 효과음을 재생합니다.
-        Voices[2].Play();
-        SoundEffects[7].Play();
-    }
-    /// <summary>
-    /// 두 번째 일반 지상 공격이 공격으로 인정되는 때에 발생합니다.
-    /// </summary>
-    public void Attack_saber2_run()
-    {
-        // 공격 범위를 활성화합니다.
-        /// _attackRange[1].enabled = true;
-        ActivateAttackRange(1);
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    public void Attack_saber2_run2()
-    {
-        // 이전 공격 범위를 비활성화합니다.
-        /// _attackRange[1].enabled = false;
-        DeactivateAttackRange(1);
-
-        // 공격 범위를 활성화합니다.
-        /// _attackRange[2].enabled = true;
-        ActivateAttackRange(2);
-    }
-    /// <summary>
-    /// 두 번째 일반 지상 공격이 종료할 때 발생합니다.
-    /// </summary>
-    public void Attack_saber2_end()
-    {
-        // 막은 행동을 가능하게 합니다.
-        UnblockAttacking();
-        UnblockJumping();
-        UnblockDashing();
-    }
-    /// <summary>
-    /// 세 번째 일반 지상 공격 시에 발생합니다.
-    /// </summary>
-    public void Attack_saber3()
-    {
-        // 공격 범위를 비활성화합니다.
-        /// _attackRange[1].enabled = false;
-        /// _attackRange[2].enabled = false;
-        DeactivateAttackRange(1);
-        DeactivateAttackRange(1);
-
-        // 받은 요청은 삭제합니다.
-        _Animator.SetBool("AttackRequested", _attackRequested = false);
-
-        // 공격 시 불가능한 행동을 막습니다.
-        BlockAttacking(); // 공격
-        BlockJumping(); // 점프
-        BlockDashing(); // 대쉬
-
-        // 효과음을 재생합니다.
-        Voices[3].Play();
-        SoundEffects[7].Play();
-    }
-    /// <summary>
-    /// 세 번째 일반 지상 공격이 공격으로 인정되는 때에 발생합니다.
-    /// </summary>
-    public void Attack_saber3_run()
-    {
-        // 공격 범위를 활성화합니다.
-        /// _attackRange[3].enabled = true;
-        ActivateAttackRange(3);
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    public void Attack_saber3_run2()
-    {
-        // 이전 공격 범위를 비활성화합니다.
-        /// attackRange[3].enabled = false;
-        DeactivateAttackRange(3);
-
-        // 공격 범위를 활성화합니다.
-        /// _attackRange[4].enabled = true;
-        ActivateAttackRange(4);
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    public void Attack_saber3_run3()
-    {
-        // 이전 공격 범위를 비활성화합니다.
-        /// attackRange[4].enabled = false;
-        DeactivateAttackRange(4);
-
-        // 공격 범위를 활성화합니다.
-        /// _attackRange[5].enabled = true;
-        ActivateAttackRange(5);
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    public void Attack_saber3_run4()
-    {
-        // 이전 공격 범위를 비활성화합니다.
-        /// attackRange[5].enabled = false;
-        DeactivateAttackRange(5);
-
-        // 공격 범위를 활성화합니다.
-        /// _attackRange[6].enabled = true;
-        ActivateAttackRange(6);
-    }
-    /// <summary>
-    /// 
-    /// </summary>
-    public void Attack_saber3_run5()
-    {
-        // 이전 공격 범위를 비활성화합니다.
-        /// attackRange[6].enabled = false;
-        DeactivateAttackRange(6);
-
-        // 공격 범위를 활성화합니다.
-        /// _attackRange[7].enabled = true;
-        ActivateAttackRange(7);
-    }
-    /// <summary>
-    /// 지상 공격이 종료할 때 발생합니다.
-    /// </summary>
-    public void AttackEndFromRun_beg()
-    {
-        // 막은 행동을 가능하게 합니다.
-        UnblockAttacking();
-        UnblockJumping();
-        UnblockDashing();
-
-        // 공격 범위를 비활성화합니다.
-        /// _attackRange[2].enabled = false;
-        DeactivateAttackRange(2);
-    }
-    /// <summary>
-    /// 지상 공격 모션이 완전히 종료되어 대기 상태로 바뀔 때 발생합니다.
-    /// </summary>
-    public void AttackEndFromRun_end()
-    {
-        StopAttacking();
-
-        // 공격 범위를 모두 비활성화합니다.
-        /// _attackRange[0].enabled = false;
-        /// _attackRange[1].enabled = false;
-        /// _attackRange[2].enabled = false;
-        /// _attackRange[3].enabled = false;
-        /// _attackRange[4].enabled = false;
-        /// _attackRange[5].enabled = false;
-        /// _attackRange[6].enabled = false;
-        /// _attackRange[7].enabled = false;
-        DeactivateAttackRange(0);
-        DeactivateAttackRange(1);
-        DeactivateAttackRange(2);
-        DeactivateAttackRange(3);
-        DeactivateAttackRange(4);
-        DeactivateAttackRange(5);
-        DeactivateAttackRange(6);
-        DeactivateAttackRange(7);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    // 대쉬
-    /// <summary>
-    /// 대쉬 준비 애니메이션이 시작할 때 발생합니다.
-    /// </summary>
-    void FE_DashBegBeg()
-    {
-
-    }
-    /// <summary>
-    /// 대쉬 부스트 애니메이션이 시작할 때 발생합니다.
-    /// </summary>
-    void FE_DashRunBeg()
-    {
-        // GameObject dashBoost = I_nstantiate(effects[1], dashBoostPosition.position, dashBoostPosition.rotation) as GameObject;
-        GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
-        dashBoost.transform.SetParent(groundCheck.transform);
-        if (FacingRight == false)
-        {
-            var newScale = dashBoost.transform.localScale;
-            newScale.x = FacingRight ? newScale.x : -newScale.x;
-            dashBoost.transform.localScale = newScale;
-        }
-        _dashBoostEffect = dashBoost;
-    }
-    /// <summary>
-    /// 플레이어의 대쉬 상태를 종료하도록 요청합니다.
-    /// </summary>
-    void FE_DashRunEnd()
-    {
-        StopDashing();
-        StopAirDashing();
-    }
-    /// <summary>
-    /// 대쉬가 사용자에 의해 중지될 때 발생합니다.
-    /// </summary>
-    void FE_DashEndBeg()
-    {
-        StopMoving();
-        SoundEffects[3].Stop();
-        SoundEffects[4].Play();
-    }
-    /// <summary>
-    /// 대쉬 점프 모션이 사용자에 의해 완전히 중지되어 대기 상태로 바뀔 때 발생합니다.
-    /// </summary>
-    void FE_DashEndEnd()
-    {
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    // 벽 타기
-    /// <summary>
-    /// 벽 타기 시에 발생합니다.
-    /// </summary>
-    void FE_SlideBeg()
-    {
-        SoundEffects[6].Play();
-    }
-    /// <summary>
-    /// 벽 점프 시에 발생합니다.
-    /// </summary>
-    void FE_WallJumpBeg()
-    {
-        SoundEffects[5].Play();
-    }
-    /// <summary>
-    /// 벽 점프가 종료할 때 발생합니다.
-    /// </summary>
-    void FE_WallJumpEnd()
-    {
-        UnblockSliding();
-        _Rigidbody.velocity = new Vector2(0, _Rigidbody.velocity.y);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    // 점프 공격
-    /// <summary>
-    /// 점프 공격 시에 발생합니다.
-    /// </summary>
-    void FE_JumpShotBeg()
-    {
-        _Animator.SetBool("AttackRequested", _attackRequested = false);
-        BlockAttacking();
-        SoundEffects[7].Play();
-    }
-    /// <summary>
-    /// 점프 공격이 종료할 때 발생합니다.
-    /// </summary>
-    void FE_JumpShotEnd()
-    {
-        UnblockAirDashing();
-        UnblockAttacking();
-        StopAttacking();
     }
 
     #endregion
@@ -1250,6 +1063,340 @@ public class ZController : PlayerController
     void DeactivateAttackRange(int index)
     {
         _attackRange[index].SetActive(false);
+    }
+
+    #endregion
+
+
+
+
+
+    #region 구형 정의를 보관합니다.
+    ///////////////////////////////////////////////////////////////////
+    // 지상 공격
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 첫 번째 일반 지상 공격 시에 발생합니다.
+    /// </summary>
+    public void FE_Attack1()
+    {
+        // 받은 요청은 삭제합니다.
+        AttackRequested = false;
+
+        // 공격 시 불가능한 행동을 막습니다.
+        BlockAttacking();
+        BlockJumping();
+        BlockDashing();
+
+        // 효과음을 재생합니다.
+        Voices[1].Play();
+        SoundEffects[7].Play();
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 첫 번째 일반 지상 공격이 공격으로 인정되는 때에 발생합니다.
+    /// </summary>
+    public void FE_Attack1_1()
+    {
+        // 공격 범위를 활성화합니다.
+        /// enabled = true;
+        ActivateAttackRange(0);
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 첫 번째 일반 지상 공격이 종료할 때 발생합니다.
+    /// </summary>
+    public void FE_Attack1_end()
+    {
+        // 막은 행동을 가능하게 합니다.
+        UnblockAttacking();
+        UnblockJumping();
+        UnblockDashing();
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 두 번째 일반 지상 공격 시에 발생합니다.
+    /// </summary>
+    public void Attack_saber2()
+    {
+        // 공격 범위를 비활성화합니다.
+        /// _attackRange[0].enabled = false;
+        DeactivateAttackRange(0);
+
+        // 받은 요청은 삭제합니다.
+        AttackRequested = false;
+
+        // 공격 시 불가능한 행동을 막습니다.
+        BlockAttacking(); // 공격
+        BlockJumping(); // 점프
+        BlockDashing(); // 대쉬
+
+        // 효과음을 재생합니다.
+        Voices[2].Play();
+        SoundEffects[7].Play();
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 두 번째 일반 지상 공격이 공격으로 인정되는 때에 발생합니다.
+    /// </summary>
+    public void Attack_saber2_run()
+    {
+        // 공격 범위를 활성화합니다.
+        /// _attackRange[1].enabled = true;
+        ActivateAttackRange(1);
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 
+    /// </summary>
+    public void Attack_saber2_run2()
+    {
+        // 이전 공격 범위를 비활성화합니다.
+        /// _attackRange[1].enabled = false;
+        DeactivateAttackRange(1);
+
+        // 공격 범위를 활성화합니다.
+        /// _attackRange[2].enabled = true;
+        ActivateAttackRange(2);
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 두 번째 일반 지상 공격이 종료할 때 발생합니다.
+    /// </summary>
+    public void Attack_saber2_end()
+    {
+        // 막은 행동을 가능하게 합니다.
+        UnblockAttacking();
+        UnblockJumping();
+        UnblockDashing();
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 세 번째 일반 지상 공격 시에 발생합니다.
+    /// </summary>
+    public void Attack_saber3()
+    {
+        // 공격 범위를 비활성화합니다.
+        /// _attackRange[1].enabled = false;
+        /// _attackRange[2].enabled = false;
+        DeactivateAttackRange(1);
+        DeactivateAttackRange(1);
+
+        // 받은 요청은 삭제합니다.
+        _Animator.SetBool("AttackRequested", _attackRequested = false);
+
+        // 공격 시 불가능한 행동을 막습니다.
+        BlockAttacking(); // 공격
+        BlockJumping(); // 점프
+        BlockDashing(); // 대쉬
+
+        // 효과음을 재생합니다.
+        Voices[3].Play();
+        SoundEffects[7].Play();
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 세 번째 일반 지상 공격이 공격으로 인정되는 때에 발생합니다.
+    /// </summary>
+    public void Attack_saber3_run()
+    {
+        // 공격 범위를 활성화합니다.
+        /// _attackRange[3].enabled = true;
+        ActivateAttackRange(3);
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 
+    /// </summary>
+    public void Attack_saber3_run2()
+    {
+        // 이전 공격 범위를 비활성화합니다.
+        /// attackRange[3].enabled = false;
+        DeactivateAttackRange(3);
+
+        // 공격 범위를 활성화합니다.
+        /// _attackRange[4].enabled = true;
+        ActivateAttackRange(4);
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 
+    /// </summary>
+    public void Attack_saber3_run3()
+    {
+        // 이전 공격 범위를 비활성화합니다.
+        /// attackRange[4].enabled = false;
+        DeactivateAttackRange(4);
+
+        // 공격 범위를 활성화합니다.
+        /// _attackRange[5].enabled = true;
+        ActivateAttackRange(5);
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 
+    /// </summary>
+    public void Attack_saber3_run4()
+    {
+        // 이전 공격 범위를 비활성화합니다.
+        /// attackRange[5].enabled = false;
+        DeactivateAttackRange(5);
+
+        // 공격 범위를 활성화합니다.
+        /// _attackRange[6].enabled = true;
+        ActivateAttackRange(6);
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 
+    /// </summary>
+    public void Attack_saber3_run5()
+    {
+        // 이전 공격 범위를 비활성화합니다.
+        /// attackRange[6].enabled = false;
+        DeactivateAttackRange(6);
+
+        // 공격 범위를 활성화합니다.
+        /// _attackRange[7].enabled = true;
+        ActivateAttackRange(7);
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 지상 공격이 종료할 때 발생합니다.
+    /// </summary>
+    public void AttackEndFromRun_beg()
+    {
+        // 막은 행동을 가능하게 합니다.
+        UnblockAttacking();
+        UnblockJumping();
+        UnblockDashing();
+
+        // 공격 범위를 비활성화합니다.
+        /// _attackRange[2].enabled = false;
+        DeactivateAttackRange(2);
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 지상 공격 모션이 완전히 종료되어 대기 상태로 바뀔 때 발생합니다.
+    /// </summary>
+    public void AttackEndFromRun_end()
+    {
+        StopAttacking();
+
+        // 공격 범위를 모두 비활성화합니다.
+        DeactivateAttackRange(0);
+        DeactivateAttackRange(1);
+        DeactivateAttackRange(2);
+        DeactivateAttackRange(3);
+        DeactivateAttackRange(4);
+        DeactivateAttackRange(5);
+        DeactivateAttackRange(6);
+        DeactivateAttackRange(7);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    // 대쉬
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 대쉬 준비 애니메이션이 시작할 때 발생합니다.
+    /// </summary>
+    void FE_DashBegBeg()
+    {
+
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 대쉬 부스트 애니메이션이 시작할 때 발생합니다.
+    /// </summary>
+    void FE_DashRunBeg()
+    {
+        // GameObject dashBoost = I_nstantiate(effects[1], dashBoostPosition.position, dashBoostPosition.rotation) as GameObject;
+        GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
+        dashBoost.transform.SetParent(groundCheck.transform);
+        if (FacingRight == false)
+        {
+            var newScale = dashBoost.transform.localScale;
+            newScale.x = FacingRight ? newScale.x : -newScale.x;
+            dashBoost.transform.localScale = newScale;
+        }
+        _dashBoostEffect = dashBoost;
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 플레이어의 대쉬 상태를 종료하도록 요청합니다.
+    /// </summary>
+    void FE_DashRunEnd()
+    {
+        StopDashing();
+        StopAirDashing();
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 대쉬가 사용자에 의해 중지될 때 발생합니다.
+    /// </summary>
+    void FE_DashEndBeg()
+    {
+        StopMoving();
+        SoundEffects[3].Stop();
+        SoundEffects[4].Play();
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 대쉬 점프 모션이 사용자에 의해 완전히 중지되어 대기 상태로 바뀔 때 발생합니다.
+    /// </summary>
+    void FE_DashEndEnd()
+    {
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    // 벽 타기
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 벽 타기 시에 발생합니다.
+    /// </summary>
+    void FE_SlideBeg()
+    {
+        SoundEffects[6].Play();
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 벽 점프 시에 발생합니다.
+    /// </summary>
+    void FE_WallJumpBeg()
+    {
+        SoundEffects[5].Play();
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 벽 점프가 종료할 때 발생합니다.
+    /// </summary>
+    void FE_WallJumpEnd()
+    {
+        UnblockSliding();
+        _Rigidbody.velocity = new Vector2(0, _Rigidbody.velocity.y);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    // 점프 공격
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 점프 공격 시에 발생합니다.
+    /// </summary>
+    void FE_JumpShotBeg()
+    {
+        _Animator.SetBool("AttackRequested", _attackRequested = false);
+        BlockAttacking();
+        SoundEffects[7].Play();
+    }
+    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
+    /// <summary>
+    /// 점프 공격이 종료할 때 발생합니다.
+    /// </summary>
+    void FE_JumpShotEnd()
+    {
+        UnblockAirDashing();
+        UnblockAttacking();
+        StopAttacking();
     }
 
     #endregion
