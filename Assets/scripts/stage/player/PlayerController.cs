@@ -1881,9 +1881,9 @@ public abstract class PlayerController : MonoBehaviour
     IEnumerator CoroutineKnockback()
     {
         float timer = 0;
-        const float maxTime = 0.361112f;
+        const float MAX_KNOCKBACK_TIME = 0.361112f;
 
-        while (maxTime > timer)
+        while (MAX_KNOCKBACK_TIME > timer)
         {
             timer += Time.deltaTime;
             _Rigidbody.AddForce(Vector2.down * KnockbackJumpDecSize);

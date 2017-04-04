@@ -281,6 +281,14 @@ public class ZController : PlayerController
             {
                 JumpAttack();
             }
+            else if (Crouching)
+            {
+                CrouchAttack();
+            }
+            else if (Sliding)
+            {
+                SlideAttack();
+            }
             else
             {
                 Attack();
@@ -698,11 +706,94 @@ public class ZController : PlayerController
     */
 
     /// <summary>
-    /// 
+    /// 공격 코루틴에 대한 포인터입니다.
     /// </summary>
     Coroutine _coroutineAttack = null;
     /// <summary>
     /// 
+    /// </summary>
+    IEnumerator CoroutineSlideAttack()
+    {
+        // 
+        SoundSaber.Play();
+
+        // 
+        yield return new WaitForEndOfFrame();
+        _time = 0;
+        while (IsAnimationPlaying("SlideAttack") == false)
+            yield return false;
+
+        BlockAttacking();
+        AttackRequested = false;
+
+        float length = GetCurrentAnimationLength();
+
+        // 
+        while (_time < length)
+        {
+            // 
+            if (_time > 0.2f)
+            {
+                ActivateAttackRange(12);
+                DeactivateAttackRange(11);
+            }
+            else if (_time > 0.1f)
+            {
+                ActivateAttackRange(11);
+            }
+
+            // 
+            _time += Time.deltaTime;
+            yield return false;
+        }
+
+        // 
+        DeactivateAttackRange(11);
+        DeactivateAttackRange(12);
+        StopAttacking();
+        UnblockAttacking();
+        yield break;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    IEnumerator CoroutineCrouchAttack()
+    {
+        // 
+        SoundSaber.Play();
+
+        // 
+        yield return new WaitForEndOfFrame();
+        _time = 0;
+        while (IsAnimationPlaying("CrouchAttack") == false)
+            yield return false;
+
+        BlockAttacking();
+        AttackRequested = false;
+        float length = GetCurrentAnimationLength();
+
+        // 
+        while (_time < length)
+        {
+            // 
+            if (_time > 0.1f)
+            {
+                ActivateAttackRange(10);
+            }
+
+            // 
+            _time += Time.deltaTime;
+            yield return false;
+        }
+
+        // 
+        DeactivateAttackRange(10);
+        StopAttacking();
+        UnblockAttacking();
+        yield break;
+    }
+    /// <summary>
+    /// 공중 공격 코루틴입니다.
     /// </summary>
     IEnumerator CoroutineJumpAttack()
     {
@@ -714,6 +805,7 @@ public class ZController : PlayerController
         while (IsAnimationPlaying("AirAttack") == false)
             yield return false;
 
+        BlockAttacking();
         AttackRequested = false;
         float length = GetCurrentAnimationLength();
 
@@ -740,10 +832,11 @@ public class ZController : PlayerController
         DeactivateAttackRange(8);
         DeactivateAttackRange(9);
         StopAttacking();
+        UnblockAttacking();
         yield break;
     }
     /// <summary>
-    /// 
+    /// 공격 코루틴입니다.
     /// </summary>
     IEnumerator CoroutineAttack()
     {
@@ -1003,6 +1096,28 @@ public class ZController : PlayerController
         // 
         _coroutineAttack = StartCoroutine(CoroutineJumpAttack());
     }
+    /// <summary>
+    /// 플레이어가 앉은 채로 공격합니다.
+    /// </summary>
+    void CrouchAttack()
+    {
+        Attacking = true;
+        AttackRequested = true;
+
+        // 
+        _coroutineAttack = StartCoroutine(CoroutineCrouchAttack());
+    }
+    /// <summary>
+    /// 플레이어가 벽을 타면서 공격합니다.
+    /// </summary>
+    void SlideAttack()
+    {
+        Attacking = true;
+        AttackRequested = true;
+
+        // 
+        _coroutineAttack = StartCoroutine(CoroutineSlideAttack());
+    }
 
     #endregion
 
@@ -1062,23 +1177,6 @@ public class ZController : PlayerController
     protected override void StopFalling()
     {
         base.StopFalling();
-        
-        /*
-        if (_attacking)
-        {
-            var curState = _Animator.GetCurrentAnimatorStateInfo(0);
-            if (curState.IsName("AirAttack"))
-            {
-                var nTime = curState.normalizedTime;
-                var fTime = nTime - Mathf.Floor(nTime);
-                _Animator.Play("LandAttack", 0, fTime);
-
-                // 
-                StopMoving();
-                BlockMoving();
-            }
-        }
-        */
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1325,17 +1423,17 @@ public class ZController : PlayerController
 
     #region 보조 메서드를 정의합니다.
     /// <summary>
-    /// 
+    /// 공격 범위를 활성화합니다.
     /// </summary>
-    /// <param name="index"></param>
+    /// <param name="index">활성화할 공격 범위의 인덱스입니다.</param>
     void ActivateAttackRange(int index)
     {
         _attackRange[index].SetActive(true);
     }
     /// <summary>
-    /// 
+    /// 공격 범위를 비활성화합니다.
     /// </summary>
-    /// <param name="index"></param>
+    /// <param name="index">비활성화할 공격 범위의 인덱스입니다.</param>
     void DeactivateAttackRange(int index)
     {
         _attackRange[index].SetActive(false);
