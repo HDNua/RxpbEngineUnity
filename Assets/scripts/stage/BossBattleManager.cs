@@ -47,7 +47,7 @@ public class BossBattleManager : MonoBehaviour
     /// <summary>
     /// 스테이지 관리자입니다.
     /// </summary>
-    StageManager1P _stageManager;
+    StageManager _stageManager;
     /// <summary>
     /// 사용자 인터페이스 관리자입니다.
     /// </summary>
@@ -100,7 +100,7 @@ public class BossBattleManager : MonoBehaviour
     /// </summary>
     void Start()
     {
-        _stageManager = StageManager1P.Instance; // _database.StageManager;
+        _stageManager = StageManager.Instance;
         _userInterfaceManager = _database.UIManager;
     }
     /// <summary>
@@ -133,7 +133,6 @@ public class BossBattleManager : MonoBehaviour
 
         }
     }
-
 
     #endregion
 

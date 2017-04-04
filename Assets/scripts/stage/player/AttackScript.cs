@@ -145,10 +145,60 @@ public abstract class AttackScript : MonoBehaviour
     /// 피격 효과 객체를 생성합니다.
     /// </summary>
     /// <returns>피격 효과 객체입니다.</returns>
+    protected virtual GameObject MakeHitParticle(bool right, Vector3 position)
+    {
+        GameObject hitParticle = Instantiate
+            (_HitParticle, position, transform.rotation)
+            as GameObject;
+
+        // 버스터 속도의 반대쪽으로 적절히 x 반전합니다.
+        if (right)
+        {
+            Vector3 newScale = hitParticle.transform.localScale;
+            newScale.x *= -1;
+            hitParticle.transform.localScale = newScale;
+        }
+
+        // 효과음을 재생합니다.
+        EffectScript hitEffect = hitParticle.GetComponent<EffectScript>();
+        hitEffect.PlayEffectSound(SoundEffects[1].clip);
+
+        // 생성한 효과 객체를 반환합니다.
+        return hitParticle;
+    }
+    /// <summary>
+    /// 피격 효과 객체를 생성합니다.
+    /// </summary>
+    /// <returns>피격 효과 객체입니다.</returns>
     protected GameObject MakeReflectedParticle(bool right, Transform transform)
     {
         GameObject particle = Instantiate
             (_ReflectedParticle, transform.position, transform.rotation)
+            as GameObject;
+
+        // 버스터 속도의 반대쪽으로 적절히 x 반전합니다.
+        if (right)
+        {
+            Vector3 newScale = particle.transform.localScale;
+            newScale.x *= -1;
+            particle.transform.localScale = newScale;
+        }
+
+        // 효과음을 재생합니다.
+        EffectScript hitEffect = particle.GetComponent<EffectScript>();
+        hitEffect.PlayEffectSound(SoundEffects[0].clip);
+
+        // 생성한 효과 객체를 반환합니다.
+        return particle;
+    }
+    /// <summary>
+         /// 피격 효과 객체를 생성합니다.
+         /// </summary>
+         /// <returns>피격 효과 객체입니다.</returns>
+    protected GameObject MakeReflectedParticle(bool right, Vector3 position)
+    {
+        GameObject particle = Instantiate
+            (_ReflectedParticle, position, transform.rotation)
             as GameObject;
 
         // 버스터 속도의 반대쪽으로 적절히 x 반전합니다.

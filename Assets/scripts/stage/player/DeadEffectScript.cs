@@ -41,11 +41,11 @@ public class DeadEffectScript : MonoBehaviour
 
     #region 필드를 정의합니다.
     /// <summary>
-    /// 
+    /// 파편 개체 1 타입입니다.
     /// </summary>
     GameObject _p1 { get { return particles[0]; } }
     /// <summary>
-    /// 
+    /// 파편 개체 2 타입입니다.
     /// </summary>
     GameObject _p2 { get { return particles[1]; } }
 

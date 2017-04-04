@@ -73,11 +73,58 @@ public class ZController : PlayerController
     /// <summary>
     /// 
     /// </summary>
-    float AttackCount
+    int AttackCount
     {
-        get { return _Animator.GetFloat("AttackCount"); }
-        set { _Animator.SetFloat("AttackCount", value); }
+        get { return _attackCount; }
+        set { _Animator.SetInteger("AttackCount", _attackCount = value); }
     }
+
+    public int _attackCount = 0;
+
+    #endregion
+
+
+
+
+
+    #region 추상 프로퍼티를 구현합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override AudioSource VoiceDamaged { get { return Voices[5]; } }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override AudioSource VoiceBigDamaged { get { return Voices[6]; } }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override AudioSource VoiceDanger { get { return Voices[7]; } }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override AudioSource SoundHit { get { return SoundEffects[8]; } }
+
+
+
+    /// <summary>
+    /// 
+    /// </summary>
+    protected AudioSource VoiceAttack1 { get { return Voices[1]; } }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected AudioSource VoiceAttack2 { get { return Voices[2]; } }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected AudioSource VoiceAttack3 { get { return Voices[3]; } }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    protected AudioSource SoundSaber { get { return SoundEffects[7]; } }
 
     #endregion
 
@@ -442,7 +489,7 @@ public class ZController : PlayerController
             {
 
             }
-            else if(IsLeftKeyPressed())
+            else if (IsLeftKeyPressed())
             {
                 if (FacingRight == false && Pushing)
                 {
@@ -624,6 +671,25 @@ public class ZController : PlayerController
         yield break;
     }
 
+    public float _time = 0f;
+    public const float FRAME_INTERVAL_36 = 0.027777f;
+    
+    /*
+    public float _ATTACK1_RUN_INDEX = 1 * FRAME_INTERVAL_36; // 0.03
+    public float _ATTACK1_END_INDEX = 2 * FRAME_INTERVAL_36; // 0.07
+
+    public float _ATTACK2_RUN_INDEX1 = 1 * FRAME_INTERVAL_36; // 0.01
+    public float _ATTACK2_RUN_INDEX2 = 2 * FRAME_INTERVAL_36; // 0.03
+    public float _ATTACK2_END_INDEX = 3 * FRAME_INTERVAL_36; // 0.05
+
+    public float _ATTACK3_RUN_INDEX1 = 1 * FRAME_INTERVAL_36; // 0.03
+    public float _ATTACK3_RUN_INDEX2 = 2 * FRAME_INTERVAL_36; // 0.04
+    public float _ATTACK3_RUN_INDEX3 = 3 * FRAME_INTERVAL_36; // 0.05
+    public float _ATTACK3_RUN_INDEX4 = 4 * FRAME_INTERVAL_36; // 0.06
+    public float _ATTACK3_RUN_INDEX5 = 5 * FRAME_INTERVAL_36; // 0.07
+    public float _ATTACK3_END_INDEX = 6 * FRAME_INTERVAL_36; // 0.08
+    */
+
     /// <summary>
     /// 
     /// </summary>
@@ -631,37 +697,229 @@ public class ZController : PlayerController
     /// <summary>
     /// 
     /// </summary>
-    /// <returns></returns>
+    IEnumerator CoroutineJumpAttack()
+    {
+        SoundSaber.Play();
+
+        // 
+        yield return new WaitForEndOfFrame();
+        _time = 0;
+        while (IsAnimationPlaying("AirAttack") == false)
+            yield return false;
+
+        AttackRequested = false;
+        float length = GetCurrentAnimationLength();
+
+        // 
+        while (_time < length)
+        {
+            // 
+            if (_time > 0.2f)
+            {
+                ActivateAttackRange(9);
+                DeactivateAttackRange(8);
+            }
+            else if (_time > 0.1f)
+            {
+                ActivateAttackRange(8);
+            }
+
+            // 
+            _time += Time.deltaTime;
+            yield return false;
+        }
+
+        // 
+        DeactivateAttackRange(8);
+        DeactivateAttackRange(9);
+        StopAttacking();
+        yield break;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
     IEnumerator CoroutineAttack()
     {
-        yield return new WaitForSeconds(0.2f);
-        AttackRequested = false;
-        while (IsAnimationPlaying("Attack1"))
-            yield return false;
-        if (AttackRequested == false)
-        {
-            StopAttacking();
-        }
+        bool frameEventOccurred;
+        float _ATTACK1_RUN_INDEX = 1 * FRAME_INTERVAL_36; // 0.03
+        float _ATTACK1_END_INDEX = 2 * FRAME_INTERVAL_36; // 0.07
 
-        yield return new WaitForSeconds(0.2f);
-        AttackRequested = false;
-        while (IsAnimationPlaying("Attack2"))
-            yield return false;
-        if (AttackRequested == false)
-        {
-            StopAttacking();
-        }
+        float _ATTACK2_RUN_INDEX1 = 1 * FRAME_INTERVAL_36; // 0.01
+        float _ATTACK2_RUN_INDEX2 = 2 * FRAME_INTERVAL_36; // 0.03
+        float _ATTACK2_END_INDEX = 3 * FRAME_INTERVAL_36; // 0.05
 
-        yield return new WaitForSeconds(0.2f);
-        AttackRequested = false;
-        while (IsAnimationPlaying("Attack3"))
-            yield return false;
-        if (AttackRequested == false)
+        float _ATTACK3_RUN_INDEX1 = 1 * FRAME_INTERVAL_36; // 0.03
+        float _ATTACK3_RUN_INDEX2 = 2 * FRAME_INTERVAL_36; // 0.04
+        float _ATTACK3_RUN_INDEX3 = 3 * FRAME_INTERVAL_36; // 0.05
+        float _ATTACK3_RUN_INDEX4 = 4 * FRAME_INTERVAL_36; // 0.06
+        float _ATTACK3_RUN_INDEX5 = 5 * FRAME_INTERVAL_36; // 0.07
+        float _ATTACK3_END_INDEX = 6 * FRAME_INTERVAL_36; // 0.08
+
+        try
         {
-            StopAttacking();
+            // 
+            yield return new WaitForEndOfFrame();
+            _time = 0;
+            frameEventOccurred = false;
+            while (IsAnimationPlaying("Attack1") == false)
+                yield return false;
+            FE_Attack1_1beg();
+            yield return new WaitForEndOfFrame();
+            while (IsAnimationPlaying("Attack1"))
+            {
+                if (AttackRequested)
+                    break;
+
+                if (frameEventOccurred == false)
+                {
+                    if (_time > _ATTACK1_END_INDEX)
+                    {
+                        FE_Attack1_3end();
+                        frameEventOccurred = true;
+                    }
+                    else if (_time > _ATTACK1_RUN_INDEX)
+                    {
+                        FE_Attack1_2run();
+                    }
+                }
+
+                _time += Time.deltaTime;
+                yield return false;
+            }
+            if (AttackRequested == false)
+            {
+                yield break;
+            }
+
+            // 
+            yield return new WaitForEndOfFrame();
+            _time = 0;
+            frameEventOccurred = false;
+            while (IsAnimationPlaying("Attack2") == false)
+                yield return false;
+            FE_Attack2_1beg();
+            yield return new WaitForEndOfFrame();
+            while (IsAnimationPlaying("Attack2"))
+            {
+                if (AttackRequested)
+                    break;
+
+                if (frameEventOccurred == false)
+                {
+                    if (_time > _ATTACK2_END_INDEX)
+                    {
+                        FE_Attack2_3end();
+                        frameEventOccurred = true;
+                    }
+                    else if (_time > _ATTACK2_RUN_INDEX2)
+                    {
+                        FE_Attack2_2run_2();
+                    }
+                    else if (_time > _ATTACK2_RUN_INDEX1)
+                    {
+                        FE_Attack2_2run_1();
+                    }
+                }
+
+                _time += Time.deltaTime;
+                yield return false;
+            }
+            if (AttackRequested == false)
+            {
+                yield break;
+            }
+
+            // 
+            yield return new WaitForEndOfFrame();
+            _time = 0;
+            frameEventOccurred = false;
+            while (IsAnimationPlaying("Attack3") == false)
+                yield return false;
+            FE_Attack3_1beg();
+            yield return new WaitForEndOfFrame();
+            while (IsAnimationPlaying("Attack3"))
+            {
+                if (AttackRequested)
+                    break;
+
+                if (frameEventOccurred == false)
+                {
+                    if (_time > _ATTACK3_END_INDEX)
+                    {
+                        frameEventOccurred = true;
+                    }
+                    else if (_time > _ATTACK3_RUN_INDEX5)
+                    {
+                        FE_Attack3_2run_5();
+                    }
+                    else if (_time > _ATTACK3_RUN_INDEX4)
+                    {
+                        FE_Attack3_2run_4();
+                    }
+                    else if (_time > _ATTACK3_RUN_INDEX3)
+                    {
+                        FE_Attack3_2run_3();
+                    }
+                    else if (_time > _ATTACK3_RUN_INDEX2)
+                    {
+                        FE_Attack3_2run_2();
+                    }
+                    else if (_time > _ATTACK3_RUN_INDEX1)
+                    {
+                        FE_Attack3_2run_2();
+                    }
+                }
+
+                _time += Time.deltaTime;
+                yield return false;
+            }
+            if (AttackRequested == false)
+            {
+                yield break;
+            }
+
+            /**
+            yield return new WaitForSeconds(0.2f);
+            AttackRequested = false;
+            while (IsAnimationPlaying("Attack2"))
+            {
+                if (AttackRequested)
+                    break;
+                yield return false;
+            }
+            if (AttackRequested == false)
+            {
+                Attack_saber2_end();
+                yield break;
+            }
+
+            yield return new WaitForSeconds(0.2f);
+            AttackRequested = false;
+            while (IsAnimationPlaying("Attack3"))
+            {
+                if (AttackRequested)
+                    break;
+                yield return false;
+            }
+
+            AttackEndFromRun_beg();
+            */
+
+        }
+        finally
+        {
+            EndAttack();
         }
 
         yield break;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    void EndAttack()
+    {
+        FE_AttackEnd_1beg();
+        FE_AttackEnd_3end();
     }
 
     #endregion
@@ -678,25 +936,34 @@ public class ZController : PlayerController
     /// </summary>
     void Attack()
     {
+        // 
         StopMoving();
         BlockMoving();
 
+        // 
         Attacking = true;
         AttackRequested = true;
 
-        ++AttackCount;
-        _coroutineAttack = StartCoroutine(CoroutineAttack());
+        // 
+        AttackCount += 1;
+        if (AttackCount == 1)
+        {
+            _coroutineAttack = StartCoroutine(CoroutineAttack());
+        }
     }
     /// <summary>
     /// 플레이어의 공격을 중지합니다.
     /// </summary>
     void StopAttacking()
     {
+        // 
         UnblockMoving();
 
+        // 
         Attacking = false;
         AttackRequested = false;
 
+        // 
         AttackCount = 0;
     }
     /// <summary>
@@ -713,20 +980,27 @@ public class ZController : PlayerController
     {
         AttackBlocked = false;
     }
+
     /// <summary>
     /// 플레이어가 점프 공격하게 합니다.
     /// </summary>
     void JumpAttack()
     {
+        // 
+        BlockAirDashing();
+
+        // 
         Attacking = true;
         AttackRequested = true;
-        BlockAirDashing();
+
+        // 
+        _coroutineAttack = StartCoroutine(CoroutineJumpAttack());
     }
 
     #endregion
 
 
-    
+
 
 
     #region PlayerController 행동 메서드를 재정의 합니다.
@@ -747,6 +1021,21 @@ public class ZController : PlayerController
     {
         base.Land();
         SoundEffects[2].Play();
+
+        if (_attacking)
+        {
+            var curState = _Animator.GetCurrentAnimatorStateInfo(0);
+            if (curState.IsName("AirAttack"))
+            {
+                var nTime = curState.normalizedTime;
+                var fTime = nTime - Mathf.Floor(nTime);
+                _Animator.Play("LandAttack", 0, fTime);
+
+                // 
+                StopMoving();
+                BlockMoving();
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -771,11 +1060,11 @@ public class ZController : PlayerController
         if (_attacking)
         {
             var curState = _Animator.GetCurrentAnimatorStateInfo(0);
-            if (curState.IsName("JumpShot"))
+            if (curState.IsName("AirAttack"))
             {
                 var nTime = curState.normalizedTime;
                 var fTime = nTime - Mathf.Floor(nTime);
-                _Animator.Play("JumpShotGround", 0, fTime);
+                _Animator.Play("LandAttack", 0, fTime);
 
                 // 
                 StopMoving();
@@ -951,10 +1240,7 @@ public class ZController : PlayerController
     #endregion
 
 
-    AudioSource VoiceBigDamaged { get { return Voices[6]; } }
-    AudioSource VoiceDamaged { get { return Voices[5]; } }
 
-    AudioSource SoundHit { get { return SoundEffects[8]; } }
 
 
     #region PlayerController 상태 메서드를 재정의 합니다.
@@ -976,17 +1262,6 @@ public class ZController : PlayerController
     /// <param name="damage">플레이어가 입을 대미지입니다.</param>
     public override void Hurt(int damage)
     {
-        /**
-         * 
-        if (IsAlive())
-        {
-            Voices[5].Play();
-            SoundEffects[8].Play();
-        }
-        Invoke("EndHurt", GetCurrentAnimationLength());
-
-        */
-
         base.Hurt(damage);
 
         // 플레이어가 생존해있다면
@@ -995,17 +1270,11 @@ public class ZController : PlayerController
             // 대미지 음성 및 효과음을 재생합니다.
             if (BigDamaged)
             {
-                /// [v6.1.1] 다음 커밋에서 삭제할 예정입니다.
-                /// Voices[6].Play();
-                /// SoundEffects[11].Play();
                 VoiceBigDamaged.Play();
                 SoundHit.Play();
             }
             else
             {
-                /// [v6.1.1] 다음 커밋에서 삭제할 예정입니다.
-                /// Voices[5].Play();
-                /// SoundEffects[11].Play();
                 VoiceDamaged.Play();
                 SoundHit.Play();
             }
@@ -1032,7 +1301,7 @@ public class ZController : PlayerController
         base.EndHurt();
         if (Danger && dangerVoicePlayed == false)
         {
-            Voices[7].Play();
+            VoiceDanger.Play();
             dangerVoicePlayed = true;
         }
         else
@@ -1074,11 +1343,10 @@ public class ZController : PlayerController
     #region 구형 정의를 보관합니다.
     ///////////////////////////////////////////////////////////////////
     // 지상 공격
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
     /// 첫 번째 일반 지상 공격 시에 발생합니다.
     /// </summary>
-    public void FE_Attack1()
+    public void FE_Attack1_1beg()
     {
         // 받은 요청은 삭제합니다.
         AttackRequested = false;
@@ -1087,40 +1355,37 @@ public class ZController : PlayerController
         BlockAttacking();
         BlockJumping();
         BlockDashing();
+        StopMoving();
+        BlockMoving();
 
         // 효과음을 재생합니다.
-        Voices[1].Play();
-        SoundEffects[7].Play();
+        VoiceAttack1.Play();
+        SoundSaber.Play();
     }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
     /// 첫 번째 일반 지상 공격이 공격으로 인정되는 때에 발생합니다.
     /// </summary>
-    public void FE_Attack1_1()
+    public void FE_Attack1_2run()
     {
         // 공격 범위를 활성화합니다.
-        /// enabled = true;
         ActivateAttackRange(0);
     }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
     /// 첫 번째 일반 지상 공격이 종료할 때 발생합니다.
     /// </summary>
-    public void FE_Attack1_end()
+    public void FE_Attack1_3end()
     {
         // 막은 행동을 가능하게 합니다.
         UnblockAttacking();
         UnblockJumping();
         UnblockDashing();
     }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
     /// 두 번째 일반 지상 공격 시에 발생합니다.
     /// </summary>
-    public void Attack_saber2()
+    public void FE_Attack2_1beg()
     {
         // 공격 범위를 비활성화합니다.
-        /// _attackRange[0].enabled = false;
         DeactivateAttackRange(0);
 
         // 받은 요청은 삭제합니다.
@@ -1132,58 +1397,49 @@ public class ZController : PlayerController
         BlockDashing(); // 대쉬
 
         // 효과음을 재생합니다.
-        Voices[2].Play();
-        SoundEffects[7].Play();
+        VoiceAttack2.Play();
+        SoundSaber.Play();
     }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
     /// 두 번째 일반 지상 공격이 공격으로 인정되는 때에 발생합니다.
     /// </summary>
-    public void Attack_saber2_run()
+    public void FE_Attack2_2run_1()
     {
         // 공격 범위를 활성화합니다.
-        /// _attackRange[1].enabled = true;
         ActivateAttackRange(1);
     }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
-    /// 
+    /// 두 번째 일반 지상 공격 2차입니다.
     /// </summary>
-    public void Attack_saber2_run2()
+    public void FE_Attack2_2run_2()
     {
         // 이전 공격 범위를 비활성화합니다.
-        /// _attackRange[1].enabled = false;
         DeactivateAttackRange(1);
 
         // 공격 범위를 활성화합니다.
-        /// _attackRange[2].enabled = true;
         ActivateAttackRange(2);
     }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
     /// 두 번째 일반 지상 공격이 종료할 때 발생합니다.
     /// </summary>
-    public void Attack_saber2_end()
+    public void FE_Attack2_3end()
     {
         // 막은 행동을 가능하게 합니다.
         UnblockAttacking();
         UnblockJumping();
         UnblockDashing();
     }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
     /// 세 번째 일반 지상 공격 시에 발생합니다.
     /// </summary>
-    public void Attack_saber3()
+    public void FE_Attack3_1beg()
     {
         // 공격 범위를 비활성화합니다.
-        /// _attackRange[1].enabled = false;
-        /// _attackRange[2].enabled = false;
         DeactivateAttackRange(1);
         DeactivateAttackRange(1);
 
         // 받은 요청은 삭제합니다.
-        _Animator.SetBool("AttackRequested", _attackRequested = false);
+        AttackRequested = false;
 
         // 공격 시 불가능한 행동을 막습니다.
         BlockAttacking(); // 공격
@@ -1191,95 +1447,81 @@ public class ZController : PlayerController
         BlockDashing(); // 대쉬
 
         // 효과음을 재생합니다.
-        Voices[3].Play();
-        SoundEffects[7].Play();
+        VoiceAttack3.Play();
+        SoundSaber.Play();
     }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
     /// 세 번째 일반 지상 공격이 공격으로 인정되는 때에 발생합니다.
     /// </summary>
-    public void Attack_saber3_run()
+    public void FE_Attack3_2run_1()
     {
         // 공격 범위를 활성화합니다.
-        /// _attackRange[3].enabled = true;
         ActivateAttackRange(3);
     }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
-    /// 
+    /// 세 번째 일반 지상 공격 2차입니다.
     /// </summary>
-    public void Attack_saber3_run2()
+    public void FE_Attack3_2run_2()
     {
         // 이전 공격 범위를 비활성화합니다.
-        /// attackRange[3].enabled = false;
         DeactivateAttackRange(3);
 
         // 공격 범위를 활성화합니다.
-        /// _attackRange[4].enabled = true;
         ActivateAttackRange(4);
     }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
-    /// 
+    /// 세 번째 일반 지상 공격 3차입니다.
     /// </summary>
-    public void Attack_saber3_run3()
+    public void FE_Attack3_2run_3()
     {
         // 이전 공격 범위를 비활성화합니다.
-        /// attackRange[4].enabled = false;
         DeactivateAttackRange(4);
 
         // 공격 범위를 활성화합니다.
-        /// _attackRange[5].enabled = true;
         ActivateAttackRange(5);
     }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
-    /// 
+    /// 세 번째 일반 지상 공격 4차입니다.
     /// </summary>
-    public void Attack_saber3_run4()
+    public void FE_Attack3_2run_4()
     {
         // 이전 공격 범위를 비활성화합니다.
-        /// attackRange[5].enabled = false;
         DeactivateAttackRange(5);
 
         // 공격 범위를 활성화합니다.
-        /// _attackRange[6].enabled = true;
         ActivateAttackRange(6);
     }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
-    /// 
+    /// 세 번째 일반 지상 공격 5차입니다.
     /// </summary>
-    public void Attack_saber3_run5()
+    public void FE_Attack3_2run_5()
     {
         // 이전 공격 범위를 비활성화합니다.
-        /// attackRange[6].enabled = false;
         DeactivateAttackRange(6);
 
         // 공격 범위를 활성화합니다.
-        /// _attackRange[7].enabled = true;
         ActivateAttackRange(7);
     }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
     /// 지상 공격이 종료할 때 발생합니다.
     /// </summary>
-    public void AttackEndFromRun_beg()
+    public void FE_AttackEnd_1beg()
     {
         // 막은 행동을 가능하게 합니다.
         UnblockAttacking();
         UnblockJumping();
         UnblockDashing();
 
+        // 
+        StopAttacking();
+
         // 공격 범위를 비활성화합니다.
-        /// _attackRange[2].enabled = false;
         DeactivateAttackRange(2);
     }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
     /// <summary>
     /// 지상 공격 모션이 완전히 종료되어 대기 상태로 바뀔 때 발생합니다.
     /// </summary>
-    public void AttackEndFromRun_end()
+    public void FE_AttackEnd_3end()
     {
         StopAttacking();
 
@@ -1396,6 +1638,8 @@ public class ZController : PlayerController
     {
         UnblockAirDashing();
         UnblockAttacking();
+
+        print("FE_JumpShotEnd has stopped attacking");
         StopAttacking();
     }
 

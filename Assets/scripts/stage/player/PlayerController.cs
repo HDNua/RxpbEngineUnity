@@ -740,7 +740,33 @@ public abstract class PlayerController : MonoBehaviour
 
 
 
-    
+
+
+    #region 추상 프로퍼티를 정의합니다.
+
+    /// <summary>
+    /// 
+    /// </summary>
+    protected abstract AudioSource VoiceDamaged { get; }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected abstract AudioSource VoiceBigDamaged { get; }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected abstract AudioSource VoiceDanger { get; }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    protected abstract AudioSource SoundHit { get; }
+
+    #endregion
+
+
+
+
 
     #region MonoBehaviour 기본 메서드를 재정의 합니다.
     /// <summary>
@@ -1358,6 +1384,8 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void BlockMoving()
     {
         MoveBlocked = true;
+
+        /// print("Block Moving");
     }
     /// <summary>
     /// 플레이어가 이동을 요청할 수 있도록 합니다.
@@ -1365,6 +1393,8 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void UnblockMoving()
     {
         MoveBlocked = false;
+
+        /// print("Unblock Moving");
     }
 
 
@@ -1644,7 +1674,6 @@ public abstract class PlayerController : MonoBehaviour
         }
         _Velocity = new Vector2(vx, _jumpSpeed);
 
-
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Jumping = true;
         Dashing = true;
@@ -1738,16 +1767,15 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected virtual void BlockAirDashing()
     {
-        AirDashBlocked = true; // airDashCount = 1;
+        AirDashBlocked = true;
     }
     /// <summary>
     /// 플레이어가 에어 대쉬할 수 있도록 합니다.
     /// </summary>
     protected virtual void UnblockAirDashing()
     {
-        AirDashBlocked = false; // ClearAirDashCount();
+        AirDashBlocked = false;
     }
-
 
     /// <summary>
     /// 플레이어가 앉게 합니다.

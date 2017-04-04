@@ -189,12 +189,37 @@ public class XController : PlayerController
     /// 현재 색상 팔레트입니다.
     /// </summary>
     Color[] _currentPalette;
+
+    #endregion
+
+
+
+
+
+    #region 추상 프로퍼티를 구현합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override AudioSource VoiceDamaged { get { return Voices[4]; } }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override AudioSource VoiceBigDamaged { get { return Voices[5]; } }
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override AudioSource VoiceDanger { get { return Voices[6]; } }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    protected override AudioSource SoundHit { get { return SoundEffects[11]; } }
     
     #endregion
 
 
-    
 
+    
 
     #region MonoBehavior 기본 메서드를 재정의합니다.
     /// <summary>
@@ -1353,13 +1378,19 @@ public class XController : PlayerController
             // 대미지 음성 및 효과음을 재생합니다.
             if (BigDamaged)
             {
-                Voices[5].Play();
-                SoundEffects[11].Play();
+                /// 
+                /// Voices[5].Play();
+                /// SoundEffects[11].Play();
+                VoiceBigDamaged.Play();
+                SoundHit.Play();
             }
             else
             {
-                Voices[4].Play();
-                SoundEffects[11].Play();
+                /// 
+                /// Voices[4].Play();
+                /// SoundEffects[11].Play();
+                VoiceDamaged.Play();
+                SoundHit.Play();
             }
 
             // 발생한 효과를 제거합니다.
@@ -1389,7 +1420,8 @@ public class XController : PlayerController
         // 위험한 상태인데 위험 상태 경고 보이스를 재생하지 않았다면 재생합니다.
         if (Danger && _dangerVoicePlayed == false)
         {
-            Voices[6].Play();
+            /// Voices[6].Play();
+            VoiceDanger.Play();
             _dangerVoicePlayed = true;
         }
         // 위험 상태에서 벗어나면 위의 스위치를 해제합니다.

@@ -54,18 +54,19 @@ public class ZSaberScript : AttackScript
         if (other.gameObject.CompareTag("Enemy"))
         {
             EnemyScript enemy = other.gameObject.GetComponent<EnemyScript>();
+            Vector3 mean = (transform.position + enemy.transform.position) / 2;
 
             // 적이 무적 상태라면
             if (enemy.Invencible)
             {
                 // 반사 효과를 생성합니다.
-                MakeReflectedParticle(_player.FacingRight, transform);
+                MakeReflectedParticle(_player.FacingRight, mean);                
             }
             // 그 외의 경우
             else
             {
                 // 타격 효과를 생성하고 대미지를 입힙니다.
-                MakeHitParticle(_player.FacingRight, transform);
+                MakeHitParticle(_player.FacingRight, mean);
                 enemy.Hurt(damage);
             }
         }
