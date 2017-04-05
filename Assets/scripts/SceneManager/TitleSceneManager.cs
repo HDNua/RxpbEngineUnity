@@ -129,7 +129,9 @@ public class TitleSceneManager : MonoBehaviour
                         break;
 
                     case 4:
-                        Application.Quit();
+                        /// Application.Quit();
+                        _nextLevelName = "New Scene";
+                        _changeSceneRequested = true;
                         break;
 
                     default:
@@ -170,7 +172,7 @@ public class TitleSceneManager : MonoBehaviour
     bool IsSelectKeyPressed()
     {
         return (Input.GetKeyDown(KeyCode.Return)
-            || Input.GetButton("Attack")
+            // || Input.GetButton("Attack")
             || Input.GetKey(KeyCode.Space));
     }
     

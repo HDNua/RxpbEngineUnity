@@ -105,6 +105,18 @@ public class DeadEffectScript : MonoBehaviour
         // 사망 코루틴을 시작합니다.
         StartCoroutine(DeadEffectCoroutine());
     }
+    /// <summary>
+    /// 사망 효과를 재생합니다.
+    /// </summary>
+    /// <param name="player">사망한 플레이어입니다.</param>
+    void Run(NetworkPlayerController player)
+    {
+        // 플레이어를 투명하게 만듭니다.
+        player.GetComponent<SpriteRenderer>().enabled = false;
+
+        // 사망 코루틴을 시작합니다.
+        StartCoroutine(DeadEffectCoroutine());
+    }
 
     /// <summary>
     /// 사망 코루틴입니다.
@@ -193,6 +205,14 @@ public class DeadEffectScript : MonoBehaviour
     /// 사망 효과 재생을 요청합니다.
     /// </summary>
     public void RequestRun(PlayerController player)
+    {
+        transform.position = player.transform.position;
+        Run(player);
+    }
+    /// <summary>
+    /// 사망 효과 재생을 요청합니다.
+    /// </summary>
+    public void RequestRun(NetworkPlayerController player)
     {
         transform.position = player.transform.position;
         Run(player);

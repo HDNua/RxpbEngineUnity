@@ -1,14 +1,15 @@
 ﻿using System;
-using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Networking;
 
 
 
 /// <summary>
 /// 일반 플레이어 컨트롤러입니다.
 /// </summary>
-public abstract class PlayerController : MonoBehaviour
+public abstract class PlayerController : NetworkBehaviour
 {
     #region 상수를 정의합니다.
     /// <summary>
