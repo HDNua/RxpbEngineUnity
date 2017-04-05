@@ -192,6 +192,14 @@ public class BossRoomDoorScript : MonoBehaviour
             }
             else
             {
+                if (_StageManager is StageManager2P)
+                {
+                    if (_player != _StageManager.MainPlayer)
+                    {
+                        return;
+                    }
+                }
+
                 RequestOpen();
             }
         }
@@ -303,6 +311,28 @@ public class BossRoomDoorScript : MonoBehaviour
         yield return new WaitForSeconds(_transitioningTime);
 
         // 플레이어의 이동이 끝났습니다.
+        if (_StageManager is StageManager2P)
+        {
+            StageManager2P stageManager = (StageManager2P)_StageManager;
+
+            if (_player == stageManager.MainPlayer)
+            {
+                stageManager.SubPlayer.RequestSpawn(stageManager.MainPlayer.transform.position);
+                Physics2D.IgnoreCollision(
+                    stageManager.MainPlayer.GetComponent<Collider2D>(),
+                    stageManager.SubPlayer.GetComponent<Collider2D>(),
+                    true);
+            }
+            else if (_player == stageManager.SubPlayer)
+            {
+                // stageManager.MainPlayer.RequestSpawn(stageManager.SubPlayer.transform.position);
+                print(_player);
+            }
+            else
+            {
+                print(_player);
+            }
+        }
         RequestClose();
         yield break;
     }

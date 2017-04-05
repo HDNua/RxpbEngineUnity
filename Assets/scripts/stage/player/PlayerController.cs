@@ -2007,6 +2007,19 @@ public abstract class PlayerController : MonoBehaviour
         _Animator.Play("Ceremony");
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="position"></param>
+    public void RequestSpawn(Vector3 position)
+    {
+        transform.position = position;
+        gameObject.SetActive(false);
+
+        gameObject.SetActive(true);
+        Spawn();
+    }
+
     #endregion
 
 

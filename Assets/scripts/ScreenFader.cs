@@ -37,7 +37,11 @@ public class ScreenFader : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    float _thresholdDst = 0.95f;
+    public float _thresholdSrc = 0.02f; // 0.05f;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _thresholdDst = 0.98f; // 0.95f;
 
 
     /// <summary>
@@ -86,7 +90,7 @@ public class ScreenFader : MonoBehaviour
         if (_fadeInRequested)
         {
             FadeToClear();
-            if (_guiTexture.color.a <= 0.05f)
+            if (_guiTexture.color.a <= _thresholdSrc)
             {
                 _guiTexture.color = Color.clear;
                 _guiTexture.enabled = false;
