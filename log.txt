@@ -1,6 +1,9 @@
-RXPB v6.3.2 Network v1.0.0
+RXPB v6.3.2 Network v1.1.0
 
 - initial commit.
+
+
+- 동작 테스트.
 
 
 end.

@@ -16,6 +16,11 @@ public class StageManager2P : StageManager
     /// </summary>
     public PlayerController[] _players;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool _isLocalGame = true;
+
     #endregion
 
 
@@ -58,8 +63,19 @@ public class StageManager2P : StageManager
     {
         base.Start();
 
-        MainPlayer._playerIndex = 0;
-        SubPlayer._playerIndex = 1;
+        if (_isLocalGame)
+        {
+            MainPlayer._playerIndex = 0;
+            SubPlayer._playerIndex = 1;
+        }
+        else
+        {
+            GameObject p1 = Network.Instantiate(MainPlayer.gameObject, MainPlayer.transform.position, MainPlayer.transform.rotation, 0) as GameObject;
+            GameObject p2 = Network.Instantiate(SubPlayer.gameObject, SubPlayer.transform.position, SubPlayer.transform.rotation, 0) as GameObject;
+
+            _players[0] = p1.GetComponent<PlayerController>();
+            _players[1] = p2.GetComponent<PlayerController>();
+        }
 
         Collider2D mainCollider = MainPlayer.GetComponent<Collider2D>();
         Collider2D subCollider = SubPlayer.GetComponent<Collider2D>();

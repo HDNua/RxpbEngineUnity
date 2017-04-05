@@ -846,13 +846,26 @@ public abstract class PlayerController : NetworkBehaviour
     {
         UpdatePhysicsState(collision);
     }
-    
+
+    private void OnNetworkInstantiate(NetworkMessageInfo info)
+    {
+        var nView = GetComponent<NetworkView>();
+        if (nView.isMine)
+            Debug.Log("New object instanted by me");
+        else
+            Debug.Log("New object instantiated by " + info.sender);
+
+    }
+
     /// <summary>
     /// 자식 클래스의 Update()를 실행하기 전에 부모 클래스에서 Update()를 수행합니다.
     /// </summary>
     /// <returns>자식 클래스의 Update 실행을 막으려면 참을 반환합니다.</returns>
     protected virtual bool UpdateController()
     {
+        if (GetComponent<NetworkView>().isMine == false)
+            return false;
+
         // 소환 중이라면
         if (Spawning || Returning)
         {
