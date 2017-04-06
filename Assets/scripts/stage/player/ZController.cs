@@ -688,7 +688,28 @@ public class ZController : PlayerController
 
     public float _time = 0f;
     public const float FRAME_INTERVAL_36 = 0.027777f;
-    
+
+    public float SLIDE_ATTACK_INTERVAL_2 = 2 * FRAME_INTERVAL_36;
+    public float SLIDE_ATTACK_INTERVAL_1 = 1 * FRAME_INTERVAL_36;
+
+    public float CROUCH_ATTACK_TIME_1 = 1 * FRAME_INTERVAL_36;
+    public float JUMP_ATTACK_TIME_2 = 2 * FRAME_INTERVAL_36;
+    public float JUMP_ATTACK_TIME_1 = 1 * FRAME_INTERVAL_36;
+
+    public float _ATTACK1_RUN_INDEX = 1 * FRAME_INTERVAL_36; // 0.03
+    public float _ATTACK1_END_INDEX = 2 * FRAME_INTERVAL_36; // 0.07
+
+    public float _ATTACK2_RUN_INDEX1 = 1 * FRAME_INTERVAL_36; // 0.01
+    public float _ATTACK2_RUN_INDEX2 = 2 * FRAME_INTERVAL_36; // 0.03
+    public float _ATTACK2_END_INDEX = 3 * FRAME_INTERVAL_36; // 0.05
+
+    public float _ATTACK3_RUN_INDEX1 = 1 * FRAME_INTERVAL_36; // 0.03
+    public float _ATTACK3_RUN_INDEX2 = 2 * FRAME_INTERVAL_36; // 0.04
+    public float _ATTACK3_RUN_INDEX3 = 3 * FRAME_INTERVAL_36; // 0.05
+    public float _ATTACK3_RUN_INDEX4 = 4 * FRAME_INTERVAL_36; // 0.06
+    public float _ATTACK3_RUN_INDEX5 = 5 * FRAME_INTERVAL_36; // 0.07
+    public float _ATTACK3_END_INDEX = 6 * FRAME_INTERVAL_36; // 0.08
+
     /*
     public float _ATTACK1_RUN_INDEX = 1 * FRAME_INTERVAL_36; // 0.03
     public float _ATTACK1_END_INDEX = 2 * FRAME_INTERVAL_36; // 0.07
@@ -732,12 +753,12 @@ public class ZController : PlayerController
         while (_time < length)
         {
             // 
-            if (_time > 0.2f)
+            if (_time > SLIDE_ATTACK_INTERVAL_2)
             {
                 ActivateAttackRange(12);
                 DeactivateAttackRange(11);
             }
-            else if (_time > 0.1f)
+            else if (_time > SLIDE_ATTACK_INTERVAL_1)
             {
                 ActivateAttackRange(11);
             }
@@ -760,6 +781,10 @@ public class ZController : PlayerController
     IEnumerator CoroutineCrouchAttack()
     {
         // 
+        BlockMoving();
+        BlockAttacking();
+
+        // 
         SoundSaber.Play();
 
         // 
@@ -768,7 +793,6 @@ public class ZController : PlayerController
         while (IsAnimationPlaying("CrouchAttack") == false)
             yield return false;
 
-        BlockAttacking();
         AttackRequested = false;
         float length = GetCurrentAnimationLength();
 
@@ -776,7 +800,7 @@ public class ZController : PlayerController
         while (_time < length)
         {
             // 
-            if (_time > 0.1f)
+            if (_time > CROUCH_ATTACK_TIME_1)
             {
                 ActivateAttackRange(10);
             }
@@ -789,6 +813,7 @@ public class ZController : PlayerController
         // 
         DeactivateAttackRange(10);
         StopAttacking();
+        UnblockMoving();
         UnblockAttacking();
         yield break;
     }
@@ -813,12 +838,12 @@ public class ZController : PlayerController
         while (_time < length)
         {
             // 
-            if (_time > 0.2f)
+            if (_time > JUMP_ATTACK_TIME_2)
             {
                 ActivateAttackRange(9);
                 DeactivateAttackRange(8);
             }
-            else if (_time > 0.1f)
+            else if (_time > JUMP_ATTACK_TIME_1)
             {
                 ActivateAttackRange(8);
             }
@@ -841,20 +866,6 @@ public class ZController : PlayerController
     IEnumerator CoroutineAttack()
     {
         bool frameEventOccurred;
-        float _ATTACK1_RUN_INDEX = 1 * FRAME_INTERVAL_36; // 0.03
-        float _ATTACK1_END_INDEX = 2 * FRAME_INTERVAL_36; // 0.07
-
-        float _ATTACK2_RUN_INDEX1 = 1 * FRAME_INTERVAL_36; // 0.01
-        float _ATTACK2_RUN_INDEX2 = 2 * FRAME_INTERVAL_36; // 0.03
-        float _ATTACK2_END_INDEX = 3 * FRAME_INTERVAL_36; // 0.05
-
-        float _ATTACK3_RUN_INDEX1 = 1 * FRAME_INTERVAL_36; // 0.03
-        float _ATTACK3_RUN_INDEX2 = 2 * FRAME_INTERVAL_36; // 0.04
-        float _ATTACK3_RUN_INDEX3 = 3 * FRAME_INTERVAL_36; // 0.05
-        float _ATTACK3_RUN_INDEX4 = 4 * FRAME_INTERVAL_36; // 0.06
-        float _ATTACK3_RUN_INDEX5 = 5 * FRAME_INTERVAL_36; // 0.07
-        float _ATTACK3_END_INDEX = 6 * FRAME_INTERVAL_36; // 0.08
-
         try
         {
             // 
@@ -1187,6 +1198,7 @@ public class ZController : PlayerController
     protected override void Dash()
     {
         base.Dash();
+        DeactivateAllAttackRange();
 
         // 대쉬 효과 애니메이션을 추가합니다.
         GameObject dashFog = CloneObject(effects[0], dashFogPosition);
@@ -1368,6 +1380,7 @@ public class ZController : PlayerController
     public override void Hurt(int damage)
     {
         base.Hurt(damage);
+        DeactivateAllAttackRange();
 
         // 플레이어가 생존해있다면
         if (IsAlive())
@@ -1398,6 +1411,7 @@ public class ZController : PlayerController
         // END_HURT_TIME 시간 후에 대미지를 입은 상태를 종료합니다.
         Invoke("EndHurt", END_HURT_TIME);
     }
+
     /// <summary>
     /// 다친 상태를 끝냅니다.
     /// </summary>
@@ -1437,6 +1451,16 @@ public class ZController : PlayerController
     void DeactivateAttackRange(int index)
     {
         _attackRange[index].SetActive(false);
+    }
+    /// <summary>
+    /// 모든 공격 범위를 비활성화합니다.
+    /// </summary>
+    void DeactivateAllAttackRange()
+    {
+        for (int i=0;i<_attackRange.Length;++i)
+        {
+            DeactivateAttackRange(i);
+        }
     }
 
     #endregion

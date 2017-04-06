@@ -378,6 +378,7 @@ public class StageManager : HDSceneManager
     /// </summary>
     private void StageClear()
     {
+        GameManager.Instance.SpawnPositionIndex = 0;
         StartCoroutine(CoroutineClearStage());
     }
     /// <summary>

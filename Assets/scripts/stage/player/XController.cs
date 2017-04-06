@@ -841,34 +841,44 @@ public class XController : PlayerController
         GameObject fireEffect = CloneObject(effects[7 + index], shotPosition);
         if (index == 2)
         {
-            fireEffect.transform.position = transform.position;
+            if (IsAnimationPlaying("Idle"))
+            {
+                fireEffect.transform.position = transform.position;
+            }
         }
         Vector3 effectScale = fireEffect.transform.localScale;
         effectScale.x *= (toLeft ? -1 : 1);
         fireEffect.transform.localScale = effectScale;
         fireEffect.transform.parent = shotPosition.transform;
 
+        // 버스터 컴포넌트를 발사체에 붙입니다.
+        GameObject _bullet = CloneObject(_bullets[index], shotPosition);
 
         // 2단계 차지샷이라면 잠시 대기합니다.
         if (index == 2)
         {
+            _bullet.GetComponent<SpriteRenderer>().color = Color.clear;
             yield return new WaitForSeconds(0.15f);
         }
 
+        // 
+        if (_bullet != null)
+        {
+            _bullet.GetComponent<SpriteRenderer>().color = Color.white;
+            _bullet.transform.position = shotPosition.position;
 
-        // 버스터 컴포넌트를 발사체에 붙입니다.
-        GameObject _bullet = CloneObject(_bullets[index], shotPosition);
+            // 위치를 조정합니다.
+            Vector3 bulletScale = _bullet.transform.localScale;
+            bulletScale.x *= (toLeft ? -1 : 1);
+            _bullet.transform.localScale = bulletScale;
+            _bullet.GetComponent<Rigidbody2D>().velocity
+                = (toLeft ? Vector3.left : Vector3.right) * _shotSpeed;
 
-        // 위치를 조정합니다.
-        Vector3 bulletScale = _bullet.transform.localScale;
-        bulletScale.x *= (toLeft ? -1 : 1);
-        _bullet.transform.localScale = bulletScale;
-        _bullet.GetComponent<Rigidbody2D>().velocity
-            = (toLeft ? Vector3.left : Vector3.right) * _shotSpeed;
+            // 탄환 속성을 업데이트 합니다.
+            XBusterScript buster = _bullet.GetComponent<XBusterScript>();
+            buster.MainCamera = Camera.main; // stageManager.MainCamera;
+        }
 
-        // 탄환 속성을 업데이트 합니다.
-        XBusterScript buster = _bullet.GetComponent<XBusterScript>();
-        buster.MainCamera = Camera.main; // stageManager.MainCamera;
         yield break;
     }
     /// <summary>

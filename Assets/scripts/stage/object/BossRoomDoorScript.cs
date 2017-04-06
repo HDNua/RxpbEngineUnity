@@ -42,6 +42,11 @@ public class BossRoomDoorScript : MonoBehaviour
     /// 보스 전투 관리자입니다.
     /// </summary>
     public BossBattleManager _bossBattleManager;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public BoxCollider2D _childCollider;
     
     #endregion
     
@@ -58,9 +63,13 @@ public class BossRoomDoorScript : MonoBehaviour
     /// 애니메이션 관리자입니다.
     /// </summary>
     Animator _animator;
-    
+    /// <summary>
+    /// 
+    /// </summary>
+    BoxCollider2D _collider;
+
     #endregion
-    
+
 
 
 
@@ -129,6 +138,9 @@ public class BossRoomDoorScript : MonoBehaviour
             audioSource.clip = _audioClips[i];
             _audioSources[i] = audioSource;
         }
+
+        // 
+        _collider = GetComponent<BoxCollider2D>();
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBevahiour 개체 정보를 업데이트합니다.
@@ -224,7 +236,13 @@ public class BossRoomDoorScript : MonoBehaviour
 
         // 
         _player.RequestBlockInput();
+        if (_StageManager is StageManager2P)
+        {
+            ((StageManager2P)_StageManager).SubPlayer.RequestBlockInput();
+        }
+
         _StageManager.RequestDisableAllEnemy();
+        _childCollider.enabled = false;
         StartCoroutine(OpenCoroutine());
     }
     /// <summary>
@@ -241,6 +259,8 @@ public class BossRoomDoorScript : MonoBehaviour
         if (_isBossRoomDoor)
         {
             _bossBattleManager.RequestBossBattleScenario();
+            _collider.isTrigger = false;
+            _collider.gameObject.layer = 10; // "Wall";
         }
 
         // 문의 개방 상태를 모두 내립니다.
@@ -254,10 +274,17 @@ public class BossRoomDoorScript : MonoBehaviour
         _player.RequestChangeMovingSpeed(_player._walkSpeed);
         _player.RequestStopMoving();
 
+
+        _childCollider.enabled = true;
+
         // 보스 방이 아닌 경우에만 입력 중지를 해제합니다.
         if (_isBossRoomDoor == false)
         {
             _player.RequestUnblockInput();
+            if (_StageManager is StageManager2P)
+            {
+                ((StageManager2P)_StageManager).SubPlayer.RequestUnblockInput();
+            }
         }
         // 플레이어를 가리키는 포인터를 지웁니다.
         _player = null;

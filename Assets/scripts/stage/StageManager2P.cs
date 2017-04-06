@@ -159,6 +159,7 @@ public class StageManager2P : StageManager
 
         //
         GameEnded = true;
+        
         _fader.FadeOut();
         yield break;
     }
