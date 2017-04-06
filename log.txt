@@ -1,4 +1,4 @@
-RXPB v6.4.0 (IMPORTANT)
+RXPB v6.4.1 (IMPORTANT)
 
 - 협동 모드 지원.
 > 보스 문 진입 시에 메인 플레이어만 주도권을 가지는 식으로 변경.
@@ -20,6 +20,9 @@ RXPB v6.4.0 (IMPORTANT)
 
 
 - 인터넷 공개 버전.
+
+
+- CAPCOM 로고 삽입.
 
 
 end.
