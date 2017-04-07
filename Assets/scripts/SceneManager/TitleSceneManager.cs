@@ -89,57 +89,115 @@ public class TitleSceneManager : MonoBehaviour
         // 키 입력에 대한 처리입니다.
         if (HDInput.IsAnyKeyDown())
         {
-            if (HDInput.IsUpKeyPressed()) // (Input.GetKeyDown(KeyCode.UpArrow))
+            if (Input.anyKeyDown)
             {
-                if (0 < _menuIndex)
+                if (HDInput.IsUpKeyDown()) // (HDInput.IsUpKeyPressed()) // (Input.GetKeyDown(KeyCode.UpArrow))
                 {
-                    ChangeMenuItem(_menuIndex - 1);
+                    if (0 < _menuIndex)
+                    {
+                        ChangeMenuItem(_menuIndex - 1);
+                    }
+                }
+                else if (HDInput.IsDownKeyDown()) // (HDInput.IsDownKeyPressed()) // (Input.GetKeyDown(KeyCode.DownArrow))
+                {
+                    if (_menuIndex < menuItems.Length - 1)
+                    {
+                        ChangeMenuItem(_menuIndex + 1);
+                    }
+                }
+                else if (IsSelectKeyPressed())
+                {
+                    switch (_menuIndex)
+                    {
+                        case 0:
+                            _nextLevelName = "CS00_PreviousStory";
+                            _changeSceneRequested = true;
+                            fader.FadeOut(1);
+                            break;
+
+                        case 1:
+                            _nextLevelName = "01_Intro_X";
+                            _changeSceneRequested = true;
+                            fader.FadeOut(1);
+                            break;
+
+                        case 2:
+                            _nextLevelName = "01_Intro_Z";
+                            _changeSceneRequested = true;
+                            fader.FadeOut(1);
+                            break;
+
+                        case 3:
+                            _nextLevelName = "01_Intro_2p";
+                            _changeSceneRequested = true;
+                            fader.FadeOut(1);
+                            break;
+
+                        case 4:
+                            Application.Quit();
+                            break;
+
+                        default:
+                            _nextLevelName = null;
+                            break;
+                    }
+                    _seSources[1].Play();
                 }
             }
-            else if (HDInput.IsDownKeyPressed()) // (Input.GetKeyDown(KeyCode.DownArrow))
+            else
             {
-                if (_menuIndex < menuItems.Length - 1)
+                if (HDInput.IsUpKeyPressed()) // (Input.GetKeyDown(KeyCode.UpArrow))
                 {
-                    ChangeMenuItem(_menuIndex + 1);
+                    if (0 < _menuIndex)
+                    {
+                        ChangeMenuItem(_menuIndex - 1);
+                    }
                 }
-            }
-            else if (IsSelectKeyPressed())
-            {
-                switch (_menuIndex)
+                else if (HDInput.IsDownKeyPressed()) // (Input.GetKeyDown(KeyCode.DownArrow))
                 {
-                    case 0:
-                        _nextLevelName = "CS00_PreviousStory";
-                        _changeSceneRequested = true;
-                        fader.FadeOut(1);
-                        break;
-
-                    case 1:
-                        _nextLevelName = "01_Intro_X";
-                        _changeSceneRequested = true;
-                        fader.FadeOut(1);
-                        break;
-
-                    case 2:
-                        _nextLevelName = "01_Intro_Z";
-                        _changeSceneRequested = true;
-                        fader.FadeOut(1);
-                        break;
-
-                    case 3:
-                        _nextLevelName = "01_Intro_2p";
-                        _changeSceneRequested = true;
-                        fader.FadeOut(1);
-                        break;
-
-                    case 4:
-                        Application.Quit();
-                        break;
-
-                    default:
-                        _nextLevelName = null;
-                        break;
+                    if (_menuIndex < menuItems.Length - 1)
+                    {
+                        ChangeMenuItem(_menuIndex + 1);
+                    }
                 }
-                _seSources[1].Play();
+                else if (IsSelectKeyPressed())
+                {
+                    switch (_menuIndex)
+                    {
+                        case 0:
+                            _nextLevelName = "CS00_PreviousStory";
+                            _changeSceneRequested = true;
+                            fader.FadeOut(1);
+                            break;
+
+                        case 1:
+                            _nextLevelName = "01_Intro_X";
+                            _changeSceneRequested = true;
+                            fader.FadeOut(1);
+                            break;
+
+                        case 2:
+                            _nextLevelName = "01_Intro_Z";
+                            _changeSceneRequested = true;
+                            fader.FadeOut(1);
+                            break;
+
+                        case 3:
+                            _nextLevelName = "01_Intro_2p";
+                            _changeSceneRequested = true;
+                            fader.FadeOut(1);
+                            break;
+
+                        case 4:
+                            Application.Quit();
+                            break;
+
+                        default:
+                            _nextLevelName = null;
+                            break;
+                    }
+                    _seSources[1].Play();
+                }
             }
         }
     }
