@@ -67,6 +67,9 @@ public class TitleSceneManager : MonoBehaviour
 
         // 페이드인 효과를 실행합니다.
         fader.FadeIn();
+
+        // 
+        GameManager.Instance.RequestSetTryCount(2);
     }
     /// <summary>
     /// 프레임이 갱신될 때 MonoBehaviour 개체 정보를 업데이트 합니다.
@@ -84,16 +87,16 @@ public class TitleSceneManager : MonoBehaviour
         }
 
         // 키 입력에 대한 처리입니다.
-        if (Input.anyKeyDown)
+        if (HDInput.IsAnyKeyDown())
         {
-            if (Input.GetKeyDown(KeyCode.UpArrow))
+            if (HDInput.IsUpKeyPressed()) // (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 if (0 < _menuIndex)
                 {
                     ChangeMenuItem(_menuIndex - 1);
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.DownArrow))
+            else if (HDInput.IsDownKeyPressed()) // (Input.GetKeyDown(KeyCode.DownArrow))
             {
                 if (_menuIndex < menuItems.Length - 1)
                 {

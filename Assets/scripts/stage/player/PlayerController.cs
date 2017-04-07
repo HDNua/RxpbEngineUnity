@@ -288,8 +288,8 @@ public abstract class PlayerController : MonoBehaviour
 
         // return (InputBlocked == false && Input.GetKey(KeyCode.LeftArrow));
         if (_playerIndex < 0)
-            return Input.GetKey(KeyCode.LeftArrow);
-        return Input.GetAxis("Horizontal" + _playerIndex) < 0;
+            return Input.GetAxis("Horizontal") == -1; // Input.GetKey(KeyCode.LeftArrow);
+        return Input.GetAxis("Horizontal" + _playerIndex) == -1;
     }
     /// <summary>
     /// 오른쪽 키가 눌려있는지 확인합니다.
@@ -302,8 +302,8 @@ public abstract class PlayerController : MonoBehaviour
 
         // return (InputBlocked == false && Input.GetKey(KeyCode.RightArrow));
         if (_playerIndex < 0)
-            return Input.GetKey(KeyCode.RightArrow);
-        return Input.GetAxis("Horizontal" + _playerIndex) > 0;
+            return Input.GetAxis("Horizontal") == 1; // Input.GetKey(KeyCode.RightArrow);
+        return Input.GetAxis("Horizontal" + _playerIndex) == 1;
     }
     /// <summary>
     /// 위쪽 키가 눌려있는지 확인합니다.
@@ -316,8 +316,8 @@ public abstract class PlayerController : MonoBehaviour
 
         // return (InputBlocked == false && Input.GetKey(KeyCode.UpArrow));
         if (_playerIndex < 0)
-            return Input.GetKey(KeyCode.UpArrow);
-        return Input.GetAxis("Vertical" + _playerIndex) > 0;
+            return Input.GetAxis("Vertical") == 1; // Input.GetKey(KeyCode.UpArrow);
+        return Input.GetAxis("Vertical" + _playerIndex) == 1;
     }
     /// <summary>
     /// 아래쪽 키가 눌려있는지 확인합니다.
@@ -330,8 +330,8 @@ public abstract class PlayerController : MonoBehaviour
 
         // return (InputBlocked == false && Input.GetKey(KeyCode.DownArrow));
         if (_playerIndex < 0)
-            return Input.GetKey(KeyCode.DownArrow);
-        return Input.GetAxis("Vertical" + _playerIndex) < 0;
+            return Input.GetAxis("Vertical") == -1; // Input.GetKey(KeyCode.DownArrow);
+        return Input.GetAxis("Vertical" + _playerIndex) == -1;
     }
 
     #endregion
@@ -1280,13 +1280,21 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     void RequestRestart()
     {
-        if (_database.GameManager.GameData.TryCount == 0)
+        GameManager gm = GameManager.Instance;
+        if (gm.TryCount <= 0)
         {
-            LoadingSceneManager.LoadLevel("Title");
+            if (gm.DecreaseCountRequested == false)
+            {
+                LoadingSceneManager.LoadLevel("Title");
+            }
         }
         else
         {
-            _database.GameManager.RequestDecreaseTryCount();
+            if (_StageManager.Restarting == false)
+            {
+                gm.RequestDecreaseTryCount();
+                _StageManager.Restarting = true;
+            }
             _stageManager.RestartLevel();
         }
     }

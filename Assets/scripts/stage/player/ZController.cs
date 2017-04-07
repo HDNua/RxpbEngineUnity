@@ -1076,6 +1076,7 @@ public class ZController : PlayerController
 
         // 
         AttackCount = 0;
+        DeactivateAllAttackRange();
     }
     /// <summary>
     /// 플레이어의 공격 요청을 막습니다.
@@ -1178,7 +1179,13 @@ public class ZController : PlayerController
     /// </summary>
     protected override void Jump()
     {
+        // 
         base.Jump();
+
+        // 
+        StopAttacking();
+
+        // 
         Voices[0].Play();
         SoundEffects[1].Play();
     }
@@ -1198,7 +1205,9 @@ public class ZController : PlayerController
     protected override void Dash()
     {
         base.Dash();
-        DeactivateAllAttackRange();
+
+        /// DeactivateAllAttackRange();
+        StopAttacking();
 
         // 대쉬 효과 애니메이션을 추가합니다.
         GameObject dashFog = CloneObject(effects[0], dashFogPosition);
@@ -1457,7 +1466,7 @@ public class ZController : PlayerController
     /// </summary>
     void DeactivateAllAttackRange()
     {
-        for (int i=0;i<_attackRange.Length;++i)
+        for (int i = 0; i < _attackRange.Length; ++i)
         {
             DeactivateAttackRange(i);
         }

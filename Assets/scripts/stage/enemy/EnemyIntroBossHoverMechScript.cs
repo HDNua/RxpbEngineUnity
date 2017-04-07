@@ -611,6 +611,31 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
     }
 
     /// <summary>
+    /// 
+    /// </summary>
+    public void ShotToPlayer()
+    {
+        // 사용할 변수를 선언합니다.
+        Vector3 playerPos = _StageManager.GetCurrentPlayerPosition();
+        Vector2 relativePos = playerPos - transform.position;
+
+        // 플레이어를 향해 수평 방향 전환합니다.
+        if (relativePos.x < 0 && FacingRight)
+        {
+            /// MoveLeft();
+            Flip();
+        }
+        else if (relativePos.x > 0 && FacingRight == false)
+        {
+            /// MoveRight();
+            Flip();
+        }
+
+        // 탄환을 발사합니다.
+        Shot(_shotPosition[0]);
+    }
+
+    /// <summary>
     /// 막기 다음 액션을 수행합니다.
     /// </summary>
     void PerformActionAfterGuard()
@@ -698,11 +723,13 @@ public class EnemyIntroBossHoverMechScript : EnemyBossScript
         StopMoving();
 
         // 탄환을 세 번 발사합니다.
-        Shot(_shotPosition[0]);
+        ShotToPlayer();
         yield return new WaitForSeconds(_shotInterval);
-        Shot(_shotPosition[0]);
+        /// Shot(_shotPosition[0]);
+        ShotToPlayer();
         yield return new WaitForSeconds(_shotInterval);
-        Shot(_shotPosition[0]);
+        /// Shot(_shotPosition[0]);
+        ShotToPlayer();
         yield return new WaitForSeconds(_shotInterval);
 
         // 공격을 끝냅니다.

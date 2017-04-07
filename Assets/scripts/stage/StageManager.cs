@@ -2,8 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
-
-
+using System.Runtime.CompilerServices;
 
 /// <summary>
 /// 스테이지 장면 관리자입니다.
@@ -194,6 +193,28 @@ public class StageManager : HDSceneManager
         get { return AudioSources[12]; }
     }
 
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool Restarting
+    {
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        get;
+        [MethodImpl(MethodImplOptions.Synchronized)]
+        set;
+    }
+    /// <summary>
+    /// 게임 관리자를 초기화합니다.
+    /// </summary>
+    void InitializeGameManager()
+    {
+        Restarting = false;
+        GameManager.Instance.DecreaseCountRequested = false;
+
+        print(GameManager.Instance.TryCount);
+    }
+
     #endregion
 
 
@@ -213,6 +234,8 @@ public class StageManager : HDSceneManager
         _map = _database.Map;
         _timeManager = _database.TimeManager;
         _bgmSource = GetComponent<AudioSource>();
+
+        InitializeGameManager();
 
         // 불러온 캐릭터를 잠깐 사용 불가능하게 합니다.
         PlayerController[] players = _database._players;
@@ -379,6 +402,8 @@ public class StageManager : HDSceneManager
     private void StageClear()
     {
         GameManager.Instance.SpawnPositionIndex = 0;
+        GameManager.Instance.RequestSetTryCount(2);
+
         StartCoroutine(CoroutineClearStage());
     }
     /// <summary>

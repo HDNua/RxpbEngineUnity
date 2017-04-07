@@ -31,7 +31,6 @@ public class GameManager
         }
     }
 
-
     #endregion
     
 
@@ -62,9 +61,18 @@ public class GameManager
     /// 맵 상태 집합입니다.
     /// </summary>
     public GameMapStatus[] MapStatuses { get { return _gameData.MapStatuses; } }
-    
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public int TryCount
+    {
+        get { return _gameData.TryCount; }
+        set { _gameData.TryCount = value; }
+    }
+
     #endregion
-    
+
 
 
 
@@ -263,6 +271,14 @@ public class GameManager
 
 
     /// <summary>
+    /// 시도 횟수를 변경합니다.
+    /// </summary>
+    /// <param name="tryCount">시도 횟수 값입니다.</param>
+    public void RequestSetTryCount(int tryCount)
+    {
+        GameData.TryCount = tryCount;
+    }
+    /// <summary>
     /// 시도 횟수 증가를 요청합니다. 보통 1UP 아이템을 먹으면 호출됩니다.
     /// </summary>
     public void RequestIncreaseTryCount()
@@ -274,14 +290,22 @@ public class GameManager
     /// </summary>
     public void RequestDecreaseTryCount()
     {
-        GameData.TryCount--;
+        if (DecreaseCountRequested == false)
+        {
+            GameData.TryCount--;
+            DecreaseCountRequested = true;
+        }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool DecreaseCountRequested { get; set; }
 
     #endregion
 
 
-    
+
 
 
     #region 구형 정의를 보관합니다.
