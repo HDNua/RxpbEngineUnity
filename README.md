@@ -1,10 +1,12 @@
 # RxpbEngineUnity
-"Rockman X: Pandora's Box" Engine using Unity3D (https://www.youtube.com/watch?v=ZEjLZwuM0Hk)
+"Rockman X: Pandora's Box" Engine using Unity3D
 
 ------------------------------------------------------------------------------
 ## What is RXPB?
 
-[![HI](https://img.youtube.com/vi/ZEjLZwuM0Hk/0.jpg)](https://www.youtube.com/embed/ZEjLZwuM0Hk)
+Introduction: http://hdnua.deviantart.com/art/RXPB-logo-676805859
+
+[![HI](https://img.youtube.com/vi/Gfz7HziVJ5E/0.jpg)](https://www.youtube.com/embed/Gfz7HziVJ5E)
 
 ------------------------------------------------------------------------------
 ## Team SnakeHead
@@ -15,7 +17,19 @@ Composer: flamme
 
 Graphic Designer: 알엑스
 
+Sprites Creator: 하루나
 
+Boss Concept Designer: <a href="http://apselhaven.deviantart.com/">ApselHaven</a>
+
+### Supporters
+
+Sprites Creator: <a href="http://irregularsaturn.deviantart.com/">IrregularSaturn</a>
+
+Sprites Creator: <a href="http://fxfreitas.deviantart.com/">FXFreitas</a>
+
+### Yet permitted resources creators
+
+Sprites Creator: <a href="http://dragonfaku.deviantart.com/">dragonfaku</a>
 
 ------------------------------------------------------------------------------
 ## 주의사항(Notice)
