@@ -25,10 +25,6 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected const float INVENCIBLE_TIME_LENGTH = 1f;
     /// <summary>
-    /// 대미지를 입은 상태가 유지되는 시간입니다.
-    /// </summary>
-    protected const float END_HURT_TIME = 0.361112f;
-    /// <summary>
     /// 벽 점프가 종료되는 시간입니다.
     /// </summary>
     protected const float WALLJUMP_END_TIME = 0.138888f;
@@ -36,6 +32,35 @@ public abstract class PlayerController : MonoBehaviour
     /// 대쉬 잔상이 유지되는 최대 시간입니다.
     /// </summary>
     protected const float DASH_AFTERIMAGE_LIFETIME = 0.05f;
+
+
+    [Obsolete("DAMAGED_TIME, BIG_DAMAGED_TIME으로 대체되었습니다.")]
+    /// <summary>
+    /// 대미지를 입은 상태가 유지되는 시간입니다.
+    /// </summary>
+    protected const float END_HURT_TIME = 0.361112f;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const float DAMAGED_TIME = 0.361f;
+    /// <summary>
+    /// 
+    /// </summary>
+    public const float BIG_DAMAGED_TIME = 1.028f;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const float DASH_BEG_TIME = 0.056f;
+    /// <summary>
+    /// 
+    /// </summary>
+    public const float DASH_RUN_TIME = 0.444f;
+    /// <summary>
+    /// 
+    /// </summary>
+    public const float DASH_END_TIME = 0.250f;
 
     #endregion
 
@@ -193,6 +218,11 @@ public abstract class PlayerController : MonoBehaviour
     /// 사망 시 효과입니다.
     /// </summary>
     public DeadEffectScript _deadEffect;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public Sprite _damagedSprite;
 
     #endregion
 
@@ -599,11 +629,13 @@ public abstract class PlayerController : MonoBehaviour
         get { return _crouching; }
         set { _Animator.SetBool("Crouching", _crouching = value); }
     }
-    
+
+    public bool _moveBlocked = false;
+
     /// <summary>
     /// 이동이 막혀있다면 true입니다.
     /// </summary>
-    protected bool MoveBlocked { get; set; }
+    protected bool MoveBlocked { get { return _moveBlocked; } set { _moveBlocked = value; } } // { get; set; }
     /// <summary>
     /// 점프가 막혀있다면 true입니다.
     /// </summary>
@@ -1305,11 +1337,23 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     public virtual void RequestDead()
     {
-        Health = 0;
-
         StopMoving();
         BlockMoving();
+
+        // 
+        Health = 0;
         _Animator.speed = 0;
+        _Animator.Stop();
+
+        // 대미지 스프라이트로 변경합니다.
+        _Renderer.sprite = _damagedSprite;
+
+        // 새 텍스쳐를 렌더러에 반영합니다.
+        MaterialPropertyBlock block = new MaterialPropertyBlock();
+        block.SetTexture("_MainTex", _damagedSprite.texture);
+        _Renderer.SetPropertyBlock(block);
+
+        // 
         Invoke("Dead", 0.5f);
     }
 
@@ -1392,8 +1436,7 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void BlockMoving()
     {
         MoveBlocked = true;
-
-        /// print("Block Moving");
+        print("Block Moving");
     }
     /// <summary>
     /// 플레이어가 이동을 요청할 수 있도록 합니다.
@@ -1401,8 +1444,7 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void UnblockMoving()
     {
         MoveBlocked = false;
-
-        /// print("Unblock Moving");
+        print("Unblock Moving");
     }
 
 
@@ -1508,9 +1550,10 @@ public abstract class PlayerController : MonoBehaviour
         UpdateHitBox();
     }
     /// <summary>
-    /// 플레이어의 대쉬를 중지합니다. (사용자의 입력에 의함)
+    /// 플레이어의 대쉬를 중지합니다.
     /// </summary>
-    protected virtual void StopDashing()
+    /// <param name="userCanceled">사용자의 입력에 의해 중지되었다면 참입니다.</param>
+    protected virtual void StopDashing(bool userCanceled = false)
     {
         // 개체의 운동 상태를 갱신합니다.
         UnblockMoving();
@@ -1538,7 +1581,6 @@ public abstract class PlayerController : MonoBehaviour
     {
         DashBlocked = false;
     }
-
 
     ///////////////////////////////////////////////////////////////////
     // 벽 타기
@@ -1868,18 +1910,21 @@ public abstract class PlayerController : MonoBehaviour
         StopFalling();
         
         // 플레이어에 대해 넉백 효과를 겁니다.
-        if (BigDamaged && IsAlive())
+        if (IsAlive())
         {
-            Vector2 force = (FacingRight ? Vector2.left : Vector2.right) * KnockbackSpeed;
-            _Velocity = new Vector2(force.x, KnockbackJumpSize);
-            StartCoroutine(CoroutineKnockback());
-        }
-        else
-        {
-            float speed = 100;
-            Vector2 force = (FacingRight ? Vector2.left : Vector2.right);
-            _Velocity = Vector2.zero;
-            _Rigidbody.AddForce(force * speed);
+            if (BigDamaged)
+            {
+                Vector2 force = (FacingRight ? Vector2.left : Vector2.right) * KnockbackSpeed;
+                _Velocity = new Vector2(force.x, KnockbackJumpSize);
+                StartCoroutine(CoroutineKnockback());
+            }
+            else
+            {
+                float speed = 100;
+                Vector2 force = (FacingRight ? Vector2.left : Vector2.right);
+                _Velocity = Vector2.zero;
+                _Rigidbody.AddForce(force * speed);
+            }
         }
     }
     /// <summary>

@@ -14,7 +14,7 @@ public class XController : PlayerController
     /// <summary>
     /// 차지 단계가 변하는 시간입니다.
     /// </summary>
-    readonly float[] CHARGE_LEVEL = { 0.2f, 0.3f, 1.7f };
+    public float[] CHARGE_LEVEL = { 0.2f, 0.3f, 1.7f };
     
     /// <summary>
     /// 샷 발사 시에 반짝이는 시간입니다.
@@ -459,12 +459,12 @@ public class XController : PlayerController
             }
             else if (Landed == false)
             {
-                StopDashing();
+                StopDashing(false);
                 Fall();
             }
             else if (IsKeyPressed("Dash") == false)
             {
-                StopDashing();
+                StopDashing(true);
             }
         }
         // 벽을 타고 있다면
@@ -1005,10 +1005,11 @@ public class XController : PlayerController
     IEnumerator CoroutineDash()
     {
         // DashBeg
+        yield return new WaitForEndOfFrame();
+        if (IsAnimationPlaying("DashBeg"))
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(DASH_BEG_TIME);
         }
-
 
         // DashRun
         if (DashJumping == false)
@@ -1023,24 +1024,43 @@ public class XController : PlayerController
             }
             _dashBoostEffect = dashBoost;
 
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(DASH_RUN_TIME);
         }
-
 
         // DashEnd (사용자 입력 중지가 아닌 기본 대쉬 중지 행동입니다.)
         if (DashJumping == false)
         {
-            StopDashing();
-            StopAirDashing();
-            StopMoving();
-            SoundEffects[3].Stop();
-            SoundEffects[4].Play();
+            StartDashEnd();
         }
 
         // 코루틴을 중지합니다.
         yield break;
     }
-    
+    /// <summary>
+    /// 대쉬 종료를 시작합니다.
+    /// </summary>
+    void StartDashEnd()
+    {
+        StopDashing(false);
+        _dashCoroutine = StartCoroutine(CoroutineDashEnd());
+    }
+    /// <summary>
+    /// 대쉬 종료 코루틴입니다.
+    /// </summary>
+    IEnumerator CoroutineDashEnd()
+    {
+        StopAirDashing();
+        StopMoving();
+        SoundEffects[3].Stop();
+        SoundEffects[4].Play();
+        BlockMoving();
+
+        yield return new WaitForSeconds(DASH_END_TIME);
+        UnblockMoving();
+
+        yield break;
+    }
+
     /// <summary>
     /// 에어 대쉬 코루틴 필드입니다.
     /// </summary>
@@ -1185,12 +1205,13 @@ public class XController : PlayerController
         _dashCoroutine = StartCoroutine(CoroutineDash());
     }
     /// <summary>
-    /// 플레이어의 대쉬를 중지합니다. (사용자의 입력에 의함)
+    /// 플레이어의 대쉬를 중지합니다.
     /// </summary>
-    protected override void StopDashing()
+    /// <param name="userCanceled">사용자의 입력에 의해 중지되었다면 참입니다.</param>
+    protected override void StopDashing(bool userCanceled)
     {
         bool wasDashing = Dashing;
-        base.StopDashing();
+        base.StopDashing(userCanceled);
         
         if (wasDashing)
         {
@@ -1200,10 +1221,32 @@ public class XController : PlayerController
                 _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
                 _dashBoostEffect = null;
             }
+            // 사용자의 입력에 의해 대쉬가 중지되었다면
+            if (userCanceled)
+            {
+                StopCoroutine(_dashCoroutine);
+                _dashCoroutine = StartCoroutine(CoroutineDashEnd());
 
-            // 코루틴을 중지합니다.
+                /**
+                 * [v6.5.0] 다음 커밋에서 삭제할 예정입니다.
+                // 코루틴을 중지합니다.
+                StopCoroutine(_dashCoroutine);
+                if (DashJumping == false)
+                {
+                    /// StopDashing();
+                    StopAirDashing();
+                    StopMoving();
+                    SoundEffects[3].Stop();
+                    SoundEffects[4].Play();
+                }
+                */
+            }
+
+            /**
+             * [v6.5.0] 다음 커밋에서 삭제할 예정입니다.
             if (_dashCoroutine != null)
             {
+                // 코루틴을 중지합니다.
                 StopCoroutine(_dashCoroutine);
                 if (DashJumping == false)
                 {
@@ -1214,6 +1257,7 @@ public class XController : PlayerController
                     SoundEffects[4].Play();
                 }
             }
+            */
         }
     }
 
@@ -1380,26 +1424,23 @@ public class XController : PlayerController
     public override void Hurt(int damage)
     {
         base.Hurt(damage);
-        
+
         // 플레이어가 생존해있다면
+        float damagedTime = 0;
         if (IsAlive())
         {
             // 대미지 음성 및 효과음을 재생합니다.
             if (BigDamaged)
             {
-                /// 
-                /// Voices[5].Play();
-                /// SoundEffects[11].Play();
                 VoiceBigDamaged.Play();
                 SoundHit.Play();
+                damagedTime = BIG_DAMAGED_TIME;
             }
             else
             {
-                /// 
-                /// Voices[4].Play();
-                /// SoundEffects[11].Play();
                 VoiceDamaged.Play();
                 SoundHit.Play();
+                damagedTime = DAMAGED_TIME;
             }
 
             // 발생한 효과를 제거합니다.
@@ -1414,7 +1455,7 @@ public class XController : PlayerController
         }
 
         // END_HURT_TIME 시간 후에 대미지를 입은 상태를 종료합니다.
-        Invoke("EndHurt", END_HURT_TIME);
+        Invoke("EndHurt", damagedTime);
     }
     /// <summary>
     /// 대미지 상태를 해제합니다.

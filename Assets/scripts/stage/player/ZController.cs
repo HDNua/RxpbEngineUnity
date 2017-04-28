@@ -384,12 +384,12 @@ public class ZController : PlayerController
             }
             else if (Landed == false)
             {
-                StopDashing();
+                StopDashing(false);
                 Fall();
             }
             else if (IsKeyPressed("Dash") == false)
             {
-                StopDashing();
+                StopDashing(true);
             }
         }
         // 벽을 타고 있다면
@@ -598,14 +598,42 @@ public class ZController : PlayerController
         // DashEnd (사용자 입력 중지가 아닌 기본 대쉬 중지 행동입니다.)
         if (DashJumping == false)
         {
-            StopDashing();
+            StartDashEnd();
+
+            /*
+            StopDashing(false);
             StopAirDashing();
             StopMoving();
             SoundEffects[3].Stop();
             SoundEffects[4].Play();
+            */
         }
 
         // 코루틴을 중지합니다.
+        yield break;
+    }
+    /// <summary>
+    /// 대쉬 종료를 시작합니다.
+    /// </summary>
+    void StartDashEnd()
+    {
+        StopDashing(false);
+        _dashCoroutine = StartCoroutine(CoroutineDashEnd());
+    }
+    /// <summary>
+    /// 대쉬 종료 코루틴입니다.
+    /// </summary>
+    IEnumerator CoroutineDashEnd()
+    {
+        StopAirDashing();
+        StopMoving();
+        SoundEffects[3].Stop();
+        SoundEffects[4].Play();
+        BlockMoving();
+
+        yield return new WaitForSeconds(DASH_END_TIME);
+        UnblockMoving();
+
         yield break;
     }
 
@@ -1223,12 +1251,13 @@ public class ZController : PlayerController
         _dashCoroutine = StartCoroutine(CoroutineDash());
     }
     /// <summary>
-    /// 플레이어의 대쉬를 중지합니다. (사용자의 입력에 의함)
+    /// 플레이어의 대쉬를 중지합니다.
     /// </summary>
-    protected override void StopDashing()
+    /// <param name="userCanceled">사용자의 입력에 의해 중지되었다면 참입니다.</param>
+    protected override void StopDashing(bool userCanceled)
     {
         bool wasDashing = Dashing;
-        base.StopDashing();
+        base.StopDashing(userCanceled);
 
         if (wasDashing)
         {
@@ -1238,7 +1267,22 @@ public class ZController : PlayerController
                 _dashBoostEffect.GetComponent<EffectScript>().RequestEnd();
                 _dashBoostEffect = null;
             }
+            // 사용자의 입력에 의해 대쉬가 중지되었다면
+            if (userCanceled)
+            {
+                // 코루틴을 중지합니다.
+                StopCoroutine(_dashCoroutine);
+                if (DashJumping == false)
+                {
+                    /// StopDashing();
+                    StopAirDashing();
+                    StopMoving();
+                    SoundEffects[3].Stop();
+                    SoundEffects[4].Play();
+                }
+            }
 
+            /**
             // 코루틴을 중지합니다.
             if (_dashCoroutine != null)
             {
@@ -1252,6 +1296,7 @@ public class ZController : PlayerController
                     SoundEffects[4].Play();
                 }
             }
+            */
         }
     }
 
@@ -1764,110 +1809,12 @@ public class ZController : PlayerController
 
     ///////////////////////////////////////////////////////////////////
     // 대쉬
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 대쉬 준비 애니메이션이 시작할 때 발생합니다.
-    /// </summary>
-    void FE_DashBegBeg()
-    {
-
-    }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 대쉬 부스트 애니메이션이 시작할 때 발생합니다.
-    /// </summary>
-    void FE_DashRunBeg()
-    {
-        // GameObject dashBoost = I_nstantiate(effects[1], dashBoostPosition.position, dashBoostPosition.rotation) as GameObject;
-        GameObject dashBoost = CloneObject(effects[1], dashBoostPosition);
-        dashBoost.transform.SetParent(groundCheck.transform);
-        if (FacingRight == false)
-        {
-            var newScale = dashBoost.transform.localScale;
-            newScale.x = FacingRight ? newScale.x : -newScale.x;
-            dashBoost.transform.localScale = newScale;
-        }
-        _dashBoostEffect = dashBoost;
-    }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 플레이어의 대쉬 상태를 종료하도록 요청합니다.
-    /// </summary>
-    void FE_DashRunEnd()
-    {
-        StopDashing();
-        StopAirDashing();
-    }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 대쉬가 사용자에 의해 중지될 때 발생합니다.
-    /// </summary>
-    void FE_DashEndBeg()
-    {
-        StopMoving();
-        SoundEffects[3].Stop();
-        SoundEffects[4].Play();
-    }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 대쉬 점프 모션이 사용자에 의해 완전히 중지되어 대기 상태로 바뀔 때 발생합니다.
-    /// </summary>
-    void FE_DashEndEnd()
-    {
-    }
 
     ///////////////////////////////////////////////////////////////////
     // 벽 타기
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 벽 타기 시에 발생합니다.
-    /// </summary>
-    void FE_SlideBeg()
-    {
-        SoundEffects[6].Play();
-    }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 벽 점프 시에 발생합니다.
-    /// </summary>
-    void FE_WallJumpBeg()
-    {
-        SoundEffects[5].Play();
-    }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 벽 점프가 종료할 때 발생합니다.
-    /// </summary>
-    void FE_WallJumpEnd()
-    {
-        UnblockSliding();
-        _Rigidbody.velocity = new Vector2(0, _Rigidbody.velocity.y);
-    }
 
     ///////////////////////////////////////////////////////////////////
     // 점프 공격
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 점프 공격 시에 발생합니다.
-    /// </summary>
-    void FE_JumpShotBeg()
-    {
-        _Animator.SetBool("AttackRequested", _attackRequested = false);
-        BlockAttacking();
-        SoundEffects[7].Play();
-    }
-    [Obsolete("[v6.1.1] 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 점프 공격이 종료할 때 발생합니다.
-    /// </summary>
-    void FE_JumpShotEnd()
-    {
-        UnblockAirDashing();
-        UnblockAttacking();
-
-        print("FE_JumpShotEnd has stopped attacking");
-        StopAttacking();
-    }
 
     #endregion
 }
