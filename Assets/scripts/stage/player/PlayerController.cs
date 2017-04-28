@@ -1374,7 +1374,7 @@ public abstract class PlayerController : MonoBehaviour
     {
         StopJumping();
         StopFalling();
-        StopDashing();
+        StopDashing(false);
         StopDashJumping();
         UnblockAirDashing();
 
@@ -1436,7 +1436,7 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void BlockMoving()
     {
         MoveBlocked = true;
-        print("Block Moving");
+        /// print("Block Moving");
     }
     /// <summary>
     /// 플레이어가 이동을 요청할 수 있도록 합니다.
@@ -1444,7 +1444,7 @@ public abstract class PlayerController : MonoBehaviour
     protected virtual void UnblockMoving()
     {
         MoveBlocked = false;
-        print("Unblock Moving");
+        /// print("Unblock Moving");
     }
 
 
@@ -1553,13 +1553,21 @@ public abstract class PlayerController : MonoBehaviour
     /// 플레이어의 대쉬를 중지합니다.
     /// </summary>
     /// <param name="userCanceled">사용자의 입력에 의해 중지되었다면 참입니다.</param>
-    protected virtual void StopDashing(bool userCanceled = false)
+    protected virtual void StopDashing(bool userCanceled)
     {
         // 개체의 운동 상태를 갱신합니다.
         UnblockMoving();
         UnblockDashing();
+
         _movingSpeed = _walkSpeed;
-        _Velocity = new Vector2(0, _Velocity.y);
+        if (userCanceled)
+        {
+            _Velocity = new Vector2(0, _Velocity.y);
+        }
+        else
+        {
+            _Velocity = new Vector2(FacingRight ? _walkSpeed : -_walkSpeed, _Velocity.y);
+        }
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Dashing = false;
@@ -1593,7 +1601,7 @@ public abstract class PlayerController : MonoBehaviour
         StopMoving();
         StopJumping();
         StopFalling();
-        StopDashing();
+        StopDashing(false);
         StopAirDashing();
         BlockDashing();
         UnblockJumping();
@@ -1905,7 +1913,7 @@ public abstract class PlayerController : MonoBehaviour
         Invencible = true;
         InputBlocked = true;
         StopMoving();
-        StopDashing();
+        StopDashing(false);
         StopJumping();
         StopFalling();
         

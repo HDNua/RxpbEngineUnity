@@ -1030,7 +1030,7 @@ public class XController : PlayerController
         // DashEnd (사용자 입력 중지가 아닌 기본 대쉬 중지 행동입니다.)
         if (DashJumping == false)
         {
-            StartDashEnd();
+            StartDashEnd(false);
         }
 
         // 코루틴을 중지합니다.
@@ -1039,9 +1039,14 @@ public class XController : PlayerController
     /// <summary>
     /// 대쉬 종료를 시작합니다.
     /// </summary>
-    void StartDashEnd()
+    /// <param name="userCanceled">사용자 입력에 의해 대쉬가 중지되었다면 참입니다.</param>
+    void StartDashEnd(bool userCanceled)
     {
-        StopDashing(false);
+        StopDashing(userCanceled);
+        if (_dashCoroutine != null)
+        {
+            StopCoroutine(_dashCoroutine);
+        }
         _dashCoroutine = StartCoroutine(CoroutineDashEnd());
     }
     /// <summary>
@@ -1050,14 +1055,13 @@ public class XController : PlayerController
     IEnumerator CoroutineDashEnd()
     {
         StopAirDashing();
-        StopMoving();
         SoundEffects[3].Stop();
         SoundEffects[4].Play();
         BlockMoving();
-
         yield return new WaitForSeconds(DASH_END_TIME);
-        UnblockMoving();
 
+        UnblockMoving();
+        _dashCoroutine = null;
         yield break;
     }
 
@@ -1224,40 +1228,9 @@ public class XController : PlayerController
             // 사용자의 입력에 의해 대쉬가 중지되었다면
             if (userCanceled)
             {
-                StopCoroutine(_dashCoroutine);
-                _dashCoroutine = StartCoroutine(CoroutineDashEnd());
-
-                /**
-                 * [v6.5.0] 다음 커밋에서 삭제할 예정입니다.
-                // 코루틴을 중지합니다.
-                StopCoroutine(_dashCoroutine);
-                if (DashJumping == false)
-                {
-                    /// StopDashing();
-                    StopAirDashing();
-                    StopMoving();
-                    SoundEffects[3].Stop();
-                    SoundEffects[4].Play();
-                }
-                */
+                StopMoving();
+                StartDashEnd(true);
             }
-
-            /**
-             * [v6.5.0] 다음 커밋에서 삭제할 예정입니다.
-            if (_dashCoroutine != null)
-            {
-                // 코루틴을 중지합니다.
-                StopCoroutine(_dashCoroutine);
-                if (DashJumping == false)
-                {
-                    /// StopDashing();
-                    StopAirDashing();
-                    StopMoving();
-                    SoundEffects[3].Stop();
-                    SoundEffects[4].Play();
-                }
-            }
-            */
         }
     }
 
@@ -1412,7 +1385,6 @@ public class XController : PlayerController
         base.Dead();
 
         // 사망 시 입자가 퍼지는 효과를 요청합니다.
-        /// _StageManager._deadEffect.RequestRun(_StageManager._player);
         _deadEffect.RequestRun(this);
         Voices[9].Play();
         SoundEffects[12].Play();

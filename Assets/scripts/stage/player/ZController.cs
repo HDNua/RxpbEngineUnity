@@ -575,8 +575,10 @@ public class ZController : PlayerController
     IEnumerator CoroutineDash()
     {
         // DashBeg
+        yield return new WaitForEndOfFrame();
+        if (IsAnimationPlaying("DashBeg"))
         {
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(DASH_BEG_TIME);
         }
 
         // DashRun
@@ -592,21 +594,13 @@ public class ZController : PlayerController
             }
             _dashBoostEffect = dashBoost;
 
-            yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(DASH_RUN_TIME);
         }
 
         // DashEnd (사용자 입력 중지가 아닌 기본 대쉬 중지 행동입니다.)
         if (DashJumping == false)
         {
-            StartDashEnd();
-
-            /*
-            StopDashing(false);
-            StopAirDashing();
-            StopMoving();
-            SoundEffects[3].Stop();
-            SoundEffects[4].Play();
-            */
+            StartDashEnd(false);
         }
 
         // 코루틴을 중지합니다.
@@ -615,9 +609,10 @@ public class ZController : PlayerController
     /// <summary>
     /// 대쉬 종료를 시작합니다.
     /// </summary>
-    void StartDashEnd()
+    /// <param name="userCanceled">사용자 입력에 의해 대쉬가 중지되었다면 참입니다.</param>
+    void StartDashEnd(bool userCanceled)
     {
-        StopDashing(false);
+        StopDashing(userCanceled);
         _dashCoroutine = StartCoroutine(CoroutineDashEnd());
     }
     /// <summary>
@@ -1270,33 +1265,9 @@ public class ZController : PlayerController
             // 사용자의 입력에 의해 대쉬가 중지되었다면
             if (userCanceled)
             {
-                // 코루틴을 중지합니다.
-                StopCoroutine(_dashCoroutine);
-                if (DashJumping == false)
-                {
-                    /// StopDashing();
-                    StopAirDashing();
-                    StopMoving();
-                    SoundEffects[3].Stop();
-                    SoundEffects[4].Play();
-                }
+                StopMoving();
+                StartDashEnd(true);
             }
-
-            /**
-            // 코루틴을 중지합니다.
-            if (_dashCoroutine != null)
-            {
-                StopCoroutine(_dashCoroutine);
-                if (DashJumping == false)
-                {
-                    /// StopDashing();
-                    StopAirDashing();
-                    StopMoving();
-                    SoundEffects[3].Stop();
-                    SoundEffects[4].Play();
-                }
-            }
-            */
         }
     }
 
