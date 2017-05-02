@@ -220,7 +220,7 @@ public abstract class PlayerController : MonoBehaviour
     public DeadEffectScript _deadEffect;
 
     /// <summary>
-    /// 
+    /// 대미지를 받았을 때의 스프라이트 이미지입니다.
     /// </summary>
     public Sprite _damagedSprite;
 
@@ -630,6 +630,9 @@ public abstract class PlayerController : MonoBehaviour
         set { _Animator.SetBool("Crouching", _crouching = value); }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public bool _moveBlocked = false;
 
     /// <summary>
@@ -767,6 +770,11 @@ public abstract class PlayerController : MonoBehaviour
     /// 감시용 속도 벡터입니다.
     /// </summary>
     public Vector2 _velocity;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public bool MustBeCrouched { get; set; }
 
     #endregion
 
@@ -967,7 +975,7 @@ public abstract class PlayerController : MonoBehaviour
     #endregion
 
 
-    public GameObject _testObject;
+    
 
 
     #region 플레이어의 상태를 갱신합니다.
@@ -2277,9 +2285,9 @@ public abstract class PlayerController : MonoBehaviour
         BoxCollider2D boxCollider = GetComponent<BoxCollider2D>();
         BoxCollider2D hitBox = _hitBoxNormal;
 
-        if ((Crouching || Dashing || AirDashing)
-            && (!DashJumping && !WallDashJumping))
+        if (IsCrouchingCondition())
         {
+            Crouching = true;
             hitBox = _hitBoxDown;
         }
 
@@ -2287,8 +2295,35 @@ public abstract class PlayerController : MonoBehaviour
         boxCollider.size = hitBox.size;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public bool IsCrouchingCondition()
+    {
+        if (IsCrouchingByEnvironment())
+        {
+            return true;
+        }
+        else if (Crouching || Dashing || AirDashing)
+        {
+            if (!DashJumping && !WallDashJumping)
+                return true;
+        }
+
+        return false;
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
+    public bool IsCrouchingByEnvironment()
+    {
+        return MustBeCrouched; // _hitBoxNormal.GetComponent<HitBoxScript>()._mustBeCrouched;
+    }
+
     #endregion
-    
+
 
 
 
@@ -2345,188 +2380,6 @@ public abstract class PlayerController : MonoBehaviour
 
 
     #region 구형 정의를 보관합니다.
-    [Obsolete("[v6.0.3] 다음 커밋에서 삭제할 예정입니다.")]
-    /// <summary>
-    /// 플레이어가 땅과 접촉했는지에 대한 필드를 갱신합니다.
-    /// </summary>
-    /// <returns>플레이어가 땅에 닿아있다면 참입니다.</returns>
-    bool UpdateLanding_dep()
-    {
-        RaycastHit2D rayB = Physics2D.Raycast(groundCheckBack.position, Vector2.down, groundCheckRadius, whatIsGround);
-        RaycastHit2D rayF = Physics2D.Raycast(groundCheckFront.position, Vector2.down, groundCheckRadius, whatIsGround);
-
-        Debug.DrawRay(groundCheckBack.position, Vector2.down, Color.red);
-        Debug.DrawRay(groundCheckFront.position, Vector2.down, Color.red);
-
-        if (Handy.DebugPoint) // PlayerController.UpdateLanding
-        {
-            Handy.Log("PlayerController.UpdateLanding");
-        }
-
-
-        if (Returning)
-        {
-            return false;
-        }
-        else if (OnGround())
-        {
-            // 절차:
-            // 1. 캐릭터에서 수직으로 내린 직선에 맞는 경사면의 법선 벡터를 구한다.
-            // 2. 법선 벡터와 이동 방향 벡터가 이루는 각도가 예각이면 내려오는 것
-            //    법선 벡터와 이동 방향 벡터가 이루는 각도가 둔각이면 올라가는 것
-            /// Handy.Log("OnGround()");
-
-
-            // 앞 부분 Ray와 뒤 부분 Ray의 경사각이 다른 경우
-            if (rayB.normal.normalized != rayF.normal.normalized)
-            {
-                bool isTouchingSlopeFromB = rayB.normal.x == 0;
-                /// Transform pos = isTouchingSlopeFromB ? groundCheckBack : groundCheckFront;
-                RaycastHit2D ray = isTouchingSlopeFromB ? rayB : rayF;
-
-                Vector2 from = FacingRight ? Vector2.right : Vector2.left;
-                float rayAngle = Vector2.Angle(from, ray.normal);
-                float rayAngleRad = Mathf.Deg2Rad * rayAngle;
-
-                float sx = _movingSpeed * Mathf.Cos(rayAngleRad);
-                float sy = _movingSpeed * Mathf.Sin(rayAngleRad);
-                float vx = FacingRight ? sx : -sx;
-
-
-                if (Readying)
-                {
-                    _Velocity = Vector2.zero;
-                }
-                else if (Jumping)
-                {
-
-                }
-                // 예각이라면 내려갑니다.
-                else if (rayAngle < 90)
-                {
-                    float vy = -sy;
-                    _Velocity = new Vector2(vx, vy);
-                }
-                // 둔각이라면 올라갑니다.
-                else if (rayAngle > 90)
-                {
-                    float vy = sy;
-                    _Velocity = new Vector2(vx, vy);
-                }
-                // 90도라면
-                else
-                {
-
-                }
-            }
-            else
-            {
-                if (Readying)
-                {
-                    _Velocity = Vector2.zero;
-                }
-            }
-
-            Landed = true;
-        }
-        else if (Jumping || Falling || Returning)
-        {
-            Landed = false;
-        }
-        else if (rayB || rayF)
-        {
-            if (Sliding)
-            {
-
-            }
-            else if (AirDashing)
-            {
-
-            }
-            else if (Spawning || Returning)
-            {
-
-            }
-            else if (Readying)
-            {
-                _Velocity = new Vector2(0, 0);
-            }
-            else if (Landed)
-            {
-                Vector3 pos = transform.position;
-                float difY;
-                if (rayB && !rayF)
-                {
-                    difY = rayB.distance / transform.localScale.y;
-                    pos.y -= difY;
-                }
-                else if (!rayB && rayF)
-                {
-                    difY = rayF.distance / transform.localScale.y;
-                    pos.y -= difY;
-                }
-                else
-                {
-                    difY = Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
-                    pos.y -= difY;
-                }
-                transform.position = pos;
-                _Velocity = new Vector2(_Velocity.x, -Mathf.Abs(_Velocity.x) * Mathf.Sin(Mathf.Deg2Rad * 60));
-                Landed = true;
-            }
-            else
-            {
-                Landed = false;
-            }
-
-
-            /**
-            if (Sliding)
-            {
-
-            }
-            else if (AirDashing)
-            {
-
-            }
-
-            // TODO: 나중에 수정해야 하지 않나 합니다.
-            else if (Spawning)
-            {
-
-            }
-
-            else
-            {
-                Vector3 pos = transform.position;
-                float difY;
-                if (rayB && !rayF)
-                {
-                    difY = rayB.distance / transform.localScale.y;
-                    pos.y -= difY;
-                }
-                else if (!rayB && rayF)
-                {
-                    difY = rayF.distance / transform.localScale.y;
-                    pos.y -= difY;
-                }
-                else
-                {
-                    difY = Mathf.Min(rayB.distance, rayF.distance) / transform.localScale.y;
-                    pos.y -= difY;
-                }
-                transform.position = pos;
-                _Velocity = new Vector2(_Velocity.x, -Mathf.Abs(_Velocity.x) * Mathf.Sin(Mathf.Deg2Rad * 60));
-                Landed = true;
-            }
-            */
-        }
-        else
-        {
-            Landed = false;
-        }
-        return Landed;
-    }
 
     #endregion
 }

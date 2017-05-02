@@ -432,6 +432,9 @@ public class XController : PlayerController
         // 대쉬 중이라면
         else if (Dashing)
         {
+            Crouching = IsCrouchingByEnvironment() || IsDownKeyPressed();
+            JumpBlocked = IsCrouchingByEnvironment();
+
             if (AirDashing)
             {
                 if (IsKeyPressed("Dash") == false)
@@ -546,7 +549,21 @@ public class XController : PlayerController
         {
             if (IsDownKeyPressed() == false)
             {
-                StopCrouching();
+                if (IsCrouchingByEnvironment())
+                {
+                    if (IsLeftKeyPressed() && FacingRight)
+                    {
+                        Flip();
+                    }
+                    else if (IsRightKeyPressed() && FacingRight == false)
+                    {
+                        Flip();
+                    }
+                }
+                else
+                {
+                    StopCrouching();
+                }
             }
             else if (IsLeftKeyPressed() && FacingRight)
             {

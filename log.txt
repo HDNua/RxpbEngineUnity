@@ -1,7 +1,12 @@
-RXPB v6.5.1
+RXPB v6.5.2 (IMPORTANT)
 
 - 대쉬 관련 조작을 전체적으로 수정.
 > 위에 거 또 함.
+
+
+* Crouching 버그 단순하게 해결.
+> Crouch가 발생하는 지역 밑에 CrouchingZone을 설정.
+  이 영역에 닿으면 Crouch로 판정한다.
 
 
 end.
