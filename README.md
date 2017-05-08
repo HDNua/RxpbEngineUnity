@@ -33,7 +33,7 @@ Sprites Creator: <a href="http://fxfreitas.deviantart.com/">FXFreitas</a>
 
 Sprites Creator: <a href="http://dragonfaku.deviantart.com/">DragonFaku</a>
 
-Sprites Creator: <a href="http://kensuyjin33.deviantart.com/">kensuygin33</a>
+Sprites Creator: <a href="http://kensuyjin33.deviantart.com/">Kensuyjin33</a>
 
 Sprites Creator: <a href="http://hypershell.deviantart.com/">Hypershell</a>
 
