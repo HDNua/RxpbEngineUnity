@@ -21,15 +21,24 @@ Sprites Creator: 하루나
 
 Boss Concept Designer: <a href="http://apselhaven.deviantart.com/">ApselHaven</a>
 
+Sprites Locator: YKH
+
+Sprites Locator: KDY
+
 ### Supporters
 
 Sprites Creator: <a href="http://irregularsaturn.deviantart.com/">IrregularSaturn</a>
 
 Sprites Creator: <a href="http://fxfreitas.deviantart.com/">FXFreitas</a>
 
+Sprites Creator: <a href="http://dragonfaku.deviantart.com/">DragonFaku</a>
+
+Sprites Creator: <a href="http://kensuyjin33.deviantart.com/">Kensuyjin33</a>
+
+Sprites Creator: <a href="http://hypershell.deviantart.com/">Hypershell</a>
+
 ### Yet permitted resources creators
 
-Sprites Creator: <a href="http://dragonfaku.deviantart.com/">dragonfaku</a>
 
 ------------------------------------------------------------------------------
 ## 주의사항(Notice)
