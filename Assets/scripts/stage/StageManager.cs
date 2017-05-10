@@ -211,8 +211,6 @@ public class StageManager : HDSceneManager
     {
         Restarting = false;
         GameManager.Instance.DecreaseCountRequested = false;
-
-        print(GameManager.Instance.TryCount);
     }
 
     #endregion
@@ -529,6 +527,7 @@ public class StageManager : HDSceneManager
         AudioSource audioSource = AudioSources[item.SoundEffectIndexes[0]];
 
         // 체력을 회복하는 루프입니다.
+        RequestBlockInput();
         for (int i = 0, len = item._itemValue; i < len; ++i)
         {
             // 루프 진입시마다 시작 시간을 초기화합니다.
@@ -557,6 +556,7 @@ public class StageManager : HDSceneManager
         Unfreeze();
 
         // 코루틴을 종료합니다.
+        RequestUnblockInput();
         yield break;
     }
     /// <summary>
@@ -676,6 +676,21 @@ public class StageManager : HDSceneManager
     public virtual void RequestUnblockMoving()
     {
         throw new NotImplementedException();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public virtual void RequestBlockInput()
+    {
+        MainPlayer.RequestBlockInput();
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    public virtual void RequestUnblockInput()
+    {
+        MainPlayer.RequestUnblockInput();
     }
 
     /// <summary>

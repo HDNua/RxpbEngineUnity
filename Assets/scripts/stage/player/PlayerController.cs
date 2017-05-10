@@ -33,32 +33,25 @@ public abstract class PlayerController : MonoBehaviour
     /// </summary>
     protected const float DASH_AFTERIMAGE_LIFETIME = 0.05f;
 
-
-    [Obsolete("DAMAGED_TIME, BIG_DAMAGED_TIME으로 대체되었습니다.")]
     /// <summary>
-    /// 대미지를 입은 상태가 유지되는 시간입니다.
-    /// </summary>
-    protected const float END_HURT_TIME = 0.361112f;
-
-    /// <summary>
-    /// 
+    /// 대미지를 입는 시간입니다.
     /// </summary>
     public const float DAMAGED_TIME = 0.361f;
     /// <summary>
-    /// 
+    /// 큰 대미지를 입는 시간입니다.
     /// </summary>
     public const float BIG_DAMAGED_TIME = 1.028f;
 
     /// <summary>
-    /// 
+    /// 대쉬 시작 모션 재생 시간입니다.
     /// </summary>
     public const float DASH_BEG_TIME = 0.056f;
     /// <summary>
-    /// 
+    /// 대쉬 진행 모션 재생 시간입니다.
     /// </summary>
     public const float DASH_RUN_TIME = 0.444f;
     /// <summary>
-    /// 
+    /// 대쉬 종료 모션 재생 시간입니다.
     /// </summary>
     public const float DASH_END_TIME = 0.250f;
 
@@ -317,9 +310,12 @@ public abstract class PlayerController : MonoBehaviour
             return false;
 
         // return (InputBlocked == false && Input.GetKey(KeyCode.LeftArrow));
+        bool ret;
         if (_playerIndex < 0)
-            return Input.GetAxis("Horizontal") == -1; // Input.GetKey(KeyCode.LeftArrow);
-        return Input.GetAxis("Horizontal" + _playerIndex) == -1;
+            ret = Input.GetAxis("Horizontal") == -1; // Input.GetKey(KeyCode.LeftArrow);
+        else
+            ret = Input.GetAxis("Horizontal" + _playerIndex) == -1;
+        return LeftKeyPressed = ret;
     }
     /// <summary>
     /// 오른쪽 키가 눌려있는지 확인합니다.
@@ -331,9 +327,12 @@ public abstract class PlayerController : MonoBehaviour
             return false;
 
         // return (InputBlocked == false && Input.GetKey(KeyCode.RightArrow));
+        bool ret;
         if (_playerIndex < 0)
-            return Input.GetAxis("Horizontal") == 1; // Input.GetKey(KeyCode.RightArrow);
-        return Input.GetAxis("Horizontal" + _playerIndex) == 1;
+            ret = Input.GetAxis("Horizontal") == 1; // Input.GetKey(KeyCode.RightArrow);
+        else
+            ret = Input.GetAxis("Horizontal" + _playerIndex) == 1;
+        return RightKeyPressed = ret;
     }
     /// <summary>
     /// 위쪽 키가 눌려있는지 확인합니다.
@@ -345,9 +344,12 @@ public abstract class PlayerController : MonoBehaviour
             return false;
 
         // return (InputBlocked == false && Input.GetKey(KeyCode.UpArrow));
+        bool ret;
         if (_playerIndex < 0)
-            return Input.GetAxis("Vertical") == 1; // Input.GetKey(KeyCode.UpArrow);
-        return Input.GetAxis("Vertical" + _playerIndex) == 1;
+            ret = Input.GetAxis("Vertical") == 1; // Input.GetKey(KeyCode.UpArrow);
+        else
+            ret = Input.GetAxis("Vertical" + _playerIndex) == 1;
+        return UpKeyPressed = ret;
     }
     /// <summary>
     /// 아래쪽 키가 눌려있는지 확인합니다.
@@ -359,14 +361,66 @@ public abstract class PlayerController : MonoBehaviour
             return false;
 
         // return (InputBlocked == false && Input.GetKey(KeyCode.DownArrow));
+        bool ret;
         if (_playerIndex < 0)
-            return Input.GetAxis("Vertical") == -1; // Input.GetKey(KeyCode.DownArrow);
-        return Input.GetAxis("Vertical" + _playerIndex) == -1;
+            ret = Input.GetAxis("Vertical") == -1; // Input.GetKey(KeyCode.DownArrow);
+        else
+            ret = Input.GetAxis("Vertical" + _playerIndex) == -1;
+        return DownKeyPressed = ret;
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _leftKeyPressed;
+    /// <summary>
+    /// 
+    /// </summary>
+    protected bool LeftKeyPressed
+    {
+        get { return _leftKeyPressed; }
+        set { _Animator.SetBool("LeftKeyPressed", _leftKeyPressed = value); }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _rightKeyPressed;
+    /// <summary>
+    /// 
+    /// </summary>
+    protected bool RightKeyPressed
+    {
+        get { return _rightKeyPressed; }
+        set { _Animator.SetBool("RightKeyPressed", _rightKeyPressed = value); }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _upKeyPressed;
+    /// <summary>
+    /// 
+    /// </summary>
+    protected bool UpKeyPressed
+    {
+        get { return _upKeyPressed; }
+        set { _Animator.SetBool("UpKeyPressed", _upKeyPressed = value); }
+    }
+    /// <summary>
+    /// 
+    /// </summary>
+    bool _downKeyPressed;
+    /// <summary>
+    /// 
+    /// </summary>
+    protected bool DownKeyPressed
+    {
+        get { return _downKeyPressed; }
+        set { _Animator.SetBool("DownKeyPressed", _downKeyPressed = value); }
     }
 
     #endregion
 
-    
+
 
 
 
@@ -631,14 +685,18 @@ public abstract class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// 이동이 막혀있다면 참입니다.
     /// </summary>
     public bool _moveBlocked = false;
 
     /// <summary>
     /// 이동이 막혀있다면 true입니다.
     /// </summary>
-    protected bool MoveBlocked { get { return _moveBlocked; } set { _moveBlocked = value; } } // { get; set; }
+    protected bool MoveBlocked
+    {
+        get { return _moveBlocked; }
+        set { _moveBlocked = value; }
+    } // { get; set; }
     /// <summary>
     /// 점프가 막혀있다면 true입니다.
     /// </summary>
@@ -772,7 +830,7 @@ public abstract class PlayerController : MonoBehaviour
     public Vector2 _velocity;
 
     /// <summary>
-    /// 
+    /// 반드시 숙여야 한다면 참입니다.
     /// </summary>
     public bool MustBeCrouched { get; set; }
 
@@ -783,22 +841,21 @@ public abstract class PlayerController : MonoBehaviour
 
 
     #region 추상 프로퍼티를 정의합니다.
-
     /// <summary>
-    /// 
+    /// 대미지를 입었을 때의 음성입니다.
     /// </summary>
     protected abstract AudioSource VoiceDamaged { get; }
     /// <summary>
-    /// 
+    /// 큰 대미지를 입었을 때의 음성입니다.
     /// </summary>
     protected abstract AudioSource VoiceBigDamaged { get; }
     /// <summary>
-    /// 
+    /// 위험 상태 음성입니다.
     /// </summary>
     protected abstract AudioSource VoiceDanger { get; }
 
     /// <summary>
-    /// 
+    /// 피격 효과음입니다.
     /// </summary>
     protected abstract AudioSource SoundHit { get; }
 
@@ -1614,22 +1671,51 @@ public abstract class PlayerController : MonoBehaviour
         BlockDashing();
         UnblockJumping();
         UnblockAirDashing();
-        _Velocity = new Vector2(0, -_slideSpeed);
 
-        // 개체의 운동에 따른 효과를 처리합니다.
-        GameObject slideFog = CloneObject(effects[2], slideFogPosition);
-        slideFog.transform.SetParent(groundCheck.transform);
-        if (FacingRight == false)
+        /// _Velocity = new Vector2(0, -_slideSpeed);
+        _Velocity = new Vector2(0, 0);
+
+        if (false)
         {
-            var newScale = slideFog.transform.localScale;
-            newScale.x = FacingRight ? newScale.x : -newScale.x;
-            slideFog.transform.localScale = newScale;
+            // 개체의 운동에 따른 효과를 처리합니다.
+            GameObject slideFog = CloneObject(effects[2], slideFogPosition);
+            slideFog.transform.SetParent(groundCheck.transform);
+            if (FacingRight == false)
+            {
+                var newScale = slideFog.transform.localScale;
+                newScale.x = FacingRight ? newScale.x : -newScale.x;
+                slideFog.transform.localScale = newScale;
+            }
+            _slideFogEffect = slideFog;
         }
-        _slideFogEffect = slideFog;
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Sliding = true;
+
+        // 
+        Invoke("InvokeSliding", SLIDE_BEG_TIME);
     }
+    void InvokeSliding()
+    {
+        if (Sliding)
+        {
+            // 개체의 운동에 따른 효과를 처리합니다.
+            GameObject slideFog = CloneObject(effects[2], slideFogPosition);
+            slideFog.transform.SetParent(groundCheck.transform);
+            if (FacingRight == false)
+            {
+                var newScale = slideFog.transform.localScale;
+                newScale.x = FacingRight ? newScale.x : -newScale.x;
+                slideFog.transform.localScale = newScale;
+            }
+            _slideFogEffect = slideFog;
+
+            // 
+            _Velocity = new Vector2(0, -_slideSpeed);
+        }
+    }
+    float SLIDE_BEG_TIME = 0.133f;
+
     /// <summary>
     /// 플레이어의 벽 타기를 중지합니다.
     /// </summary>

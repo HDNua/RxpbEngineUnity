@@ -194,20 +194,20 @@ public class XController : PlayerController
 
     #region 추상 프로퍼티를 구현합니다.
     /// <summary>
-    /// 
+    /// 대미지를 입었을 때의 음성입니다.
     /// </summary>
     protected override AudioSource VoiceDamaged { get { return Voices[4]; } }
     /// <summary>
-    /// 
+    /// 큰 대미지를 입었을 때의 음성입니다.
     /// </summary>
     protected override AudioSource VoiceBigDamaged { get { return Voices[5]; } }
     /// <summary>
-    /// 
+    /// 위험 상태 음성입니다.
     /// </summary>
     protected override AudioSource VoiceDanger { get { return Voices[6]; } }
 
     /// <summary>
-    /// 
+    /// 피격 효과음입니다.
     /// </summary>
     protected override AudioSource SoundHit { get { return SoundEffects[11]; } }
     
@@ -386,8 +386,7 @@ public class XController : PlayerController
                 if (SlideBlocked)
                 {
                     // 슬라이드가 막힌 경우에는 그냥 떨어집니다.
-                    _Velocity = new Vector2
-                        (_Velocity.x, _Velocity.y - _jumpDecSize);
+                    _Velocity = new Vector2(_Velocity.x, _Velocity.y - _jumpDecSize);
                 }
                 else
                 {
@@ -1045,7 +1044,7 @@ public class XController : PlayerController
         }
 
         // DashEnd (사용자 입력 중지가 아닌 기본 대쉬 중지 행동입니다.)
-        if (DashJumping == false)
+        if (DashJumping == false && Landed)
         {
             StartDashEnd(false);
         }

@@ -10,6 +10,86 @@ using UnityEngine;
 /// </summary>
 public class ZController : PlayerController
 {
+    #region 상수를 정의합니다.
+    /// <summary>
+    /// 
+    /// </summary>
+    public const float FRAME_INTERVAL_36 = 0.027777f;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public float SLIDE_ATTACK_INTERVAL_2 = 2 * FRAME_INTERVAL_36;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float SLIDE_ATTACK_INTERVAL_1 = 1 * FRAME_INTERVAL_36;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public float CROUCH_ATTACK_TIME_1 = 1 * FRAME_INTERVAL_36;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public float JUMP_ATTACK_TIME_2 = 2 * FRAME_INTERVAL_36;
+    /// <summary>
+    /// 
+    /// </summary>
+    public float JUMP_ATTACK_TIME_1 = 1 * FRAME_INTERVAL_36;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _ATTACK1_RUN_INDEX = 1 * FRAME_INTERVAL_36; // 0.03
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _ATTACK1_END_INDEX = 2 * FRAME_INTERVAL_36; // 0.07
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _ATTACK2_RUN_INDEX1 = 1 * FRAME_INTERVAL_36; // 0.01
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _ATTACK2_RUN_INDEX2 = 2 * FRAME_INTERVAL_36; // 0.03
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _ATTACK2_END_INDEX = 3 * FRAME_INTERVAL_36; // 0.05
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _ATTACK3_RUN_INDEX1 = 1 * FRAME_INTERVAL_36; // 0.03
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _ATTACK3_RUN_INDEX2 = 2 * FRAME_INTERVAL_36; // 0.04
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _ATTACK3_RUN_INDEX3 = 3 * FRAME_INTERVAL_36; // 0.05
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _ATTACK3_RUN_INDEX4 = 4 * FRAME_INTERVAL_36; // 0.06
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _ATTACK3_RUN_INDEX5 = 5 * FRAME_INTERVAL_36; // 0.07
+    /// <summary>
+    /// 
+    /// </summary>
+    public float _ATTACK3_END_INDEX = 6 * FRAME_INTERVAL_36; // 0.08
+
+    #endregion
+
+
+
     #region 효과 객체를 보관합니다.
     /// <summary>
     /// 
@@ -29,25 +109,30 @@ public class ZController : PlayerController
     public GameObject[] _attackRange;
 
     /// <summary>
-    /// 
+    /// 공격이 막혀있다면 참입니다.
     /// </summary>
     bool _attackBlocked;
     /// <summary>
-    /// 
+    /// 공격 중이라면 참입니다.
     /// </summary>
     bool _attacking;
     /// <summary>
-    /// 
+    /// 공격이 요청된 상태라면 참입니다.
     /// </summary>
     bool _attackRequested;
 
     /// <summary>
-    /// 
+    /// 위혐 경고 효과음이 재생되었다면 참입니다.
     /// </summary>
     bool dangerVoicePlayed = false;
 
     /// <summary>
-    /// 
+    /// 공격 횟수입니다.
+    /// </summary>
+    int _attackCount = 0;
+
+    /// <summary>
+    /// 공격이 막혀있다면 참입니다.
     /// </summary>
     bool AttackBlocked
     {
@@ -55,7 +140,7 @@ public class ZController : PlayerController
         set { _attackBlocked = value; }
     }
     /// <summary>
-    /// 
+    /// 공격 중이라면 참입니다.
     /// </summary>
     bool Attacking
     {
@@ -63,7 +148,7 @@ public class ZController : PlayerController
         set { _Animator.SetBool("Attacking", _attacking = value); }
     }
     /// <summary>
-    /// 
+    /// 공격이 요청된 상태라면 참입니다.
     /// </summary>
     bool AttackRequested
     {
@@ -72,7 +157,7 @@ public class ZController : PlayerController
     }
 
     /// <summary>
-    /// 
+    /// 공격 횟수입니다.
     /// </summary>
     int AttackCount
     {
@@ -83,7 +168,7 @@ public class ZController : PlayerController
     /// <summary>
     /// 
     /// </summary>
-    public int _attackCount = 0;
+    public float _attackTime = 0f;
 
     #endregion
 
@@ -93,40 +178,38 @@ public class ZController : PlayerController
 
     #region 추상 프로퍼티를 구현합니다.
     /// <summary>
-    /// 
+    /// 대미지를 입었을 때의 음성입니다.
     /// </summary>
     protected override AudioSource VoiceDamaged { get { return Voices[5]; } }
     /// <summary>
-    /// 
+    /// 큰 대미지를 입었을 때의 음성입니다.
     /// </summary>
     protected override AudioSource VoiceBigDamaged { get { return Voices[6]; } }
     /// <summary>
-    /// 
+    /// 위험 상태 음성입니다.
     /// </summary>
     protected override AudioSource VoiceDanger { get { return Voices[7]; } }
 
     /// <summary>
-    /// 
+    /// 피격 효과음입니다.
     /// </summary>
     protected override AudioSource SoundHit { get { return SoundEffects[8]; } }
-
-
-
+    
     /// <summary>
-    /// 
+    /// 공격 1 음성입니다.
     /// </summary>
     protected AudioSource VoiceAttack1 { get { return Voices[1]; } }
     /// <summary>
-    /// 
+    /// 공격 2 음성입니다.
     /// </summary>
     protected AudioSource VoiceAttack2 { get { return Voices[2]; } }
     /// <summary>
-    /// 
+    /// 공격 3 음성입니다.
     /// </summary>
     protected AudioSource VoiceAttack3 { get { return Voices[3]; } }
 
     /// <summary>
-    /// 
+    /// 세이버 효과음입니다.
     /// </summary>
     protected AudioSource SoundSaber { get { return SoundEffects[7]; } }
 
@@ -281,6 +364,17 @@ public class ZController : PlayerController
             {
                 JumpAttack();
             }
+            else if (Dashing)
+            {
+                if (IsDownKeyPressed())
+                {
+                    DashAttack();
+                }
+                else
+                {
+                    Attack();
+                }
+            }
             else if (Crouching)
             {
                 CrouchAttack();
@@ -317,22 +411,21 @@ public class ZController : PlayerController
             {
                 if (SlideBlocked)
                 {
-
+                    // 슬라이드가 막힌 경우에는 그냥 떨어집니다.
+                    _Velocity = new Vector2(_Velocity.x, _Velocity.y - _jumpDecSize);
                 }
                 else
                 {
                     Slide();
                 }
             }
-            else if (IsKeyPressed("Jump") == false
-                || _Rigidbody.velocity.y <= 0)
+            else if (IsKeyPressed("Jump") == false || _Velocity.y <= 0)
             {
                 Fall();
             }
             else
             {
-                _Rigidbody.velocity = new Vector2
-                    (_Rigidbody.velocity.x, _Rigidbody.velocity.y - _jumpDecSize);
+                _Velocity = new Vector2(_Velocity.x, _Velocity.y - _jumpDecSize);
             }
         }
         // 떨어지고 있다면
@@ -347,7 +440,8 @@ public class ZController : PlayerController
             {
                 if (SlideBlocked)
                 {
-
+                    float vy = _Velocity.y - _jumpDecSize;
+                    _Velocity = new Vector2(_Velocity.x, vy > -16 ? vy : -16);
                 }
                 else
                 {
@@ -356,14 +450,16 @@ public class ZController : PlayerController
             }
             else
             {
-                float vy = _Rigidbody.velocity.y - _jumpDecSize;
-                _Rigidbody.velocity = new Vector2
-                    (_Rigidbody.velocity.x, vy > -16 ? vy : -16);
+                float vy = _Velocity.y - _jumpDecSize;
+                _Velocity = new Vector2(_Velocity.x, vy > -16 ? vy : -16);
             }
         }
         // 대쉬 중이라면
         else if (Dashing)
         {
+            Crouching = IsCrouchingByEnvironment() || IsDownKeyPressed();
+            JumpBlocked = IsCrouchingByEnvironment();
+
             if (AirDashing)
             {
                 if (IsKeyPressed("Dash") == false)
@@ -405,6 +501,9 @@ public class ZController : PlayerController
                 StopSliding();
                 Fall();
             }
+            else if (_Velocity.y == 0f)
+            {
+            }
         }
         // 벽을 밀고 있다면
         else if (Pushing)
@@ -440,7 +539,7 @@ public class ZController : PlayerController
             // 대쉬 중에 공중에 뜬 경우
             else if (Landed == false)
             {
-                if (SlideBlocked)
+                if (SlideBlocked && WallJumping)
                 {
 
                 }
@@ -467,7 +566,21 @@ public class ZController : PlayerController
         {
             if (IsDownKeyPressed() == false)
             {
-                StopCrouching();
+                if (IsCrouchingByEnvironment())
+                {
+                    if (IsLeftKeyPressed() && FacingRight)
+                    {
+                        Flip();
+                    }
+                    else if (IsRightKeyPressed() && FacingRight == false)
+                    {
+                        Flip();
+                    }
+                }
+                else
+                {
+                    StopCrouching();
+                }
             }
             else if (IsLeftKeyPressed() && FacingRight)
             {
@@ -598,7 +711,7 @@ public class ZController : PlayerController
         }
 
         // DashEnd (사용자 입력 중지가 아닌 기본 대쉬 중지 행동입니다.)
-        if (DashJumping == false)
+        if (DashJumping == false && Landed)
         {
             StartDashEnd(false);
         }
@@ -613,6 +726,10 @@ public class ZController : PlayerController
     void StartDashEnd(bool userCanceled)
     {
         StopDashing(userCanceled);
+        if (_dashCoroutine != null)
+        {
+            StopCoroutine(_dashCoroutine);
+        }
         _dashCoroutine = StartCoroutine(CoroutineDashEnd());
     }
     /// <summary>
@@ -621,14 +738,14 @@ public class ZController : PlayerController
     IEnumerator CoroutineDashEnd()
     {
         StopAirDashing();
-        StopMoving();
         SoundEffects[3].Stop();
         SoundEffects[4].Play();
         BlockMoving();
 
         yield return new WaitForSeconds(DASH_END_TIME);
-        UnblockMoving();
 
+        UnblockMoving();
+        _dashCoroutine = null;
         yield break;
     }
 
@@ -709,52 +826,12 @@ public class ZController : PlayerController
         yield break;
     }
 
-    public float _time = 0f;
-    public const float FRAME_INTERVAL_36 = 0.027777f;
-
-    public float SLIDE_ATTACK_INTERVAL_2 = 2 * FRAME_INTERVAL_36;
-    public float SLIDE_ATTACK_INTERVAL_1 = 1 * FRAME_INTERVAL_36;
-
-    public float CROUCH_ATTACK_TIME_1 = 1 * FRAME_INTERVAL_36;
-    public float JUMP_ATTACK_TIME_2 = 2 * FRAME_INTERVAL_36;
-    public float JUMP_ATTACK_TIME_1 = 1 * FRAME_INTERVAL_36;
-
-    public float _ATTACK1_RUN_INDEX = 1 * FRAME_INTERVAL_36; // 0.03
-    public float _ATTACK1_END_INDEX = 2 * FRAME_INTERVAL_36; // 0.07
-
-    public float _ATTACK2_RUN_INDEX1 = 1 * FRAME_INTERVAL_36; // 0.01
-    public float _ATTACK2_RUN_INDEX2 = 2 * FRAME_INTERVAL_36; // 0.03
-    public float _ATTACK2_END_INDEX = 3 * FRAME_INTERVAL_36; // 0.05
-
-    public float _ATTACK3_RUN_INDEX1 = 1 * FRAME_INTERVAL_36; // 0.03
-    public float _ATTACK3_RUN_INDEX2 = 2 * FRAME_INTERVAL_36; // 0.04
-    public float _ATTACK3_RUN_INDEX3 = 3 * FRAME_INTERVAL_36; // 0.05
-    public float _ATTACK3_RUN_INDEX4 = 4 * FRAME_INTERVAL_36; // 0.06
-    public float _ATTACK3_RUN_INDEX5 = 5 * FRAME_INTERVAL_36; // 0.07
-    public float _ATTACK3_END_INDEX = 6 * FRAME_INTERVAL_36; // 0.08
-
-    /*
-    public float _ATTACK1_RUN_INDEX = 1 * FRAME_INTERVAL_36; // 0.03
-    public float _ATTACK1_END_INDEX = 2 * FRAME_INTERVAL_36; // 0.07
-
-    public float _ATTACK2_RUN_INDEX1 = 1 * FRAME_INTERVAL_36; // 0.01
-    public float _ATTACK2_RUN_INDEX2 = 2 * FRAME_INTERVAL_36; // 0.03
-    public float _ATTACK2_END_INDEX = 3 * FRAME_INTERVAL_36; // 0.05
-
-    public float _ATTACK3_RUN_INDEX1 = 1 * FRAME_INTERVAL_36; // 0.03
-    public float _ATTACK3_RUN_INDEX2 = 2 * FRAME_INTERVAL_36; // 0.04
-    public float _ATTACK3_RUN_INDEX3 = 3 * FRAME_INTERVAL_36; // 0.05
-    public float _ATTACK3_RUN_INDEX4 = 4 * FRAME_INTERVAL_36; // 0.06
-    public float _ATTACK3_RUN_INDEX5 = 5 * FRAME_INTERVAL_36; // 0.07
-    public float _ATTACK3_END_INDEX = 6 * FRAME_INTERVAL_36; // 0.08
-    */
-
     /// <summary>
     /// 공격 코루틴에 대한 포인터입니다.
     /// </summary>
     Coroutine _coroutineAttack = null;
     /// <summary>
-    /// 
+    /// 벽 공격 코루틴입니다.
     /// </summary>
     IEnumerator CoroutineSlideAttack()
     {
@@ -763,7 +840,7 @@ public class ZController : PlayerController
 
         // 
         yield return new WaitForEndOfFrame();
-        _time = 0;
+        _attackTime = 0;
         while (IsAnimationPlaying("SlideAttack") == false)
             yield return false;
 
@@ -773,21 +850,21 @@ public class ZController : PlayerController
         float length = GetCurrentAnimationLength();
 
         // 
-        while (_time < length)
+        while (_attackTime < length)
         {
             // 
-            if (_time > SLIDE_ATTACK_INTERVAL_2)
+            if (_attackTime > SLIDE_ATTACK_INTERVAL_2)
             {
                 ActivateAttackRange(12);
                 DeactivateAttackRange(11);
             }
-            else if (_time > SLIDE_ATTACK_INTERVAL_1)
+            else if (_attackTime > SLIDE_ATTACK_INTERVAL_1)
             {
                 ActivateAttackRange(11);
             }
 
             // 
-            _time += Time.deltaTime;
+            _attackTime += Time.deltaTime;
             yield return false;
         }
 
@@ -799,7 +876,7 @@ public class ZController : PlayerController
         yield break;
     }
     /// <summary>
-    /// 
+    /// 숙인 상태 공격 코루틴입니다.
     /// </summary>
     IEnumerator CoroutineCrouchAttack()
     {
@@ -812,7 +889,7 @@ public class ZController : PlayerController
 
         // 
         yield return new WaitForEndOfFrame();
-        _time = 0;
+        _attackTime = 0;
         while (IsAnimationPlaying("CrouchAttack") == false)
             yield return false;
 
@@ -820,16 +897,60 @@ public class ZController : PlayerController
         float length = GetCurrentAnimationLength();
 
         // 
-        while (_time < length)
+        while (_attackTime < length)
         {
             // 
-            if (_time > CROUCH_ATTACK_TIME_1)
+            if (_attackTime > CROUCH_ATTACK_TIME_1)
             {
                 ActivateAttackRange(10);
             }
 
             // 
-            _time += Time.deltaTime;
+            _attackTime += Time.deltaTime;
+            yield return false;
+        }
+
+        // 
+        DeactivateAttackRange(10);
+        StopAttacking();
+        UnblockMoving();
+        UnblockAttacking();
+        yield break;
+    }
+    /// <summary>
+    /// 대쉬 공격 코루틴입니다.
+    /// </summary>
+    IEnumerator CoroutineDashAttack()
+    {
+        // 
+        BlockMoving();
+        BlockAttacking();
+
+        // 
+        SoundSaber.Play();
+
+        // 
+        yield return new WaitForEndOfFrame();
+        _attackTime = 0;
+        /**
+        while (IsAnimationPlaying("CrouchAttack") == false)
+            yield return false;
+        */
+
+        AttackRequested = false;
+        float length = GetCurrentAnimationLength();
+
+        // 
+        while (_attackTime < length)
+        {
+            // 
+            if (_attackTime > CROUCH_ATTACK_TIME_1)
+            {
+                ActivateAttackRange(10);
+            }
+
+            // 
+            _attackTime += Time.deltaTime;
             yield return false;
         }
 
@@ -849,7 +970,7 @@ public class ZController : PlayerController
 
         // 
         yield return new WaitForEndOfFrame();
-        _time = 0;
+        _attackTime = 0;
         while (IsAnimationPlaying("AirAttack") == false)
             yield return false;
 
@@ -858,21 +979,21 @@ public class ZController : PlayerController
         float length = GetCurrentAnimationLength();
 
         // 
-        while (_time < length)
+        while (_attackTime < length)
         {
             // 
-            if (_time > JUMP_ATTACK_TIME_2)
+            if (_attackTime > JUMP_ATTACK_TIME_2)
             {
                 ActivateAttackRange(9);
                 DeactivateAttackRange(8);
             }
-            else if (_time > JUMP_ATTACK_TIME_1)
+            else if (_attackTime > JUMP_ATTACK_TIME_1)
             {
                 ActivateAttackRange(8);
             }
 
             // 
-            _time += Time.deltaTime;
+            _attackTime += Time.deltaTime;
             yield return false;
         }
 
@@ -893,7 +1014,7 @@ public class ZController : PlayerController
         {
             // 
             yield return new WaitForEndOfFrame();
-            _time = 0;
+            _attackTime = 0;
             frameEventOccurred = false;
             while (IsAnimationPlaying("Attack1") == false)
                 yield return false;
@@ -906,18 +1027,18 @@ public class ZController : PlayerController
 
                 if (frameEventOccurred == false)
                 {
-                    if (_time > _ATTACK1_END_INDEX)
+                    if (_attackTime > _ATTACK1_END_INDEX)
                     {
                         FE_Attack1_3end();
                         frameEventOccurred = true;
                     }
-                    else if (_time > _ATTACK1_RUN_INDEX)
+                    else if (_attackTime > _ATTACK1_RUN_INDEX)
                     {
                         FE_Attack1_2run();
                     }
                 }
 
-                _time += Time.deltaTime;
+                _attackTime += Time.deltaTime;
                 yield return false;
             }
             if (AttackRequested == false)
@@ -927,7 +1048,7 @@ public class ZController : PlayerController
 
             // 
             yield return new WaitForEndOfFrame();
-            _time = 0;
+            _attackTime = 0;
             frameEventOccurred = false;
             while (IsAnimationPlaying("Attack2") == false)
                 yield return false;
@@ -940,22 +1061,22 @@ public class ZController : PlayerController
 
                 if (frameEventOccurred == false)
                 {
-                    if (_time > _ATTACK2_END_INDEX)
+                    if (_attackTime > _ATTACK2_END_INDEX)
                     {
                         FE_Attack2_3end();
                         frameEventOccurred = true;
                     }
-                    else if (_time > _ATTACK2_RUN_INDEX2)
+                    else if (_attackTime > _ATTACK2_RUN_INDEX2)
                     {
                         FE_Attack2_2run_2();
                     }
-                    else if (_time > _ATTACK2_RUN_INDEX1)
+                    else if (_attackTime > _ATTACK2_RUN_INDEX1)
                     {
                         FE_Attack2_2run_1();
                     }
                 }
 
-                _time += Time.deltaTime;
+                _attackTime += Time.deltaTime;
                 yield return false;
             }
             if (AttackRequested == false)
@@ -965,7 +1086,7 @@ public class ZController : PlayerController
 
             // 
             yield return new WaitForEndOfFrame();
-            _time = 0;
+            _attackTime = 0;
             frameEventOccurred = false;
             while (IsAnimationPlaying("Attack3") == false)
                 yield return false;
@@ -978,67 +1099,39 @@ public class ZController : PlayerController
 
                 if (frameEventOccurred == false)
                 {
-                    if (_time > _ATTACK3_END_INDEX)
+                    if (_attackTime > _ATTACK3_END_INDEX)
                     {
                         frameEventOccurred = true;
                     }
-                    else if (_time > _ATTACK3_RUN_INDEX5)
+                    else if (_attackTime > _ATTACK3_RUN_INDEX5)
                     {
                         FE_Attack3_2run_5();
                     }
-                    else if (_time > _ATTACK3_RUN_INDEX4)
+                    else if (_attackTime > _ATTACK3_RUN_INDEX4)
                     {
                         FE_Attack3_2run_4();
                     }
-                    else if (_time > _ATTACK3_RUN_INDEX3)
+                    else if (_attackTime > _ATTACK3_RUN_INDEX3)
                     {
                         FE_Attack3_2run_3();
                     }
-                    else if (_time > _ATTACK3_RUN_INDEX2)
+                    else if (_attackTime > _ATTACK3_RUN_INDEX2)
                     {
                         FE_Attack3_2run_2();
                     }
-                    else if (_time > _ATTACK3_RUN_INDEX1)
+                    else if (_attackTime > _ATTACK3_RUN_INDEX1)
                     {
                         FE_Attack3_2run_2();
                     }
                 }
 
-                _time += Time.deltaTime;
+                _attackTime += Time.deltaTime;
                 yield return false;
             }
             if (AttackRequested == false)
             {
                 yield break;
             }
-
-            /**
-            yield return new WaitForSeconds(0.2f);
-            AttackRequested = false;
-            while (IsAnimationPlaying("Attack2"))
-            {
-                if (AttackRequested)
-                    break;
-                yield return false;
-            }
-            if (AttackRequested == false)
-            {
-                Attack_saber2_end();
-                yield break;
-            }
-
-            yield return new WaitForSeconds(0.2f);
-            AttackRequested = false;
-            while (IsAnimationPlaying("Attack3"))
-            {
-                if (AttackRequested)
-                    break;
-                yield return false;
-            }
-
-            AttackEndFromRun_beg();
-            */
-
         }
         finally
         {
@@ -1048,7 +1141,7 @@ public class ZController : PlayerController
         yield break;
     }
     /// <summary>
-    /// 
+    /// 공격을 종료합니다.
     /// </summary>
     void EndAttack()
     {
@@ -1072,6 +1165,7 @@ public class ZController : PlayerController
     {
         // 
         StopMoving();
+        StopDashing(true);
         BlockMoving();
 
         // 
@@ -1152,6 +1246,17 @@ public class ZController : PlayerController
 
         // 
         _coroutineAttack = StartCoroutine(CoroutineSlideAttack());
+    }
+    /// <summary>
+    /// 플레이어가 대쉬 상태에서 공격합니다.
+    /// </summary>
+    void DashAttack()
+    {
+        Attacking = true;
+        AttackRequested = true;
+
+        // 
+        _coroutineAttack = StartCoroutine(CoroutineDashAttack());
     }
 
     #endregion
@@ -1408,6 +1513,7 @@ public class ZController : PlayerController
         DeactivateAllAttackRange();
 
         // 플레이어가 생존해있다면
+        float damagedTime = 0;
         if (IsAlive())
         {
             // 대미지 음성 및 효과음을 재생합니다.
@@ -1415,11 +1521,13 @@ public class ZController : PlayerController
             {
                 VoiceBigDamaged.Play();
                 SoundHit.Play();
+                damagedTime = BIG_DAMAGED_TIME;
             }
             else
             {
                 VoiceDamaged.Play();
                 SoundHit.Play();
+                damagedTime = DAMAGED_TIME;
             }
 
             // 발생한 효과를 제거합니다.
@@ -1434,7 +1542,7 @@ public class ZController : PlayerController
         }
 
         // END_HURT_TIME 시간 후에 대미지를 입은 상태를 종료합니다.
-        Invoke("EndHurt", END_HURT_TIME);
+        Invoke("EndHurt", damagedTime);
     }
 
     /// <summary>
