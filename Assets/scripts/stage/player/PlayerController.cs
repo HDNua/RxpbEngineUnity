@@ -486,10 +486,6 @@ public abstract class PlayerController : MonoBehaviour
     /// 플레이어가 소환중이라면 참입니다.
     /// </summary>
     bool _spawning = true;
-    /// <summary>
-    /// 플레이어가 복귀중이라면 참입니다.
-    /// </summary>
-    bool _returning = false;
 
     /// <summary>
     /// 지상에 있다면 true입니다.
@@ -1624,6 +1620,8 @@ public abstract class PlayerController : MonoBehaviour
         UnblockMoving();
         UnblockDashing();
 
+        // [v6.5.4] 문 통과 시 버그 해결.
+        float prevSpeed = _movingSpeed;
         _movingSpeed = _walkSpeed;
         if (userCanceled)
         {
@@ -1631,7 +1629,10 @@ public abstract class PlayerController : MonoBehaviour
         }
         else
         {
-            _Velocity = new Vector2(FacingRight ? _walkSpeed : -_walkSpeed, _Velocity.y);
+            if (prevSpeed != _dashSpeed)
+                _Velocity = new Vector2(FacingRight ? prevSpeed : -prevSpeed, _Velocity.y);
+            else
+                _Velocity = new Vector2(FacingRight ? _walkSpeed : -_walkSpeed, _Velocity.y);
         }
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
@@ -1675,6 +1676,7 @@ public abstract class PlayerController : MonoBehaviour
         /// _Velocity = new Vector2(0, -_slideSpeed);
         _Velocity = new Vector2(0, 0);
 
+        /**
         if (false)
         {
             // 개체의 운동에 따른 효과를 처리합니다.
@@ -1688,6 +1690,7 @@ public abstract class PlayerController : MonoBehaviour
             }
             _slideFogEffect = slideFog;
         }
+        */
 
         // 개체의 운동 상태가 갱신되었음을 알립니다.
         Sliding = true;

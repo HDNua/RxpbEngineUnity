@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XControl", "XControl.csproj", "{C6651F0F-F38D-A9D2-BE97-04C0CECBAB1E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XControl.Editor", "XControl.Editor.csproj", "{947AA8B5-8ED8-6AFE-730D-96076A711343}"
