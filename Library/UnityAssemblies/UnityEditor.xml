@@ -12129,6 +12129,22 @@ More information - https:msdn.microsoft.comen-uslibrary/dn584397(v=vs.110).aspx.
       </summary>
       <param name="roots"></param>
     </member>
+    <member name="M:UnityEditor.EditorUtility.CompressCubemapTexture(UnityEngine.Cubemap,UnityEngine.TextureFormat,System.Int32)">
+      <summary>
+        <para>Compress a cubemap texture.</para>
+      </summary>
+      <param name="texture"></param>
+      <param name="format"></param>
+      <param name="quality"></param>
+    </member>
+    <member name="M:UnityEditor.EditorUtility.CompressCubemapTexture(UnityEngine.Cubemap,UnityEngine.TextureFormat,UnityEngine.TextureCompressionQuality)">
+      <summary>
+        <para>Compress a cubemap texture.</para>
+      </summary>
+      <param name="texture"></param>
+      <param name="format"></param>
+      <param name="quality"></param>
+    </member>
     <member name="M:UnityEditor.EditorUtility.CompressTexture(UnityEngine.Texture2D,UnityEngine.TextureFormat,System.Int32)">
       <summary>
         <para>Compress a texture.</para>
@@ -19510,7 +19526,7 @@ See Also: PhysicsVisualizationSettings.</para>
     </member>
     <member name="P:UnityEditor.PlayerSettings.applicationIdentifier">
       <summary>
-        <para>Set the application identifier for the currently selected build target.</para>
+        <para>The application identifier for the currently selected build target.</para>
       </summary>
     </member>
     <member name="P:UnityEditor.PlayerSettings.bakeCollisionMeshes">
