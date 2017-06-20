@@ -1,4 +1,4 @@
-﻿RXPB v6.5.4
+﻿RXPB v6.5.4.1
 
 - 대쉬 관련 조작을 전체적으로 수정.
 > 위에 거 또 함.
@@ -22,6 +22,7 @@
 
 
 - Unity version updated from 5.5.2f to 5.5.3f.
+> Unity version updated from 5.5.3f to 5.5.4f.
 
 
 end.

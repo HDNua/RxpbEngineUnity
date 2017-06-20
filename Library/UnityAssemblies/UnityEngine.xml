@@ -4279,7 +4279,7 @@ It will also be invoked in case of any error.
     </member>
     <member name="M:UnityEngine.Apple.ReplayKit.ReplayKit.StopBroadcasting">
       <summary>
-        <para>Stops current broadcast. 
+        <para>Stops current broadcast.
 Will terminate currently on-going broadcast. If no broadcast is in progress, does nothing.</para>
       </summary>
     </member>
@@ -10849,7 +10849,7 @@ See Also: CanvasRenderer.SetMaterialCount, CanvasRenderer.SetTexture.</para>
       <summary>
         <para>Set the angular tolerance threshold (in degrees) for projection.
 
-If the joint deviates by more than this angle around its locked angular degrees of freedom, 
+If the joint deviates by more than this angle around its locked angular degrees of freedom,
 the solver will move the bodies to close the angle.
 
 Setting a very small tolerance may result in simulation jitter or other artifacts.
@@ -10861,7 +10861,7 @@ Sometimes it is not possible to project (for example when the joints form a cycl
       <summary>
         <para>Set the linear tolerance threshold for projection.
 
-If the joint separates by more than this distance along its locked degrees of freedom, the solver 
+If the joint separates by more than this distance along its locked degrees of freedom, the solver
 will move the bodies to close the distance.
 
 Setting a very small tolerance may result in simulation jitter or other artifacts.
@@ -18402,7 +18402,7 @@ Changing this value affects any subsequently loaded shaders. Initially this valu
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.BeginHorizontal(UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -18414,7 +18414,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.BeginHorizontal(System.String,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -18426,7 +18426,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.BeginHorizontal(UnityEngine.Texture,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -18438,7 +18438,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.BeginHorizontal(UnityEngine.GUIContent,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -18450,7 +18450,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.BeginScrollView(UnityEngine.Vector2,UnityEngine.GUILayoutOption[])">
@@ -18588,7 +18588,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.BeginVertical(UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -18600,7 +18600,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.BeginVertical(System.String,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -18612,7 +18612,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.BeginVertical(UnityEngine.Texture,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -18624,7 +18624,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.BeginVertical(UnityEngine.GUIContent,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -18636,7 +18636,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.Box(UnityEngine.Texture,UnityEngine.GUILayoutOption[])">
@@ -18648,7 +18648,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this box.</param>
       <param name="style">The style to use. If left out, the box style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.Box(System.String,UnityEngine.GUILayoutOption[])">
@@ -18660,7 +18660,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this box.</param>
       <param name="style">The style to use. If left out, the box style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.Box(UnityEngine.GUIContent,UnityEngine.GUILayoutOption[])">
@@ -18672,7 +18672,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this box.</param>
       <param name="style">The style to use. If left out, the box style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.Box(UnityEngine.Texture,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -18684,7 +18684,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this box.</param>
       <param name="style">The style to use. If left out, the box style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.Box(System.String,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -18696,7 +18696,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this box.</param>
       <param name="style">The style to use. If left out, the box style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.Box(UnityEngine.GUIContent,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -18708,7 +18708,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this box.</param>
       <param name="style">The style to use. If left out, the box style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.Button(UnityEngine.Texture,UnityEngine.GUILayoutOption[])">
@@ -18720,7 +18720,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>true when the users clicks the button.</para>
@@ -18735,7 +18735,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>true when the users clicks the button.</para>
@@ -18750,7 +18750,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>true when the users clicks the button.</para>
@@ -18765,7 +18765,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>true when the users clicks the button.</para>
@@ -18780,7 +18780,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>true when the users clicks the button.</para>
@@ -18795,7 +18795,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>true when the users clicks the button.</para>
@@ -18858,7 +18858,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.HorizontalScope.#ctor(UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -18870,7 +18870,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.HorizontalScope.#ctor(System.String,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -18882,7 +18882,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.HorizontalScope.#ctor(UnityEngine.Texture,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -18894,7 +18894,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.HorizontalScope.#ctor(UnityEngine.GUIContent,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -18906,7 +18906,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.HorizontalScrollbar(System.Single,System.Single,System.Single,System.Single,UnityEngine.GUILayoutOption[])">
@@ -18974,7 +18974,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this label.</param>
       <param name="style">The style to use. If left out, the label style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.Label(System.String,UnityEngine.GUILayoutOption[])">
@@ -18986,7 +18986,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this label.</param>
       <param name="style">The style to use. If left out, the label style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.Label(UnityEngine.GUIContent,UnityEngine.GUILayoutOption[])">
@@ -18998,7 +18998,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this label.</param>
       <param name="style">The style to use. If left out, the label style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.Label(UnityEngine.Texture,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -19010,7 +19010,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this label.</param>
       <param name="style">The style to use. If left out, the label style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.Label(System.String,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -19022,7 +19022,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this label.</param>
       <param name="style">The style to use. If left out, the label style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.Label(UnityEngine.GUIContent,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -19034,7 +19034,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this label.</param>
       <param name="style">The style to use. If left out, the label style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.MaxHeight(System.Single)">
@@ -19123,7 +19123,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>true when the holds down the mouse.</para>
@@ -19138,7 +19138,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>true when the holds down the mouse.</para>
@@ -19153,7 +19153,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>true when the holds down the mouse.</para>
@@ -19168,7 +19168,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>true when the holds down the mouse.</para>
@@ -19183,7 +19183,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>true when the holds down the mouse.</para>
@@ -19198,7 +19198,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>true when the holds down the mouse.</para>
@@ -19308,7 +19308,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="xCount">How many elements to fit in the horizontal direction. The elements will be scaled to fit unless the style defines a fixedWidth to use. The height of the control will be determined from the number of elements.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content"></param>
       <returns>
@@ -19326,7 +19326,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="xCount">How many elements to fit in the horizontal direction. The elements will be scaled to fit unless the style defines a fixedWidth to use. The height of the control will be determined from the number of elements.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content"></param>
       <returns>
@@ -19344,7 +19344,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="xCount">How many elements to fit in the horizontal direction. The elements will be scaled to fit unless the style defines a fixedWidth to use. The height of the control will be determined from the number of elements.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content"></param>
       <returns>
@@ -19362,7 +19362,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="xCount">How many elements to fit in the horizontal direction. The elements will be scaled to fit unless the style defines a fixedWidth to use. The height of the control will be determined from the number of elements.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content"></param>
       <returns>
@@ -19380,7 +19380,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="xCount">How many elements to fit in the horizontal direction. The elements will be scaled to fit unless the style defines a fixedWidth to use. The height of the control will be determined from the number of elements.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content"></param>
       <returns>
@@ -19398,7 +19398,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="xCount">How many elements to fit in the horizontal direction. The elements will be scaled to fit unless the style defines a fixedWidth to use. The height of the control will be determined from the number of elements.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content"></param>
       <returns>
@@ -19419,7 +19419,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="maxLength">The maximum length of the string. If left out, the user can type for ever and ever.</param>
       <param name="style">The style to use. If left out, the textField style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&amp;amp;lt;br&amp;amp;gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The edited string.</para>
@@ -19433,7 +19433,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="maxLength">The maximum length of the string. If left out, the user can type for ever and ever.</param>
       <param name="style">The style to use. If left out, the textField style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&amp;amp;lt;br&amp;amp;gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The edited string.</para>
@@ -19447,7 +19447,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="maxLength">The maximum length of the string. If left out, the user can type for ever and ever.</param>
       <param name="style">The style to use. If left out, the textField style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&amp;amp;lt;br&amp;amp;gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The edited string.</para>
@@ -19461,7 +19461,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="maxLength">The maximum length of the string. If left out, the user can type for ever and ever.</param>
       <param name="style">The style to use. If left out, the textField style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&amp;amp;lt;br&amp;amp;gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The edited string.</para>
@@ -19475,7 +19475,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="maxLength">The maximum length of the string. If left out, the user can type for ever and ever.</param>
       <param name="style">The style to use. If left out, the textArea style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The edited string.</para>
@@ -19489,7 +19489,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="maxLength">The maximum length of the string. If left out, the user can type for ever and ever.</param>
       <param name="style">The style to use. If left out, the textArea style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The edited string.</para>
@@ -19503,7 +19503,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="maxLength">The maximum length of the string. If left out, the user can type for ever and ever.</param>
       <param name="style">The style to use. If left out, the textArea style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The edited string.</para>
@@ -19517,7 +19517,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="maxLength">The maximum length of the string. If left out, the user can type for ever and ever.</param>
       <param name="style">The style to use. If left out, the textArea style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The edited string.</para>
@@ -19533,7 +19533,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The new value of the button.</para>
@@ -19549,7 +19549,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The new value of the button.</para>
@@ -19565,7 +19565,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The new value of the button.</para>
@@ -19581,7 +19581,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The new value of the button.</para>
@@ -19597,7 +19597,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The new value of the button.</para>
@@ -19613,7 +19613,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The new value of the button.</para>
@@ -19629,7 +19629,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="contents">An array of text, image and tooltips for the button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content"></param>
       <returns>
@@ -19646,7 +19646,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="contents">An array of text, image and tooltips for the button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content"></param>
       <returns>
@@ -19663,7 +19663,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="contents">An array of text, image and tooltips for the button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content"></param>
       <returns>
@@ -19680,7 +19680,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="contents">An array of text, image and tooltips for the button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content"></param>
       <returns>
@@ -19697,7 +19697,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="contents">An array of text, image and tooltips for the button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content"></param>
       <returns>
@@ -19714,7 +19714,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="contents">An array of text, image and tooltips for the button.</param>
       <param name="style">The style to use. If left out, the button style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content"></param>
       <returns>
@@ -19735,7 +19735,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.VerticalScope.#ctor(UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -19747,7 +19747,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.VerticalScope.#ctor(System.String,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -19759,7 +19759,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.VerticalScope.#ctor(UnityEngine.Texture,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -19771,7 +19771,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.VerticalScope.#ctor(UnityEngine.GUIContent,UnityEngine.GUIStyle,UnityEngine.GUILayoutOption[])">
@@ -19783,7 +19783,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image, and tooltip for this group.</param>
       <param name="style">The style to use for background image and padding values. If left out, the background is transparent.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
     </member>
     <member name="M:UnityEngine.GUILayout.VerticalScrollbar(System.Single,System.Single,System.Single,System.Single,UnityEngine.GUILayoutOption[])">
@@ -19864,7 +19864,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this window.</param>
       <param name="style">An optional style to use for the window. If left out, the window style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style or the screenRect you pass in.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The rectangle the window is at. This can be in a different position and have a different size than the one you passed in.</para>
@@ -19882,7 +19882,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this window.</param>
       <param name="style">An optional style to use for the window. If left out, the window style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style or the screenRect you pass in.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The rectangle the window is at. This can be in a different position and have a different size than the one you passed in.</para>
@@ -19900,7 +19900,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this window.</param>
       <param name="style">An optional style to use for the window. If left out, the window style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style or the screenRect you pass in.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The rectangle the window is at. This can be in a different position and have a different size than the one you passed in.</para>
@@ -19918,7 +19918,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this window.</param>
       <param name="style">An optional style to use for the window. If left out, the window style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style or the screenRect you pass in.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The rectangle the window is at. This can be in a different position and have a different size than the one you passed in.</para>
@@ -19936,7 +19936,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this window.</param>
       <param name="style">An optional style to use for the window. If left out, the window style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style or the screenRect you pass in.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The rectangle the window is at. This can be in a different position and have a different size than the one you passed in.</para>
@@ -19954,7 +19954,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">Text, image and tooltip for this window.</param>
       <param name="style">An optional style to use for the window. If left out, the window style from the current GUISkin is used.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style or the screenRect you pass in.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The rectangle the window is at. This can be in a different position and have a different size than the one you passed in.</para>
@@ -19977,7 +19977,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="aspect">The aspect ratio of the element (width / height).</param>
       <param name="style">An optional style. If specified, the style's padding value will be added to the sizes of the returned rectangle &amp; the style's margin values will be used for spacing.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The rect for the control.</para>
@@ -19990,7 +19990,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="aspect">The aspect ratio of the element (width / height).</param>
       <param name="style">An optional style. If specified, the style's padding value will be added to the sizes of the returned rectangle &amp; the style's margin values will be used for spacing.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The rect for the control.</para>
@@ -20003,7 +20003,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="aspect">The aspect ratio of the element (width / height).</param>
       <param name="style">An optional style. If specified, the style's padding value will be added to the sizes of the returned rectangle &amp; the style's margin values will be used for spacing.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The rect for the control.</para>
@@ -20016,7 +20016,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="aspect">The aspect ratio of the element (width / height).</param>
       <param name="style">An optional style. If specified, the style's padding value will be added to the sizes of the returned rectangle &amp; the style's margin values will be used for spacing.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The rect for the control.</para>
@@ -20037,7 +20037,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">The content to make room for displaying.</param>
       <param name="style">The GUIStyle to layout for.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>A rectangle that is large enough to contain content when rendered in style.</para>
@@ -20050,7 +20050,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="content">The content to make room for displaying.</param>
       <param name="style">The GUIStyle to layout for.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>A rectangle that is large enough to contain content when rendered in style.</para>
@@ -20064,7 +20064,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="height">The height of the area you want.</param>
       <param name="style">An optional GUIStyle to layout for. If specified, the style's padding value will be added to your sizes &amp; its margin value will be used for spacing.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The rectanlge to put your control in.</para>
@@ -20078,7 +20078,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="height">The height of the area you want.</param>
       <param name="style">An optional GUIStyle to layout for. If specified, the style's padding value will be added to your sizes &amp; its margin value will be used for spacing.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The rectanlge to put your control in.</para>
@@ -20092,7 +20092,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="height">The height of the area you want.</param>
       <param name="style">An optional GUIStyle to layout for. If specified, the style's padding value will be added to your sizes &amp; its margin value will be used for spacing.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The rectanlge to put your control in.</para>
@@ -20106,7 +20106,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="height">The height of the area you want.</param>
       <param name="style">An optional GUIStyle to layout for. If specified, the style's padding value will be added to your sizes &amp; its margin value will be used for spacing.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>The rectanlge to put your control in.</para>
@@ -20122,7 +20122,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="maxHeight">The maximum width of the area passed back.</param>
       <param name="style">An optional style. If specified, the style's padding value will be added to the sizes requested &amp; the style's margin values will be used for spacing.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>A rectangle with size between minWidth &amp; maxWidth on both axes.</para>
@@ -20138,7 +20138,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="maxHeight">The maximum width of the area passed back.</param>
       <param name="style">An optional style. If specified, the style's padding value will be added to the sizes requested &amp; the style's margin values will be used for spacing.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>A rectangle with size between minWidth &amp; maxWidth on both axes.</para>
@@ -20154,7 +20154,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="maxHeight">The maximum width of the area passed back.</param>
       <param name="style">An optional style. If specified, the style's padding value will be added to the sizes requested &amp; the style's margin values will be used for spacing.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>A rectangle with size between minWidth &amp; maxWidth on both axes.</para>
@@ -20170,7 +20170,7 @@ GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <param name="maxHeight">The maximum width of the area passed back.</param>
       <param name="style">An optional style. If specified, the style's padding value will be added to the sizes requested &amp; the style's margin values will be used for spacing.</param>
       <param name="options">An optional list of layout options that specify extra layouting properties. Any values passed in here will override settings defined by the style.&lt;br&gt;
-See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight, 
+See Also: GUILayout.Width, GUILayout.Height, GUILayout.MinWidth, GUILayout.MaxWidth, GUILayout.MinHeight,
 GUILayout.MaxHeight, GUILayout.ExpandWidth, GUILayout.ExpandHeight.</param>
       <returns>
         <para>A rectangle with size between minWidth &amp; maxWidth on both axes.</para>
@@ -25876,6 +25876,16 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
         <para>Choose how textures are applied to Lines and Trails.</para>
       </summary>
     </member>
+    <member name="F:UnityEngine.LineTextureMode.DistributePerSegment">
+      <summary>
+        <para>Map the texture once along the entire length of the line, assuming all vertices are evenly spaced.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.LineTextureMode.RepeatPerSegment">
+      <summary>
+        <para>Repeat the texture along the line, repeating at a rate of once per line segment. To adjust the tiling rate, use Material.SetTextureScale.</para>
+      </summary>
+    </member>
     <member name="F:UnityEngine.LineTextureMode.Stretch">
       <summary>
         <para>Map the texture once along the entire length of the line.</para>
@@ -25883,7 +25893,7 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="F:UnityEngine.LineTextureMode.Tile">
       <summary>
-        <para>Repeat the texture along the line. To set the tiling rate, use Material.SetTextureScale.</para>
+        <para>Repeat the texture along the line, based on its length in world units. To set the tiling rate, use Material.SetTextureScale.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.LocationInfo">
@@ -29361,7 +29371,7 @@ Only usable on Android, Windows Phone or Windows Tablets.</para>
     </member>
     <member name="P:UnityEngine.Networking.ConnectionConfig.WebSocketReceiveBufferMaxSize">
       <summary>
-        <para>Defines received buffer size for web socket host; you should set this to the size of the biggest legal frame that you support.  If the frame size is exceeded, there is no error, but the buffer will spill to the user callback when 	full. In case zero 4k buffer will be used. Default value is zero.</para>
+        <para>Defines received buffer size for web socket host; you should set this to the size of the biggest legal frame that you support.  If the frame size is exceeded, there is no error, but the buffer will spill to the user callback when  full. In case zero 4k buffer will be used. Default value is zero.</para>
       </summary>
     </member>
     <member name="T:UnityEngine.Networking.ConnectionSimulatorConfig">
@@ -30944,6 +30954,11 @@ Can only be called by the relay group owner.</para>
     <member name="P:UnityEngine.Networking.UnityWebRequest.responseCode">
       <summary>
         <para>The numeric HTTP response code returned by the server, such as 200, 404 or 500. (Read Only)</para>
+      </summary>
+    </member>
+    <member name="P:UnityEngine.Networking.UnityWebRequest.timeout">
+      <summary>
+        <para>Sets UnityWebRequest to attempt to abort after the number of seconds in timeout have passed.</para>
       </summary>
     </member>
     <member name="P:UnityEngine.Networking.UnityWebRequest.uploadedBytes">
@@ -35110,6 +35125,16 @@ The position stream is always enabled, and any attempts to remove it will be ign
         <para>Choose how textures are applied to Particle Trails.</para>
       </summary>
     </member>
+    <member name="F:UnityEngine.ParticleSystemTrailTextureMode.DistributePerSegment">
+      <summary>
+        <para>Map the texture once along the entire length of the trail, assuming all vertices are evenly spaced.</para>
+      </summary>
+    </member>
+    <member name="F:UnityEngine.ParticleSystemTrailTextureMode.RepeatPerSegment">
+      <summary>
+        <para>Repeat the texture along the trail, repeating at a rate of once per trail segment. To adjust the tiling rate, use Material.SetTextureScale.</para>
+      </summary>
+    </member>
     <member name="F:UnityEngine.ParticleSystemTrailTextureMode.Stretch">
       <summary>
         <para>Map the texture once along the entire length of the trail.</para>
@@ -37658,7 +37683,7 @@ Use asyncUploadBufferSize to set the buffer size for asynchronous texture upload
       <summary>
         <para>Async texture upload provides timesliced async texture upload on the render thread with tight control over memory and timeslicing. There are no allocations except for the ones which driver has to do. To read data and upload texture data a ringbuffer whose size can be controlled is re-used.
 
-Use asyncUploadTimeSlice to set the time-slice in milliseconds for asynchronous texture uploads per 
+Use asyncUploadTimeSlice to set the time-slice in milliseconds for asynchronous texture uploads per
 frame. Minimum value is 1 and maximum is 33.</para>
       </summary>
     </member>
@@ -39026,7 +39051,7 @@ See Also: ReflectionProbeTimeSlicingMode.</para>
       <returns>
         <para>
           True if the render has finished, false otherwise.
-          
+
           See Also: timeSlicingMode
         </para>
       </returns>
@@ -39039,7 +39064,7 @@ See Also: ReflectionProbeTimeSlicingMode.</para>
       <returns>
         <para>
           An integer representing a RenderID which can subsequently be used to check if the probe has finished rendering while rendering in time-slice mode.
-          
+
           See Also: IsFinishedRendering
           See Also: timeSlicingMode
         </para>
@@ -40822,7 +40847,7 @@ See Also: Graphics.activeTier.</para>
     </member>
     <member name="F:UnityEngine.Rendering.ReflectionProbeRefreshMode.EveryFrame">
       <summary>
-        <para>Causes Unity to update the probe's cubemap every frame. 
+        <para>Causes Unity to update the probe's cubemap every frame.
 Note that updating a probe is very costly. Setting this option on too many probes could have a significant negative effect on frame rate. Use time-slicing to help improve performance.
 
 See Also: ReflectionProbeTimeSlicingMode.</para>
@@ -48968,7 +48993,7 @@ Useful for restarting a trail from a new position.</para>
     </member>
     <member name="F:UnityEngine.TreeInstance.rotation">
       <summary>
-        <para>Read-only. 
+        <para>Read-only.
 
 Rotation of the tree on X-Z plane (in radians).</para>
       </summary>
