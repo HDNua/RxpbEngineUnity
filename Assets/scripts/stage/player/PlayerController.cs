@@ -1404,7 +1404,9 @@ public abstract class PlayerController : MonoBehaviour
         // 
         Health = 0;
         _Animator.speed = 0;
-        _Animator.Stop();
+        /// _Animator.Stop();
+        _Animator.StopPlayback();
+        _Animator.enabled = false;
 
         // 대미지 스프라이트로 변경합니다.
         _Renderer.sprite = _damagedSprite;

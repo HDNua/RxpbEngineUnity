@@ -1,28 +1,8 @@
-﻿RXPB v6.5.4.1
+﻿RXPB v6.6.0
 
-- 대쉬 관련 조작을 전체적으로 수정.
-> 위에 거 또 함.
-
-
-* Crouching 버그 단순하게 해결.
-> Crouch가 발생하는 지역 밑에 CrouchingZone을 설정.
-  이 영역에 닿으면 Crouch로 판정한다.
-
-  
-- 벽 점프 개선.
-> 벽에 붙을 때 잠깐 멈추는 것 구현.
-> 벽에 붙은 후 내려오기 시작할 때 비로소 슬라이딩 연기가 발생하도록 변경.
-
-
-! 제로 공중 공격 애니메이션 재생 시간 변경 요망.
-> 거의 즉시던데
-
-
-- 문 통과 시 속도가 변하는 버그 해결.
-
-
-- Unity version updated from 5.5.2f to 5.5.3f.
-> Unity version updated from 5.5.3f to 5.5.4f.
+- Unity version updated from 5.5.2f1 to 5.5.3f1.
+> Unity version updated from 5.5.3f1 to 5.5.4f1.
+> Unity version updated from 5.5.4f1 to 5.6.0f3.
 
 
 end.
