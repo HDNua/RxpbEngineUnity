@@ -1,9 +1,10 @@
-﻿RXPB v6.6.1 (IMPORTANT)
+﻿RXPB v6.6.2 (IMPORTANT)
 
 - Unity version updated from 5.5.2f1 to 5.5.3f1.
 > Unity version updated from 5.5.3f1 to 5.5.4f1.
 > Unity version updated from 5.5.4f1 to 5.6.0f3.
 > Unity version updated from 5.6.0f3 to 5.6.1f1.
+> Unity version updated from 5.6.1f1 to 2017.1.0f3.
 
 
 - 중복되는 참조를 제거함으로써 버전 업데이트 성공.
