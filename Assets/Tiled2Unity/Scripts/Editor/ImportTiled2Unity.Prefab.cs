@@ -60,6 +60,12 @@ namespace Tiled2Unity
             HandleTiledAttributes(tempPrefab, xmlPrefab, importComponent);
             HandleCustomProperties(tempPrefab, xmlPrefab, customImporters);
 
+            // 한도영!
+            {
+                tempPrefab.tag = "Map";
+                tempPrefab.AddComponent<Map>();
+            }
+
             // Part 2: Build out the prefab
             // We may have an 'isTrigger' attribute that we want our children to obey
             bool isTrigger = ImportUtils.GetAttributeAsBoolean(xmlPrefab, "isTrigger", false);
@@ -134,6 +140,27 @@ namespace Tiled2Unity
                 if (!String.IsNullOrEmpty(name))
                 {
                     child.name = name;
+                }
+
+                // 한도영!
+                {
+                    if (child.name.Contains("Parent"))
+                    {
+                        child.tag = child.name;
+
+                        switch (child.name)
+                        {
+                            case "CameraZoneParent":
+                                child.AddComponent<CameraZoneParent>();
+                                break;
+                            case "CameraZoneBorderParent":
+                                child.AddComponent<CameraZoneBorderParent>();
+                                break;
+                            case "TiledGeometryParent":
+                                child.AddComponent<TiledGeometryParent>();
+                                break;
+                        }
+                    }
                 }
 
                 // Assign the child to the parent

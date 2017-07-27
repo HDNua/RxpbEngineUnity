@@ -27,14 +27,7 @@ public abstract class HandyImporter : Tiled2Unity.ICustomTiledImporter
 
     #endregion
 
-
-
-
-
-
-
-
-
+    
 
     #region 필드 및 프로퍼티를 정의합니다.
     string _targetName;
@@ -47,14 +40,7 @@ public abstract class HandyImporter : Tiled2Unity.ICustomTiledImporter
     #endregion
 
 
-
-
-
-
-
-
-
-
+    
     #region 생성자를 정의합니다.
     /// <summary>
     /// Tiled2Unity 도구를 이용하여 임포트를 수행합니다.
@@ -69,14 +55,7 @@ public abstract class HandyImporter : Tiled2Unity.ICustomTiledImporter
     #endregion
 
 
-
-
-
-
-
-
-
-
+    
     #region 메서드를 정의합니다.
     /// <summary>
     /// 문자열 배열을 문자열로 변환하여 반환합니다.

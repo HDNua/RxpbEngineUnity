@@ -105,6 +105,11 @@ public class CameraZone : MonoBehaviour
     /// 
     /// </summary>
     PolygonCollider2D _slopeZone;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    string Name { get { return this.name; } set { this.name = value; } }
     
     #endregion
 
@@ -184,7 +189,7 @@ public class CameraZone : MonoBehaviour
         }
 
         // 이름 업데이트
-        name = GetInstanceID().ToString();
+        /// this.Name = GetInstanceID().ToString();
     }
 
     #endregion

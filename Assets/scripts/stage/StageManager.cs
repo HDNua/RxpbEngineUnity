@@ -32,6 +32,10 @@ public class StageManager : HDSceneManager
     /// 체크포인트 카메라 존 집합입니다.
     /// </summary>
     public CameraZone[] _checkpointCameraZones;
+    /// <summary>
+    /// 
+    /// </summary>
+    public GameObject[] _checkpointCameraZoneObjects;
 
     /// <summary>
     /// 사용자 인터페이스 관리자입니다.
@@ -244,6 +248,35 @@ public class StageManager : HDSceneManager
 
         // 맵 데이터를 초기화합니다.
         _playerSpawnPosition = _checkpointSpawnPositions[_database.GameManager.SpawnPositionIndex];
+        if (_checkpointCameraZones[_checkpointCameraZones.Length / 2] == null)
+        {
+            int len = _checkpointCameraZones.Length / 2;
+            // GameObject[] cameraZoneObjects = GameObject.FindGameObjectsWithTag("CameraZone");
+
+            int offset = "Checkpoint".Length;
+
+            /*
+            foreach (GameObject go in cameraZoneObjects)
+            {
+                if (go.name.Contains("Checkpoint"))
+                {
+                    int index = int.Parse(go.name.Substring(offset));
+                    _checkpointCameraZones[index] = go.GetComponent<CameraZone>();
+                }
+            }
+            */
+
+            // 
+            CameraZone[] czs = FindObjectsOfType<CameraZone>();
+            foreach (CameraZone cz in czs)
+            {
+                if (cz.name.Contains("Checkpoint"))
+                {
+                    int index = int.Parse(cz.name.Substring(offset));
+                    _checkpointCameraZones[index] = cz; // go.GetComponent<CameraZone>();
+                }
+            }
+        }
 
         // 페이드인 효과를 처리합니다.
         _fader.FadeIn();

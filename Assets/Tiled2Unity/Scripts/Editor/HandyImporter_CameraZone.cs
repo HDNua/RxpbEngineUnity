@@ -29,9 +29,13 @@ public class HandyImporter_CameraZone : HandyImporter
         // 속성을 업데이트합니다.
         component._cameraZoneID = GetIntValue(customProperties, "_cameraZoneID");
 
-        component._isCheckpoint = GetBooleanValue(customProperties, "_Checkpoint");
-        component._checkpointIndex = GetIntValue(customProperties, "_CheckpointIndex");
+        // 체크 포인트 속성을 업데이트합니다.
+        bool isCheckpoint = GetBooleanValue(customProperties, "_Checkpoint");
+        int checkpointIndex = GetIntValue(customProperties, "_CheckpointIndex");
+        component._isCheckpoint = isCheckpoint;
+        component._checkpointIndex = checkpointIndex;
 
+        // 바운드 속성을 업데이트합니다.
         component._isTopBounded = GetBooleanValue(customProperties, "_isTopBounded");
         component._isTopFirst = GetBooleanValue(customProperties, "_isTopFirst");
         component._isLeftBounded = GetBooleanValue(customProperties, "_isLeftBounded");
@@ -40,6 +44,17 @@ public class HandyImporter_CameraZone : HandyImporter
         component._isRightFirst = GetBooleanValue(customProperties, "_isRightFirst");
         component._isBottomBounded = GetBooleanValue(customProperties, "_isBottomBounded");
         component._isBottomFirst = GetBooleanValue(customProperties, "_isBottomFirst");
+
+        // 
+        if (isCheckpoint)
+        {
+            // 
+            component.name = "Checkpoint" + checkpointIndex;
+
+            //
+            StageManager stageManager = StageManager.Instance;
+            stageManager._checkpointCameraZones[checkpointIndex] = gameObject.GetComponent<CameraZone>();
+        }
     }
     /// <summary>
     /// 프리팹을 커스터마이징합니다.
