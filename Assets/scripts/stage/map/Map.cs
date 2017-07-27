@@ -41,7 +41,19 @@ public class Map : MonoBehaviour
     /// </summary>
     public static Map Instance
     {
-        get { return GameObject.FindGameObjectWithTag("Map").GetComponent<Map>(); }
+        get
+        {
+            GameObject o = GameObject.FindGameObjectWithTag("Map");
+            if (o == null)
+            {
+                throw new Exception("It can't be...!");
+            }
+            else
+            {
+                Map ret = o.GetComponent<Map>();
+                return ret;
+            }
+        }
     }
 
     /// <summary>
