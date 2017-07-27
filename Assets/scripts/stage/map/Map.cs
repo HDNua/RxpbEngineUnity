@@ -55,11 +55,24 @@ public class Map : MonoBehaviour
             return StageManager1P.Instance._player;
         }
     }
-
     /// <summary>
     /// 카메라 존 집합의 부모 개체입니다.
     /// </summary>
     public CameraZoneParent CameraZoneParent { get { return _cameraZoneParent; } }
+    /// <summary>
+    /// 맵의 localScale 속성입니다.
+    /// </summary>
+    public Vector3 LocalScale
+    {
+        get { return transform.localScale; }
+    }
+    /// <summary>
+    /// 맵의 position 속성입니다.
+    /// </summary>
+    public Vector3 Position
+    {
+        get { return transform.position; }
+    }
     
     #endregion
     

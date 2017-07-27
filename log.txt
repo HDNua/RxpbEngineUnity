@@ -1,13 +1,9 @@
-﻿RXPB v6.6.2 (IMPORTANT)
+﻿RXPB v6.7.0
 
-- Unity version updated from 5.5.2f1 to 5.5.3f1.
-> Unity version updated from 5.5.3f1 to 5.5.4f1.
-> Unity version updated from 5.5.4f1 to 5.6.0f3.
-> Unity version updated from 5.6.0f3 to 5.6.1f1.
-> Unity version updated from 5.6.1f1 to 2017.1.0f3.
+- 모든 Manager 개체가 자신에 대한 Instance 속성을 가지도록 변경.
 
 
-- 중복되는 참조를 제거함으로써 버전 업데이트 성공.
+- 기타 버그 수정.
 
 
 end.
