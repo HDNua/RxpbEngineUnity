@@ -159,14 +159,23 @@ public class CameraFollow : MonoBehaviour
             _cameraZones = new CameraZone[cameraZones.Length];
             foreach (CameraZone cameraZone in cameraZones)
             {
-                _cameraZones[cameraZone._cameraZoneID] = cameraZone;
+                // 음이 아닌 카메라 존 ID의 경우 집합에 추가합니다.
+                int camZoneID = cameraZone._cameraZoneID;
+                if (camZoneID >= 0)
+                {
+                    _cameraZones[cameraZone._cameraZoneID] = cameraZone;
+                }
             }
 
             CameraZoneBorder[] borders = _cameraZoneBorderParent.GetComponentsInChildren<CameraZoneBorder>();
             foreach (CameraZoneBorder border in borders)
             {
-                border._from = _cameraZones[border._fromID];
-                border._to = _cameraZones[border._toID];
+                // 음이 아닌 식별자들에 대해서만 처리합니다.
+                if (border._fromID >= 0 && border._toID >= 0)
+                {
+                    border._from = _cameraZones[border._fromID];
+                    border._to = _cameraZones[border._toID];
+                }
             }
 
             // 시작 카메라 존을 맞춥니다.

@@ -36,8 +36,13 @@ public class CameraZoneParent : MonoBehaviour
     {
         get
         {
-            return GameObject.FindGameObjectWithTag("CameraZoneParent")
-              .GetComponent<CameraZoneParent>();
+            var go = GameObject.FindGameObjectWithTag("CameraZoneParent");
+            if (go == null)
+            {
+                throw new Exception("It can't be...!!!");
+            }
+
+            return go.GetComponent<CameraZoneParent>();
         }
     }
 

@@ -39,6 +39,10 @@ public class HandyImporter_MapParents : HandyImporter
                     case "TiledGeometryParent":
                         gameObject.AddComponent<TiledGeometryParent>();
                         break;
+
+                    case "InvisibleWallParent":
+                        gameObject.AddComponent<InvisibleWallParent>();
+                        break;
                 }
                 gameObject.tag = goName;
             }

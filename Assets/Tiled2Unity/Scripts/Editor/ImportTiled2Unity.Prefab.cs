@@ -151,13 +151,19 @@ namespace Tiled2Unity
                         switch (child.name)
                         {
                             case "CameraZoneParent":
-                                child.AddComponent<CameraZoneParent>();
+                                DataBase.Instance.CameraZoneParent = child.AddComponent<CameraZoneParent>();
                                 break;
+
                             case "CameraZoneBorderParent":
-                                child.AddComponent<CameraZoneBorderParent>();
+                                DataBase.Instance.CameraZoneBorderParent = child.AddComponent<CameraZoneBorderParent>();
                                 break;
+
                             case "TiledGeometryParent":
-                                child.AddComponent<TiledGeometryParent>();
+                                DataBase.Instance.TiledGeometryParent = child.AddComponent<TiledGeometryParent>();
+                                break;
+
+                            case "InvisibleWallParent":
+                                DataBase.Instance.InvisibleWallParent = child.AddComponent<InvisibleWallParent>();
                                 break;
                         }
                     }

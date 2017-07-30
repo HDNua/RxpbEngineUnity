@@ -1,4 +1,4 @@
-﻿RXPB v6.7.1.1 (IMPORTANT)
+﻿RXPB v6.7.2.0
 
 - 모든 Manager 개체가 자신에 대한 Instance 속성을 가지도록 변경.
 
@@ -13,6 +13,11 @@
 * 위에 문제 해결!
 > Tiled2Unity 소스 직접 수정함.
 > "한도영!"으로 주석 달린 곳은 반드시 참조할 것!
+
+
+- 버그 개선.
+> HandyImporter_InvisibleWall.cs -> 삭제 예정.
+> InvisibleWallParent 컴포넌트가 자동으로 개체에 붙도록 개선.
 
 
 end.

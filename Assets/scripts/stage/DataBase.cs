@@ -189,6 +189,14 @@ public class DataBase : MonoBehaviour
         get { return _effects[4]; }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    public CameraZoneParent CameraZoneParent; // { get; set; }
+    public CameraZoneBorderParent CameraZoneBorderParent; //{ get; set; }
+    public TiledGeometryParent TiledGeometryParent; // { get; set; }
+    public InvisibleWallParent InvisibleWallParent; // { get; set; }
+
     #endregion
 
 

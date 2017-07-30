@@ -4,17 +4,23 @@ using System.Collections;
 
 
 
+/// <summary>
+/// 투명한 벽의 부모 개체입니다.
+/// </summary>
 public class InvisibleWallParent : MonoBehaviour
 {
-    public DataBase _database;
-
-    // Use this for initialization
+    /// <summary>
+    /// 
+    /// </summary>
     void Start()
     {
+        PhysicsMaterial2D material = DataBase.Instance.FrictionlessWall;
         Collider2D[] children = GetComponentsInChildren<Collider2D>();
+
+        // 
         foreach (Collider2D child in children)
         {
-            child.sharedMaterial = _database.FrictionlessWall;
+            child.sharedMaterial = material; // _database.FrictionlessWall;
         }
     }
 }

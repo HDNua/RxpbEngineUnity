@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/scenes/Stages/01_Intro/01_Intro_Z.unity
+- path: Assets/scenes/RxpbUsage/maps/Map2.unity
   isLoaded: 1
   isActive: 1
